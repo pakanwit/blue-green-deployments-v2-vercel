@@ -16,9 +16,9 @@ export const config = {
 
 // Configuration stored in Edge Config.
 interface BlueGreenConfig {
-  deploymentDomainBlue: string;
-  deploymentDomainGreen: string;
-  trafficGreenPercent: number;
+  deploymentExistingDomain: string;
+  deploymentCanaryDomain: string;
+  trafficCanaryPercent: number;
 }
 
 export async function middleware(req: NextRequest) {
@@ -50,21 +50,18 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
   // Get the blue-green configuration from Edge Config.
-  const blueGreenConfig = await get<BlueGreenConfig>(
-    "blue-green-configuration"
-  );
+  const blueGreenConfig = await get<BlueGreenConfig>("canary-configuration");
+  console.log("blueGreenConfig", blueGreenConfig);
   if (!blueGreenConfig) {
     console.warn("No blue-green configuration found");
     return NextResponse.next();
   }
   const servingDeploymentDomain = process.env.VERCEL_URL;
+  console.log("servingDeploymentDomain", servingDeploymentDomain);
   const selectedDeploymentDomain =
     selectBlueGreenDeploymentDomain(blueGreenConfig);
-  console.info(
-    "Selected deployment domain",
-    selectedDeploymentDomain,
-    blueGreenConfig
-  );
+  console.log("selectedDeploymentDomain", selectedDeploymentDomain);
+
   if (!selectedDeploymentDomain) {
     return NextResponse.next();
   }
@@ -92,9 +89,9 @@ function selectBlueGreenDeploymentDomain(blueGreenConfig: BlueGreenConfig) {
   const random = Math.random() * 100;
 
   const selected =
-    random < blueGreenConfig.trafficGreenPercent
-      ? blueGreenConfig.deploymentDomainGreen
-      : blueGreenConfig.deploymentDomainBlue || process.env.VERCEL_URL;
+    random < blueGreenConfig.trafficCanaryPercent
+      ? blueGreenConfig.deploymentCanaryDomain
+      : blueGreenConfig.deploymentExistingDomain || process.env.VERCEL_URL;
   if (!selected) {
     console.error("Blue green configuration error", blueGreenConfig);
   }
