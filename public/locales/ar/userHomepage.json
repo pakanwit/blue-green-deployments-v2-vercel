@@ -1,0 +1,23 @@
+{
+  " more plans": "خطط أكثر",
+  "+ Add Plan": "+ أضف خطة",
+  "Edit": "تعديل",
+  "Edit & Save": "تعديل وحفظ",
+  "Failed to load business plan ": "فشل في تحميل خطة العمل",
+  "Login": "تسجيل الدخول",
+  "My Plans:": "خططي:",
+  "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.": "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.",
+  "Or contact us at help@15minuteplan.ai": "أو اتصل بنا على help@15minuteplan.ai",
+  "Plan ": "خطة",
+  "Please try again": "يرجى المحاولة مرة أخرى",
+  "Retrieve First Plan": "استعادة الخطة الأولى",
+  "Sign Out": "تسجيل الخروج",
+  "There was a problem with your payment": "كانت هناك مشكلة في الدفع",
+  "Verifying Account...": "التحقق من الحساب...",
+  "View": "عرض",
+  "You can make ": "يمكنك صنع",
+  "You need to be logged in to view this page": "يجب عليك تسجيل الدخول لعرض هذه الصفحة",
+  "You're logged in as: ": "أنت مسجل الدخول باسم:",
+  "duplicatedPlanForm": "تم إنشاء هذه الخطة من خلال تغيير مدخلات &quot;الخطة&quot;.{{refId}} :{{businessName}} &quot;",
+  "logo": "الشعار"
+}

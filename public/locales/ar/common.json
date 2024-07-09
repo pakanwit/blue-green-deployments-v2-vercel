@@ -1,0 +1,18 @@
+{
+  "AI Business Plan Generator": "مولد خطة الأعمال الذكي",
+  "AI Plan Generator": "مولد الخطط الذكي",
+  "All your progress will be lost if you quit now": "سيتم فقدان كل التقدم الذي أحرزته إذا قررت الإنهاء الآن.",
+  "Back": "رجوع",
+  "Home": "الرئيسية",
+  "Plan Generator": "Plan Generator",
+  "Plan Quota Limit Reached": "تم الوصول إلى الحد الأقصى للخطط المتاحة",
+  "Sign Out and Make New Plan": "تسجيل الخروج وإنشاء خطة جديدة",
+  "To make more plan click the button below and click 'Make Business Plan'. Fill out the form and create a new account": "لإنشاء خطط إضافية، انقر فوق الزر أدناه ثم انقر فوق 'إنشاء خطة عمل'. قم بملء النموذج وإنشاء حساب جديد",
+  "modal": {
+    "trustpilot": {
+      "description": "ولكن إذا كان بإمكانك تخصيص بعض الوقت لترك تعليق لنا على Trustpilot، فسيساعد ذلك حقًا شركتنا الصغيرة على النمو.",
+      "reviewUsOnTrustpilot": "راجعنا على Trustpilot",
+      "title": "نحن نعلم أنك مشغول حقًا،"
+    }
+  }
+}

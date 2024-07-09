@@ -1,0 +1,18 @@
+{
+  "AI Business Plan Generator": "AI-bedrijfsplan generator",
+  "AI Plan Generator": "AI-plan generator",
+  "All your progress will be lost if you quit now": "Al je vooruitgang zal verloren gaan als je nu stopt.",
+  "Back": "Terug",
+  "Home": "Homepage",
+  "Plan Generator": "Plan Generator",
+  "Plan Quota Limit Reached": "Plafond voor planquota bereikt",
+  "Sign Out and Make New Plan": "Afmelden en een nieuw plan maken",
+  "To make more plan click the button below and click 'Make Business Plan'. Fill out the form and create a new account": "Om extra plannen te maken, klikt u op de knop hieronder en vervolgens op 'Bedrijfsplan maken'. Vul het formulier in en maak een nieuwe account aan",
+  "modal": {
+    "trustpilot": {
+      "description": "Maar als u even de tijd zou kunnen nemen om een beoordeling achter te laten op Trustpilot, zou dat ons kleine bedrijf echt helpen groeien.",
+      "reviewUsOnTrustpilot": "Beoordeel ons op Trustpilot",
+      "title": "We weten dat je het erg druk hebt,"
+    }
+  }
+}

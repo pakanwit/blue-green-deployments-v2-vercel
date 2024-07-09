@@ -1,0 +1,23 @@
+{
+  " more plans": " fler planer",
+  "+ Add Plan": "+ Lägg till plan",
+  "Edit": "Redigera",
+  "Edit & Save": "Redigera och spara",
+  "Failed to load business plan ": "Fel vid laddning av affärsplanen",
+  "Login": "Logga in",
+  "My Plans:": "Mina planer:",
+  "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.": "Obs: När du har betalat kommer det inte att vara några ytterligare avgifter, och du kommer att ha tillgång till ditt konto på obestämd tid.",
+  "Or contact us at help@15minuteplan.ai": "Eller kontakta oss på help@15minuteplan.ai",
+  "Plan ": "Planera ",
+  "Please try again": "Vänligen försök igen",
+  "Retrieve First Plan": "Hämta första planen",
+  "Sign Out": "Logga ut",
+  "There was a problem with your payment": "Det uppstod ett problem med din betalning",
+  "Verifying Account...": "Kontot kontrolleras...",
+  "View": "se",
+  "You can make ": "Du kan skapa ",
+  "You need to be logged in to view this page": "Du måste vara inloggad för att se denna sida",
+  "You're logged in as: ": "Du är inloggad som: ",
+  "duplicatedPlanForm": "Denna plan skapades genom att ändra inmatningen av \"Plan {{refId}}: {{businessName}}\"",
+  "logo": "Logotyp"
+}

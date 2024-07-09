@@ -1,0 +1,18 @@
+{
+  "Plan Generator": "Plan Generator",
+  "AI Business Plan Generator": "AI-Businessplan-Generator",
+  "Home": "Home",
+  "All your progress will be lost if you quit now": "All your progress will be lost if you quit now",
+  "Back": "Back",
+  "Plan Quota Limit Reached": "Plan Quota Limit Reached",
+  "To make more plan click the button below and click 'Make Business Plan'. Fill out the form and create a new account": "To make more plan click the button below and click 'Make Business Plan'. Fill out the form and create a new account",
+  "Sign Out and Make New Plan": "Sign Out and Make New Plan",
+  "AI Plan Generator": "AI Plan Generator",
+  "modal": {
+    "trustpilot": {
+      "title": "We know you’re really busy,",
+      "description": "but if you could take just a moment to leave us a review on Trustpilot, it would truly help our small company grow.",
+      "reviewUsOnTrustpilot": "Review us on Trustpilot"
+    }
+  }
+}

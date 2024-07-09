@@ -1,0 +1,23 @@
+{
+  " more plans": " Flere planer",
+  "+ Add Plan": "+ Tilføj plan",
+  "Edit": "Rediger",
+  "Edit & Save": "Rediger og gem",
+  "Failed to load business plan ": "Fejl ved indlæsning af forretningsplanen",
+  "Login": "Log ind",
+  "My Plans:": "Mine planer:",
+  "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.": "Bemærk: Når du har betalt, vil der ikke være yderligere omkostninger, og du vil have adgang til din konto på ubestemt tid.",
+  "Or contact us at help@15minuteplan.ai": "Eller kontakt os på help@15minuteplan.ai",
+  "Plan ": "Plan ",
+  "Please try again": "Prøv venligst igen",
+  "Retrieve First Plan": "Hent den første plan",
+  "Sign Out": "Log ud",
+  "There was a problem with your payment": "Der opstod et problem med din betaling",
+  "Verifying Account...": "Kontoen er ved at blive tjekket...",
+  "View": "Se",
+  "You can make ": "Du kan oprette ",
+  "You need to be logged in to view this page": "Du skal være logget ind for at se denne side",
+  "You're logged in as: ": "Du er logget ind som: ",
+  "duplicatedPlanForm": "Denne plan blev lavet ved at ændre input i \"Plan {{refId}}: {{businessName}}\"",
+  "logo": "Logo"
+}

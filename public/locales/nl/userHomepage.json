@@ -1,0 +1,23 @@
+{
+  " more plans": " meer plannen",
+  "+ Add Plan": "+ Plan toevoegen",
+  "Edit": "Bewerken",
+  "Edit & Save": "Bewerken en opslaan",
+  "Failed to load business plan ": "Fout bij het laden van het ondernemingsplan",
+  "Login": "Log in.",
+  "My Plans:": "Mijn plannen:",
+  "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.": "Opmerking: Zodra u betaald heeft, zijn er geen bijkomende kosten en heeft u onbeperkt toegang tot uw account.",
+  "Or contact us at help@15minuteplan.ai": "Of neem contact met ons op via help@15minuteplan.ai",
+  "Plan ": "Plan ",
+  "Please try again": "Probeer het opnieuw",
+  "Retrieve First Plan": "Eerste plan ophalen",
+  "Sign Out": "Afmelden",
+  "There was a problem with your payment": "Er is een probleem met uw betaling",
+  "Verifying Account...": "Account wordt gecontroleerd...",
+  "View": "Bekijk",
+  "You can make ": "U kunt ",
+  "You need to be logged in to view this page": "U moet ingelogd zijn om deze pagina te bekijken",
+  "You're logged in as: ": "Je bent ingelogd als: ",
+  "duplicatedPlanForm": "Dit plan is gemaakt door de invoer van \"Plan {{refId}}: {{businessName}}\" te wijzigen.",
+  "logo": "Logo"
+}
