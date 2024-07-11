@@ -1,31 +1,54 @@
-import { get } from '@vercel/edge-config';
-import { NextRequest, NextResponse } from 'next/server';
+import { get } from "@vercel/edge-config";
+import { NextRequest, NextResponse } from "next/server";
 ///(:locale)/path
 export const config = {
   matcher: [
-    '/',
-    '/editPlanPro',
-    '/editPlanStarter',
-    '/fullPlan',
-    '/fullPlanPro',
-    '/fullPlanStarter',
-    '/loggedInFullPlan',
-    '/loggedInFullPlanPro',
-    '/mainWizard',
-    '/login',
-    '/privacy-policy',
-    '/refundPolicy',
-    '/userHomepage',
-    '/form/business-info',
-    '/form/customer-group',
-    '/form/finance',
-    '/form/example-plan',
-    '/form/generate-result',
-    '/form/investment-items',
-    '/form/objective',
-    '/form/product-and-service',
-    '/form/register',
-    '/form/success-drivers',
+    "/",
+    "/editPlanPro",
+    "/editPlanStarter",
+    "/fullPlan",
+    "/fullPlanPro",
+    "/fullPlanStarter",
+    "/loggedInFullPlan",
+    "/loggedInFullPlanPro",
+    "/mainWizard",
+    "/login",
+    "/privacy-policy",
+    "/refundPolicy",
+    "/userHomepage",
+    "/form/business-info",
+    "/form/customer-group",
+    "/form/finance",
+    "/form/example-plan",
+    "/form/generate-result",
+    "/form/investment-items",
+    "/form/objective",
+    "/form/product-and-service",
+    "/form/register",
+    "/form/success-drivers",
+    "/en/",
+    "/en/editPlanPro",
+    "/en/editPlanStarter",
+    "/en/fullPlan",
+    "/en/fullPlanPro",
+    "/en/fullPlanStarter",
+    "/en/loggedInFullPlan",
+    "/en/loggedInFullPlanPro",
+    "/en/mainWizard",
+    "/en/login",
+    "/en/privacy-policy",
+    "/en/refundPolicy",
+    "/en/userHomepage",
+    "/en/form/business-info",
+    "/en/form/customer-group",
+    "/en/form/finance",
+    "/en/form/example-plan",
+    "/en/form/generate-result",
+    "/en/form/investment-items",
+    "/en/form/objective",
+    "/en/form/product-and-service",
+    "/en/form/register",
+    "/en/form/success-drivers",
   ],
 };
 
@@ -38,11 +61,11 @@ interface CanaryConfig {
 
 export async function middleware(req: NextRequest) {
   // We don't want to run blue-green during development.
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== "production") {
     return NextResponse.next();
   }
   // Skip if the middleware has already run.
-  if (req.headers.get('x-deployment-override')) {
+  if (req.headers.get("x-deployment-override")) {
     return getDeploymentWithCookieBasedOnEnvVar(req);
   }
   // We skip blue-green when accesing from deployment urls
@@ -50,24 +73,24 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
   // We only want to run blue-green for GET requests that are for HTML documents.
-  if (req.method !== 'GET') {
+  if (req.method !== "GET") {
     return NextResponse.next();
   }
-  if (req.headers.get('sec-fetch-dest') !== 'document') {
+  if (req.headers.get("sec-fetch-dest") !== "document") {
     return NextResponse.next();
   }
   // Skip if the request is coming from Vercel's deployment system.
-  if (/vercel/i.test(req.headers.get('user-agent') || '')) {
+  if (/vercel/i.test(req.headers.get("user-agent") || "")) {
     return NextResponse.next();
   }
   if (!process.env.EDGE_CONFIG) {
-    console.warn('EDGE_CONFIG env variable not set. Skipping canary.');
+    console.warn("EDGE_CONFIG env variable not set. Skipping canary.");
     return NextResponse.next();
   }
   // Get the blue-green configuration from Edge Config.
-  const canary = await get<CanaryConfig>('canary-configuration');
+  const canary = await get<CanaryConfig>("canary-configuration");
   if (!canary) {
-    console.warn('No canary configuration found');
+    console.warn("No canary configuration found");
     return NextResponse.next();
   }
   const servingDeploymentDomain = process.env.VERCEL_URL;
@@ -82,16 +105,16 @@ export async function middleware(req: NextRequest) {
   }
   // Fetch the HTML document from the selected deployment domain and return it to the user.
   const headers = new Headers(req.headers);
-  headers.set('x-deployment-override', selectedDeploymentDomain);
+  headers.set("x-deployment-override", selectedDeploymentDomain);
   headers.set(
-    'x-vercel-protection-bypass',
-    process.env.VERCEL_AUTOMATION_BYPASS_SECRET || 'unknown',
+    "x-vercel-protection-bypass",
+    process.env.VERCEL_AUTOMATION_BYPASS_SECRET || "unknown"
   );
   const url = new URL(req.url);
   url.hostname = selectedDeploymentDomain;
   return fetch(url, {
     headers,
-    redirect: 'manual',
+    redirect: "manual",
   });
 }
 
@@ -104,10 +127,10 @@ function selectDeploymentDomain(canaryConfig: CanaryConfig) {
       ? canaryConfig.deploymentCanaryDomain
       : canaryConfig.deploymentExistingDomain || process.env.VERCEL_URL;
   if (!selected) {
-    console.error('Canary configuration error', canaryConfig);
+    console.error("Canary configuration error", canaryConfig);
   }
-  if (/^http/.test(selected || '')) {
-    return new URL(selected || '').hostname;
+  if (/^http/.test(selected || "")) {
+    return new URL(selected || "").hostname;
   }
   return selected;
 }
@@ -117,45 +140,45 @@ async function saveVariantIDCount(variantID, experimentID) {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/saveVariantIDCount`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'api-key': `${process.env.API_KEY}`,
+          "Content-Type": "application/json",
+          "api-key": `${process.env.API_KEY}`,
         },
         body: JSON.stringify({
           experimentID,
           variantID: variantID.toString(),
         }),
-      },
+      }
     );
 
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error("Network response was not ok");
     }
 
     const data = await response.json(); // assuming your API returns a JSON response
     return data; // use or return the data as needed
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
     throw error;
   }
 }
 
 async function getDeploymentWithCookieBasedOnEnvVar(req: NextRequest) {
   const response = NextResponse.next();
-  const experimentId = process.env.EXPERIMENT_ID || 'NO_EXPERIMENT';
-  if (!req.cookies.has('experiment_id')) {
-    const experiment_id = req.cookies.get('experiment_id');
+  const experimentId = process.env.EXPERIMENT_ID || "NO_EXPERIMENT";
+  if (!req.cookies.has("experiment_id")) {
+    const experiment_id = req.cookies.get("experiment_id");
     if (
-      req.cookies.has('experiment_id') &&
+      req.cookies.has("experiment_id") &&
       experiment_id.value === experimentId
     ) {
       return response;
     } else {
       const random = Math.random() * 100;
-      const variantID = random < 50 ? '1' : '2';
-      response.cookies.set('experiment_id', experimentId);
-      response.cookies.set('variant_id', variantID);
+      const variantID = random < 50 ? "1" : "2";
+      response.cookies.set("experiment_id", experimentId);
+      response.cookies.set("variant_id", variantID);
       await saveVariantIDCount(variantID, experimentId);
     }
   }
