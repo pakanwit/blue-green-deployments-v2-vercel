@@ -1,0 +1,41 @@
+{
+  "upload": {
+    "type": "json",
+    "files": [
+      "public/locales/en/common.json",
+      "public/locales/en/EditFinance.json",
+      "public/locales/en/EditorPro.json",
+      "public/locales/en/EditorStarter.json",
+      "public/locales/en/editPlanPro.json",
+      "public/locales/en/editPlanStarter.json",
+      "public/locales/en/ExamplePlan.json",
+      "public/locales/en/fullPlan.json",
+      "public/locales/en/fullPlanPro.json",
+      "public/locales/en/fullPlanStarter.json",
+      "public/locales/en/index.json",
+      "public/locales/en/LastStepPlanGen.json",
+      "public/locales/en/LastStepPlanGenVAR1.json",
+      "public/locales/en/LastStepPlanGenVAR2.json",
+      "public/locales/en/loggedInFullPlan.json",
+      "public/locales/en/loggedInFullPlanPro.json",
+      "public/locales/en/login.json",
+      "public/locales/en/privacy_policy.json",
+      "public/locales/en/Register1.json",
+      "public/locales/en/Register1VAR1.json",
+      "public/locales/en/Register1VAR2.json",
+      "public/locales/en/Step1Obj.json",
+      "public/locales/en/Step2BasicInfo.json",
+      "public/locales/en/Step3CustGroup.json",
+      "public/locales/en/Step4Product.json",
+      "public/locales/en/Step5KeySuccess.json",
+      "public/locales/en/Step6InitialInvestment.json",
+      "public/locales/en/Step7Finance.json",
+      "public/locales/en/Survey.json",
+      "public/locales/en/userHomepage.json",
+      "public/locales/en/validate.json"
+    ]
+  },
+  "download": {
+    "files": ["public/locales/${lang}/${file}"]
+  }
+}

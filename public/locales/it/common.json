@@ -1,0 +1,18 @@
+{
+  "AI Business Plan Generator": "Generatore di piani aziendali AI",
+  "AI Plan Generator": "Generatore di piani AI",
+  "All your progress will be lost if you quit now": "Se vi fermate ora, tutti i vostri progressi andranno persi.",
+  "Back": "Indietro",
+  "Home": "Pagina iniziale",
+  "Plan Generator": "Plan Generator",
+  "Plan Quota Limit Reached": "Raggiunto il limite di quota del piano",
+  "Sign Out and Make New Plan": "Uscire e creare un nuovo piano",
+  "To make more plan click the button below and click 'Make Business Plan'. Fill out the form and create a new account": "Per creare altri piani, fare clic sul pulsante sottostante e poi su \"Crea piano aziendale\". Compilare il modulo e creare un nuovo account",
+  "modal": {
+    "trustpilot": {
+      "description": "ma se poteste dedicarci un momento per lasciare una recensione su Trustpilot, aiutereste davvero la nostra piccola azienda a crescere.",
+      "reviewUsOnTrustpilot": "Recensiteci su Trustpilot",
+      "title": "Sappiamo che siete molto impegnati,"
+    }
+  }
+}

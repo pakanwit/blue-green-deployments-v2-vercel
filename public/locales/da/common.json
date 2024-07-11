@@ -1,0 +1,18 @@
+{
+  "AI Business Plan Generator": "AI-forretningsplansgenerator",
+  "AI Plan Generator": "AI-plan generator",
+  "All your progress will be lost if you quit now": "Alle dine fremskridt vil gå tabt, hvis du stopper nu.",
+  "Back": "Tilbage",
+  "Home": "Forside",
+  "Plan Generator": "Plan Generator",
+  "Plan Quota Limit Reached": "Planens kvotegrænse er nået",
+  "Sign Out and Make New Plan": "Log ud, og opret en ny plan",
+  "To make more plan click the button below and click 'Make Business Plan'. Fill out the form and create a new account": "For at oprette yderligere planer skal du klikke på knappen nedenfor og derefter på 'Opret forretningsplan'. Udfyld formularen, og opret en ny konto",
+  "modal": {
+    "trustpilot": {
+      "description": "men hvis du kunne bruge et øjeblik på at give os en anmeldelse på Trustpilot, ville det virkelig hjælpe vores lille virksomhed med at vokse.",
+      "reviewUsOnTrustpilot": "Anmeld os på Trustpilot",
+      "title": "Vi ved, at du har meget travlt,"
+    }
+  }
+}

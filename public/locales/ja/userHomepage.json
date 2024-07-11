@@ -1,0 +1,23 @@
+{
+  " more plans": "その他のプラン",
+  "+ Add Plan": "+ プランを追加",
+  "Edit": "編集",
+  "Edit & Save": "編集して保存",
+  "Failed to load business plan ": "ビジネスプランの読み込みに失敗しました",
+  "Login": "ログイン",
+  "My Plans:": "私のプラン：",
+  "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.": "注意：一度支払いを済ませれば、追加料金は発生せず、アカウントへのアクセスは無期限になります。",
+  "Or contact us at help@15minuteplan.ai": "または help@15minuteplan.ai までお問い合わせください。",
+  "Plan ": "プラン ",
+  "Please try again": "もう一度お試しください",
+  "Retrieve First Plan": "最初のプランを取得",
+  "Sign Out": "ログアウト",
+  "There was a problem with your payment": "お支払いに問題が発生しました",
+  "Verifying Account...": "アカウントを確認中...",
+  "View": "表示",
+  "You can make ": "あなたは作成できます：",
+  "You need to be logged in to view this page": "このページを表示するにはログインが必要です",
+  "You're logged in as: ": "あなたがログインしているアカウント：",
+  "duplicatedPlanForm": "このプランは、\"Plan{{refId}}:{{businessName}}\" の入力を変更して作成された。",
+  "logo": "ロゴ"
+}

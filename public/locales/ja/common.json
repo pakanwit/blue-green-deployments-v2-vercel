@@ -1,0 +1,18 @@
+{
+  "AI Business Plan Generator": "AIビジネスプラン作成ツール",
+  "AI Plan Generator": "AIプラン作成ツール",
+  "All your progress will be lost if you quit now": "今終了すると、すべての進行状況が失われます。",
+  "Back": "戻る",
+  "Home": "ホーム",
+  "Plan Generator": "Plan Generator",
+  "Plan Quota Limit Reached": "プランの上限に達しました",
+  "Sign Out and Make New Plan": "サインアウトして新しいプランを作成",
+  "To make more plan click the button below and click 'Make Business Plan'. Fill out the form and create a new account": "さらにプランを作成するには、下のボタンをクリックして「ビジネスプランを作成」を選択します。フォームに記入して新しいアカウントを作成してください。",
+  "modal": {
+    "trustpilot": {
+      "description": "しかし、ほんの少しお時間をいただき、Trustpilotにレビューを残していただければ、私たちの小さな会社の成長に本当に役立ちます。",
+      "reviewUsOnTrustpilot": "Trustpilotでレビューする",
+      "title": "あなたが本当に忙しいのは知っている、"
+    }
+  }
+}

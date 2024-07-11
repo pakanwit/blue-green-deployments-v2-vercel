@@ -1,0 +1,23 @@
+{
+  "logo": "logo",
+  "Sign Out": "Sign Out",
+  "Failed to load business plan ": "Failed to load business plan ",
+  "Please try again": "Please try again",
+  "Or contact us at help@15minuteplan.ai": "Or contact us at help@15minuteplan.ai",
+  "You're logged in as: ": "You're logged in as: ",
+  "You can make ": "You can make ",
+  " more plans": " more plans",
+  "My Plans:": "My Plans:",
+  "Plan ": "Plan ",
+  "View": "View",
+  "Edit & Save": "Edit & Save",
+  "Edit": "Edit",
+  "+ Add Plan": "+ Add Plan",
+  "Retrieve First Plan": "Retrieve First Plan",
+  "There was a problem with your payment": "There was a problem with your payment",
+  "Verifying Account...": "Verifying Account...",
+  "You need to be logged in to view this page": "You need to be logged in to view this page",
+  "Login": "Login",
+  "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.": "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.",
+  "duplicatedPlanForm": "This plan was made from changing the input of “Plan {{refId}}: {{businessName}}”"
+}

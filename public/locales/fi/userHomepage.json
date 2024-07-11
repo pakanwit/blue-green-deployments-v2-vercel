@@ -1,0 +1,23 @@
+{
+  " more plans": " lisää suunnitelmia",
+  "+ Add Plan": "+ Lisää suunnitelma",
+  "Edit": "Muokkaa",
+  "Edit & Save": "Muokkaa ja tallenna",
+  "Failed to load business plan ": "Virhe liiketoimintasuunnitelmaa ladattaessa",
+  "Login": "Kirjaudu sisään",
+  "My Plans:": "Suunnitelmani:",
+  "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.": "Huomautus: Kun olet maksanut, ei ole lisämaksuja, ja sinulla on pääsy tilillesi määrittelemättömän ajan.",
+  "Or contact us at help@15minuteplan.ai": "Tai ota meihin yhteyttä osoitteessa help@15minuteplan.ai",
+  "Plan ": "Suunnitelma ",
+  "Please try again": "Yritä uudelleen",
+  "Retrieve First Plan": "Hae ensimmäinen suunnitelma",
+  "Sign Out": "Kirjaudu ulos",
+  "There was a problem with your payment": "Maksussasi oli ongelma",
+  "Verifying Account...": "Tili tarkistetaan...",
+  "View": "Näytä",
+  "You can make ": "Voit luoda ",
+  "You need to be logged in to view this page": "Sinun täytyy olla kirjautuneena sisään nähdäksesi tämän sivun",
+  "You're logged in as: ": "Olet kirjautunut sisään nimellä: ",
+  "duplicatedPlanForm": "Tämä suunnitelma tehtiin muuttamalla \"Plan {{refId}}: {{businessName}}\" -kentän syöttötiedot.",
+  "logo": "Logo"
+}

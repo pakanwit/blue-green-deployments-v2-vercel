@@ -1,0 +1,18 @@
+{
+  "AI Business Plan Generator": "AI-liiketoimintasuunnitelman generaattori",
+  "AI Plan Generator": "AI-suunnitelmageneraattori",
+  "All your progress will be lost if you quit now": "Kaikki edistyksesi menetetään, jos lopetat nyt.",
+  "Back": "Takaisin",
+  "Home": "Koti",
+  "Plan Generator": "Plan Generator",
+  "Plan Quota Limit Reached": "Suunnitelman kiintiöraja saavutettu",
+  "Sign Out and Make New Plan": "Kirjaudu ulos ja luo uusi suunnitelma",
+  "To make more plan click the button below and click 'Make Business Plan'. Fill out the form and create a new account": "Jos haluat luoda lisäsuunnitelmia, napsauta alla olevaa painiketta ja sitten \"Luo liiketoimintasuunnitelma\". Täytä lomake ja luo uusi tili",
+  "modal": {
+    "trustpilot": {
+      "description": "mutta jos voisit käyttää hetken ja jättää meille arvostelun Trustpilotissa, se todella auttaisi pientä yritystämme kasvamaan.",
+      "reviewUsOnTrustpilot": "Arvostele meitä Trustpilot-sivustolla",
+      "title": "Tiedämme, että olet todella kiireinen,"
+    }
+  }
+}

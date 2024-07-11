@@ -1,0 +1,23 @@
+{
+  " more plans": " altri piani",
+  "+ Add Plan": "+ Aggiungi piano",
+  "Edit": "Modifica",
+  "Edit & Save": "Modifica e salvataggio",
+  "Failed to load business plan ": "Errore nel caricamento del piano aziendale",
+  "Login": "Accedi",
+  "My Plans:": "I miei progetti:",
+  "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.": "Nota: Una volta che hai pagato, non ci saranno costi aggiuntivi e avrai accesso al tuo account a tempo indeterminato.",
+  "Or contact us at help@15minuteplan.ai": "Oppure contattateci all'indirizzo help@15minuteplan.ai",
+  "Plan ": "Piano ",
+  "Please try again": "Si prega di riprovare",
+  "Retrieve First Plan": "Recuperare il primo piano",
+  "Sign Out": "Disconnettersi",
+  "There was a problem with your payment": "Si è verificato un problema con il pagamento",
+  "Verifying Account...": "Il conto viene controllato...",
+  "View": "Vista",
+  "You can make ": "È possibile creare ",
+  "You need to be logged in to view this page": "Per visualizzare questa pagina è necessario aver effettuato il login",
+  "You're logged in as: ": "Hai effettuato l'accesso come: ",
+  "duplicatedPlanForm": "Questo piano è stato realizzato modificando l'input di \"Piano {{refId}}: {{businessName}}\".",
+  "logo": "Logo"
+}
