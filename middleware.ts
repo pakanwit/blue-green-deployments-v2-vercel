@@ -153,10 +153,19 @@ export async function middleware(req: NextRequest) {
     return getDeploymentWithCookieBasedOnEnvVar(req);
   }
   // default cookies
-  const response = NextResponse.next();
-  response.cookies.set("experiment_id", experimentId);
-  response.cookies.set("variant_id", "1");
-  response.cookies.set("hostname", req.nextUrl.hostname);
+  if (
+    selectedDeploymentDomain ===
+    new URL(canary.deploymentExistingDomain || "").hostname
+  ) {
+    console.log("<<<<<<<< if default cookies >>>>>>>");
+    const response = NextResponse.next();
+    response.cookies.set("experiment_id", experimentId);
+    response.cookies.set("variant_id", "1");
+    response.cookies.set("hostname", req.nextUrl.hostname);
+    console.log("<<<<<<<< if default cookies DONE >>>>>>>");
+  }
+
+  console.log("all cookies <<<<<<<<<", req.cookies.getAll());
   // Fetch the HTML document from the selected deployment domain and return it to the user.
   const headers = new Headers(req.headers);
   headers.set("x-deployment-override", selectedDeploymentDomain);
