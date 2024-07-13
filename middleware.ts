@@ -1,5 +1,6 @@
 import { get } from "@vercel/edge-config";
 import { NextRequest, NextResponse } from "next/server";
+import { hostname } from "os";
 ///(:locale)/path
 // export const config = {
 //   matcher: [
@@ -90,6 +91,7 @@ export async function middleware(req: NextRequest) {
     experiment_id.value === experimentId &&
     req.cookies.has("hostname")
   ) {
+    console.log("if cookies =====");
     const hostname = req.cookies.get("hostname");
     const headers = new Headers(req.headers);
     headers.set("x-deployment-override", hostname.value);
@@ -111,6 +113,10 @@ export async function middleware(req: NextRequest) {
   }
   // We skip blue-green when accesing from deployment urls
   if (req.nextUrl.hostname === process.env.VERCEL_URL) {
+    console.log("hostname === VERCEL_URL ------------->><<<<<<", {
+      hostname: req.nextUrl.hostname,
+      vercelUrl: process.env.VERCEL_URL,
+    });
     return NextResponse.next();
   }
   // We only want to run blue-green for GET requests that are for HTML documents.
