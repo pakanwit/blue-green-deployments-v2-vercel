@@ -4,51 +4,52 @@ import { NextRequest, NextResponse } from "next/server";
 export const config = {
   matcher: [
     "/",
-    "/editPlanPro",
-    "/editPlanStarter",
-    "/fullPlan",
-    "/fullPlanPro",
-    "/fullPlanStarter",
-    "/loggedInFullPlan",
-    "/loggedInFullPlanPro",
-    "/mainWizard",
-    "/login",
-    "/privacy-policy",
-    "/refundPolicy",
-    "/userHomepage",
-    "/form/business-info",
-    "/form/customer-group",
-    "/form/finance",
-    "/form/example-plan",
-    "/form/generate-result",
-    "/form/investment-items",
-    "/form/objective",
-    "/form/product-and-service",
-    "/form/register",
-    "/form/success-drivers",
-    "/en/",
-    "/en/editPlanPro",
-    "/en/editPlanStarter",
-    "/en/fullPlan",
-    "/en/fullPlanPro",
-    "/en/fullPlanStarter",
-    "/en/loggedInFullPlan",
-    "/en/loggedInFullPlanPro",
-    "/en/mainWizard",
-    "/en/login",
-    "/en/privacy-policy",
-    "/en/refundPolicy",
-    "/en/userHomepage",
-    "/en/form/business-info",
-    "/en/form/customer-group",
-    "/en/form/finance",
-    "/en/form/example-plan",
-    "/en/form/generate-result",
-    "/en/form/investment-items",
-    "/en/form/objective",
-    "/en/form/product-and-service",
-    "/en/form/register",
-    "/en/form/success-drivers",
+    "/(:locale)",
+    "/(:locale)/editPlanPro",
+    "/(:locale)/editPlanStarter",
+    "/(:locale)/fullPlan",
+    "/(:locale)/fullPlanPro",
+    "/(:locale)/fullPlanStarter",
+    "/(:locale)/loggedInFullPlan",
+    "/(:locale)/loggedInFullPlanPro",
+    "/(:locale)/mainWizard",
+    "/(:locale)/login",
+    "/(:locale)/privacy-policy",
+    "/(:locale)/refundPolicy",
+    "/(:locale)/userHomepage",
+    "/(:locale)/form/business-info",
+    "/(:locale)/form/customer-group",
+    "/(:locale)/form/finance",
+    "/(:locale)/form/example-plan",
+    "/(:locale)/form/generate-result",
+    "/(:locale)/form/investment-items",
+    "/(:locale)/form/objective",
+    "/(:locale)/form/product-and-service",
+    "/(:locale)/form/register",
+    "/(:locale)/form/success-drivers",
+    // "/en/",
+    // "/en/editPlanPro",
+    // "/en/editPlanStarter",
+    // "/en/fullPlan",
+    // "/en/fullPlanPro",
+    // "/en/fullPlanStarter",
+    // "/en/loggedInFullPlan",
+    // "/en/loggedInFullPlanPro",
+    // "/en/mainWizard",
+    // "/en/login",
+    // "/en/privacy-policy",
+    // "/en/refundPolicy",
+    // "/en/userHomepage",
+    // "/en/form/business-info",
+    // "/en/form/customer-group",
+    // "/en/form/finance",
+    // "/en/form/example-plan",
+    // "/en/form/generate-result",
+    // "/en/form/investment-items",
+    // "/en/form/objective",
+    // "/en/form/product-and-service",
+    // "/en/form/register",
+    // "/en/form/success-drivers",
   ],
 };
 
@@ -64,17 +65,17 @@ const PUBLIC_FILE = /\.(.*)$/;
 export async function middleware(req: NextRequest) {
   // We don't want to run blue-green during development.
   const { pathname } = req.nextUrl;
-  console.log("Middleware ==========", { pathname });
 
-  // if (
-  //   pathname.startsWith("/_next") || // exclude Next.js internals
-  //   pathname.startsWith("/api") || //  exclude all API routes
-  //   pathname.startsWith("/static") || // exclude static files
-  //   PUBLIC_FILE.test(pathname) // exclude all files in the public folder
-  // ) {
-  //   return NextResponse.next();
-  // }
-  // console.log("Middleware After If");
+  if (
+    pathname.startsWith("/_next") || // exclude Next.js internals
+    pathname.startsWith("/api") || //  exclude all API routes
+    pathname.startsWith("/static") || // exclude static files
+    pathname.startsWith("/favicon") ||
+    PUBLIC_FILE.test(pathname) // exclude all files in the public folder
+  ) {
+    return NextResponse.next();
+  }
+  console.log("Middleware ==========", { pathname });
 
   if (process.env.NODE_ENV !== "production") {
     return NextResponse.next();
@@ -109,7 +110,7 @@ export async function middleware(req: NextRequest) {
     console.warn("No canary configuration found");
     return NextResponse.next();
   }
-  const servingDeploymentDomain = process.env.VERCEL_URL;
+  const servingDeploymentDomain = req.nextUrl.hostname;
   console.log("servingDeploymentDomain", servingDeploymentDomain);
   const selectedDeploymentDomain = selectDeploymentDomain(canary);
   console.log("selectedDeploymentDomain", selectedDeploymentDomain);
