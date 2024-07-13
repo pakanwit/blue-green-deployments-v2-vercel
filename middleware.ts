@@ -150,6 +150,7 @@ export async function middleware(req: NextRequest) {
   }
   // The selected deployment domain is the same as the one serving the request.
   if (servingDeploymentDomain === selectedDeploymentDomain) {
+    console.log("servingDeploymentDomain === selectedDeploymentDomain");
     return getDeploymentWithCookieBasedOnEnvVar(req);
   }
   // default cookies
@@ -162,6 +163,7 @@ export async function middleware(req: NextRequest) {
     response.cookies.set("experiment_id", experimentId);
     response.cookies.set("variant_id", "1");
     response.cookies.set("hostname", req.nextUrl.hostname);
+    await saveVariantIDCount("1", experimentId);
     console.log("<<<<<<<< if default cookies DONE >>>>>>>");
   }
 
@@ -175,6 +177,7 @@ export async function middleware(req: NextRequest) {
   );
   const url = new URL(req.url);
   url.hostname = selectedDeploymentDomain;
+  console.log("url ==", url);
   return fetch(url, {
     headers,
     redirect: "manual",
@@ -234,21 +237,27 @@ async function getDeploymentWithCookieBasedOnEnvVar(req: NextRequest) {
   );
   const response = NextResponse.next();
   const experimentId = process.env.EXPERIMENT_ID || "NO_EXPERIMENT";
-  if (!req.cookies.has("experiment_id")) {
-    const experiment_id = req.cookies.get("experiment_id");
-    if (
-      req.cookies.has("experiment_id") &&
-      experiment_id.value === experimentId
-    ) {
-      return response;
-    } else {
-      const random = Math.random() * 100;
-      const variantID = random < 50 ? "1" : "2";
-      response.cookies.set("experiment_id", experimentId);
-      response.cookies.set("variant_id", variantID);
-      response.cookies.set("hostname", req.nextUrl.hostname);
+  if (experimentId === "NO_EXPERIMENT") {
+    response.cookies.set("experiment_id", experimentId);
+    response.cookies.delete("variant_id");
+    response.cookies.delete("hostname");
+  } else {
+    if (!req.cookies.has("experiment_id")) {
+      const experiment_id = req.cookies.get("experiment_id");
+      if (
+        req.cookies.has("experiment_id") &&
+        experiment_id.value === experimentId
+      ) {
+        return response;
+      } else {
+        const random = Math.random() * 100;
+        const variantID = random < 50 ? "1" : "2";
+        response.cookies.set("experiment_id", experimentId);
+        response.cookies.set("variant_id", variantID);
+        response.cookies.set("hostname", req.nextUrl.hostname);
 
-      await saveVariantIDCount(variantID, experimentId);
+        await saveVariantIDCount(variantID, experimentId);
+      }
     }
   }
 
