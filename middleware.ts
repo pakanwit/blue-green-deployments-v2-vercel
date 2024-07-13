@@ -64,7 +64,7 @@ const PUBLIC_FILE = /\.(.*)$/;
 export async function middleware(req: NextRequest) {
   // We don't want to run blue-green during development.
   // const { pathname } = req.nextUrl;
-  // console.log("Middleware", { pathname });
+  console.log("Middleware ==========", { pathname });
 
   // if (
   //   pathname.startsWith("/_next") || // exclude Next.js internals
@@ -81,6 +81,7 @@ export async function middleware(req: NextRequest) {
   }
   // Skip if the middleware has already run.
   if (req.headers.get("x-deployment-override")) {
+    console.log("if =====> x-deployment-override");
     return getDeploymentWithCookieBasedOnEnvVar(req);
   }
   // We skip blue-green when accesing from deployment urls
@@ -109,7 +110,9 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
   const servingDeploymentDomain = process.env.VERCEL_URL;
+  console.log("servingDeploymentDomain", servingDeploymentDomain);
   const selectedDeploymentDomain = selectDeploymentDomain(canary);
+  console.log("selectedDeploymentDomain", selectedDeploymentDomain);
 
   if (!selectedDeploymentDomain) {
     return NextResponse.next();
@@ -125,7 +128,6 @@ export async function middleware(req: NextRequest) {
     "x-vercel-protection-bypass",
     process.env.VERCEL_AUTOMATION_BYPASS_SECRET || "unknown"
   );
-  headers.set("x-vercel-set-bypass-cookie", "true");
   const url = new URL(req.url);
   url.hostname = selectedDeploymentDomain;
   return fetch(url, {
