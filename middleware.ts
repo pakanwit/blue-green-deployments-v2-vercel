@@ -80,6 +80,17 @@ export async function middleware(req: NextRequest) {
   if (process.env.NODE_ENV !== "production") {
     return NextResponse.next();
   }
+  const experiment_id = req.cookies.get("experiment_id");
+  const experimentId = process.env.EXPERIMENT_ID || "NO_EXPERIMENT";
+
+  console.log("experiment_id: Coolie", experiment_id);
+
+  if (
+    req.cookies.has("experiment_id") &&
+    experiment_id.value === experimentId
+  ) {
+    return NextResponse.next();
+  }
   // Skip if the middleware has already run.
   if (req.headers.get("x-deployment-override")) {
     console.log("if =====> x-deployment-override");
