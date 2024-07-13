@@ -152,6 +152,11 @@ export async function middleware(req: NextRequest) {
   if (servingDeploymentDomain === selectedDeploymentDomain) {
     return getDeploymentWithCookieBasedOnEnvVar(req);
   }
+  // default cookies
+  const response = NextResponse.next();
+  response.cookies.set("experiment_id", experimentId);
+  response.cookies.set("variant_id", "1");
+  response.cookies.set("hostname", req.nextUrl.hostname);
   // Fetch the HTML document from the selected deployment domain and return it to the user.
   const headers = new Headers(req.headers);
   headers.set("x-deployment-override", selectedDeploymentDomain);
