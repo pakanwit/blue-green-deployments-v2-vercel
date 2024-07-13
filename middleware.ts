@@ -87,9 +87,22 @@ export async function middleware(req: NextRequest) {
 
   if (
     req.cookies.has("experiment_id") &&
-    experiment_id.value === experimentId
+    experiment_id.value === experimentId &&
+    req.cookies.has("hostname")
   ) {
-    return NextResponse.next();
+    const hostname = req.cookies.get("hostname");
+    const headers = new Headers(req.headers);
+    headers.set("x-deployment-override", hostname.value);
+    headers.set(
+      "x-vercel-protection-bypass",
+      process.env.VERCEL_AUTOMATION_BYPASS_SECRET || "unknown"
+    );
+    const url = new URL(req.url);
+    url.hostname = hostname.value;
+    return fetch(url, {
+      headers,
+      redirect: "manual",
+    });
   }
   // Skip if the middleware has already run.
   if (req.headers.get("x-deployment-override")) {
