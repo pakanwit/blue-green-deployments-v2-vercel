@@ -63,7 +63,7 @@ const PUBLIC_FILE = /\.(.*)$/;
 
 export async function middleware(req: NextRequest) {
   // We don't want to run blue-green during development.
-  // const { pathname } = req.nextUrl;
+  const { pathname } = req.nextUrl;
   console.log("Middleware ==========", { pathname });
 
   // if (
