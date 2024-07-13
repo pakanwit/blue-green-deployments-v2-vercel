@@ -121,7 +121,7 @@ export async function middleware(req: NextRequest) {
     console.warn("No canary configuration found");
     return NextResponse.next();
   }
-  const servingDeploymentDomain = req.nextUrl.hostname;
+  const servingDeploymentDomain = process.env.VERCEL_URL;
   console.log("servingDeploymentDomain", servingDeploymentDomain);
   const selectedDeploymentDomain = selectDeploymentDomain(canary);
   console.log("selectedDeploymentDomain", selectedDeploymentDomain);
@@ -195,6 +195,10 @@ async function saveVariantIDCount(variantID, experimentID) {
 }
 
 async function getDeploymentWithCookieBasedOnEnvVar(req: NextRequest) {
+  console.log(
+    "getDeploymentWithCookieBasedOnEnvVar: req ====>",
+    req.nextUrl.hostname
+  );
   const response = NextResponse.next();
   const experimentId = process.env.EXPERIMENT_ID || "NO_EXPERIMENT";
   if (!req.cookies.has("experiment_id")) {
@@ -209,6 +213,8 @@ async function getDeploymentWithCookieBasedOnEnvVar(req: NextRequest) {
       const variantID = random < 50 ? "1" : "2";
       response.cookies.set("experiment_id", experimentId);
       response.cookies.set("variant_id", variantID);
+      response.cookies.set("hostname", req.nextUrl.hostname);
+
       await saveVariantIDCount(variantID, experimentId);
     }
   }
