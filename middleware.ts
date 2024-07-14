@@ -248,27 +248,22 @@ async function getDeploymentWithCookieBasedOnEnvVar(
   );
   const response = NextResponse.next();
   const experimentId = process.env.EXPERIMENT_ID || "NO_EXPERIMENT";
-  if (experimentId === "NO_EXPERIMENT") {
-    response.cookies.set("experiment_id", experimentId);
-    response.cookies.delete("variant_id");
-    response.cookies.delete("hostname");
-  } else {
-    if (!req.cookies.has("experiment_id")) {
-      const experiment_id = req.cookies.get("experiment_id");
-      if (
-        req.cookies.has("experiment_id") &&
-        experiment_id.value === experimentId
-      ) {
-        return response;
-      } else {
-        const random = Math.random() * 100;
-        const variantID = defaultVariantID ?? random < 50 ? "1" : "2";
-        response.cookies.set("experiment_id", experimentId);
-        response.cookies.set("variant_id", variantID);
-        response.cookies.set("hostname", req.nextUrl.hostname);
 
-        await saveVariantIDCount(variantID, experimentId);
-      }
+  if (!req.cookies.has("experiment_id")) {
+    const experiment_id = req.cookies.get("experiment_id");
+    if (
+      req.cookies.has("experiment_id") &&
+      experiment_id.value === experimentId
+    ) {
+      return response;
+    } else {
+      const random = Math.random() * 100;
+      const variantID = defaultVariantID ?? random < 50 ? "1" : "2";
+      response.cookies.set("experiment_id", experimentId);
+      response.cookies.set("variant_id", variantID);
+      response.cookies.set("hostname", req.nextUrl.hostname);
+
+      await saveVariantIDCount(variantID, experimentId);
     }
   }
 
