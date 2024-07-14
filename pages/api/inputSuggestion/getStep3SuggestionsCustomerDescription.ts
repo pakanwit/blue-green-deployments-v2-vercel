@@ -1,8 +1,13 @@
-import { withApiKeyValidation } from '../utils/withApiKeyValidation';
+import { NextApiRequest } from "next";
+import { withApiKeyValidation } from "../utils/withApiKeyValidation";
 
-export default async function handler(request, response) {
-  const getStep3SuggestionsCustomerDescriptionHandler = async (req, res) => {
-    if (req.method === 'POST') {
+export default async function handler(request: NextApiRequest, response) {
+  const getStep3SuggestionsCustomerDescriptionHandler = async (
+    req: NextApiRequest,
+    res
+  ) => {
+    console.log("getStep3SuggestionsCustomerDescriptionHandler ======= main");
+    if (req.method === "POST") {
       const {
         businessName,
         businessType,
@@ -21,26 +26,26 @@ export default async function handler(request, response) {
         locale,
       } = req.body;
 
-    const customerDescriptionArr = [
-      customerDescription1,
-      customerDescription2,
-      customerDescription3,
-    ];
-    const customerIncomeArr = [
-      customerIncome1,
-      customerIncome2,
-      customerIncome3,
-    ];
+      const customerDescriptionArr = [
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+      ];
+      const customerIncomeArr = [
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+      ];
 
-    let duplicateCustomerPromptEN = '';
+      let duplicateCustomerPromptEN = "";
 
-    customerDescriptionArr.forEach((customerDescription, i) => {
-      if (customerDescription) {
-        duplicateCustomerPromptEN += `\nthis is one of the business' existing customer description: "${customerDescription}", don't mention "${customerDescription}" in your completion.`;
-      }
-    });
+      customerDescriptionArr.forEach((customerDescription, i) => {
+        if (customerDescription) {
+          duplicateCustomerPromptEN += `\nthis is one of the business' existing customer description: "${customerDescription}", don't mention "${customerDescription}" in your completion.`;
+        }
+      });
 
-    const promptEN = `
+      const promptEN = `
   These are the business details:
   business detail 1: The client's business name is ${businessName}.
   business detail 2: The type of business is ${businessType}. 
@@ -62,17 +67,17 @@ export default async function handler(request, response) {
     Here is what you've come up with:
     `;
 
-    // german lang --------------------------------------------------------------------------
+      // german lang --------------------------------------------------------------------------
 
-    let duplicateCustomerPromptDE = '';
+      let duplicateCustomerPromptDE = "";
 
-    customerDescriptionArr.forEach((customerDescription, i) => {
-      if (customerDescription) {
-        duplicateCustomerPromptDE += `\nDies ist eine der bestehenden Kundenbeschreibungen des Unternehmens: "${customerDescription}", erwähnen Sie "${customerDescription}" nicht in Ihrer Fertigstellung.`;
-      }
-    });
+      customerDescriptionArr.forEach((customerDescription, i) => {
+        if (customerDescription) {
+          duplicateCustomerPromptDE += `\nDies ist eine der bestehenden Kundenbeschreibungen des Unternehmens: "${customerDescription}", erwähnen Sie "${customerDescription}" nicht in Ihrer Fertigstellung.`;
+        }
+      });
 
-    const promptDE = `
+      const promptDE = `
 Dies sind die Geschäftsdetails:
 Geschäftsdetail 1: Der Name des Unternehmens des Kunden ist ${businessName}.
 Geschäftsdetail 2: Die Art des Geschäfts ist ${businessType}.
@@ -95,29 +100,29 @@ Sie sind ein professioneller Unternehmensberater. Basierend auf den bereitgestel
 Hier ist, was Sie erstellt haben:
 
   `;
-      let finalPrompt = '';
+      let finalPrompt = "";
 
-      if (locale === 'de') {
+      if (locale === "de") {
         finalPrompt = promptDE; // Make sure promptDE is defined in your code
-      } else if (locale === 'en') {
+      } else if (locale === "en") {
         finalPrompt = promptEN; // Make sure promptEN is defined in your code
       } else {
-        console.log('no locale');
+        console.log("no locale");
         finalPrompt = promptEN; // Default to English if no locale is provided
       }
 
       try {
         const openAIResponse = await fetch(
-          'https://api.openai.com/v1/chat/completions',
+          "https://api.openai.com/v1/chat/completions",
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
               Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
             },
             body: JSON.stringify({
-              model: 'gpt-3.5-turbo', // Specify the model you want to use
-              messages: [{ role: 'user', content: finalPrompt }],
+              model: "gpt-3.5-turbo", // Specify the model you want to use
+              messages: [{ role: "user", content: finalPrompt }],
               temperature: 0.7,
               top_p: 1,
               frequency_penalty: 0,
@@ -126,35 +131,35 @@ Hier ist, was Sie erstellt haben:
               stream: false,
               n: 1,
             }),
-          },
+          }
         );
 
         const { choices } = await openAIResponse.json();
-        console.log('choices', choices);
+        console.log("choices", choices);
         const responseText = choices[0].message.content.trim();
 
         // Split the response text into an array of customer group names
         let customerDescriptionArr = responseText
-          .split('//')
+          .split("//")
           .map((name) => name.trim());
 
         customerDescriptionArr = customerDescriptionArr.map((name) =>
-          name.replace(/"/g, ''),
+          name.replace(/"/g, "")
         );
 
         if (responseText) {
           res.status(200).json(customerDescriptionArr);
         } else {
-          throw new Error('response text is empty.');
+          throw new Error("response text is empty.");
         }
       } catch (error) {
         console.error(error);
         res
           .status(500)
-          .json({ error: 'An error occurred while processing your request.' });
+          .json({ error: "An error occurred while processing your request." });
       }
     } else {
-      res.status(405).json({ error: 'Method Not Allowed.' });
+      res.status(405).json({ error: "Method Not Allowed." });
     }
   };
 
@@ -163,6 +168,6 @@ Hier ist, was Sie erstellt haben:
 
   await getStep3SuggestionsCustomerDescriptionHandlerWithApiKeyValidation(
     request,
-    response,
+    response
   );
 }
