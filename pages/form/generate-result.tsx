@@ -1,34 +1,34 @@
-import { useEffect, useState, useRef, useContext } from 'react';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { MoonLoader } from 'react-spinners';
-import DOMPurify from 'dompurify';
-import React from 'react';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import styles from '../../styles/Editor.module.css';
-import { BiUndo } from 'react-icons/bi';
-import stylesW from '../../styles/Wizard.module.css';
-import { useTranslation } from 'react-i18next';
-import { useRouter } from 'next/router';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Navbar from '../../components/navbar';
-import FinTable from '../../components/FinTable';
-import ReviewTerms from '../../components/ReviewTerms';
-import trackEvent from '../../utils/trackEvent';
-import Input from '../../components/input';
-import { API_KEY_HEADER } from '../api/constants';
-import Modal from '../../components/modal';
-import us2gb from '../../utils/us2gb';
-import { useLoadFormData } from '../../hooks/useLoadFormData';
-import { AppContext } from '../../context/appContext';
-import TrustBox from '../../components/trustBox';
-import { IReviewsResponse } from '../../model/Schema';
-import { ROUTE_PATH } from '../../constants/path';
-import useBeforeUnload from '../../hooks/useBeforeUnload';
+import { useEffect, useState, useRef, useContext } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { MoonLoader } from "react-spinners";
+import DOMPurify from "dompurify";
+import React from "react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import styles from "../../styles/Editor.module.css";
+import { BiUndo } from "react-icons/bi";
+import stylesW from "../../styles/Wizard.module.css";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Navbar from "../../components/navbar";
+import FinTable from "../../components/FinTable";
+import ReviewTerms from "../../components/ReviewTerms";
+import trackEvent from "../../utils/trackEvent";
+import Input from "../../components/input";
+import { API_KEY_HEADER } from "../api/constants";
+import Modal from "../../components/modal";
+import us2gb from "../../utils/us2gb";
+import { useLoadFormData } from "../../hooks/useLoadFormData";
+import { AppContext } from "../../context/appContext";
+import TrustBox from "../../components/trustBox";
+import { IReviewsResponse } from "../../model/Schema";
+import { ROUTE_PATH } from "../../constants/path";
+import useBeforeUnload from "../../hooks/useBeforeUnload";
 
 const createDOMPurify = () => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     return DOMPurify(window);
   } else {
     // Return a dummy sanitize function or similar when not in browser environment
@@ -40,7 +40,7 @@ const domPurify = createDOMPurify();
 
 export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   const router = useRouter();
-  const { t, i18n } = useTranslation('LastStepPlanGen');
+  const { t, i18n } = useTranslation("LastStepPlanGen");
   const [warningModal, setWarningModal] = useState({
     isOpen: false,
     fn: () => {},
@@ -72,7 +72,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   const [doneMark2, setDoneMark2] = useState(false);
   const [allDoneGenerating, setAllDoneGenerating] = useState(false);
   const doneRef1 = useRef(false);
-  const generatedSitu1Ref = useRef('');
+  const generatedSitu1Ref = useRef("");
 
   const [allDoneAndFullContentPro, setAllDoneAndFullContentPro] =
     useState(false);
@@ -156,27 +156,27 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   const [doneRiskPro, setDoneRiskPro] = useState(false);
 
   // generated plan states--------------------------------------------
-  const [generatedExecPro, setGeneratedExecPro] = useState('');
-  const [generatedSitu1IndKeyPro, setGeneratedSitu1IndKeyPro] = useState('');
-  const [generatedSitu2SWOTPro, setGeneratedSitu2SWOTPro] = useState('');
-  const [generatedMark1ObjPro, setGeneratedMark1ObjPro] = useState('');
-  const [generatedMark2STPPro, setGeneratedMark2STPPro] = useState('');
+  const [generatedExecPro, setGeneratedExecPro] = useState("");
+  const [generatedSitu1IndKeyPro, setGeneratedSitu1IndKeyPro] = useState("");
+  const [generatedSitu2SWOTPro, setGeneratedSitu2SWOTPro] = useState("");
+  const [generatedMark1ObjPro, setGeneratedMark1ObjPro] = useState("");
+  const [generatedMark2STPPro, setGeneratedMark2STPPro] = useState("");
   const [generatedMark3DecisionPro, setGeneratedMark3DecisionPro] =
-    useState('');
-  const [generatedMark4ProductPro, setGeneratedMark4ProductPro] = useState('');
+    useState("");
+  const [generatedMark4ProductPro, setGeneratedMark4ProductPro] = useState("");
   const [generatedMark5PriceDistPro, setGeneratedMark5PriceDistPro] =
-    useState('');
-  const [generatedMark6AdPro, setGeneratedMark6AdPro] = useState('');
-  const [generatedOp1ActKPIsPro, setGeneratedOp1ActKPIsPro] = useState('');
-  const [generatedOp2QCImpPlanPro, setGeneratedOp2QCImpPlanPro] = useState('');
-  const [generatedTech1AllPro, setGeneratedTech1AllPro] = useState('');
-  const [generatedTech2DigiPro, setGeneratedTech2DigiPro] = useState('');
+    useState("");
+  const [generatedMark6AdPro, setGeneratedMark6AdPro] = useState("");
+  const [generatedOp1ActKPIsPro, setGeneratedOp1ActKPIsPro] = useState("");
+  const [generatedOp2QCImpPlanPro, setGeneratedOp2QCImpPlanPro] = useState("");
+  const [generatedTech1AllPro, setGeneratedTech1AllPro] = useState("");
+  const [generatedTech2DigiPro, setGeneratedTech2DigiPro] = useState("");
   const [generatedMang1StrucRolePro, setGeneratedMang1StrucRolePro] =
-    useState('');
+    useState("");
   const [generatedMang2RecTrainCSRPro, setGeneratedMang2RecTrainCSRPro] =
-    useState('');
-  const [generatedGrowthPro, setGeneratedGrowthPro] = useState('');
-  const [generatedRiskPro, setGeneratedRiskPro] = useState('');
+    useState("");
+  const [generatedGrowthPro, setGeneratedGrowthPro] = useState("");
+  const [generatedRiskPro, setGeneratedRiskPro] = useState("");
 
   // cancel stream--------------------------
   const executionIdRefExecPro = useRef(null);
@@ -197,8 +197,8 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   const executionIdRefGrowthPro = useRef(null);
   const executionIdRefRisk1Pro = useRef(null);
 
-  const [latestPlanIDStarter, setLatestPlanIDStarter] = useState('');
-  const [latestPlanIDPro, setLatestPlanIDStarterPro] = useState('');
+  const [latestPlanIDStarter, setLatestPlanIDStarter] = useState("");
+  const [latestPlanIDPro, setLatestPlanIDStarterPro] = useState("");
 
   const {
     set: {
@@ -242,11 +242,11 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     router.prefetch(ROUTE_PATH.register);
   }, [router]);
 
-  useBeforeUnload()
+  useBeforeUnload();
 
   const handleBackButton = () => {
     trackEvent({
-      event_name: 'page_8_back_button',
+      event_name: "page_8_back_button",
       is_clean_case: true,
     });
     router.push(ROUTE_PATH.finance);
@@ -324,7 +324,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   //main functions------------------------------------------------------------
   async function generateExec() {
-    setGeneratedExec('');
+    setGeneratedExec("");
 
     setAllDoneGenerating(false);
     setDoneExec(false);
@@ -333,10 +333,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefExec.current = currentExecutionId;
 
-    const exec = await fetch('/api/mainApi/api1Exec', {
-      method: 'POST',
+    const exec = await fetch("/api/mainApi/api1Exec", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -384,7 +384,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!exec.ok) {
       setIsError(true);
@@ -422,7 +422,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   }
 
   async function generateMark1(situ1Ref) {
-    setGeneratedMark1('');
+    setGeneratedMark1("");
 
     setAllDoneGenerating(false);
     setDoneMark1(false);
@@ -431,10 +431,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark1.current = currentExecutionId;
 
-    const mark1 = await fetch('/api/mainApi/api4Mark1', {
-      method: 'POST',
+    const mark1 = await fetch("/api/mainApi/api4Mark1", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -478,7 +478,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark1.ok) {
       setIsError(true);
@@ -516,7 +516,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   async function generateSitu1andMark1() {
     // generate situ1 first
-    setGeneratedSitu1('');
+    setGeneratedSitu1("");
 
     setAllDoneGenerating(false);
     setDoneSitu1(false);
@@ -527,10 +527,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu1.current = currentExecutionId;
 
-    const situ1 = await fetch('/api/mainApi/api2Situ1', {
-      method: 'POST',
+    const situ1 = await fetch("/api/mainApi/api2Situ1", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -572,7 +572,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         planQuota: 100,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!situ1.ok) {
       setIsError(true);
@@ -616,7 +616,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   }
 
   async function generateSitu2() {
-    setGeneratedSitu2('');
+    setGeneratedSitu2("");
 
     setAllDoneGenerating(false);
     setDoneSitu2(false);
@@ -625,10 +625,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu2.current = currentExecutionId;
 
-    const situ2 = await fetch('/api/mainApi/api3Situ2', {
-      method: 'POST',
+    const situ2 = await fetch("/api/mainApi/api3Situ2", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -671,7 +671,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!situ2.ok) {
       setIsError(true);
@@ -709,10 +709,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   }
 
   const doneRef2 = useRef(false);
-  const generatedMark2Ref = useRef('');
+  const generatedMark2Ref = useRef("");
 
   async function generateMark2() {
-    setGeneratedMark2('');
+    setGeneratedMark2("");
 
     setAllDoneGenerating(false);
     setDoneMark2(false);
@@ -723,10 +723,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark2.current = currentExecutionId;
 
-    const mark2 = await fetch('/api/mainApi/api5Mark2', {
-      method: 'POST',
+    const mark2 = await fetch("/api/mainApi/api5Mark2", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -776,7 +776,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         planQuota: 100,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark2.ok) {
       setIsError(true);
@@ -817,7 +817,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   useEffect(() => {
     if (doneExec && doneSitu1 && doneSitu2 && doneMark1 && doneMark2) {
       setAllDoneGenerating(true);
-      if (planLanguage.value === 'en-uk') {
+      if (planLanguage.value === "en-uk") {
         setGeneratedExec(us2gb(generatedExec));
         setGeneratedSitu1(us2gb(generatedSitu1));
         setGeneratedSitu2(us2gb(generatedSitu2));
@@ -829,7 +829,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   //main functions------------------------------------------------------------
   async function generateExecStarter() {
-    setGeneratedExec('');
+    setGeneratedExec("");
 
     setAllDoneGeneratingStarter(false);
     setDoneExecStarter(false);
@@ -838,10 +838,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefExecStarter.current = currentExecutionId;
 
-    const exec = await fetch('/api/mainApi/api1Exec', {
-      method: 'POST',
+    const exec = await fetch("/api/mainApi/api1Exec", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -882,7 +882,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!exec.ok) {
       setIsErrorStarter(true);
@@ -920,10 +920,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   }
 
   const doneRef1Starter = useRef(false);
-  const generatedSitu1RefStarter = useRef('');
+  const generatedSitu1RefStarter = useRef("");
 
   async function generateMark1Starter(situ1Ref) {
-    setGeneratedMark1('');
+    setGeneratedMark1("");
 
     setAllDoneGeneratingStarter(false);
     setDoneMark1Starter(false);
@@ -931,10 +931,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark1Starter.current = currentExecutionId;
-    const mark1 = await fetch('/api/mainApi/api4Mark1', {
-      method: 'POST',
+    const mark1 = await fetch("/api/mainApi/api4Mark1", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -977,7 +977,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark1.ok) {
       setIsErrorStarter(true);
@@ -1014,7 +1014,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   }
 
   async function generateMark3Starter(mark2Ref) {
-    setGeneratedMark3('');
+    setGeneratedMark3("");
 
     setAllDoneGeneratingStarter(false);
     setDoneMark3Starter(false);
@@ -1022,10 +1022,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark3Starter.current = currentExecutionId;
-    const mark3 = await fetch('/api/mainApi/api6Mark3', {
-      method: 'POST',
+    const mark3 = await fetch("/api/mainApi/api6Mark3", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1076,7 +1076,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark3.ok) {
       setIsErrorStarter(true);
@@ -1115,7 +1115,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   async function generateMark4Starter(mark2Ref) {
     // PROBLEM HERE
-    setGeneratedMark4('');
+    setGeneratedMark4("");
 
     setAllDoneGeneratingStarter(false);
     setDoneMark4Starter(false);
@@ -1123,10 +1123,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark4Starter.current = currentExecutionId;
-    const mark4 = await fetch('/api/mainApi/api7Mark4', {
-      method: 'POST',
+    const mark4 = await fetch("/api/mainApi/api7Mark4", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1178,7 +1178,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark4.ok) {
       setIsErrorStarter(true);
@@ -1216,7 +1216,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   async function generateSitu1andMark1Starter() {
     // generate situ1 first
-    setGeneratedSitu1('');
+    setGeneratedSitu1("");
 
     setAllDoneGeneratingStarter(false);
     setDoneSitu1Starter(false);
@@ -1227,10 +1227,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu1Starter.current = currentExecutionId;
-    const situ1 = await fetch('/api/mainApi/api2Situ1', {
-      method: 'POST',
+    const situ1 = await fetch("/api/mainApi/api2Situ1", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1267,7 +1267,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!situ1.ok) {
       setIsErrorStarter(true);
@@ -1312,7 +1312,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   }
 
   async function generateSitu2Starter() {
-    setGeneratedSitu2('');
+    setGeneratedSitu2("");
 
     setAllDoneGeneratingStarter(false);
     setDoneSitu2Starter(false);
@@ -1321,10 +1321,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu2Starter.current = currentExecutionId;
 
-    const situ2 = await fetch('/api/mainApi/api3Situ2', {
-      method: 'POST',
+    const situ2 = await fetch("/api/mainApi/api3Situ2", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1362,7 +1362,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!situ2.ok) {
       setIsErrorStarter(true);
@@ -1400,10 +1400,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   }
 
   const doneRef2Starter = useRef(false);
-  const generatedMark2RefStarter = useRef('');
+  const generatedMark2RefStarter = useRef("");
 
   async function generateMark2Mark3Mark4Starter() {
-    setGeneratedMark2('');
+    setGeneratedMark2("");
 
     setAllDoneGeneratingStarter(false);
     setDoneMark2Starter(false);
@@ -1415,10 +1415,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark2Starter.current = currentExecutionId;
 
-    const mark2 = await fetch('/api/mainApi/api5Mark2', {
-      method: 'POST',
+    const mark2 = await fetch("/api/mainApi/api5Mark2", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1461,7 +1461,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark2.ok) {
       setIsErrorStarter(true);
@@ -1506,7 +1506,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   }
 
   async function generateOp1Starter() {
-    setGeneratedOp1('');
+    setGeneratedOp1("");
 
     setAllDoneGeneratingStarter(false);
     setDoneOp1Starter(false);
@@ -1514,10 +1514,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefOp1Starter.current = currentExecutionId;
-    const op1 = await fetch('/api/mainApi/api8Op1', {
-      method: 'POST',
+    const op1 = await fetch("/api/mainApi/api8Op1", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1585,7 +1585,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!op1.ok) {
       setIsErrorStarter(true);
@@ -1623,7 +1623,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   }
 
   async function generateMang1Starter() {
-    setGeneratedMang1('');
+    setGeneratedMang1("");
 
     setAllDoneGeneratingStarter(false);
     setDoneMang1Starter(false);
@@ -1631,10 +1631,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMang1Starter.current = currentExecutionId;
-    const mang1 = await fetch('/api/mainApi/api9Mang1', {
-      method: 'POST',
+    const mang1 = await fetch("/api/mainApi/api9Mang1", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1683,7 +1683,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mang1.ok) {
       setIsErrorStarter(true);
@@ -1721,7 +1721,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   }
 
   async function generateRisk1Starter() {
-    setGeneratedRisk1('');
+    setGeneratedRisk1("");
 
     setAllDoneGeneratingStarter(false);
     setDoneRisk1Starter(false);
@@ -1729,10 +1729,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefRisk1Starter.current = currentExecutionId;
-    const risk1 = await fetch('/api/mainApi/api11Risk1', {
-      method: 'POST',
+    const risk1 = await fetch("/api/mainApi/api11Risk1", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1781,7 +1781,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!risk1.ok) {
       setIsErrorStarter(true);
@@ -1832,7 +1832,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       doneRisk1Starter
     ) {
       setAllDoneGeneratingStarter(true);
-      if (planLanguage.value === 'en-uk') {
+      if (planLanguage.value === "en-uk") {
         setGeneratedExec(us2gb(generatedExec));
         setGeneratedSitu1(us2gb(generatedSitu1));
         setGeneratedSitu2(us2gb(generatedSitu2));
@@ -1870,16 +1870,16 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   //set latestPlanID to local storage use useEffect
   useEffect(() => {
-    console.log('storing latestPlanID:', latestPlanIDStarter);
-    localStorage.setItem('latestPlanIDStarter', latestPlanIDStarter);
+    console.log("storing latestPlanID:", latestPlanIDStarter);
+    localStorage.setItem("latestPlanIDStarter", latestPlanIDStarter);
   }, [latestPlanIDStarter]);
 
   useEffect(() => {
     if (session) {
       const storedValue = localStorage.getItem(
-        `hasAddedNewPlanStarter_${session.user.email}_${latestPlanIDStarter}`,
+        `hasAddedNewPlanStarter_${session.user.email}_${latestPlanIDStarter}`
       );
-      if (storedValue === 'true') {
+      if (storedValue === "true") {
         setHasAddedNewPlan(true);
       }
     }
@@ -1889,7 +1889,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   // this is used when user already signs up and is logged in
   async function addNewPlanStarter() {
-    console.log('addNewPlanStarter running');
+    console.log("addNewPlanStarter running");
     const userInput = {
       businessPlanObj,
       businessName,
@@ -1984,15 +1984,15 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     };
 
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify(dataTosend),
     };
 
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/addPlan`, options)
+    await fetch(`/api/addPlan`, options)
       .then(async (res) => {
         if (res.status === 403) {
           const data = await res.json();
@@ -2028,7 +2028,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       if (session) {
         localStorage.setItem(
           `hasAddedNewPlanStarter_${session.user.email}_${latestPlanIDStarter}`,
-          'true',
+          "true"
         );
       }
       setHasAddedNewPlan(true);
@@ -2040,15 +2040,15 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   async function generateMark1ObjPro(situ1Ref) {
     setRunningMark1Pro(true);
-    setGeneratedMark1ObjPro('');
+    setGeneratedMark1ObjPro("");
     setDoneMark1Pro(false);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark1Pro.current = currentExecutionId;
-    const mark1 = await fetch('/api/mainApiPro/api4Mark1ObjPro', {
-      method: 'POST',
+    const mark1 = await fetch("/api/mainApiPro/api4Mark1ObjPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2092,7 +2092,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark1.ok) {
       setIsErrorPro(true);
@@ -2126,22 +2126,22 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefMark1Pro.current === currentExecutionId) {
       setDoneMark1Pro(true);
       setRunningMark1Pro(false);
-      console.log('set Mark1 done');
+      console.log("set Mark1 done");
     }
   }
 
   async function generateMark3DecisionPro(mark2Ref) {
     setRunningMark3Pro(true);
-    setGeneratedMark3DecisionPro('');
+    setGeneratedMark3DecisionPro("");
     setDoneMark3Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark3Pro.current = currentExecutionId;
-    const mark3 = await fetch('/api/mainApiPro/api6Mark3DecisionPro', {
-      method: 'POST',
+    const mark3 = await fetch("/api/mainApiPro/api6Mark3DecisionPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2192,7 +2192,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark3.ok) {
       setIsErrorPro(true);
@@ -2227,23 +2227,23 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefMark3Pro.current === currentExecutionId) {
       setDoneMark3Pro(true);
       setRunningMark3Pro(false);
-      console.log('set Mark3 done');
+      console.log("set Mark3 done");
     }
   }
 
   async function generateMark4ProductPro(mark2Ref) {
     // PROBLEM HERE
     setRunningMark4Pro(true);
-    setGeneratedMark4ProductPro('');
+    setGeneratedMark4ProductPro("");
     setDoneMark4Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark4Pro.current = currentExecutionId;
-    const mark4 = await fetch('/api/mainApiPro/api7Mark4ProductPro', {
-      method: 'POST',
+    const mark4 = await fetch("/api/mainApiPro/api7Mark4ProductPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2295,7 +2295,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark4.ok) {
       setIsErrorPro(true);
@@ -2329,23 +2329,23 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefMark4Pro.current === currentExecutionId) {
       setDoneMark4Pro(true);
       setRunningMark4Pro(false);
-      console.log('set Mark4 done');
+      console.log("set Mark4 done");
     }
   }
 
   async function generateMark5PriceDistPro(mark2Ref) {
     // PROBLEM HERE
     setRunningMark5Pro(true);
-    setGeneratedMark5PriceDistPro('');
+    setGeneratedMark5PriceDistPro("");
     setDoneMark5Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark5Pro.current = currentExecutionId;
-    const mark5 = await fetch('/api/mainApiPro/api8Mark5PriceDistPro', {
-      method: 'POST',
+    const mark5 = await fetch("/api/mainApiPro/api8Mark5PriceDistPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2397,7 +2397,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark5.ok) {
       setIsErrorPro(true);
@@ -2431,23 +2431,23 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefMark5Pro.current === currentExecutionId) {
       setDoneMark5Pro(true);
       setRunningMark5Pro(false);
-      console.log('set Mark5 done');
+      console.log("set Mark5 done");
     }
   }
 
   async function generateMark6AdPro(mark2Ref) {
     // PROBLEM HERE
     setRunningMark6Pro(true);
-    setGeneratedMark6AdPro('');
+    setGeneratedMark6AdPro("");
     setDoneMark6Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark6Pro.current = currentExecutionId;
-    const mark6 = await fetch('/api/mainApiPro/api9Mark6AdPro', {
-      method: 'POST',
+    const mark6 = await fetch("/api/mainApiPro/api9Mark6AdPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2499,7 +2499,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark6.ok) {
       setIsErrorPro(true);
@@ -2533,7 +2533,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefMark6Pro.current === currentExecutionId) {
       setDoneMark6Pro(true);
       setRunningMark6Pro(false);
-      console.log('set Mark6 done');
+      console.log("set Mark6 done");
     }
   }
 
@@ -2541,17 +2541,17 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   async function generateExecPro() {
     setRunningExecPro(true);
-    setGeneratedExecPro('');
+    setGeneratedExecPro("");
     setDoneExecPro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefExecPro.current = currentExecutionId;
 
-    const exec = await fetch('/api/mainApiPro/api1ExecPro', {
-      method: 'POST',
+    const exec = await fetch("/api/mainApiPro/api1ExecPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2598,7 +2598,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!exec.ok) {
       setIsErrorPro(true);
@@ -2633,17 +2633,17 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefExecPro.current === currentExecutionId) {
       setDoneExecPro(true);
       setRunningExecPro(false);
-      console.log('set Exec done');
+      console.log("set Exec done");
     }
   }
 
   const doneRef1Pro = useRef(false);
-  const generatedSitu1RefPro = useRef('');
+  const generatedSitu1RefPro = useRef("");
 
   async function generateSitu1IndKeyPro() {
     setRunningSitu1Pro(true);
     // generate situ1 first
-    setGeneratedSitu1IndKeyPro('');
+    setGeneratedSitu1IndKeyPro("");
     setDoneSitu1Pro(false);
     setDoneMark1Pro(false);
     setLoadingPro(true);
@@ -2652,10 +2652,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu1Pro.current = currentExecutionId;
-    const situ1 = await fetch('/api/mainApiPro/api2Situ1IndKeyPro', {
-      method: 'POST',
+    const situ1 = await fetch("/api/mainApiPro/api2Situ1IndKeyPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2696,7 +2696,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!situ1.ok) {
       setIsErrorPro(true);
@@ -2733,23 +2733,23 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefSitu1Pro.current === currentExecutionId) {
       setDoneSitu1Pro(true);
       setRunningSitu1Pro(false);
-      console.log('set Situ1 done');
+      console.log("set Situ1 done");
     }
   }
 
   async function generateSitu2SWOTPro() {
     setRunningSitu2Pro(true);
-    setGeneratedSitu2SWOTPro('');
+    setGeneratedSitu2SWOTPro("");
     setDoneSitu2Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu2Pro.current = currentExecutionId;
 
-    const situ2 = await fetch('/api/mainApiPro/api3Situ2SWOTPro', {
-      method: 'POST',
+    const situ2 = await fetch("/api/mainApiPro/api3Situ2SWOTPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2791,7 +2791,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!situ2.ok) {
       setIsErrorPro(true);
@@ -2826,16 +2826,16 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefSitu2Pro.current === currentExecutionId) {
       setDoneSitu2Pro(true);
       setRunningSitu2Pro(false);
-      console.log('set Situ2 done');
+      console.log("set Situ2 done");
     }
   }
 
   const doneRefMark2Pro = useRef(false);
-  const generatedMark2RefPro = useRef('');
+  const generatedMark2RefPro = useRef("");
 
   async function generateMark2STPPro() {
     setRunningMark2Pro(true);
-    setGeneratedMark2STPPro('');
+    setGeneratedMark2STPPro("");
     setDoneMark2Pro(false);
     setLoadingPro(true);
     doneRefMark2Pro.current = false;
@@ -2843,10 +2843,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark2Pro.current = currentExecutionId;
 
-    const mark2 = await fetch('/api/mainApiPro/api5Mark2STPPro', {
-      method: 'POST',
+    const mark2 = await fetch("/api/mainApiPro/api5Mark2STPPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2895,7 +2895,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark2.ok) {
       setIsErrorPro(true);
@@ -2931,22 +2931,22 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefMark2Pro.current === currentExecutionId) {
       setDoneMark2Pro(true);
       setRunningMark2Pro(false);
-      console.log('set Mark2 done');
+      console.log("set Mark2 done");
     }
   }
 
   async function generateOp1ActKPIsPro() {
     setRunningOp1Pro(true);
-    setGeneratedOp1ActKPIsPro('');
+    setGeneratedOp1ActKPIsPro("");
     setDoneOp1Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefOp1Pro.current = currentExecutionId;
-    const op1 = await fetch('/api/mainApiPro/api10Op1ActKPIsPro', {
-      method: 'POST',
+    const op1 = await fetch("/api/mainApiPro/api10Op1ActKPIsPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3014,7 +3014,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!op1.ok) {
       setIsErrorPro(true);
@@ -3049,22 +3049,22 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefOp1Pro.current === currentExecutionId) {
       setDoneOp1Pro(true);
       setRunningOp1Pro(false);
-      console.log('set Op1 done');
+      console.log("set Op1 done");
     }
   }
 
   async function generateOp2QCImpPlanPro() {
     setRunningOp2Pro(true);
-    setGeneratedOp2QCImpPlanPro('');
+    setGeneratedOp2QCImpPlanPro("");
     setDoneOp2Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefOp2Pro.current = currentExecutionId;
-    const op2 = await fetch('/api/mainApiPro/api11Op2QCImpPlanPro', {
-      method: 'POST',
+    const op2 = await fetch("/api/mainApiPro/api11Op2QCImpPlanPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3132,7 +3132,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!op2.ok) {
       setIsErrorPro(true);
@@ -3167,22 +3167,22 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefOp2Pro.current === currentExecutionId) {
       setDoneOp2Pro(true);
       setRunningOp2Pro(false);
-      console.log('set Op2 done');
+      console.log("set Op2 done");
     }
   }
 
   async function generateTech1AllPro() {
     setRunningTech1Pro(true);
-    setGeneratedTech1AllPro('');
+    setGeneratedTech1AllPro("");
     setDoneTech1Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefTech1Pro.current = currentExecutionId;
-    const Tech1 = await fetch('/api/mainApiPro/api12Tech1AllPro', {
-      method: 'POST',
+    const Tech1 = await fetch("/api/mainApiPro/api12Tech1AllPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3250,7 +3250,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!Tech1.ok) {
       setIsErrorPro(true);
@@ -3285,22 +3285,22 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefTech1Pro.current === currentExecutionId) {
       setDoneTech1Pro(true);
       setRunningTech1Pro(false);
-      console.log('set Tech1 done');
+      console.log("set Tech1 done");
     }
   }
 
   async function generateTech2DigiPro() {
     setRunningTech2Pro(true);
-    setGeneratedTech2DigiPro('');
+    setGeneratedTech2DigiPro("");
     setDoneTech2Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefTech2Pro.current = currentExecutionId;
-    const Tech2 = await fetch('/api/mainApiPro/api13Tech2DigiPro', {
-      method: 'POST',
+    const Tech2 = await fetch("/api/mainApiPro/api13Tech2DigiPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3368,7 +3368,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!Tech2.ok) {
       setIsErrorPro(true);
@@ -3403,16 +3403,16 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefTech2Pro.current === currentExecutionId) {
       setDoneTech2Pro(true);
       setRunningTech2Pro(false);
-      console.log('set Tech2 done');
+      console.log("set Tech2 done");
     }
   }
 
   const doneRefMang1Pro = useRef(false);
-  const generatedMang1RefPro = useRef('');
+  const generatedMang1RefPro = useRef("");
 
   async function generateMang1StrucRolePro() {
     setRunningMang1Pro(true);
-    setGeneratedMang1StrucRolePro('');
+    setGeneratedMang1StrucRolePro("");
     setDoneMang1Pro(false);
     setDoneMang2Pro(false);
     setLoadingPro(true);
@@ -3420,10 +3420,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMang1Pro.current = currentExecutionId;
-    const Mang1 = await fetch('/api/mainApiPro/api14Mang1StrucRolePro', {
-      method: 'POST',
+    const Mang1 = await fetch("/api/mainApiPro/api14Mang1StrucRolePro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3491,7 +3491,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!Mang1.ok) {
       setIsErrorPro(true);
@@ -3526,22 +3526,22 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefMang1Pro.current === currentExecutionId) {
       setDoneMang1Pro(true);
       setRunningMang1Pro(false);
-      console.log('set Mang1 done');
+      console.log("set Mang1 done");
     }
   }
 
   async function generateMang2RecTrainCSRPro(mang1Ref) {
     setRunningMang2Pro(true);
-    setGeneratedMang2RecTrainCSRPro('');
+    setGeneratedMang2RecTrainCSRPro("");
     setDoneMang2Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMang2Pro.current = currentExecutionId;
-    const Mang2 = await fetch('/api/mainApiPro/api15Mang2RecTrainCSRPro', {
-      method: 'POST',
+    const Mang2 = await fetch("/api/mainApiPro/api15Mang2RecTrainCSRPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3610,7 +3610,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         mang1Ref,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!Mang2.ok) {
       setIsErrorPro(true);
@@ -3645,22 +3645,22 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefMang2Pro.current === currentExecutionId) {
       setDoneMang2Pro(true);
       setRunningMang2Pro(false);
-      console.log('set Mang2 done');
+      console.log("set Mang2 done");
     }
   }
 
   async function generateGrowthPro() {
     setRunningGrowthPro(true);
-    setGeneratedGrowthPro('');
+    setGeneratedGrowthPro("");
     setDoneGrowthPro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefGrowthPro.current = currentExecutionId;
-    const Growth = await fetch('/api/mainApiPro/api16Growth1Pro', {
-      method: 'POST',
+    const Growth = await fetch("/api/mainApiPro/api16Growth1Pro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3728,7 +3728,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!Growth.ok) {
       setIsErrorPro(true);
@@ -3763,22 +3763,22 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefGrowthPro.current === currentExecutionId) {
       setDoneGrowthPro(true);
       setRunningGrowthPro(false);
-      console.log('set Growth done');
+      console.log("set Growth done");
     }
   }
 
   async function generateRiskPro() {
     setRunningRiskPro(true);
-    setGeneratedRiskPro('');
+    setGeneratedRiskPro("");
     setDoneRiskPro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefRisk1Pro.current = currentExecutionId;
-    const Risk1 = await fetch('/api/mainApiPro/api17Risk1Pro', {
-      method: 'POST',
+    const Risk1 = await fetch("/api/mainApiPro/api17Risk1Pro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3827,7 +3827,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!Risk1.ok) {
       setIsErrorPro(true);
@@ -3862,7 +3862,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (executionIdRefRisk1Pro.current === currentExecutionId) {
       setDoneRiskPro(true);
       setRunningRiskPro(false);
-      console.log('set Risk1 done');
+      console.log("set Risk1 done");
     }
   }
 
@@ -3954,7 +3954,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   const handleGeneratePlan = () => {
     trackEvent({
-      event_name: 'page_8_generate_plan_button',
+      event_name: "page_8_generate_plan_button",
       is_clean_case: true,
     });
     generatePlan();
@@ -3962,7 +3962,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   const handleGeneratePlanStarter = () => {
     trackEvent({
-      event_name: 'page_8_generate_plan_button',
+      event_name: "page_8_generate_plan_button",
       is_clean_case: true,
     });
     setWarningModal({ isOpen: false, fn: () => {} });
@@ -3970,7 +3970,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   };
   const handleGeneratePlanPro = () => {
     trackEvent({
-      event_name: 'page_8_generate_plan_button',
+      event_name: "page_8_generate_plan_button",
       is_clean_case: true,
     });
     setWarningModal({ isOpen: false, fn: () => {} });
@@ -3979,7 +3979,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   const [addNewPlanDone, setAddNewPlanDone] = useState(false);
   const [runGeneratePrompt, setRunGeneratePrompt] = useState(false);
-  const [productInfoPrompt, setProductInfoPrompt] = useState('');
+  const [productInfoPrompt, setProductInfoPrompt] = useState("");
 
   useEffect(() => {
     if (!session) return;
@@ -3988,7 +3988,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     let counter = 0; // Initialize the counter
 
     async function fetchUserData() {
-      const res = await fetch('/api/getAllUserData', {
+      const res = await fetch("/api/getAllUserData", {
         headers: {
           [API_KEY_HEADER]: secretKey,
         },
@@ -3997,7 +3997,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       setuserData(data);
 
       if (data) {
-        if (data.paymentStatus === 'paid' && data.paymentId) {
+        if (data.paymentStatus === "paid" && data.paymentId) {
           setPaid(true);
           clearInterval(interval); // Clear the interval when paymentStatus is "paid"
           return;
@@ -4025,9 +4025,9 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   //helper functions-------------------------------------------------------
   const generatePrompt = (
-    products: { name: string; description: string }[],
+    products: { name: string; description: string }[]
   ) => {
-    let prompt = '';
+    let prompt = "";
 
     products.forEach((product, index) => {
       if (product.name) {
@@ -4056,7 +4056,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   }, [runGeneratePrompt]);
 
   const fetchReviews = async () => {
-    const res = await fetch('/api/trustpilot/reviews', {
+    const res = await fetch("/api/trustpilot/reviews", {
       headers: {
         [API_KEY_HEADER]: secretKey,
       },
@@ -4084,42 +4084,42 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/savePreviewEdit`,
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             [API_KEY_HEADER]: secretKey,
           },
           body: JSON.stringify({
             editInput,
             sectionOrigin,
           }),
-        },
+        }
       );
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
 
       const data = await response.json(); // assuming your API returns a JSON response
       return data; // use or return the data as needed
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       throw error;
     }
   }
 
   //Exec form-------------------------------------------------------------------------------
-  const [editInputExec, setEditInputExec] = useState('');
+  const [editInputExec, setEditInputExec] = useState("");
   const [isErrorExec, setIsErrorExec] = useState(false);
   const [isLoadingExec, setLoadingExec] = useState(false);
 
-  const [prevGeneratedExec, setPrevGeneratedExec] = useState('');
+  const [prevGeneratedExec, setPrevGeneratedExec] = useState("");
   const [currentExIdStateExec, setCurrentExIdStateExec] = useState(0);
   const [showUndoExec, setShowUndoExec] = useState(false);
   const [focusExec, setFocusExec] = useState(false);
   const [toggleFocusExec, setToggleFocusExec] = useState(false);
 
-  const [editedExec, setEditedExec] = useState('');
+  const [editedExec, setEditedExec] = useState("");
 
   const handleEditExec = (event) => {
     setEditInputExec(event.target.value);
@@ -4130,20 +4130,20 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     event.preventDefault();
     setToggleFocusExec(false);
     setPrevGeneratedExec(generatedExec);
-    setEditedExec('');
-    savePreviewEditFunc(editInputExec, 'Exec');
+    setEditedExec("");
+    savePreviewEditFunc(editInputExec, "Exec");
     editExec();
   };
 
   useEffect(() => {
-    console.log('focusExec useEffect triggering', focusExec);
+    console.log("focusExec useEffect triggering", focusExec);
     if (focusExec && inputRefExec.current) {
       inputRefExec.current.focus();
       const elementRect = inputRefExec.current.getBoundingClientRect();
       if (elementRect) {
         const topPositionToScroll =
           elementRect.top + window.scrollY - window.innerHeight / 2;
-        window.scrollTo({ top: topPositionToScroll, behavior: 'smooth' });
+        window.scrollTo({ top: topPositionToScroll, behavior: "smooth" });
       }
       setFocusExec(false);
     }
@@ -4151,7 +4151,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   // if prevContnetExec is empty then showUndoExec is false
   useEffect(() => {
-    if (prevGeneratedExec === '') {
+    if (prevGeneratedExec === "") {
       setShowUndoExec(false);
     } else {
       setShowUndoExec(true);
@@ -4172,14 +4172,14 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     setCurrentExIdStateExec(currentExIdExec);
     setLoadingExec(true);
 
-    let promptContentExec = '';
+    let promptContentExec = "";
     if (editedExec) promptContentExec = editedExec;
     else promptContentExec = generatedExec;
 
-    const exec = await fetch('/api/editPreviewApi/editPreview1Exec', {
-      method: 'POST',
+    const exec = await fetch("/api/editPreviewApi/editPreview1Exec", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -4188,7 +4188,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!exec.ok) {
       setIsErrorExec(true);
@@ -4207,7 +4207,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     // use state to keep track of quota
     setPreviewQuota((prev) => prev - 1);
     if (previewQuota <= 0) {
-      console.log('Edit quota exhausted');
+      console.log("Edit quota exhausted");
       return;
     }
 
@@ -4248,7 +4248,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       setLatestPlanIDStarterPro(userData?.latestPlanID?.toString());
 
       if (userData.plans.length > 0) {
-        console.log('userData.plans.length - 1', userData.plans.length - 1);
+        console.log("userData.plans.length - 1", userData.plans.length - 1);
         setPlanId(userData.plans.length - 1);
       }
     }
@@ -4262,10 +4262,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   // Format the date in MM/DD/YYYY format
   const formattedDate =
-    (today.getMonth() + 1).toString().padStart(2, '0') +
-    '/' +
-    today.getDate().toString().padStart(2, '0') +
-    '/' +
+    (today.getMonth() + 1).toString().padStart(2, "0") +
+    "/" +
+    today.getDate().toString().padStart(2, "0") +
+    "/" +
     today.getFullYear();
 
   //when alldonegenerating is true set a timer for 10 seconds and then set doneTimer to false
@@ -4281,8 +4281,8 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   useEffect(() => {
     if (allDoneGenerating) {
       console.log(
-        'allDoneGenerating is true, clearing interval: ',
-        intervalIdRef.current,
+        "allDoneGenerating is true, clearing interval: ",
+        intervalIdRef.current
       );
       clearInterval(intervalIdRef.current);
       setLoading(false);
@@ -4292,31 +4292,31 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     let limit = 1000;
-    if (planLanguage === 'ja') {
+    if (planLanguage === "ja") {
       limit -= 600;
-    } else if (planLanguage === 'ar') {
+    } else if (planLanguage === "ar") {
       limit -= 100;
     }
 
     if (allDoneGenerating) {
-      console.log('Length of generatedExec: ', generatedExec.length);
+      console.log("Length of generatedExec: ", generatedExec.length);
       if (generatedExec.length < limit) {
         generateExec();
       }
-      console.log('Length of generatedSitu2: ', generatedSitu2.length);
+      console.log("Length of generatedSitu2: ", generatedSitu2.length);
       if (generatedSitu2.length < limit) {
         generateSitu2();
       }
-      console.log('Length of generatedSitu1: ', generatedSitu1.length);
+      console.log("Length of generatedSitu1: ", generatedSitu1.length);
       if (generatedSitu1.length < limit) {
         generateSitu1andMark1();
       } else {
-        console.log('Length of generatedMark1: ', generatedMark1.length);
+        console.log("Length of generatedMark1: ", generatedMark1.length);
         if (generatedMark1.length < limit) {
           generateMark1(generatedSitu1);
         }
       }
-      console.log('Length of generatedMark2: ', generatedMark2.length);
+      console.log("Length of generatedMark2: ", generatedMark2.length);
       if (generatedMark2.length < limit) {
         generateMark2();
       }
@@ -4326,8 +4326,8 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   //set setLatestPlanIDStarterPro with userData.latestPlanID
 
   useEffect(() => {
-    console.log('storing latestPlanIDPro:', latestPlanIDPro);
-    localStorage.setItem('latestPlanIDPro', latestPlanIDPro);
+    console.log("storing latestPlanIDPro:", latestPlanIDPro);
+    localStorage.setItem("latestPlanIDPro", latestPlanIDPro);
   }, [latestPlanIDPro]);
 
   // counting chars ----------------------------------------------
@@ -4369,7 +4369,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   const [hasAddedNewPlanPro, setHasAddedNewPlanPro] = useState(false);
   // this is used when user already signs up and is logged in
   async function addNewPlanPro() {
-    console.log('addNewPlanPro running');
+    console.log("addNewPlanPro running");
     const userInput = {
       businessPlanObj,
       businessName,
@@ -4472,15 +4472,15 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     };
 
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify(dataTosend),
     };
 
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/addPlan`, options)
+    await fetch(`/api/addPlan`, options)
       .then(async (res) => {
         if (res.status === 403) {
           const data = await res.json();
@@ -4526,18 +4526,18 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       doneAndFullContentRiskPro &&
       !hasAddedNewPlanPro
     ) {
-      console.log('addNewPlanPro running');
+      console.log("addNewPlanPro running");
       addNewPlanPro();
       if (session) {
         localStorage.setItem(
           `hasAddedNewPlanPro_${session.user.email}_${latestPlanIDPro}`,
-          'true',
+          "true"
         );
       }
       setHasAddedNewPlanPro(true);
       setAllDoneAndFullContentPro(true);
       setLoadingPro(false);
-      if (planLanguage.value === 'en-uk') {
+      if (planLanguage.value === "en-uk") {
         setGeneratedExecPro(us2gb(generatedExecPro));
         setGeneratedSitu1IndKeyPro(us2gb(generatedSitu1IndKeyPro));
         setGeneratedSitu2SWOTPro(us2gb(generatedSitu2SWOTPro));
@@ -4582,9 +4582,9 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   useEffect(() => {
     if (session) {
       const storedValue = localStorage.getItem(
-        `hasAddedNewPlanPro_${session.user.email}_${latestPlanIDPro}`,
+        `hasAddedNewPlanPro_${session.user.email}_${latestPlanIDPro}`
       );
-      if (storedValue === 'true') {
+      if (storedValue === "true") {
         setHasAddedNewPlanPro(true);
       }
     }
@@ -4596,33 +4596,33 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   function getProPackage() {
     trackEvent({
-      event_name: 'professional_cta_button',
+      event_name: "professional_cta_button",
     });
-    setPlanPackage('professional');
+    setPlanPackage("professional");
     handleNextFormik();
   }
 
   function getStarterPackage() {
     trackEvent({
-      event_name: 'starter_cta_button',
+      event_name: "starter_cta_button",
     });
-    setPlanPackage('starter');
+    setPlanPackage("starter");
     handleNextFormik();
   }
   function viewExamplePro() {
     router.push({
-      pathname: '/form/example-plan',
+      pathname: "/form/example-plan",
       query: {
-        packagePlan: 'professional',
+        packagePlan: "professional",
       },
     });
   }
 
   function viewExampleStarter() {
     router.push({
-      pathname: '/form/example-plan',
+      pathname: "/form/example-plan",
       query: {
-        packagePlan: 'starter',
+        packagePlan: "starter",
       },
     });
   }
@@ -4631,67 +4631,67 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   const refPro = useRef(null);
 
   const scrollToRef = (ref) =>
-    ref.current.scrollIntoView({ behavior: 'smooth' });
+    ref.current.scrollIntoView({ behavior: "smooth" });
 
-  let packageImgSrcSM = '';
-  let packageImgSrcLG = '';
+  let packageImgSrcSM = "";
+  let packageImgSrcLG = "";
 
-  if (i18n.language === 'en') {
-    packageImgSrcSM = '/img/packageComp1EN_SM.png';
-    packageImgSrcLG = '/img/packageComp2EN_LG.png';
-  } else if (i18n.language === 'de') {
-    packageImgSrcSM = '/img/packageComp3DE_SM.png';
-    packageImgSrcLG = '/img/packageComp4DE_LG.png';
-  } else if (i18n.language === 'fr') {
-    packageImgSrcSM = '/img/packageComp5FR_SM.png';
-    packageImgSrcLG = '/img/packageComp6FR_LG.png';
-  } else if (i18n.language === 'es') {
-    packageImgSrcSM = '/img/packageComp7ES_SM.png';
-    packageImgSrcLG = '/img/packageComp8ES_LG.png';
-  } else if (i18n.language === 'it') {
-    packageImgSrcSM = '/img/packageComp9IT_SM.png';
-    packageImgSrcLG = '/img/packageComp10IT_LG.png';
-  } else if (i18n.language === 'nl') {
-    packageImgSrcSM = '/img/packageComp11NL_SM.png';
-    packageImgSrcLG = '/img/packageComp12NL_LG.png';
-  } else if (i18n.language === 'ja') {
-    packageImgSrcSM = '/img/packageComp13JA_SM.png';
-    packageImgSrcLG = '/img/packageComp14JA_LG.png';
-  } else if (i18n.language === 'sv') {
-    packageImgSrcSM = '/img/packageComp15SV_SM.png';
-    packageImgSrcLG = '/img/packageComp16SV_LG.png';
-  } else if (i18n.language === 'fi') {
-    packageImgSrcSM = '/img/packageComp17FI_SM.png';
-    packageImgSrcLG = '/img/packageComp18FI_LG.png';
-  } else if (i18n.language === 'da') {
-    packageImgSrcSM = '/img/packageComp19DA_SM.png';
-    packageImgSrcLG = '/img/packageComp20DA_LG.png';
-  } else if (i18n.language === 'no') {
-    packageImgSrcSM = '/img/packageComp21NO_SM.png';
-    packageImgSrcLG = '/img/packageComp22NO_LG.png';
+  if (i18n.language === "en") {
+    packageImgSrcSM = "/img/packageComp1EN_SM.png";
+    packageImgSrcLG = "/img/packageComp2EN_LG.png";
+  } else if (i18n.language === "de") {
+    packageImgSrcSM = "/img/packageComp3DE_SM.png";
+    packageImgSrcLG = "/img/packageComp4DE_LG.png";
+  } else if (i18n.language === "fr") {
+    packageImgSrcSM = "/img/packageComp5FR_SM.png";
+    packageImgSrcLG = "/img/packageComp6FR_LG.png";
+  } else if (i18n.language === "es") {
+    packageImgSrcSM = "/img/packageComp7ES_SM.png";
+    packageImgSrcLG = "/img/packageComp8ES_LG.png";
+  } else if (i18n.language === "it") {
+    packageImgSrcSM = "/img/packageComp9IT_SM.png";
+    packageImgSrcLG = "/img/packageComp10IT_LG.png";
+  } else if (i18n.language === "nl") {
+    packageImgSrcSM = "/img/packageComp11NL_SM.png";
+    packageImgSrcLG = "/img/packageComp12NL_LG.png";
+  } else if (i18n.language === "ja") {
+    packageImgSrcSM = "/img/packageComp13JA_SM.png";
+    packageImgSrcLG = "/img/packageComp14JA_LG.png";
+  } else if (i18n.language === "sv") {
+    packageImgSrcSM = "/img/packageComp15SV_SM.png";
+    packageImgSrcLG = "/img/packageComp16SV_LG.png";
+  } else if (i18n.language === "fi") {
+    packageImgSrcSM = "/img/packageComp17FI_SM.png";
+    packageImgSrcLG = "/img/packageComp18FI_LG.png";
+  } else if (i18n.language === "da") {
+    packageImgSrcSM = "/img/packageComp19DA_SM.png";
+    packageImgSrcLG = "/img/packageComp20DA_LG.png";
+  } else if (i18n.language === "no") {
+    packageImgSrcSM = "/img/packageComp21NO_SM.png";
+    packageImgSrcLG = "/img/packageComp22NO_LG.png";
   } else {
-    packageImgSrcSM = '/img/packageComp1EN_SM.png';
-    packageImgSrcLG = '/img/packageComp2EN_LG.png';
+    packageImgSrcSM = "/img/packageComp1EN_SM.png";
+    packageImgSrcLG = "/img/packageComp2EN_LG.png";
   }
-  const [priceAbb, setPriceAbb] = useState('');
+  const [priceAbb, setPriceAbb] = useState("");
 
   const variantIDFromLocal =
-    typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+    typeof window !== "undefined" ? localStorage.getItem("variantID") : "";
 
   // country ------------------------------------------------
-  const [country, setCountry] = useState('');
+  const [country, setCountry] = useState("");
   useEffect(() => {
     let countryFromLocal;
-    if (typeof window !== 'undefined') {
-      countryFromLocal = localStorage.getItem('country');
+    if (typeof window !== "undefined") {
+      countryFromLocal = localStorage.getItem("country");
     }
     setCountry(countryFromLocal);
   }, []);
-  console.log('country: ', country);
+  console.log("country: ", country);
 
   // prices -------------------------------------------------
-  const [discountedStarterPrice, setDiscountedStarterPrice] = useState('');
-  const [discountedProPrice, setDiscountedProPrice] = useState('');
+  const [discountedStarterPrice, setDiscountedStarterPrice] = useState("");
+  const [discountedProPrice, setDiscountedProPrice] = useState("");
 
   const [isShow, setIsShow] = useState(false);
 
@@ -4706,10 +4706,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (userData && !userData.variantID) {
-      fetch('/api/updateUserVariant', {
-        method: 'POST',
+      fetch("/api/updateUserVariant", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           [API_KEY_HEADER]: secretKey,
         },
         body: JSON.stringify({
@@ -4737,9 +4737,9 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   const [limit, setLimit] = useState(1000);
 
   useEffect(() => {
-    if (planLanguage === 'ja') {
+    if (planLanguage === "ja") {
       setLimit(400);
-    } else if (planLanguage === 'ar') {
+    } else if (planLanguage === "ar") {
       setLimit(900);
     } else {
       setLimit(1000);
@@ -4748,13 +4748,13 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneExecPro && limit) {
-      const cleanedTextExec = generatedExecPro.replace(/^"|"$/g, '');
+      const cleanedTextExec = generatedExecPro.replace(/^"|"$/g, "");
       setGeneratedExecPro(cleanedTextExec);
 
       const execLength = generatedExecPro.length;
       if (execLength <= limit) {
         console.log(
-          `generatedExecPro has less than ${limit} chars, generating again`,
+          `generatedExecPro has less than ${limit} chars, generating again`
         );
         generateExecPro();
       } else {
@@ -4765,13 +4765,13 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneSitu1Pro && limit) {
-      const cleanedTextSitu1 = generatedSitu1IndKeyPro.replace(/^"|"$/g, '');
+      const cleanedTextSitu1 = generatedSitu1IndKeyPro.replace(/^"|"$/g, "");
       setGeneratedSitu1IndKeyPro(cleanedTextSitu1);
 
       const situ1Length = generatedSitu1IndKeyPro.length;
       if (situ1Length <= limit) {
         console.log(
-          `generatedSitu1IndKeyPro has less than ${limit} chars, generating again`,
+          `generatedSitu1IndKeyPro has less than ${limit} chars, generating again`
         );
         generateSitu1IndKeyPro(); // this will trigger mark1
       } else {
@@ -4788,13 +4788,13 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneSitu2Pro && limit) {
-      const cleanedTextSitu2 = generatedSitu2SWOTPro.replace(/^"|"$/g, '');
+      const cleanedTextSitu2 = generatedSitu2SWOTPro.replace(/^"|"$/g, "");
       setGeneratedSitu2SWOTPro(cleanedTextSitu2);
 
       const situ2Length = generatedSitu2SWOTPro.length;
       if (situ2Length <= limit) {
         console.log(
-          `generatedSitu2SWOTPro has less than ${limit} chars, generating again`,
+          `generatedSitu2SWOTPro has less than ${limit} chars, generating again`
         );
         generateSitu2SWOTPro();
       } else {
@@ -4805,13 +4805,13 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneMark1Pro && limit) {
-      const cleanedTextMark1 = generatedMark1ObjPro.replace(/^"|"$/g, '');
+      const cleanedTextMark1 = generatedMark1ObjPro.replace(/^"|"$/g, "");
       setGeneratedMark1ObjPro(cleanedTextMark1);
 
       const mark1Length = generatedMark1ObjPro.length;
       if (mark1Length <= limit) {
         console.log(
-          `generatedMark1ObjPro has less than ${limit} chars, generating again`,
+          `generatedMark1ObjPro has less than ${limit} chars, generating again`
         );
         if (doneAndFullContentSitu1Pro)
           generateMark1ObjPro(generatedSitu1IndKeyPro);
@@ -4823,13 +4823,13 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneMark2Pro && limit) {
-      const cleanedTextMark2 = generatedMark2STPPro.replace(/^"|"$/g, '');
+      const cleanedTextMark2 = generatedMark2STPPro.replace(/^"|"$/g, "");
       setGeneratedMark2STPPro(cleanedTextMark2);
 
       const mark2Length = generatedMark2STPPro.length;
       if (mark2Length <= limit) {
         console.log(
-          `generatedMark2STPPro has less than ${limit} chars, generating again`,
+          `generatedMark2STPPro has less than ${limit} chars, generating again`
         );
         generateMark2STPPro();
       } else {
@@ -4849,7 +4849,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneMark3Pro && limit) {
-      const cleanedTextMark3 = generatedMark3DecisionPro.replace(/^"|"$/g, '');
+      const cleanedTextMark3 = generatedMark3DecisionPro.replace(/^"|"$/g, "");
       setGeneratedMark3DecisionPro(cleanedTextMark3);
 
       const mark3Length = generatedMark3DecisionPro.length;
@@ -4864,7 +4864,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneMark4Pro && limit) {
-      const cleanedTextMark4 = generatedMark4ProductPro.replace(/^"|"$/g, '');
+      const cleanedTextMark4 = generatedMark4ProductPro.replace(/^"|"$/g, "");
       setGeneratedMark4ProductPro(cleanedTextMark4);
 
       const mark4Length = generatedMark4ProductPro.length;
@@ -4879,7 +4879,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneMark5Pro && limit) {
-      const cleanedTextMark5 = generatedMark5PriceDistPro.replace(/^"|"$/g, '');
+      const cleanedTextMark5 = generatedMark5PriceDistPro.replace(/^"|"$/g, "");
       setGeneratedMark5PriceDistPro(cleanedTextMark5);
 
       const mark5Length = generatedMark5PriceDistPro.length;
@@ -4894,7 +4894,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneMark6Pro && limit) {
-      const cleanedTextMark6 = generatedMark6AdPro.replace(/^"|"$/g, '');
+      const cleanedTextMark6 = generatedMark6AdPro.replace(/^"|"$/g, "");
       setGeneratedMark6AdPro(cleanedTextMark6);
 
       const mark6Length = generatedMark6AdPro.length;
@@ -4909,7 +4909,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneOp1Pro && limit) {
-      const cleanedTextOp1 = generatedOp1ActKPIsPro.replace(/^"|"$/g, '');
+      const cleanedTextOp1 = generatedOp1ActKPIsPro.replace(/^"|"$/g, "");
       setGeneratedOp1ActKPIsPro(cleanedTextOp1);
 
       const op1Length = generatedOp1ActKPIsPro.length;
@@ -4923,7 +4923,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneOp2Pro && limit) {
-      const cleanedTextOp2 = generatedOp2QCImpPlanPro.replace(/^"|"$/g, '');
+      const cleanedTextOp2 = generatedOp2QCImpPlanPro.replace(/^"|"$/g, "");
       setGeneratedOp2QCImpPlanPro(cleanedTextOp2);
 
       const op2Length = generatedOp2QCImpPlanPro.length;
@@ -4937,7 +4937,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneTech1Pro && limit) {
-      const cleanedTextTech1 = generatedTech1AllPro.replace(/^"|"$/g, '');
+      const cleanedTextTech1 = generatedTech1AllPro.replace(/^"|"$/g, "");
       setGeneratedTech1AllPro(cleanedTextTech1);
 
       const tech1Length = generatedTech1AllPro.length;
@@ -4951,7 +4951,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneTech2Pro && limit) {
-      const cleanedTextTech2 = generatedTech2DigiPro.replace(/^"|"$/g, '');
+      const cleanedTextTech2 = generatedTech2DigiPro.replace(/^"|"$/g, "");
       setGeneratedTech2DigiPro(cleanedTextTech2);
 
       const tech2Length = generatedTech2DigiPro.length;
@@ -4965,7 +4965,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneMang1Pro && limit) {
-      const cleanedTextMang1 = generatedMang1StrucRolePro.replace(/^"|"$/g, '');
+      const cleanedTextMang1 = generatedMang1StrucRolePro.replace(/^"|"$/g, "");
       setGeneratedMang1StrucRolePro(cleanedTextMang1);
 
       const mang1Length = generatedMang1StrucRolePro.length;
@@ -4987,7 +4987,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (doneMang2Pro && limit) {
       const cleanedTextMang2 = generatedMang2RecTrainCSRPro.replace(
         /^"|"$/g,
-        '',
+        ""
       );
       setGeneratedMang2RecTrainCSRPro(cleanedTextMang2);
 
@@ -5002,7 +5002,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneGrowthPro && limit) {
-      const cleanedTextGrowth = generatedGrowthPro.replace(/^"|"$/g, '');
+      const cleanedTextGrowth = generatedGrowthPro.replace(/^"|"$/g, "");
       setGeneratedGrowthPro(cleanedTextGrowth);
 
       const growthLength = generatedGrowthPro.length;
@@ -5016,7 +5016,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   useEffect(() => {
     if (doneRiskPro && limit) {
-      const cleanedTextRisk = generatedRiskPro.replace(/^"|"$/g, '');
+      const cleanedTextRisk = generatedRiskPro.replace(/^"|"$/g, "");
       setGeneratedRiskPro(cleanedTextRisk);
 
       const riskLength = generatedRiskPro.length;
@@ -5050,12 +5050,12 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (runningExecPro) {
       timerRefExecPro.current = setTimeout(() => {
         console.log(
-          'generateExecPro took longer than 2 minutes, generating again',
+          "generateExecPro took longer than 2 minutes, generating again"
         );
         generateExecPro();
       }, 120000);
     } else {
-      console.log('runningExecPro is false, clearing timeout');
+      console.log("runningExecPro is false, clearing timeout");
       clearTimeout(timerRefExecPro.current);
     }
 
@@ -5068,12 +5068,12 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (runningSitu1Pro) {
       timerRefSitu1Pro.current = setTimeout(() => {
         console.log(
-          'generateSitu1IndKeyPro() took longer than 4 minutes, generating again',
+          "generateSitu1IndKeyPro() took longer than 4 minutes, generating again"
         );
         generateSitu1IndKeyPro();
       }, 240000);
     } else {
-      console.log('runningSitu1Pro is false, clearing timeout');
+      console.log("runningSitu1Pro is false, clearing timeout");
       clearTimeout(timerRefSitu1Pro.current);
     }
 
@@ -5086,17 +5086,17 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (runningSitu2Pro) {
       timerRefSitu2Pro.current = setTimeout(() => {
         console.log(
-          'generateSitu2SWOTPro took longer than 2 minutes, generating again',
+          "generateSitu2SWOTPro took longer than 2 minutes, generating again"
         );
         generateSitu2SWOTPro();
       }, 180000);
     } else {
-      console.log('runningSitu2Pro is false, clearing timeout');
+      console.log("runningSitu2Pro is false, clearing timeout");
       clearTimeout(timerRefSitu2Pro.current);
     }
 
     return () => {
-      console.log('Cleanup: clearing timeout');
+      console.log("Cleanup: clearing timeout");
       clearTimeout(timerRefSitu2Pro.current);
     };
   }, [runningSitu2Pro]);
@@ -5106,13 +5106,13 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       if (doneAndFullContentSitu1Pro) {
         timerRefMark1Pro.current = setTimeout(() => {
           console.log(
-            'generateMark1ObjPro took longer than 2 minutes, generating again',
+            "generateMark1ObjPro took longer than 2 minutes, generating again"
           );
           generateMark1ObjPro(generatedSitu1IndKeyPro);
         }, 180000);
       }
     } else {
-      console.log('runningMark1Pro is false, clearing timeout');
+      console.log("runningMark1Pro is false, clearing timeout");
       clearTimeout(timerRefMark1Pro.current);
     }
 
@@ -5125,12 +5125,12 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
     if (runningMark2Pro) {
       timerRefMark2Pro.current = setTimeout(() => {
         console.log(
-          'generateMark2STPPro took longer than 2 minutes, generating again',
+          "generateMark2STPPro took longer than 2 minutes, generating again"
         );
         generateMark2STPPro();
       }, 180000);
     } else {
-      console.log('runningMark2Pro is false, clearing timeout');
+      console.log("runningMark2Pro is false, clearing timeout");
       clearTimeout(timerRefMark2Pro.current);
     }
 
@@ -5147,7 +5147,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         }, 180000);
       }
     } else {
-      console.log('runningMark3Pro is false, clearing timeout');
+      console.log("runningMark3Pro is false, clearing timeout");
       clearTimeout(timerRefMark3Pro.current);
     }
 
@@ -5164,7 +5164,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         }, 180000);
       }
     } else {
-      console.log('runningMark4Pro is false, clearing timeout');
+      console.log("runningMark4Pro is false, clearing timeout");
       clearTimeout(timerRefMark4Pro.current);
     }
 
@@ -5181,7 +5181,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         }, 180000);
       }
     } else {
-      console.log('runningMark5Pro is false, clearing timeout');
+      console.log("runningMark5Pro is false, clearing timeout");
       clearTimeout(timerRefMark5Pro.current);
     }
 
@@ -5198,7 +5198,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         }, 180000);
       }
     } else {
-      console.log('runningMark6Pro is false, clearing timeout');
+      console.log("runningMark6Pro is false, clearing timeout");
       clearTimeout(timerRefMark6Pro.current);
     }
 
@@ -5213,7 +5213,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         generateOp1ActKPIsPro();
       }, 180000);
     } else {
-      console.log('runningOp1Pro is false, clearing timeout');
+      console.log("runningOp1Pro is false, clearing timeout");
       clearTimeout(timerRefOp1Pro.current);
     }
 
@@ -5228,7 +5228,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         generateOp2QCImpPlanPro();
       }, 180000);
     } else {
-      console.log('runningOp2Pro is false, clearing timeout');
+      console.log("runningOp2Pro is false, clearing timeout");
       clearTimeout(timerRefOp2Pro.current);
     }
 
@@ -5243,7 +5243,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         generateTech1AllPro();
       }, 180000);
     } else {
-      console.log('runningTech1Pro is false, clearing timeout');
+      console.log("runningTech1Pro is false, clearing timeout");
       clearTimeout(timerRefTech1Pro.current);
     }
 
@@ -5258,7 +5258,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         generateTech2DigiPro();
       }, 180000);
     } else {
-      console.log('runningTech2Pro is false, clearing timeout');
+      console.log("runningTech2Pro is false, clearing timeout");
       clearTimeout(timerRefTech2Pro.current);
     }
 
@@ -5273,7 +5273,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         generateMang1StrucRolePro();
       }, 180000);
     } else {
-      console.log('runningMang1Pro is false, clearing timeout');
+      console.log("runningMang1Pro is false, clearing timeout");
       clearTimeout(timerRefMang1Pro.current);
     }
 
@@ -5290,7 +5290,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         }, 180000);
       }
     } else {
-      console.log('runningMang2Pro is false, clearing timeout');
+      console.log("runningMang2Pro is false, clearing timeout");
       clearTimeout(timerRefMang2Pro.current);
     }
 
@@ -5305,7 +5305,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         generateGrowthPro();
       }, 180000);
     } else {
-      console.log('runningGrowthPro is false, clearing timeout');
+      console.log("runningGrowthPro is false, clearing timeout");
       clearTimeout(timerRefGrowthPro.current);
     }
 
@@ -5320,7 +5320,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
         generateRiskPro();
       }, 180000);
     } else {
-      console.log('runningRiskPro is false, clearing timeout');
+      console.log("runningRiskPro is false, clearing timeout");
       clearTimeout(timerRefRiskPro.current);
     }
 
@@ -5346,318 +5346,318 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   }, [allDoneGeneratingStarter]);
 
   useEffect(() => {
-    console.log('country from laststep: ', country);
+    console.log("country from laststep: ", country);
     if (country) {
       const currencyMappingsVAR1 = {
         AE: {
-          currency: 'AED',
-          starterPrice: 'د.إ365',
-          proPrice: 'د.إ499',
-          discountedStarterPrice: 'د.إ255',
-          discountedProPrice: 'د.إ349',
+          currency: "AED",
+          starterPrice: "د.إ365",
+          proPrice: "د.إ499",
+          discountedStarterPrice: "د.إ255",
+          discountedProPrice: "د.إ349",
         },
         AU: {
-          currency: 'AUD',
-          starterPrice: 'A$ 155',
-          proPrice: 'A$ 219',
-          discountedStarterPrice: 'A$ 108',
-          discountedProPrice: 'A$ 153',
+          currency: "AUD",
+          starterPrice: "A$ 155",
+          proPrice: "A$ 219",
+          discountedStarterPrice: "A$ 108",
+          discountedProPrice: "A$ 153",
         },
         CA: {
-          currency: 'CAD',
-          starterPrice: 'CA$ 135',
-          proPrice: 'CA$ 189',
-          discountedStarterPrice: 'CA$ 94',
-          discountedProPrice: 'CA$ 132',
+          currency: "CAD",
+          starterPrice: "CA$ 135",
+          proPrice: "CA$ 189",
+          discountedStarterPrice: "CA$ 94",
+          discountedProPrice: "CA$ 132",
         },
         CH: {
-          currency: 'CHF',
-          starterPrice: 'CHF 89',
-          proPrice: 'CHF 125',
-          discountedStarterPrice: 'CHF 62',
-          discountedProPrice: 'CHF 88',
+          currency: "CHF",
+          starterPrice: "CHF 89",
+          proPrice: "CHF 125",
+          discountedStarterPrice: "CHF 62",
+          discountedProPrice: "CHF 88",
         },
         EU: {
-          currency: 'EUR',
-          starterPrice: '€95',
-          proPrice: '€129',
-          discountedStarterPrice: '€66',
-          discountedProPrice: '€90',
+          currency: "EUR",
+          starterPrice: "€95",
+          proPrice: "€129",
+          discountedStarterPrice: "€66",
+          discountedProPrice: "€90",
         },
         GB: {
-          currency: 'GBP',
-          starterPrice: '£79',
-          proPrice: '£109',
-          discountedStarterPrice: '£55',
-          discountedProPrice: '£76',
+          currency: "GBP",
+          starterPrice: "£79",
+          proPrice: "£109",
+          discountedStarterPrice: "£55",
+          discountedProPrice: "£76",
         },
         NZ: {
-          currency: 'NZD',
-          starterPrice: 'NZ$ 169',
-          proPrice: 'NZ$ 235',
-          discountedStarterPrice: 'NZ$ 118',
-          discountedProPrice: 'NZ$ 164',
+          currency: "NZD",
+          starterPrice: "NZ$ 169",
+          proPrice: "NZ$ 235",
+          discountedStarterPrice: "NZ$ 118",
+          discountedProPrice: "NZ$ 164",
         },
         SG: {
-          currency: 'SGD',
-          starterPrice: 'SGD 135',
-          proPrice: 'SGD 189',
-          discountedStarterPrice: 'SGD 94',
-          discountedProPrice: 'SGD 132',
+          currency: "SGD",
+          starterPrice: "SGD 135",
+          proPrice: "SGD 189",
+          discountedStarterPrice: "SGD 94",
+          discountedProPrice: "SGD 132",
         },
         ZA: {
-          currency: 'ZAR',
-          starterPrice: 'R1,850',
-          proPrice: 'R2,590',
-          discountedStarterPrice: 'R1,295',
-          discountedProPrice: 'R1,813',
+          currency: "ZAR",
+          starterPrice: "R1,850",
+          proPrice: "R2,590",
+          discountedStarterPrice: "R1,295",
+          discountedProPrice: "R1,813",
         },
         HK: {
-          currency: 'HKD',
-          starterPrice: 'HK$ 779',
-          proPrice: 'HK$ 1,090',
-          discountedStarterPrice: 'HK$ 545',
-          discountedProPrice: 'HK$ 763',
+          currency: "HKD",
+          starterPrice: "HK$ 779",
+          proPrice: "HK$ 1,090",
+          discountedStarterPrice: "HK$ 545",
+          discountedProPrice: "HK$ 763",
         },
         SE: {
-          currency: 'SEK',
-          starterPrice: '1,090kr',
-          proPrice: '1,490kr',
-          discountedStarterPrice: '763kr',
-          discountedProPrice: '1,043kr',
+          currency: "SEK",
+          starterPrice: "1,090kr",
+          proPrice: "1,490kr",
+          discountedStarterPrice: "763kr",
+          discountedProPrice: "1,043kr",
         },
         DK: {
-          currency: 'DKK',
-          starterPrice: '709kr',
-          proPrice: '990kr',
-          discountedStarterPrice: '496kr',
-          discountedProPrice: '693kr',
+          currency: "DKK",
+          starterPrice: "709kr",
+          proPrice: "990kr",
+          discountedStarterPrice: "496kr",
+          discountedProPrice: "693kr",
         },
         NO: {
-          currency: 'NOK',
-          starterPrice: '1090kr',
-          proPrice: '1490kr',
-          discountedStarterPrice: '763kr',
-          discountedProPrice: '1,043kr',
+          currency: "NOK",
+          starterPrice: "1090kr",
+          proPrice: "1490kr",
+          discountedStarterPrice: "763kr",
+          discountedProPrice: "1,043kr",
         },
         JP: {
-          currency: 'JPY',
-          starterPrice: '¥14,900',
-          proPrice: '¥20,900',
-          discountedStarterPrice: '¥10,430',
-          discountedProPrice: '¥14,630',
+          currency: "JPY",
+          starterPrice: "¥14,900",
+          proPrice: "¥20,900",
+          discountedStarterPrice: "¥10,430",
+          discountedProPrice: "¥14,630",
         },
         QA: {
-          currency: 'QAR',
-          starterPrice: 'QR 359',
-          proPrice: 'QR 509',
-          discountedStarterPrice: 'QR 251',
-          discountedProPrice: 'QR 356',
+          currency: "QAR",
+          starterPrice: "QR 359",
+          proPrice: "QR 509",
+          discountedStarterPrice: "QR 251",
+          discountedProPrice: "QR 356",
         },
         SA: {
-          currency: 'SAR',
-          starterPrice: 'SR 379',
-          proPrice: 'SR 519',
-          discountedStarterPrice: 'SR 265',
-          discountedProPrice: 'SR 363',
+          currency: "SAR",
+          starterPrice: "SR 379",
+          proPrice: "SR 519",
+          discountedStarterPrice: "SR 265",
+          discountedProPrice: "SR 363",
         },
         IN: {
-          currency: 'INR',
-          starterPrice: '₹2,990',
-          proPrice: '₹3,990',
-          discountedStarterPrice: '₹2,093',
-          discountedProPrice: '₹2,793',
+          currency: "INR",
+          starterPrice: "₹2,990",
+          proPrice: "₹3,990",
+          discountedStarterPrice: "₹2,093",
+          discountedProPrice: "₹2,793",
         },
         AR: {
-          currency: 'ARS',
-          starterPrice: 'ARS 29,000',
-          proPrice: 'ARS 39,500',
-          discountedStarterPrice: 'ARS 20,300',
-          discountedProPrice: 'ARS 27,650',
+          currency: "ARS",
+          starterPrice: "ARS 29,000",
+          proPrice: "ARS 39,500",
+          discountedStarterPrice: "ARS 20,300",
+          discountedProPrice: "ARS 27,650",
         },
         CL: {
-          currency: 'CLP',
-          starterPrice: 'CLP 32,900',
-          proPrice: 'CLP 43,900',
-          discountedStarterPrice: 'CLP 23,030',
-          discountedProPrice: 'CLP 30,730',
+          currency: "CLP",
+          starterPrice: "CLP 32,900",
+          proPrice: "CLP 43,900",
+          discountedStarterPrice: "CLP 23,030",
+          discountedProPrice: "CLP 30,730",
         },
         BR: {
-          currency: 'BRL',
-          starterPrice: 'R$ 175',
-          proPrice: 'R$ 235',
-          discountedStarterPrice: 'R$ 122',
-          discountedProPrice: 'R$ 164',
+          currency: "BRL",
+          starterPrice: "R$ 175",
+          proPrice: "R$ 235",
+          discountedStarterPrice: "R$ 122",
+          discountedProPrice: "R$ 164",
         },
       };
       // split test code here
       const currencyMappingsVAR2 = {
         AE: {
-          currency: 'AED',
-          starterPrice: 'د.إ249',
-          proPrice: 'د.إ365',
+          currency: "AED",
+          starterPrice: "د.إ249",
+          proPrice: "د.إ365",
         },
         AR: {
-          currency: 'ARS',
-          starterPrice: 'ARS 29,000',
-          proPrice: 'ARS 39,500',
+          currency: "ARS",
+          starterPrice: "ARS 29,000",
+          proPrice: "ARS 39,500",
         },
         AU: {
-          currency: 'AUD',
-          starterPrice: 'A$ 109',
-          proPrice: 'A$ 155',
+          currency: "AUD",
+          starterPrice: "A$ 109",
+          proPrice: "A$ 155",
         },
         BR: {
-          currency: 'BRL',
-          starterPrice: 'R$ 175',
-          proPrice: 'R$ 235',
+          currency: "BRL",
+          starterPrice: "R$ 175",
+          proPrice: "R$ 235",
         },
         CA: {
-          currency: 'CAD',
-          starterPrice: 'CA$ 95',
-          proPrice: 'CA$ 135',
+          currency: "CAD",
+          starterPrice: "CA$ 95",
+          proPrice: "CA$ 135",
         },
         CH: {
-          currency: 'CHF',
-          starterPrice: 'CHF 65',
-          proPrice: 'CHF 89',
+          currency: "CHF",
+          starterPrice: "CHF 65",
+          proPrice: "CHF 89",
         },
         CL: {
-          currency: 'CLP',
-          starterPrice: 'CLP 32,900',
-          proPrice: 'CLP 43,900',
+          currency: "CLP",
+          starterPrice: "CLP 32,900",
+          proPrice: "CLP 43,900",
         },
         DK: {
-          currency: 'DKK',
-          starterPrice: '479kr',
-          proPrice: '709kr',
+          currency: "DKK",
+          starterPrice: "479kr",
+          proPrice: "709kr",
         },
         EU: {
-          currency: 'EUR',
-          starterPrice: '€65',
-          proPrice: '€95',
+          currency: "EUR",
+          starterPrice: "€65",
+          proPrice: "€95",
         },
         GB: {
-          currency: 'GBP',
-          starterPrice: '£55',
-          proPrice: '£79',
+          currency: "GBP",
+          starterPrice: "£55",
+          proPrice: "£79",
         },
         HK: {
-          currency: 'HKD',
-          starterPrice: 'HK$ 539',
-          proPrice: 'HK$ 779',
+          currency: "HKD",
+          starterPrice: "HK$ 539",
+          proPrice: "HK$ 779",
         },
         IN: {
-          currency: 'INR',
-          starterPrice: '₹2,990',
-          proPrice: '₹3,990',
+          currency: "INR",
+          starterPrice: "₹2,990",
+          proPrice: "₹3,990",
         },
         JP: {
-          currency: 'JPY',
-          starterPrice: '¥10,900',
-          proPrice: '¥14,900',
+          currency: "JPY",
+          starterPrice: "¥10,900",
+          proPrice: "¥14,900",
         },
         NO: {
-          currency: 'NOK',
-          starterPrice: '765kr',
-          proPrice: '1090kr',
+          currency: "NOK",
+          starterPrice: "765kr",
+          proPrice: "1090kr",
         },
         NZ: {
-          currency: 'NZD',
-          starterPrice: 'NZ$ 115',
-          proPrice: 'NZ$ 169',
+          currency: "NZD",
+          starterPrice: "NZ$ 115",
+          proPrice: "NZ$ 169",
         },
         QA: {
-          currency: 'QAR',
-          starterPrice: 'QR 249',
-          proPrice: 'QR 359',
+          currency: "QAR",
+          starterPrice: "QR 249",
+          proPrice: "QR 359",
         },
         SA: {
-          currency: 'SAR',
-          starterPrice: 'SR 259',
-          proPrice: 'SR 379',
+          currency: "SAR",
+          starterPrice: "SR 259",
+          proPrice: "SR 379",
         },
         SE: {
-          currency: 'SEK',
-          starterPrice: '759kr',
-          proPrice: '1,090kr',
+          currency: "SEK",
+          starterPrice: "759kr",
+          proPrice: "1,090kr",
         },
         SG: {
-          currency: 'SGD',
-          starterPrice: 'SGD 95',
-          proPrice: 'SGD 135',
+          currency: "SGD",
+          starterPrice: "SGD 95",
+          proPrice: "SGD 135",
         },
         ZA: {
-          currency: 'ZAR',
-          starterPrice: 'R1,290',
-          proPrice: 'R1,850',
+          currency: "ZAR",
+          starterPrice: "R1,290",
+          proPrice: "R1,850",
         },
         TH: {
-          currency: 'THB',
-          starterPrice: '690 THB',
-          proPrice: '990 THB',
+          currency: "THB",
+          starterPrice: "690 THB",
+          proPrice: "990 THB",
         },
       };
 
       const euroCountries = [
-        'DE',
-        'FR',
-        'IT',
-        'ES',
-        'NL',
-        'BE',
-        'LU',
-        'IE',
-        'PT',
-        'AT',
-        'FI',
-        'GR',
-        'CY',
-        'MT',
-        'EE',
-        'LV',
-        'LT',
-        'SK',
-        'SI',
+        "DE",
+        "FR",
+        "IT",
+        "ES",
+        "NL",
+        "BE",
+        "LU",
+        "IE",
+        "PT",
+        "AT",
+        "FI",
+        "GR",
+        "CY",
+        "MT",
+        "EE",
+        "LV",
+        "LT",
+        "SK",
+        "SI",
       ];
 
       let countryMapping;
       countryMapping = currencyMappingsVAR2[country];
 
       if (!euroCountries.includes(country) && countryMapping) {
-        console.log('not euro country inside: ', country);
+        console.log("not euro country inside: ", country);
         setPriceAbb(`(${countryMapping.currency})`);
         setStarterPrice(countryMapping.starterPrice);
         setProPrice(countryMapping.proPrice);
       } else if (euroCountries.includes(country)) {
-        console.log('is euro country inside: ', country);
-        setPriceAbb('(EUR)');
-        setStarterPrice('€65');
-        setProPrice('€95');
+        console.log("is euro country inside: ", country);
+        setPriceAbb("(EUR)");
+        setStarterPrice("€65");
+        setProPrice("€95");
       } else {
-        console.log('no country match inside: ', country);
-        setPriceAbb('(USD)');
-        setStarterPrice('$69');
-        setProPrice('$99');
+        console.log("no country match inside: ", country);
+        setPriceAbb("(USD)");
+        setStarterPrice("$69");
+        setProPrice("$99");
       }
     } else {
-      console.log('no country: ', country);
-      setPriceAbb('(USD)');
-      setStarterPrice('$69');
-      setProPrice('$99');
+      console.log("no country: ", country);
+      setPriceAbb("(USD)");
+      setStarterPrice("$69");
+      setProPrice("$99");
     }
   }, [country]);
 
   //log paid
   useEffect(() => {
-    console.log('is paid: ', paid);
+    console.log("is paid: ", paid);
   }, [paid]);
 
-  const [textAlign, setTextAlign] = useState('');
+  const [textAlign, setTextAlign] = useState("");
 
   useEffect(() => {
-    if (planLanguage === 'ar') {
-      setTextAlign('text-right');
+    if (planLanguage === "ar") {
+      setTextAlign("text-right");
     }
   }, [planLanguage]);
 
@@ -5665,21 +5665,21 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
   const toggleBodyScroll = (disable) => {
     if (disable) {
-      document.body.classList.add('overflow-hidden');
+      document.body.classList.add("overflow-hidden");
     } else {
-      document.body.classList.remove('overflow-hidden');
+      document.body.classList.remove("overflow-hidden");
     }
   };
 
   useEffect(() => {
-    console.log('showReviewTerms: ', showReviewTerms);
+    console.log("showReviewTerms: ", showReviewTerms);
     toggleBodyScroll(showReviewTerms);
     return () => toggleBodyScroll(false);
   }, [showReviewTerms]);
 
   function setShowReviewTermsFalse(event) {
     event.stopPropagation(); // Prevent event from propagating to parent elements
-    console.log('Setting showReviewTerms to false: ', showReviewTerms);
+    console.log("Setting showReviewTerms to false: ", showReviewTerms);
     setShowReviewTerms(false);
   }
 
@@ -5689,13 +5689,13 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
       {userData && session && !paid ? noSession() : <></>}
       {userData &&
       session &&
-      userData.planPackage === 'professional' &&
+      userData.planPackage === "professional" &&
       paid ? (
         sessionPro()
       ) : (
         <></>
       )}
-      {userData && session && userData.planPackage === 'starter' && paid ? (
+      {userData && session && userData.planPackage === "starter" && paid ? (
         sessionStarter()
       ) : (
         <></>
@@ -5735,7 +5735,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                   </div>
                   <div className="">
                     {t(
-                      'Generating plan... once done you can get the full plan at the end of the page. DO NOT QUIT, this can take a minute',
+                      "Generating plan... once done you can get the full plan at the end of the page. DO NOT QUIT, this can take a minute"
                     )}
                   </div>
                 </div>
@@ -5747,8 +5747,8 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
               <div className={stylesW.loading_box}>
                 <div className="flex gap-1 items-center justify-center">
                   <div>
-                    <strong>{t('All done!')}</strong>{' '}
-                    {t('you can get the full plan at the end of the page')}
+                    <strong>{t("All done!")}</strong>{" "}
+                    {t("you can get the full plan at the end of the page")}
                   </div>
                 </div>
               </div>
@@ -5778,20 +5778,20 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           role="alert"
                         >
                           <strong className="font-bold text-red-700">
-                            {t('Failed to generate business plan')}
+                            {t("Failed to generate business plan")}
                           </strong>
                           <span className="block sm:inline">
                             {t(
-                              'OpenAI servers might be down, please try again later, retry on',
-                            )}{' '}
-                            <strong className="text-red-700">{t('PC')}</strong>,{' '}
-                            {t('or try using a')}{' '}
+                              "OpenAI servers might be down, please try again later, retry on"
+                            )}{" "}
+                            <strong className="text-red-700">{t("PC")}</strong>,{" "}
+                            {t("or try using a")}{" "}
                             <strong className="text-red-700">
-                              {t('different browser')}
+                              {t("different browser")}
                             </strong>
                           </span>
                           <button onClick={generatePlan} className="button">
-                            {t('Regenerate Plan')}
+                            {t("Regenerate Plan")}
                           </button>
                         </div>
                       )}
@@ -5804,19 +5804,19 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                             className={`button back-button w-[110px] white w-button`}
                             onClick={handleBackButton}
                           >
-                            {t('Back')}
+                            {t("Back")}
                           </button>
                           <button
                             className="button"
                             onClick={handleGeneratePlan}
                           >
-                            {t('Generate Plan')}
+                            {t("Generate Plan")}
                           </button>
                         </div>
                         <div className="flex justify-center items-center text-center">
                           <p>
                             {t(
-                              'Note: Please check your inputs before generating plan, once you click generate plan you will not be able to edit your inputs',
+                              "Note: Please check your inputs before generating plan, once you click generate plan you will not be able to edit your inputs"
                             )}
                           </p>
                         </div>
@@ -5830,7 +5830,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                         <MoonLoader size={30} />
                         <strong>
                           {t(
-                            "We're generating parts of the plan for you, once done loading you can get the full plan at the end of the page",
+                            "We're generating parts of the plan for you, once done loading you can get the full plan at the end of the page"
                           )}
                         </strong>
                       </div>
@@ -5842,7 +5842,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                       <div className="flex justify-center items-center text-center mb-10">
                         <strong>
                           {t(
-                            "We've generated parts of the plan for you. To get full plan, go to the end of the page to proceed",
+                            "We've generated parts of the plan for you. To get full plan, go to the end of the page to proceed"
                           )}
                         </strong>
                       </div>
@@ -5875,7 +5875,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                             onSubmit={handleSubmitExec}
                           >
                             <div className="absolute top-[-65px] left-1/2 transform -translate-x-1/2 bg-white px-2 whitespace-nowrap">
-                              <i>{t('Try Our AI Edit Feature!')}</i>
+                              <i>{t("Try Our AI Edit Feature!")}</i>
                             </div>
 
                             <Image
@@ -5886,16 +5886,16 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                               className="absolute top-[-63px] left-1/2 transform -translate-x-1/2"
                             />
                             <div className={`${styles.label} mb-4 mt-8`}>
-                              {t('What would you like to change about the')}{' '}
-                              <strong>{t('Executive Summary')}</strong>{' '}
-                              {t('above?')}
+                              {t("What would you like to change about the")}{" "}
+                              <strong>{t("Executive Summary")}</strong>{" "}
+                              {t("above?")}
                             </div>
                             <Input
                               type="text"
                               value={editInputExec}
                               onChange={handleEditExec}
                               placeholder={t(
-                                `E.g. replace business origins topic with product description topic`,
+                                `E.g. replace business origins topic with product description topic`
                               )}
                               className={styles.text_input}
                               ref={inputRefExec}
@@ -5905,7 +5905,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                             />
                             <div className="text-sm">
                               {t(
-                                "Note: changes here won't apply to the final plan so you can explore freely. Full editing will be available once unlocked at the end of the page.",
+                                "Note: changes here won't apply to the final plan so you can explore freely. Full editing will be available once unlocked at the end of the page."
                               )}
                             </div>
                             <div className="w-full flex justify-center items-baseline mt-8 gap-6">
@@ -5919,8 +5919,8 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                                       className="transparent-button-small  flex items-center"
                                       onClick={UndoChangeExec}
                                     >
-                                      {t('Undo Change')}
-                                      <div className="w-1"></div>{' '}
+                                      {t("Undo Change")}
+                                      <div className="w-1"></div>{" "}
                                       <BiUndo size={20} />
                                     </button>
                                   )}
@@ -5928,7 +5928,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                                     type="submit"
                                     className="button-small"
                                   >
-                                    {t('Make Change')}
+                                    {t("Make Change")}
                                   </button>
                                 </>
                               ) : (
@@ -5942,7 +5942,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                                     <div className="flex flex-col">
                                       <div className="error-box w-full">
                                         {t(
-                                          'Error editing Executive Summary, click Undo Change and Try Again',
+                                          "Error editing Executive Summary, click Undo Change and Try Again"
                                         )}
                                       </div>
                                       <button
@@ -5950,8 +5950,8 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                                         className="transparent-button-small flex items-center"
                                         onClick={UndoChangeExec}
                                       >
-                                        {t('Undo Change')}
-                                        <div className="w-1"></div>{' '}
+                                        {t("Undo Change")}
+                                        <div className="w-1"></div>{" "}
                                         <BiUndo size={20} />
                                       </button>
                                     </div>
@@ -5960,7 +5960,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                                     <div className="flex-col justify-center items-center">
                                       <div className="error-box w-full">
                                         {t(
-                                          'Edit Quota Limit reached, go to the end of the page to unlock full editing',
+                                          "Edit Quota Limit reached, go to the end of the page to unlock full editing"
                                         )}
                                       </div>
                                     </div>
@@ -6018,8 +6018,8 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                       >
                         <div className="flex flex-col justify-center items-center">
                           <h5 className="font-bold">
-                            {' '}
-                            {t('Unlock Business Plan With a One-time Fee Of..')}
+                            {" "}
+                            {t("Unlock Business Plan With a One-time Fee Of..")}
                           </h5>
                           <br />
                           <button
@@ -6028,10 +6028,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           >
                             {proPrice}
                             <span className="text-lg">
-                              {priceAbb + t(' for professional package')}
+                              {priceAbb + t(" for professional package")}
                             </span>
                           </button>
-                          <div className="">{t('Or')}</div>
+                          <div className="">{t("Or")}</div>
                           <br />
                           <button
                             onClick={() => scrollToRef(refStarter)}
@@ -6039,7 +6039,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           >
                             {starterPrice}
                             <span className="text-lg">
-                              {priceAbb + t(' for starter package')}
+                              {priceAbb + t(" for starter package")}
                             </span>
                           </button>
                         </div>
@@ -6050,12 +6050,12 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                         {/* <p className="block sm:inline mb-0">{callToAction}</p> */}
 
                         <p className="text-2xl">
-                          <strong>{t('What Our Customers Say')}</strong>
+                          <strong>{t("What Our Customers Say")}</strong>
                         </p>
                         <div className="w-layout-grid grid-3-columns">
                           <div className="">
                             <p className="text-xl">
-                              <strong>{t('Zede H.')}</strong>
+                              <strong>{t("Zede H.")}</strong>
                             </p>
                             <Image
                               src="/img/zede1.png"
@@ -6069,7 +6069,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
                           <div className="">
                             <p className="text-xl">
-                              <strong>{t('Jason C.')}</strong>
+                              <strong>{t("Jason C.")}</strong>
                             </p>
                             <Image
                               src="/img/jason1.png"
@@ -6083,7 +6083,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
                           <div className="">
                             <p className="text-xl">
-                              <strong>{t('Parker A.')}</strong>
+                              <strong>{t("Parker A.")}</strong>
                             </p>
                             <Image
                               src="/img/parker1.png"
@@ -6105,7 +6105,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                               ))}
                             </div>
                             <div className="flex flex-row items-center gap-2 text-black">
-                              {t('Reviews From')}
+                              {t("Reviews From")}
                               <Image
                                 src="https://plannit.ai/assets/trustpilot.svg"
                                 width={100}
@@ -6116,26 +6116,26 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           </div>
                         )}
                         <p className="text-2xl mt-10">
-                          <strong>{t('Mentioned In..')}</strong>
+                          <strong>{t("Mentioned In..")}</strong>
                         </p>
 
                         <div className="flex flex-wrap gap-10 justify-center items-center mb-16 p-3">
                           <Image
-                            src={'/img/AsMentionLogos/AP_logo_rmb.png'}
+                            src={"/img/AsMentionLogos/AP_logo_rmb.png"}
                             alt="AP_logo"
                             width={67.2}
                             height={84}
                           />
 
                           <Image
-                            src={'/img/AsMentionLogos/yahoo_logo_rmb.png'}
+                            src={"/img/AsMentionLogos/yahoo_logo_rmb.png"}
                             alt="yahoo_logo"
                             width={126}
                             height={84}
                           />
 
                           <Image
-                            src={'/img/AsMentionLogos/marketWatch_logo_rmb.svg'}
+                            src={"/img/AsMentionLogos/marketWatch_logo_rmb.svg"}
                             alt="marketWatch_logo"
                             width={168}
                             height={84}
@@ -6143,7 +6143,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
                           <Image
                             src={
-                              '/img/AsMentionLogos/Bloomberg_Terminal_logo_rmb.png'
+                              "/img/AsMentionLogos/Bloomberg_Terminal_logo_rmb.png"
                             }
                             alt="Bloomberg_Terminal_logo"
                             width={126}
@@ -6151,7 +6151,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           />
 
                           <Image
-                            src={'/img/AsMentionLogos/Medium_logo_rmb.png'}
+                            src={"/img/AsMentionLogos/Medium_logo_rmb.png"}
                             alt="Medium_logo"
                             width={168}
                             height={84}
@@ -6159,7 +6159,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
 
                           <Image
                             src={
-                              '/img/AsMentionLogos/seeking_alpha_logo_rmb.png'
+                              "/img/AsMentionLogos/seeking_alpha_logo_rmb.png"
                             }
                             alt="seeking_alpha_logo"
                             width={168}
@@ -6167,21 +6167,21 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           />
 
                           <Image
-                            src={'/img/AsMentionLogos/finanzen_logo_rmb.png'}
+                            src={"/img/AsMentionLogos/finanzen_logo_rmb.png"}
                             alt="finanzen_logo"
                             width={168}
                             height={84}
                           />
 
                           <Image
-                            src={'/img/AsMentionLogos/benzinga_logo_rmb.png'}
+                            src={"/img/AsMentionLogos/benzinga_logo_rmb.png"}
                             alt="benzinga_logo"
                             width={168}
                             height={84}
                           />
 
                           <Image
-                            src={'/img/AsMentionLogos/10web_logo_rmb.png'}
+                            src={"/img/AsMentionLogos/10web_logo_rmb.png"}
                             alt="10web_logo"
                             width={168}
                             height={84}
@@ -6192,38 +6192,38 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           <div className="mt-3 mb-3">
                             <strong className="text-2xl">
                               {t(
-                                'There are many business plan softwares out there...',
+                                "There are many business plan softwares out there..."
                               )}
                             </strong>
                           </div>
-                          {t('...including popular ones like')}{' '}
-                          <strong>{t('LivePlan')}</strong>,{' '}
-                          <strong>{t('PlanBuildr')}</strong>,{' '}
-                          <strong>{t('IdeaBuddy')}</strong>, {t(', and')}{' '}
-                          <strong>{t('Enloop')}</strong>.{' '}
+                          {t("...including popular ones like")}{" "}
+                          <strong>{t("LivePlan")}</strong>,{" "}
+                          <strong>{t("PlanBuildr")}</strong>,{" "}
+                          <strong>{t("IdeaBuddy")}</strong>, {t(", and")}{" "}
+                          <strong>{t("Enloop")}</strong>.{" "}
                           {t(
-                            'They all require you to manually write the business plan yourself(LivePlan, IdeaBuddy) or provide you with a very generic template(PlanBuildr, Enloop). Additionally, manual business plan services could easily cost you more than',
-                          )}{' '}
-                          <strong> 700 USD </strong> {t('for a single plan')}.{' '}
+                            "They all require you to manually write the business plan yourself(LivePlan, IdeaBuddy) or provide you with a very generic template(PlanBuildr, Enloop). Additionally, manual business plan services could easily cost you more than"
+                          )}{" "}
+                          <strong> 700 USD </strong> {t("for a single plan")}.{" "}
                           {t(
-                            'Many manual business plan services actually use our product and sell our plans for a large profit.',
-                          )}{' '}
-                          {t('Last we checked at')} {formattedDate},{' '}
-                          <strong>{t('15minuteplan.ai')}</strong>{' '}
+                            "Many manual business plan services actually use our product and sell our plans for a large profit."
+                          )}{" "}
+                          {t("Last we checked at")} {formattedDate},{" "}
+                          <strong>{t("15minuteplan.ai")}</strong>{" "}
                           {t(
-                            'is the only AI Business Plan Generator that can generate up to 10 business plans specifically for',
-                          )}{' '}
-                          <strong>{t('you')}</strong> {t('at the')}{' '}
-                          <strong>{t('fraction')}</strong>{' '}
-                          {t('of the cost of professional services')}.{' '}
+                            "is the only AI Business Plan Generator that can generate up to 10 business plans specifically for"
+                          )}{" "}
+                          <strong>{t("you")}</strong> {t("at the")}{" "}
+                          <strong>{t("fraction")}</strong>{" "}
+                          {t("of the cost of professional services")}.{" "}
                           {t(
-                            'We encourage you to try out the other products and see for yourself. If you find a product that makes a business plan that matches our quality and value-for-money send us a link and you can use our product for free.',
+                            "We encourage you to try out the other products and see for yourself. If you find a product that makes a business plan that matches our quality and value-for-money send us a link and you can use our product for free."
                           )}
                           <br />
                           <div className="mt-3 mb-3">
                             <strong>
                               {t(
-                                "We've made our product with love and we 100% stand behind it so we'd be thrilled if you give our product a try.",
+                                "We've made our product with love and we 100% stand behind it so we'd be thrilled if you give our product a try."
                               )}
                             </strong>
                           </div>
@@ -6232,10 +6232,10 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                         <div className="flex-col justify-center items-center">
                           <div className="text-2xl mt-6">
                             <strong>
-                              {t('Freelance Business Plan Service Prices')}
-                            </strong>{' '}
+                              {t("Freelance Business Plan Service Prices")}
+                            </strong>{" "}
                             <strong className="underline">
-                              {t('For 1 Plan')}
+                              {t("For 1 Plan")}
                             </strong>
                           </div>
                           <img
@@ -6249,7 +6249,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           <p className="text-2xl">
                             <strong>
                               {t(
-                                'With 15minuteplan.ai you can choose from 2 packages..',
+                                "With 15minuteplan.ai you can choose from 2 packages.."
                               )}
                             </strong>
                           </p>
@@ -6270,16 +6270,16 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                                 onClick={viewExampleStarter}
                                 className="transparent-button-small-example mb-5"
                               >
-                                {t('View Starter Example Plan')}
+                                {t("View Starter Example Plan")}
                               </button>
                             </div>
                             <div className="w-1/2 flex justify-center ml-1">
-                              {' '}
+                              {" "}
                               <button
                                 onClick={viewExamplePro}
                                 className="transparent-button-small-example mb-5"
                               >
-                                {t('View Professional Example Plan')}
+                                {t("View Professional Example Plan")}
                               </button>
                             </div>
                           </div>
@@ -6287,13 +6287,13 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           <br />
 
                           <div className="text-rose-600">
-                            {t('warning: If you')}{' '}
+                            {t("warning: If you")}{" "}
                             <strong className="text-rose-600">
-                              {t('QUIT')}
-                            </strong>{' '}
-                            {t('your plan will be')}{' '}
+                              {t("QUIT")}
+                            </strong>{" "}
+                            {t("your plan will be")}{" "}
                             <strong className="text-rose-600">
-                              {t('LOST')}
+                              {t("LOST")}
                             </strong>
                           </div>
 
@@ -6304,7 +6304,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           <div>
                             <div className="">
                               <strong>
-                                {t('Pay Once, use forever. No extra costs.')}{' '}
+                                {t("Pay Once, use forever. No extra costs.")}{" "}
                               </strong>
                             </div>
 
@@ -6321,17 +6321,17 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                                 onClick={getStarterPackage}
                                 className="transparent-button-unlock w-button mb-5"
                               >
-                                {t('Unlock Starter For ')} {starterPrice}
+                                {t("Unlock Starter For ")} {starterPrice}
                               </button>
                             </div>
                             <div className="w-1/2 flex justify-center ml-1">
-                              {' '}
+                              {" "}
                               <button
                                 ref={refPro}
                                 onClick={getProPackage}
                                 className="button-unlock w-button mb-5"
                               >
-                                {t('Unlock Professional For ')} {proPrice}
+                                {t("Unlock Professional For ")} {proPrice}
                               </button>
                             </div>
                           </div>
@@ -6362,7 +6362,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
             onClose={() => setWarningModal({ isOpen: false, fn: () => {} })}
             onOK={warningModal.fn}
           >
-            {t('confirmCopyPlanMessage')}
+            {t("confirmCopyPlanMessage")}
           </Modal>
         )}
         <motion.div
@@ -6377,11 +6377,11 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
               <div className={stylesW.loading_box}>
                 <div className="flex gap-4 items-center justify-center">
                   <div>
-                    <MoonLoader size={20} speedMultiplier={0.7} />{' '}
+                    <MoonLoader size={20} speedMultiplier={0.7} />{" "}
                   </div>
                   <div>
                     {t(
-                      'Generating plan, once done you can edit and save at the top of the page. DO NOT QUIT',
+                      "Generating plan, once done you can edit and save at the top of the page. DO NOT QUIT"
                     )}
                   </div>
                 </div>
@@ -6393,8 +6393,8 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
               <div className={stylesW.loading_box}>
                 <div className="flex gap-1 items-center justify-center">
                   <div>
-                    <strong>{t('All done!')}</strong>{' '}
-                    {t('you can edit and save at the top of the page')}
+                    <strong>{t("All done!")}</strong>{" "}
+                    {t("you can edit and save at the top of the page")}
                   </div>
                 </div>
               </div>
@@ -6412,23 +6412,23 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           role="alert"
                         >
                           <strong className="font-bold text-red-700">
-                            {t('Failed to generate business plan')}
+                            {t("Failed to generate business plan")}
                           </strong>
                           <span className="block sm:inline">
                             {t(
-                              'OpenAI servers might be down, please try again later, retry on',
-                            )}{' '}
-                            <strong className="text-red-700">{t('PC')}</strong>,{' '}
-                            {t('or try using a')}{' '}
+                              "OpenAI servers might be down, please try again later, retry on"
+                            )}{" "}
+                            <strong className="text-red-700">{t("PC")}</strong>,{" "}
+                            {t("or try using a")}{" "}
                             <strong className="text-red-700">
-                              {t('different browser')}
+                              {t("different browser")}
                             </strong>
                           </span>
                           <button
                             onClick={generatePlanStarter}
                             className="button"
                           >
-                            {t('Regenerate Plan')}
+                            {t("Regenerate Plan")}
                           </button>
                         </div>
                       )}
@@ -6442,18 +6442,18 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                         <div className="flex gap-3">
                           <Link
                             href={{
-                              pathname: '/editPlanStarter',
+                              pathname: "/editPlanStarter",
                               query: { planId: planId },
                             }}
                             className="button"
                             onClick={() => {
                               trackEvent({
-                                event_name: 'edit_and_save_button',
+                                event_name: "edit_and_save_button",
                               });
                             }}
                           >
-                            {' '}
-                            {t('Edit & Save')}
+                            {" "}
+                            {t("Edit & Save")}
                           </Link>
                         </div>
                       ) : (
@@ -6467,7 +6467,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                               className="button back-button white w-button"
                               onClick={handleBackButton}
                             >
-                              {t('Back')}
+                              {t("Back")}
                             </button>
                             <button
                               className="button"
@@ -6481,13 +6481,13 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                                   : handleGeneratePlanStarter
                               }
                             >
-                              {t('Generate Plan')}
+                              {t("Generate Plan")}
                             </button>
                           </div>
                           <div className="flex justify-center items-center text-center">
                             <p>
                               {t(
-                                'Note: Please check your inputs before generating plan, once you click generate plan you will not be able to edit your inputs',
+                                "Note: Please check your inputs before generating plan, once you click generate plan you will not be able to edit your inputs"
                               )}
                             </p>
                           </div>
@@ -6501,7 +6501,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           <MoonLoader size={30} />
                           <strong>
                             {t(
-                              "We're generating the plan for you, once done you can edit and save here",
+                              "We're generating the plan for you, once done you can edit and save here"
                             )}
                           </strong>
                         </div>
@@ -6635,7 +6635,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
             onClose={() => setWarningModal({ isOpen: false, fn: () => {} })}
             onOK={warningModal.fn}
           >
-            {t('confirmCopyPlanMessage')}
+            {t("confirmCopyPlanMessage")}
           </Modal>
         )}
         <motion.div
@@ -6650,11 +6650,11 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
               <div className={stylesW.loading_box}>
                 <div className="flex gap-4 items-center justify-center">
                   <div>
-                    <MoonLoader size={20} speedMultiplier={0.7} />{' '}
+                    <MoonLoader size={20} speedMultiplier={0.7} />{" "}
                   </div>
                   <div>
                     {t(
-                      'Generating plan, once done you can edit and save at the top of the page. DO NOT QUIT, this could take a minute',
+                      "Generating plan, once done you can edit and save at the top of the page. DO NOT QUIT, this could take a minute"
                     )}
                   </div>
                 </div>
@@ -6666,8 +6666,8 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
               <div className={stylesW.loading_box}>
                 <div className="flex gap-1 items-center justify-center">
                   <div>
-                    <strong>{t('All done!')}</strong>{' '}
-                    {t('you can edit and save at the top of the page')}
+                    <strong>{t("All done!")}</strong>{" "}
+                    {t("you can edit and save at the top of the page")}
                   </div>
                 </div>
               </div>
@@ -6685,20 +6685,20 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           role="alert"
                         >
                           <strong className="font-bold text-red-700">
-                            {t('Failed to generate business plan')}
+                            {t("Failed to generate business plan")}
                           </strong>
                           <span className="block sm:inline">
                             {t(
-                              'OpenAI servers might be down, please try again later, retry on',
-                            )}{' '}
-                            <strong className="text-red-700">{t('PC')}</strong>,{' '}
-                            {t('or try using a')}{' '}
+                              "OpenAI servers might be down, please try again later, retry on"
+                            )}{" "}
+                            <strong className="text-red-700">{t("PC")}</strong>,{" "}
+                            {t("or try using a")}{" "}
                             <strong className="text-red-700">
-                              {t('different browser')}
+                              {t("different browser")}
                             </strong>
                           </span>
                           <button onClick={generatePlanPro} className="button">
-                            {t('Regenerate Plan')}
+                            {t("Regenerate Plan")}
                           </button>
                         </div>
                       )}
@@ -6712,18 +6712,18 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                         <div className="flex gap-3">
                           <Link
                             href={{
-                              pathname: '/editPlanPro',
+                              pathname: "/editPlanPro",
                               query: { planId: planId },
                             }}
                             className="button"
                             onClick={() => {
                               trackEvent({
-                                event_name: 'edit_and_save_button',
+                                event_name: "edit_and_save_button",
                               });
                             }}
                           >
-                            {' '}
-                            {t('Edit & Save')}
+                            {" "}
+                            {t("Edit & Save")}
                           </Link>
                         </div>
                       ) : (
@@ -6737,7 +6737,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                               className="button back-button white w-button"
                               onClick={handleBackButton}
                             >
-                              {t('Back')}
+                              {t("Back")}
                             </button>
                             <button
                               className="button"
@@ -6751,13 +6751,13 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                                   : handleGeneratePlanPro
                               }
                             >
-                              {t('Generate Plan')}
+                              {t("Generate Plan")}
                             </button>
                           </div>
                           <div className="flex justify-center items-center text-center">
                             <p>
                               {t(
-                                'Note: Please check your inputs before generating plan, once you click generate plan you will not be able to edit your inputs',
+                                "Note: Please check your inputs before generating plan, once you click generate plan you will not be able to edit your inputs"
                               )}
                             </p>
                           </div>
@@ -6771,7 +6771,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                           <MoonLoader size={30} />
                           <strong>
                             {t(
-                              "We're generating the plan for you, once done you can edit and save here",
+                              "We're generating the plan for you, once done you can edit and save here"
                             )}
                           </strong>
                         </div>
@@ -6797,7 +6797,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: domPurify.sanitize(
-                                  generatedSitu1IndKeyPro,
+                                  generatedSitu1IndKeyPro
                                 ),
                               }}
                             />
@@ -6806,7 +6806,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: domPurify.sanitize(
-                                  generatedSitu2SWOTPro,
+                                  generatedSitu2SWOTPro
                                 ),
                               }}
                             />
@@ -6831,7 +6831,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: domPurify.sanitize(
-                                  generatedMark3DecisionPro,
+                                  generatedMark3DecisionPro
                                 ),
                               }}
                             />
@@ -6840,7 +6840,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: domPurify.sanitize(
-                                  generatedMark4ProductPro,
+                                  generatedMark4ProductPro
                                 ),
                               }}
                             />
@@ -6849,7 +6849,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: domPurify.sanitize(
-                                  generatedMark5PriceDistPro,
+                                  generatedMark5PriceDistPro
                                 ),
                               }}
                             />
@@ -6865,7 +6865,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: domPurify.sanitize(
-                                  generatedOp1ActKPIsPro,
+                                  generatedOp1ActKPIsPro
                                 ),
                               }}
                             />
@@ -6874,7 +6874,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: domPurify.sanitize(
-                                  generatedOp2QCImpPlanPro,
+                                  generatedOp2QCImpPlanPro
                                 ),
                               }}
                             />
@@ -6891,7 +6891,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: domPurify.sanitize(
-                                  generatedTech2DigiPro,
+                                  generatedTech2DigiPro
                                 ),
                               }}
                             />
@@ -6900,7 +6900,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: domPurify.sanitize(
-                                  generatedMang1StrucRolePro,
+                                  generatedMang1StrucRolePro
                                 ),
                               }}
                             />
@@ -6909,7 +6909,7 @@ export default function LastStepPlanGen({ fbPixelId, secretKey }) {
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: domPurify.sanitize(
-                                  generatedMang2RecTrainCSRPro,
+                                  generatedMang2RecTrainCSRPro
                                 ),
                               }}
                             />
@@ -6992,7 +6992,7 @@ export async function getStaticProps({ locale }) {
   const fbPixelId = process.env.FB_PIXEL_ID;
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['LastStepPlanGen'])),
+      ...(await serverSideTranslations(locale, ["LastStepPlanGen"])),
       secretKey,
       fbPixelId,
       // Will be passed to the page component as props

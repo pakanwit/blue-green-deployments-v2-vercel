@@ -1,23 +1,23 @@
-import { useEffect, useState, useRef, use } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import Head from 'next/head';
-import React from 'react';
-import { useSession } from 'next-auth/react';
-import { MoonLoader } from 'react-spinners';
-import Confetti from 'react-confetti';
-import { event } from 'nextjs-google-analytics';
-import DOMPurify from 'dompurify';
-import FinTable from '../components/FinTable';
-import stylesW from '../styles/Wizard.module.css';
-import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
-import us2gb from '../utils/us2gb';
-import useLocale from '../hooks/useLocale';
-import { API_KEY_HEADER } from './api/constants';
-import trackEvent from '../utils/trackEvent';
-import Pixel from '../components/Pixel';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useEffect, useState, useRef, use } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import Head from "next/head";
+import React from "react";
+import { useSession } from "next-auth/react";
+import { MoonLoader } from "react-spinners";
+import Confetti from "react-confetti";
+import { event } from "nextjs-google-analytics";
+import DOMPurify from "dompurify";
+import FinTable from "../components/FinTable";
+import stylesW from "../styles/Wizard.module.css";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
+import us2gb from "../utils/us2gb";
+import useLocale from "../hooks/useLocale";
+import { API_KEY_HEADER } from "./api/constants";
+import trackEvent from "../utils/trackEvent";
+import Pixel from "../components/Pixel";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 declare let gtag: (...args: any[]) => void;
 
@@ -27,9 +27,9 @@ export default function fullPlanStarter({
   fbPixelId,
   conversionDestinationId,
 }) {
-  const { t } = useTranslation('fullPlanStarter');
+  const { t } = useTranslation("fullPlanStarter");
   const variantID =
-    typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+    typeof window !== "undefined" ? localStorage.getItem("variantID") : "";
 
   const { data: session } = useSession();
 
@@ -50,74 +50,74 @@ export default function fullPlanStarter({
   const [allDoneGenerating, setAllDoneGenerating] = useState(false);
   // for collecting data -----------------------------------------------
   const [businessOperationalStatus, setBusinessOperationalStatus] =
-    useState('');
-  const [businessPlanObj, setBusinessPlanObj] = useState('');
+    useState("");
+  const [businessPlanObj, setBusinessPlanObj] = useState("");
 
   //basic info-----------------------------------------------------------
-  const [businessName, setBusinessName] = useState('');
-  const [businessType, setBusinessType] = useState('');
+  const [businessName, setBusinessName] = useState("");
+  const [businessType, setBusinessType] = useState("");
   const [NEmployee, setNEmployee] = useState(0);
-  const [location, setLocation] = useState('');
-  const [productOrService, setProductOrService] = useState('');
-  const [salesChannel, setSalesChannel] = useState('');
+  const [location, setLocation] = useState("");
+  const [productOrService, setProductOrService] = useState("");
+  const [salesChannel, setSalesChannel] = useState("");
 
   //customer info-------------------------------------------------------
-  const [customerIncome1, setCustomerIncome1] = useState('');
-  const [customerDescription1, setCustomerDescription1] = useState('');
+  const [customerIncome1, setCustomerIncome1] = useState("");
+  const [customerDescription1, setCustomerDescription1] = useState("");
 
-  const [customerIncome2, setCustomerIncome2] = useState('');
-  const [customerDescription2, setCustomerDescription2] = useState('');
+  const [customerIncome2, setCustomerIncome2] = useState("");
+  const [customerDescription2, setCustomerDescription2] = useState("");
 
-  const [customerIncome3, setCustomerIncome3] = useState('');
-  const [customerDescription3, setCustomerDescription3] = useState('');
+  const [customerIncome3, setCustomerIncome3] = useState("");
+  const [customerDescription3, setCustomerDescription3] = useState("");
 
   //product --------------------------------------------------------
-  const [productName1, setProductName1] = useState('');
-  const [productDescription1, setProductDescription1] = useState('');
-  const [productName2, setProductName2] = useState('');
-  const [productDescription2, setProductDescription2] = useState('');
-  const [productName3, setProductName3] = useState('');
-  const [productDescription3, setProductDescription3] = useState('');
-  const [productName4, setProductName4] = useState('');
-  const [productDescription4, setProductDescription4] = useState('');
-  const [productName5, setProductName5] = useState('');
-  const [productDescription5, setProductDescription5] = useState('');
+  const [productName1, setProductName1] = useState("");
+  const [productDescription1, setProductDescription1] = useState("");
+  const [productName2, setProductName2] = useState("");
+  const [productDescription2, setProductDescription2] = useState("");
+  const [productName3, setProductName3] = useState("");
+  const [productDescription3, setProductDescription3] = useState("");
+  const [productName4, setProductName4] = useState("");
+  const [productDescription4, setProductDescription4] = useState("");
+  const [productName5, setProductName5] = useState("");
+  const [productDescription5, setProductDescription5] = useState("");
 
   const [runGeneratePrompt, setRunGeneratePrompt] = useState(false);
-  const [productInfoPrompt, setProductInfoPrompt] = useState('');
+  const [productInfoPrompt, setProductInfoPrompt] = useState("");
 
   // success factors and weakness--------------------------------------
   // ***********one has s one doesn't!!!!!!!*******
-  const [successFactors1, setSuccessFactor1] = useState('');
-  const [successFactors2, setSuccessFactor2] = useState('');
-  const [successFactors3, setSuccessFactor3] = useState('');
+  const [successFactors1, setSuccessFactor1] = useState("");
+  const [successFactors2, setSuccessFactor2] = useState("");
+  const [successFactors3, setSuccessFactor3] = useState("");
 
-  const [weakness1, setWeakness1] = useState('');
-  const [weakness2, setWeakness2] = useState('');
-  const [weakness3, setWeakness3] = useState('');
+  const [weakness1, setWeakness1] = useState("");
+  const [weakness2, setWeakness2] = useState("");
+  const [weakness3, setWeakness3] = useState("");
 
   // Initial Investment -------------------------------------------------------
   const [initialInvestmentAmount, setInitialInvestmentAmount] = useState(0);
 
-  const [investmentItem1, setInvestmentItem1] = useState('');
+  const [investmentItem1, setInvestmentItem1] = useState("");
   const [investmentAmountItem1, setInvestmentAmountItem1] = useState(0);
-  const [investmentItem2, setInvestmentItem2] = useState('');
+  const [investmentItem2, setInvestmentItem2] = useState("");
   const [investmentAmountItem2, setInvestmentAmountItem2] = useState(0);
-  const [investmentItem3, setInvestmentItem3] = useState('');
+  const [investmentItem3, setInvestmentItem3] = useState("");
   const [investmentAmountItem3, setInvestmentAmountItem3] = useState(0);
-  const [investmentItem4, setInvestmentItem4] = useState('');
+  const [investmentItem4, setInvestmentItem4] = useState("");
   const [investmentAmountItem4, setInvestmentAmountItem4] = useState(0);
-  const [investmentItem5, setInvestmentItem5] = useState('');
+  const [investmentItem5, setInvestmentItem5] = useState("");
   const [investmentAmountItem5, setInvestmentAmountItem5] = useState(0);
-  const [investmentItem6, setInvestmentItem6] = useState('');
+  const [investmentItem6, setInvestmentItem6] = useState("");
   const [investmentAmountItem6, setInvestmentAmountItem6] = useState(0);
-  const [investmentItem7, setInvestmentItem7] = useState('');
+  const [investmentItem7, setInvestmentItem7] = useState("");
   const [investmentAmountItem7, setInvestmentAmountItem7] = useState(0);
-  const [investmentItem8, setInvestmentItem8] = useState('');
+  const [investmentItem8, setInvestmentItem8] = useState("");
   const [investmentAmountItem8, setInvestmentAmountItem8] = useState(0);
-  const [investmentItem9, setInvestmentItem9] = useState('');
+  const [investmentItem9, setInvestmentItem9] = useState("");
   const [investmentAmountItem9, setInvestmentAmountItem9] = useState(0);
-  const [investmentItem10, setInvestmentItem10] = useState('');
+  const [investmentItem10, setInvestmentItem10] = useState("");
   const [investmentAmountItem10, setInvestmentAmountItem10] = useState(0);
   // Finance--------------------------------------------------------
   const [firstYearRevenue, setFirstYearRevenue] = useState(0);
@@ -136,24 +136,24 @@ export default function fullPlanStarter({
   const [taxCostP, setTaxCostP] = useState(0);
 
   // generated plan states--------------------------------------------
-  const [generatedExec, setGeneratedExec] = useState('');
+  const [generatedExec, setGeneratedExec] = useState("");
 
-  const [generatedSitu1, setGeneratedSitu1] = useState('');
-  const [generatedSitu2, setGeneratedSitu2] = useState('');
+  const [generatedSitu1, setGeneratedSitu1] = useState("");
+  const [generatedSitu2, setGeneratedSitu2] = useState("");
 
-  const [generatedMark1, setGeneratedMark1] = useState('');
-  const [generatedMark2, setGeneratedMark2] = useState('');
-  const [generatedMark3, setGeneratedMark3] = useState('');
-  const [generatedMark4, setGeneratedMark4] = useState('');
+  const [generatedMark1, setGeneratedMark1] = useState("");
+  const [generatedMark2, setGeneratedMark2] = useState("");
+  const [generatedMark3, setGeneratedMark3] = useState("");
+  const [generatedMark4, setGeneratedMark4] = useState("");
 
-  const [generatedOp1, setGeneratedOp1] = useState('');
-  const [generatedOp2, setGeneratedOp2] = useState('');
+  const [generatedOp1, setGeneratedOp1] = useState("");
+  const [generatedOp2, setGeneratedOp2] = useState("");
 
-  const [generatedMang1, setGeneratedMang1] = useState('');
-  const [generatedMang2, setGeneratedMang2] = useState('');
+  const [generatedMang1, setGeneratedMang1] = useState("");
+  const [generatedMang2, setGeneratedMang2] = useState("");
 
-  const [generatedFin1, setGeneratedFin1] = useState('');
-  const [generatedRisk1, setGeneratedRisk1] = useState('');
+  const [generatedFin1, setGeneratedFin1] = useState("");
+  const [generatedRisk1, setGeneratedRisk1] = useState("");
 
   // cancel stream--------------------------
   const executionIdRefExec = useRef(null);
@@ -168,11 +168,11 @@ export default function fullPlanStarter({
   const executionIdRefRisk1 = useRef(null);
 
   // language -------------------------------
-  const [planLanguage, setPlanLanguage] = useState('en');
+  const [planLanguage, setPlanLanguage] = useState("en");
 
   //currency --------------------------------
-  const [planCurrency, setPlanCurrency] = useState('');
-  const [planCurrencySymbol, setPlanCurrencySymbol] = useState('');
+  const [planCurrency, setPlanCurrency] = useState("");
+  const [planCurrencySymbol, setPlanCurrencySymbol] = useState("");
 
   // check if there is a session if there is a session send a get request with fetch to getUserData api route to get the user data then check if userData.planQuota is less than 1 if it is less than 1 then render a div which contains a button to redirect to checkout page
 
@@ -180,12 +180,12 @@ export default function fullPlanStarter({
 
   const [paid, setPaid] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-  const [variantIDState, setVariantIDState] = useState('');
+  const [variantIDState, setVariantIDState] = useState("");
   const [readyToGeneratePlan, setReadyToGeneratePlan] = useState(false);
 
   // this is the main useEffect
   useEffect(() => {
-    if (userData && userData.paymentStatus === 'paid' && userData.paymentId)
+    if (userData && userData.paymentStatus === "paid" && userData.paymentId)
       setPaid(true);
   }, [session, userData]);
 
@@ -223,10 +223,10 @@ export default function fullPlanStarter({
       setWeakness2(userInput.weakness2);
       setWeakness3(userInput.weakness3);
       setInitialInvestmentAmount(userInput.initialInvestmentAmount);
-      console.log('userInput.investmentItem1', userInput.investmentItem1);
+      console.log("userInput.investmentItem1", userInput.investmentItem1);
       console.log(
-        'userInput.investmentAmountItem1',
-        userInput.investmentAmountItem1,
+        "userInput.investmentAmountItem1",
+        userInput.investmentAmountItem1
       );
       setInvestmentItem1(userInput.investmentItem1);
       setInvestmentAmountItem1(userInput.investmentAmountItem1);
@@ -261,9 +261,9 @@ export default function fullPlanStarter({
       setIntCostP(userInput.intCostP);
       setTaxCostP(userInput.taxCostP);
 
-      setPlanLanguage(userInput.planLanguage || 'en');
-      setPlanCurrency(userInput.planCurrency || '');
-      setPlanCurrencySymbol(userInput.planCurrencySymbol || '');
+      setPlanLanguage(userInput.planLanguage || "en");
+      setPlanCurrency(userInput.planCurrency || "");
+      setPlanCurrencySymbol(userInput.planCurrencySymbol || "");
 
       if (userData && userData.plans[0].originalVer.planContent) {
         const planContent = userData.plans[0].originalVer.planContent;
@@ -284,13 +284,13 @@ export default function fullPlanStarter({
         userData.plans[0].originalVer.planContent.generatedMark2STPPro
       ) {
         if (
-          userInput.planLanguage === 'ja' &&
+          userInput.planLanguage === "ja" &&
           userData.plans[0].originalVer.planContent.generatedMark2STPPro
             .length < 400
         ) {
           generateMark2Mark3Mark4();
         } else if (
-          userInput.planLanguage === 'ar' &&
+          userInput.planLanguage === "ar" &&
           userData.plans[0].originalVer.planContent.generatedMark2STPPro
             .length < 900
         ) {
@@ -360,7 +360,7 @@ export default function fullPlanStarter({
   }, [userData]);
 
   useEffect(() => {
-    console.log('planLauguage: ', planLanguage);
+    console.log("planLauguage: ", planLanguage);
   }, [planLanguage]);
 
   useEffect(() => {
@@ -403,33 +403,33 @@ export default function fullPlanStarter({
 
   // enhanced conversion
   const handleConversion = () => {
-    const experimentIDFromLocal = localStorage.getItem('experimentID');
+    const experimentIDFromLocal = localStorage.getItem("experimentID");
     let price;
     if (
-      userData.country === 'IN' ||
-      userData.country === 'AR' ||
-      userData.country === 'CL' ||
-      userData.country === 'BR'
+      userData.country === "IN" ||
+      userData.country === "AR" ||
+      userData.country === "CL" ||
+      userData.country === "BR"
     ) {
       price = 36;
     } else {
       price = 69;
     }
 
-    console.log('gtag', typeof gtag === 'function');
-    console.log('conversionDestinationId', conversionDestinationId);
+    console.log("gtag", typeof gtag === "function");
+    console.log("conversionDestinationId", conversionDestinationId);
 
-    if (typeof gtag === 'function') {
-      console.log('handleConversion running email: ', session.user.email);
+    if (typeof gtag === "function") {
+      console.log("handleConversion running email: ", session.user.email);
 
-      gtag('set', { allow_enhanced_conversions: 'true' });
-      gtag('set', 'user_data', {
+      gtag("set", { allow_enhanced_conversions: "true" });
+      gtag("set", "user_data", {
         email: session.user.email || userData.email,
       });
-      gtag('event', 'conversion', {
+      gtag("event", "conversion", {
         send_to: conversionDestinationId,
         value: price,
-        currency: 'USD',
+        currency: "USD",
       });
     }
   };
@@ -437,14 +437,14 @@ export default function fullPlanStarter({
   useEffect(() => {
     if (paid && userData && session) {
       const hasFiredEvent = localStorage.getItem(
-        `enhanced_starter_fullPlan_page_view_conversion_${session.user.email || userData.email}`,
+        `enhanced_starter_fullPlan_page_view_conversion_${session.user.email || userData.email}`
       );
 
       if (!hasFiredEvent) {
         handleConversion();
         localStorage.setItem(
           `enhanced_starter_fullPlan_page_view_conversion_${session.user.email || userData.email}`,
-          'true',
+          "true"
         );
       }
     }
@@ -462,9 +462,9 @@ export default function fullPlanStarter({
     productName4,
     productDescription4,
     productName5,
-    productDescription5,
+    productDescription5
   ) {
-    let prompt = '';
+    let prompt = "";
 
     for (let i = 1; i <= 5; i++) {
       const productName = arguments[(i - 1) * 2];
@@ -493,13 +493,13 @@ export default function fullPlanStarter({
       productName4,
       productDescription4,
       productName5,
-      productDescription5,
+      productDescription5
     );
     setProductInfoPrompt(prompt);
   }, [runGeneratePrompt]);
 
   async function generateMark1(situ1Ref) {
-    setGeneratedMark1('');
+    setGeneratedMark1("");
 
     setAllDoneGenerating(false);
     setDoneMark1(false);
@@ -507,10 +507,10 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark1.current = currentExecutionId;
-    const mark1 = await fetch('/api/mainApi/api4Mark1', {
-      method: 'POST',
+    const mark1 = await fetch("/api/mainApi/api4Mark1", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -554,7 +554,7 @@ export default function fullPlanStarter({
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark1.ok) {
       setIsError(true);
@@ -591,7 +591,7 @@ export default function fullPlanStarter({
   }
 
   async function generateMark3(mark2Ref) {
-    setGeneratedMark3('');
+    setGeneratedMark3("");
 
     setAllDoneGenerating(false);
     setDoneMark3(false);
@@ -599,10 +599,10 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark3.current = currentExecutionId;
-    const mark3 = await fetch('/api/mainApi/api6Mark3', {
-      method: 'POST',
+    const mark3 = await fetch("/api/mainApi/api6Mark3", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -653,7 +653,7 @@ export default function fullPlanStarter({
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark3.ok) {
       setIsError(true);
@@ -692,8 +692,8 @@ export default function fullPlanStarter({
 
   async function generateMark4(mark2Ref) {
     // PROBLEM HERE
-    setGeneratedMark4('');
-    console.log('generateMark4 called mark2Ref: ', mark2Ref);
+    setGeneratedMark4("");
+    console.log("generateMark4 called mark2Ref: ", mark2Ref);
 
     setAllDoneGenerating(false);
     setDoneMark4(false);
@@ -701,10 +701,10 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark4.current = currentExecutionId;
-    const mark4 = await fetch('/api/mainApi/api7Mark4', {
-      method: 'POST',
+    const mark4 = await fetch("/api/mainApi/api7Mark4", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -757,7 +757,7 @@ export default function fullPlanStarter({
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark4.ok) {
       setIsError(true);
@@ -795,7 +795,7 @@ export default function fullPlanStarter({
 
   //main functions------------------------------------------------------------
   async function generateExec() {
-    setGeneratedExec('');
+    setGeneratedExec("");
 
     setAllDoneGenerating(false);
     setDoneExec(false);
@@ -804,10 +804,10 @@ export default function fullPlanStarter({
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefExec.current = currentExecutionId;
 
-    const exec = await fetch('/api/mainApi/api1Exec', {
-      method: 'POST',
+    const exec = await fetch("/api/mainApi/api1Exec", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -854,7 +854,7 @@ export default function fullPlanStarter({
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!exec.ok) {
       setIsError(true);
@@ -892,11 +892,11 @@ export default function fullPlanStarter({
   }
 
   const doneRef1 = useRef(false);
-  const generatedSitu1Ref = useRef('');
+  const generatedSitu1Ref = useRef("");
 
   async function generateSitu1andMark1() {
     // generate situ1 first
-    setGeneratedSitu1('');
+    setGeneratedSitu1("");
 
     setAllDoneGenerating(false);
     setDoneSitu1(false);
@@ -907,10 +907,10 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu1.current = currentExecutionId;
-    const situ1 = await fetch('/api/mainApi/api2Situ1', {
-      method: 'POST',
+    const situ1 = await fetch("/api/mainApi/api2Situ1", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -951,7 +951,7 @@ export default function fullPlanStarter({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!situ1.ok) {
       setIsError(true);
@@ -995,7 +995,7 @@ export default function fullPlanStarter({
   }
 
   async function generateSitu2() {
-    setGeneratedSitu2('');
+    setGeneratedSitu2("");
 
     setAllDoneGenerating(false);
     setDoneSitu2(false);
@@ -1004,10 +1004,10 @@ export default function fullPlanStarter({
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu2.current = currentExecutionId;
 
-    const situ2 = await fetch('/api/mainApi/api3Situ2', {
-      method: 'POST',
+    const situ2 = await fetch("/api/mainApi/api3Situ2", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1049,7 +1049,7 @@ export default function fullPlanStarter({
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!situ2.ok) {
       setIsError(true);
@@ -1087,10 +1087,10 @@ export default function fullPlanStarter({
   }
 
   const doneRef2 = useRef(false);
-  const generatedMark2Ref = useRef('');
+  const generatedMark2Ref = useRef("");
 
   async function generateMark2Mark3Mark4() {
-    setGeneratedMark2('');
+    setGeneratedMark2("");
 
     setAllDoneGenerating(false);
     setDoneMark2(false);
@@ -1102,10 +1102,10 @@ export default function fullPlanStarter({
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark2.current = currentExecutionId;
 
-    const mark2 = await fetch('/api/mainApi/api5Mark2', {
-      method: 'POST',
+    const mark2 = await fetch("/api/mainApi/api5Mark2", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1154,7 +1154,7 @@ export default function fullPlanStarter({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark2.ok) {
       setIsError(true);
@@ -1198,7 +1198,7 @@ export default function fullPlanStarter({
   }
 
   async function generateMark2() {
-    setGeneratedMark2('');
+    setGeneratedMark2("");
 
     setAllDoneGenerating(false);
     setDoneMark2(false);
@@ -1209,10 +1209,10 @@ export default function fullPlanStarter({
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark2.current = currentExecutionId;
 
-    const mark2 = await fetch('/api/mainApi/api5Mark2', {
-      method: 'POST',
+    const mark2 = await fetch("/api/mainApi/api5Mark2", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1261,7 +1261,7 @@ export default function fullPlanStarter({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark2.ok) {
       setIsError(true);
@@ -1300,7 +1300,7 @@ export default function fullPlanStarter({
   }
 
   async function generateOp1() {
-    setGeneratedOp1('');
+    setGeneratedOp1("");
 
     setAllDoneGenerating(false);
     setDoneOp1(false);
@@ -1308,10 +1308,10 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefOp1.current = currentExecutionId;
-    const op1 = await fetch('/api/mainApi/api8Op1', {
-      method: 'POST',
+    const op1 = await fetch("/api/mainApi/api8Op1", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1379,7 +1379,7 @@ export default function fullPlanStarter({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!op1.ok) {
       setIsError(true);
@@ -1417,7 +1417,7 @@ export default function fullPlanStarter({
   }
 
   async function generateMang1() {
-    setGeneratedMang1('');
+    setGeneratedMang1("");
 
     setAllDoneGenerating(false);
     setDoneMang1(false);
@@ -1425,10 +1425,10 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMang1.current = currentExecutionId;
-    const mang1 = await fetch('/api/mainApi/api9Mang1', {
-      method: 'POST',
+    const mang1 = await fetch("/api/mainApi/api9Mang1", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1477,7 +1477,7 @@ export default function fullPlanStarter({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mang1.ok) {
       setIsError(true);
@@ -1515,7 +1515,7 @@ export default function fullPlanStarter({
   }
 
   async function generateRisk1() {
-    setGeneratedRisk1('');
+    setGeneratedRisk1("");
 
     setAllDoneGenerating(false);
     setDoneRisk1(false);
@@ -1523,10 +1523,10 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefRisk1.current = currentExecutionId;
-    const risk1 = await fetch('/api/mainApi/api11Risk1', {
-      method: 'POST',
+    const risk1 = await fetch("/api/mainApi/api11Risk1", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1575,7 +1575,7 @@ export default function fullPlanStarter({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!risk1.ok) {
       setIsError(true);
@@ -1627,7 +1627,7 @@ export default function fullPlanStarter({
       doneRisk1
     ) {
       setAllDoneGenerating(true);
-      if (planLanguage === 'en-uk') {
+      if (planLanguage === "en-uk") {
         setGeneratedExec(us2gb(generatedExec));
         setGeneratedSitu1(us2gb(generatedSitu1));
         setGeneratedSitu2(us2gb(generatedSitu2));
@@ -1657,20 +1657,20 @@ export default function fullPlanStarter({
   ]);
 
   useEffect(() => {
-    console.log('allDoneGenerating: ', allDoneGenerating);
+    console.log("allDoneGenerating: ", allDoneGenerating);
   }, [allDoneGenerating]);
 
   useEffect(() => {
-    if (doneExec) console.log('doneExec:, ', doneExec);
-    if (doneSitu1) console.log('doneSitu1:, ', doneSitu1);
-    if (doneSitu2) console.log('doneSitu2:, ', doneSitu2);
-    if (doneMark1) console.log('doneMark1:, ', doneMark1);
-    if (doneMark2) console.log('doneMark2:, ', doneMark2);
-    if (doneMark3) console.log('doneMark3:, ', doneMark3);
-    if (doneMark4) console.log('doneMark4:, ', doneMark4);
-    if (doneOp1) console.log('doneOp1:, ', doneOp1);
-    if (doneMang1) console.log('doneMang1:, ', doneMang1);
-    if (doneRisk1) console.log('doneRisk1:, ', doneRisk1);
+    if (doneExec) console.log("doneExec:, ", doneExec);
+    if (doneSitu1) console.log("doneSitu1:, ", doneSitu1);
+    if (doneSitu2) console.log("doneSitu2:, ", doneSitu2);
+    if (doneMark1) console.log("doneMark1:, ", doneMark1);
+    if (doneMark2) console.log("doneMark2:, ", doneMark2);
+    if (doneMark3) console.log("doneMark3:, ", doneMark3);
+    if (doneMark4) console.log("doneMark4:, ", doneMark4);
+    if (doneOp1) console.log("doneOp1:, ", doneOp1);
+    if (doneMang1) console.log("doneMang1:, ", doneMang1);
+    if (doneRisk1) console.log("doneRisk1:, ", doneRisk1);
   }, [
     doneExec,
     doneSitu1,
@@ -1783,15 +1783,15 @@ export default function fullPlanStarter({
     };
 
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify(dataTosend),
     };
 
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/addPlan`, options)
+    await fetch(`/api/addPlan`, options)
       .then(async (res) => {
         if (res.status === 403) {
           const data = await res.json();
@@ -1818,7 +1818,7 @@ export default function fullPlanStarter({
 
   const prevAllDoneGenerating = useRef(false);
 
-  const [latestPlanIDStarter, setLatestPlanIDStarter] = useState('');
+  const [latestPlanIDStarter, setLatestPlanIDStarter] = useState("");
 
   //set setLatestPlanIDStarter with userData.latestPlanID
   useEffect(() => {
@@ -1829,8 +1829,8 @@ export default function fullPlanStarter({
 
   //set latestPlanID to local storage use useEffect
   useEffect(() => {
-    console.log('storing latestPlanID:', latestPlanIDStarter);
-    localStorage.setItem('latestPlanIDStarter', latestPlanIDStarter);
+    console.log("storing latestPlanID:", latestPlanIDStarter);
+    localStorage.setItem("latestPlanIDStarter", latestPlanIDStarter);
   }, [latestPlanIDStarter]);
 
   const [hasAddedNewPlan, setHasAddedNewPlan] = useState(false);
@@ -1838,9 +1838,9 @@ export default function fullPlanStarter({
   useEffect(() => {
     if (session) {
       const storedValue = localStorage.getItem(
-        `hasAddedNewPlanStarter_${session.user.email}_${latestPlanIDStarter}`,
+        `hasAddedNewPlanStarter_${session.user.email}_${latestPlanIDStarter}`
       );
-      if (storedValue === 'true') {
+      if (storedValue === "true") {
         setHasAddedNewPlan(true);
       }
     }
@@ -1857,7 +1857,7 @@ export default function fullPlanStarter({
       if (session) {
         localStorage.setItem(
           `hasAddedNewPlanStarter_${session.user.email}_${latestPlanIDStarter}`,
-          'true',
+          "true"
         );
       }
       setHasAddedNewPlan(true);
@@ -1915,7 +1915,7 @@ export default function fullPlanStarter({
   }, [readyToGeneratePlan]);
 
   useEffect(() => {
-    console.log('generatedMark4: ', generatedMark4);
+    console.log("generatedMark4: ", generatedMark4);
   }, [generatedMark4]);
 
   const [doneTimer, setDoneTimer] = useState(true);
@@ -1929,9 +1929,9 @@ export default function fullPlanStarter({
 
   useEffect(() => {
     let limit;
-    if (planLanguage === 'ja') {
+    if (planLanguage === "ja") {
       limit = 400;
-    } else if (planLanguage === 'ar') {
+    } else if (planLanguage === "ar") {
       limit = 900;
     } else {
       limit = 1000;
@@ -1960,9 +1960,9 @@ export default function fullPlanStarter({
     }
   }, [allDoneGenerating]);
 
-  const [textAlign, setTextAlign] = useState('');
+  const [textAlign, setTextAlign] = useState("");
   useEffect(() => {
-    if (planLanguage === 'ar') setTextAlign('text-right');
+    if (planLanguage === "ar") setTextAlign("text-right");
   }, [planLanguage]);
 
   return (
@@ -1989,13 +1989,13 @@ export default function fullPlanStarter({
             <div className={stylesW.loading_box}>
               <div className="flex gap-4 items-center justify-center">
                 <div>
-                  <MoonLoader size={20} speedMultiplier={0.7} />{' '}
+                  <MoonLoader size={20} speedMultiplier={0.7} />{" "}
                 </div>
                 <div>
                   {t(
-                    'Generating plan, once done you can edit and save at the top of the page.',
-                  )}{' '}
-                  <strong>{t('DO NOT QUIT')}</strong>
+                    "Generating plan, once done you can edit and save at the top of the page."
+                  )}{" "}
+                  <strong>{t("DO NOT QUIT")}</strong>
                 </div>
               </div>
             </div>
@@ -2006,8 +2006,8 @@ export default function fullPlanStarter({
             <div className={stylesW.loading_box}>
               <div className="flex gap-1 items-center justify-center">
                 <div>
-                  <strong>{t('All done!')}</strong>{' '}
-                  {t('you can edit and save at the top of the page')}
+                  <strong>{t("All done!")}</strong>{" "}
+                  {t("you can edit and save at the top of the page")}
                 </div>
               </div>
             </div>
@@ -2040,11 +2040,11 @@ export default function fullPlanStarter({
                   className="nav-button-transparent"
                   onClick={() => {
                     trackEvent({
-                      event_name: 'my_plan_button',
+                      event_name: "my_plan_button",
                     });
                   }}
                 >
-                  {t('My Plans')}
+                  {t("My Plans")}
                 </a>
               </div>
             </div>
@@ -2063,20 +2063,20 @@ export default function fullPlanStarter({
                             role="alert"
                           >
                             <strong className="font-bold text-red-700">
-                              {t('Failed to load business plan')}
+                              {t("Failed to load business plan")}
                             </strong>
                             <span className="block sm:inline">
-                              {t('Please try again')}
+                              {t("Please try again")}
                             </span>
                             <br />
                             <span>
-                              {t('Or contact us at help@15minuteplan.ai')}
+                              {t("Or contact us at help@15minuteplan.ai")}
                             </span>
                           </div>
                           <br />
                           <div>
                             <button onClick={generatePlan} className="button">
-                              {t('Regenerate Plan')}
+                              {t("Regenerate Plan")}
                             </button>
                           </div>
                         </div>
@@ -2091,23 +2091,23 @@ export default function fullPlanStarter({
                               <p>
                                 <strong>
                                   {t(
-                                    'Congratulations On Making Your First Plan!',
+                                    "Congratulations On Making Your First Plan!"
                                   )}
                                 </strong>
                               </p>
                               <Link
                                 href={{
-                                  pathname: '/editPlanStarter',
+                                  pathname: "/editPlanStarter",
                                   query: { planId: 1 },
                                 }}
                                 className="button"
                                 onClick={() => {
                                   trackEvent({
-                                    event_name: 'edit_and_save_button',
+                                    event_name: "edit_and_save_button",
                                   });
                                 }}
                               >
-                                {t('Edit & Save')}
+                                {t("Edit & Save")}
                               </Link>
                             </div>
                           ) : (
@@ -2119,9 +2119,9 @@ export default function fullPlanStarter({
                               <MoonLoader size={25} />
                               <div className="text-center">
                                 {t(
-                                  'Generating your plan, Once done you can edit and save here.',
-                                )}{' '}
-                                <strong>{t('DO NOT QUIT')}</strong>
+                                  "Generating your plan, Once done you can edit and save here."
+                                )}{" "}
+                                <strong>{t("DO NOT QUIT")}</strong>
                               </div>
                             </div>
                           )}
@@ -2261,7 +2261,7 @@ export default function fullPlanStarter({
                     <br />
                     <span>
                       {t(
-                        'If you have paid but are unable to view the plan please contact us at help@15minuteplan.ai',
+                        "If you have paid but are unable to view the plan please contact us at help@15minuteplan.ai"
                       )}
                     </span>
                   </div>
@@ -2283,7 +2283,7 @@ export async function getStaticProps({ locale }) {
     props: {
       secretKey,
       fbPixelId,
-      ...(await serverSideTranslations(locale, ['index'])),
+      ...(await serverSideTranslations(locale, ["index"])),
     },
   };
 }

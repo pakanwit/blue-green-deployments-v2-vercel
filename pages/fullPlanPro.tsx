@@ -1,24 +1,24 @@
-import { useEffect, useState, useRef } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import Head from 'next/head';
-import React from 'react';
-import { useSession, signOut } from 'next-auth/react';
-import { MoonLoader } from 'react-spinners';
-import Router from 'next/router';
-import Confetti from 'react-confetti';
-import { event } from 'nextjs-google-analytics';
-import DOMPurify from 'dompurify';
-import FinTable from '../components/FinTable';
-import stylesW from '../styles/Wizard.module.css';
-import { set } from 'mongoose';
-import { useTranslation } from 'next-i18next';
-import us2gb from '../utils/us2gb';
-import useLocale from '../hooks/useLocale';
-import { API_KEY_HEADER } from './api/constants';
-import trackEvent from '../utils/trackEvent';
-import Pixel from '../components/Pixel';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import Head from "next/head";
+import React from "react";
+import { useSession, signOut } from "next-auth/react";
+import { MoonLoader } from "react-spinners";
+import Router from "next/router";
+import Confetti from "react-confetti";
+import { event } from "nextjs-google-analytics";
+import DOMPurify from "dompurify";
+import FinTable from "../components/FinTable";
+import stylesW from "../styles/Wizard.module.css";
+import { set } from "mongoose";
+import { useTranslation } from "next-i18next";
+import us2gb from "../utils/us2gb";
+import useLocale from "../hooks/useLocale";
+import { API_KEY_HEADER } from "./api/constants";
+import trackEvent from "../utils/trackEvent";
+import Pixel from "../components/Pixel";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 declare let gtag: (...args: any[]) => void;
 
@@ -28,7 +28,7 @@ export default function fullPlanPro({
   fbPixelId,
   conversionDestinationId,
 }) {
-  const { t } = useTranslation('fullPlanPro');
+  const { t } = useTranslation("fullPlanPro");
 
   const { data: session } = useSession();
 
@@ -113,74 +113,74 @@ export default function fullPlanPro({
   const [doneAndFullContentRisk, setDoneAndFullContentRisk] = useState(false);
   // for collecting data -----------------------------------------------
   const [businessOperationalStatus, setBusinessOperationalStatus] =
-    useState('');
-  const [businessPlanObj, setBusinessPlanObj] = useState('');
+    useState("");
+  const [businessPlanObj, setBusinessPlanObj] = useState("");
 
   //basic info-----------------------------------------------------------
-  const [businessName, setBusinessName] = useState('');
-  const [businessType, setBusinessType] = useState('');
+  const [businessName, setBusinessName] = useState("");
+  const [businessType, setBusinessType] = useState("");
   const [NEmployee, setNEmployee] = useState(0);
-  const [location, setLocation] = useState('');
-  const [productOrService, setProductOrService] = useState('');
-  const [salesChannel, setSalesChannel] = useState('');
+  const [location, setLocation] = useState("");
+  const [productOrService, setProductOrService] = useState("");
+  const [salesChannel, setSalesChannel] = useState("");
 
   //customer info-------------------------------------------------------
-  const [customerIncome1, setCustomerIncome1] = useState('');
-  const [customerDescription1, setCustomerDescription1] = useState('');
+  const [customerIncome1, setCustomerIncome1] = useState("");
+  const [customerDescription1, setCustomerDescription1] = useState("");
 
-  const [customerIncome2, setCustomerIncome2] = useState('');
-  const [customerDescription2, setCustomerDescription2] = useState('');
+  const [customerIncome2, setCustomerIncome2] = useState("");
+  const [customerDescription2, setCustomerDescription2] = useState("");
 
-  const [customerIncome3, setCustomerIncome3] = useState('');
-  const [customerDescription3, setCustomerDescription3] = useState('');
+  const [customerIncome3, setCustomerIncome3] = useState("");
+  const [customerDescription3, setCustomerDescription3] = useState("");
 
   //product --------------------------------------------------------
-  const [productName1, setProductName1] = useState('');
-  const [productDescription1, setProductDescription1] = useState('');
-  const [productName2, setProductName2] = useState('');
-  const [productDescription2, setProductDescription2] = useState('');
-  const [productName3, setProductName3] = useState('');
-  const [productDescription3, setProductDescription3] = useState('');
-  const [productName4, setProductName4] = useState('');
-  const [productDescription4, setProductDescription4] = useState('');
-  const [productName5, setProductName5] = useState('');
-  const [productDescription5, setProductDescription5] = useState('');
+  const [productName1, setProductName1] = useState("");
+  const [productDescription1, setProductDescription1] = useState("");
+  const [productName2, setProductName2] = useState("");
+  const [productDescription2, setProductDescription2] = useState("");
+  const [productName3, setProductName3] = useState("");
+  const [productDescription3, setProductDescription3] = useState("");
+  const [productName4, setProductName4] = useState("");
+  const [productDescription4, setProductDescription4] = useState("");
+  const [productName5, setProductName5] = useState("");
+  const [productDescription5, setProductDescription5] = useState("");
 
   const [runGeneratePrompt, setRunGeneratePrompt] = useState(false);
-  const [productInfoPrompt, setProductInfoPrompt] = useState('');
+  const [productInfoPrompt, setProductInfoPrompt] = useState("");
 
   // success factors and weakness--------------------------------------
   // one has s one doesn't!!!!!!!
-  const [successFactors1, setSuccessFactor1] = useState('');
-  const [successFactors2, setSuccessFactor2] = useState('');
-  const [successFactors3, setSuccessFactor3] = useState('');
+  const [successFactors1, setSuccessFactor1] = useState("");
+  const [successFactors2, setSuccessFactor2] = useState("");
+  const [successFactors3, setSuccessFactor3] = useState("");
 
-  const [weakness1, setWeakness1] = useState('');
-  const [weakness2, setWeakness2] = useState('');
-  const [weakness3, setWeakness3] = useState('');
+  const [weakness1, setWeakness1] = useState("");
+  const [weakness2, setWeakness2] = useState("");
+  const [weakness3, setWeakness3] = useState("");
 
   // Initial Investment -------------------------------------------------------
   const [initialInvestmentAmount, setInitialInvestmentAmount] = useState(0);
 
-  const [investmentItem1, setInvestmentItem1] = useState('');
+  const [investmentItem1, setInvestmentItem1] = useState("");
   const [investmentAmountItem1, setInvestmentAmountItem1] = useState(0);
-  const [investmentItem2, setInvestmentItem2] = useState('');
+  const [investmentItem2, setInvestmentItem2] = useState("");
   const [investmentAmountItem2, setInvestmentAmountItem2] = useState(0);
-  const [investmentItem3, setInvestmentItem3] = useState('');
+  const [investmentItem3, setInvestmentItem3] = useState("");
   const [investmentAmountItem3, setInvestmentAmountItem3] = useState(0);
-  const [investmentItem4, setInvestmentItem4] = useState('');
+  const [investmentItem4, setInvestmentItem4] = useState("");
   const [investmentAmountItem4, setInvestmentAmountItem4] = useState(0);
-  const [investmentItem5, setInvestmentItem5] = useState('');
+  const [investmentItem5, setInvestmentItem5] = useState("");
   const [investmentAmountItem5, setInvestmentAmountItem5] = useState(0);
-  const [investmentItem6, setInvestmentItem6] = useState('');
+  const [investmentItem6, setInvestmentItem6] = useState("");
   const [investmentAmountItem6, setInvestmentAmountItem6] = useState(0);
-  const [investmentItem7, setInvestmentItem7] = useState('');
+  const [investmentItem7, setInvestmentItem7] = useState("");
   const [investmentAmountItem7, setInvestmentAmountItem7] = useState(0);
-  const [investmentItem8, setInvestmentItem8] = useState('');
+  const [investmentItem8, setInvestmentItem8] = useState("");
   const [investmentAmountItem8, setInvestmentAmountItem8] = useState(0);
-  const [investmentItem9, setInvestmentItem9] = useState('');
+  const [investmentItem9, setInvestmentItem9] = useState("");
   const [investmentAmountItem9, setInvestmentAmountItem9] = useState(0);
-  const [investmentItem10, setInvestmentItem10] = useState('');
+  const [investmentItem10, setInvestmentItem10] = useState("");
   const [investmentAmountItem10, setInvestmentAmountItem10] = useState(0);
   // Finance--------------------------------------------------------
   const [firstYearRevenue, setFirstYearRevenue] = useState(0);
@@ -199,27 +199,27 @@ export default function fullPlanPro({
   const [taxCostP, setTaxCostP] = useState(0);
 
   // generated plan states--------------------------------------------
-  const [generatedExecPro, setGeneratedExecPro] = useState('');
-  const [generatedSitu1IndKeyPro, setGeneratedSitu1IndKeyPro] = useState('');
-  const [generatedSitu2SWOTPro, setGeneratedSitu2SWOTPro] = useState('');
-  const [generatedMark1ObjPro, setGeneratedMark1ObjPro] = useState('');
-  const [generatedMark2STPPro, setGeneratedMark2STPPro] = useState('');
+  const [generatedExecPro, setGeneratedExecPro] = useState("");
+  const [generatedSitu1IndKeyPro, setGeneratedSitu1IndKeyPro] = useState("");
+  const [generatedSitu2SWOTPro, setGeneratedSitu2SWOTPro] = useState("");
+  const [generatedMark1ObjPro, setGeneratedMark1ObjPro] = useState("");
+  const [generatedMark2STPPro, setGeneratedMark2STPPro] = useState("");
   const [generatedMark3DecisionPro, setGeneratedMark3DecisionPro] =
-    useState('');
-  const [generatedMark4ProductPro, setGeneratedMark4ProductPro] = useState('');
+    useState("");
+  const [generatedMark4ProductPro, setGeneratedMark4ProductPro] = useState("");
   const [generatedMark5PriceDistPro, setGeneratedMark5PriceDistPro] =
-    useState('');
-  const [generatedMark6AdPro, setGeneratedMark6AdPro] = useState('');
-  const [generatedOp1ActKPIsPro, setGeneratedOp1ActKPIsPro] = useState('');
-  const [generatedOp2QCImpPlanPro, setGeneratedOp2QCImpPlanPro] = useState('');
-  const [generatedTech1AllPro, setGeneratedTech1AllPro] = useState('');
-  const [generatedTech2DigiPro, setGeneratedTech2DigiPro] = useState('');
+    useState("");
+  const [generatedMark6AdPro, setGeneratedMark6AdPro] = useState("");
+  const [generatedOp1ActKPIsPro, setGeneratedOp1ActKPIsPro] = useState("");
+  const [generatedOp2QCImpPlanPro, setGeneratedOp2QCImpPlanPro] = useState("");
+  const [generatedTech1AllPro, setGeneratedTech1AllPro] = useState("");
+  const [generatedTech2DigiPro, setGeneratedTech2DigiPro] = useState("");
   const [generatedMang1StrucRolePro, setGeneratedMang1StrucRolePro] =
-    useState('');
+    useState("");
   const [generatedMang2RecTrainCSRPro, setGeneratedMang2RecTrainCSRPro] =
-    useState('');
-  const [generatedGrowthPro, setGeneratedGrowthPro] = useState('');
-  const [generatedRiskPro, setGeneratedRiskPro] = useState('');
+    useState("");
+  const [generatedGrowthPro, setGeneratedGrowthPro] = useState("");
+  const [generatedRiskPro, setGeneratedRiskPro] = useState("");
 
   // cancel stream--------------------------
   const executionIdRefExec = useRef(null);
@@ -250,11 +250,11 @@ export default function fullPlanPro({
   const executionIdRefRisk1 = useRef(null);
 
   // lanuguage ------------------------------------------
-  const [planLanguage, setPlanLanguage] = useState('');
+  const [planLanguage, setPlanLanguage] = useState("");
 
   //currency --------------------------------------------
-  const [planCurrency, setPlanCurrency] = useState('');
-  const [planCurrencySymbol, setPlanCurrencySymbol] = useState('');
+  const [planCurrency, setPlanCurrency] = useState("");
+  const [planCurrencySymbol, setPlanCurrencySymbol] = useState("");
 
   // check if there is a session if there is a session send a get request with fetch to getUserData api route to get the user data then check if userData.planQuota is less than 1 if it is less than 1 then render a div which contains a button to redirect to checkout page
 
@@ -269,12 +269,12 @@ export default function fullPlanPro({
   const [paymentError, setPaymentError] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [showDownload, setShowDownload] = useState(false);
-  const [variantIDState, setVariantIDState] = useState('');
+  const [variantIDState, setVariantIDState] = useState("");
   const [readyToGeneratePlan, setReadyToGeneratePlan] = useState(false);
   const [isGenerateMark1, setIsGenerateMark1] = useState(false);
 
   useEffect(() => {
-    if (userData && userData.paymentStatus === 'paid' && userData.paymentId)
+    if (userData && userData.paymentStatus === "paid" && userData.paymentId)
       setPaid(true);
   }, [session, userData]);
 
@@ -346,12 +346,12 @@ export default function fullPlanPro({
       setTaxCostP(userInput.taxCostP);
 
       console.log(
-        'setting planLanguage userInput.planLanguage: ',
-        userInput.planLanguage,
+        "setting planLanguage userInput.planLanguage: ",
+        userInput.planLanguage
       );
-      setPlanLanguage(userInput.planLanguage || 'en');
-      setPlanCurrency(userInput.planCurrency || '');
-      setPlanCurrencySymbol(userInput.planCurrencySymbol || '');
+      setPlanLanguage(userInput.planLanguage || "en");
+      setPlanCurrency(userInput.planCurrency || "");
+      setPlanCurrencySymbol(userInput.planCurrencySymbol || "");
     }
 
     // // for testing /////////////////////////////////////////////////
@@ -413,17 +413,17 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (planLanguage) {
-      console.log('planLanguage in useEffect', planLanguage);
+      console.log("planLanguage in useEffect", planLanguage);
       let limit;
 
-      if (planLanguage === 'ja') {
+      if (planLanguage === "ja") {
         limit = 400;
-      } else if (planLanguage === 'ar') {
+      } else if (planLanguage === "ar") {
         limit = 900;
       } else {
         console.log(
-          'planLanguage in useEffect is not ja or ar its: ',
-          planLanguage,
+          "planLanguage in useEffect is not ja or ar its: ",
+          planLanguage
         );
         limit = 1000;
       }
@@ -437,7 +437,7 @@ export default function fullPlanPro({
           setDoneAndFullContentExec(true);
         } else {
           console.log(
-            `generatedExecPro.length(${planContent.generatedExecPro.length})<= limit(${limit})`,
+            `generatedExecPro.length(${planContent.generatedExecPro.length})<= limit(${limit})`
           );
           generateExecPro();
         }
@@ -527,34 +527,34 @@ export default function fullPlanPro({
 
   // enhanced conversion
   const handleConversion = () => {
-    const variantIDFromLocal = localStorage.getItem('variantID');
-    const experimentIDFromLocal = localStorage.getItem('experimentID');
+    const variantIDFromLocal = localStorage.getItem("variantID");
+    const experimentIDFromLocal = localStorage.getItem("experimentID");
     let price;
     if (
-      userData.country === 'IN' ||
-      userData.country === 'AR' ||
-      userData.country === 'CL' ||
-      userData.country === 'BR'
+      userData.country === "IN" ||
+      userData.country === "AR" ||
+      userData.country === "CL" ||
+      userData.country === "BR"
     ) {
       price = 48;
     } else {
       price = 99;
     }
 
-    console.log('gtag', typeof gtag === 'function');
-    console.log('conversionDestinationId', conversionDestinationId);
+    console.log("gtag", typeof gtag === "function");
+    console.log("conversionDestinationId", conversionDestinationId);
 
-    if (typeof gtag === 'function') {
-      console.log('handleConversion running email: ', session.user.email);
+    if (typeof gtag === "function") {
+      console.log("handleConversion running email: ", session.user.email);
 
-      gtag('set', { allow_enhanced_conversions: 'true' });
-      gtag('set', 'user_data', {
+      gtag("set", { allow_enhanced_conversions: "true" });
+      gtag("set", "user_data", {
         email: session.user.email || userData.email,
       });
-      gtag('event', 'conversion', {
+      gtag("event", "conversion", {
         send_to: conversionDestinationId,
         value: price,
-        currency: 'USD',
+        currency: "USD",
       });
     }
   };
@@ -563,14 +563,14 @@ export default function fullPlanPro({
   useEffect(() => {
     if (paid && userData && session) {
       const hasFiredEvent = localStorage.getItem(
-        `enhanced_pro_fullPlan_page_view_conversion_${session.user.email || userData.email}`,
+        `enhanced_pro_fullPlan_page_view_conversion_${session.user.email || userData.email}`
       );
 
       if (!hasFiredEvent) {
         handleConversion();
         localStorage.setItem(
           `enhanced_pro_fullPlan_page_view_conversion_${session.user.email || userData.email}`,
-          'true',
+          "true"
         );
       }
     }
@@ -579,7 +579,7 @@ export default function fullPlanPro({
 
   //log planlanguage in useeffect
   useEffect(() => {
-    console.log('planLanguage from fullPlanPro', planLanguage);
+    console.log("planLanguage from fullPlanPro", planLanguage);
   }, [planLanguage]);
 
   //helper functions-------------------------------------------------------
@@ -593,9 +593,9 @@ export default function fullPlanPro({
     productName4,
     productDescription4,
     productName5,
-    productDescription5,
+    productDescription5
   ) {
-    let prompt = '';
+    let prompt = "";
 
     for (let i = 1; i <= 5; i++) {
       const productName = arguments[(i - 1) * 2];
@@ -625,7 +625,7 @@ export default function fullPlanPro({
         productName4,
         productDescription4,
         productName5,
-        productDescription5,
+        productDescription5
       );
       setProductInfoPrompt(prompt);
     }
@@ -633,15 +633,15 @@ export default function fullPlanPro({
 
   async function generateMark1ObjPro(situ1Ref) {
     setRunningMark1(true);
-    setGeneratedMark1ObjPro('');
+    setGeneratedMark1ObjPro("");
     setDoneMark1(false);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark1.current = currentExecutionId;
-    const mark1 = await fetch('/api/mainApiPro/api4Mark1ObjPro', {
-      method: 'POST',
+    const mark1 = await fetch("/api/mainApiPro/api4Mark1ObjPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -683,7 +683,7 @@ export default function fullPlanPro({
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark1.ok) {
       setIsError(true);
@@ -717,22 +717,22 @@ export default function fullPlanPro({
     if (executionIdRefMark1.current === currentExecutionId) {
       setDoneMark1(true);
       setRunningMark1(false);
-      console.log('set Mark1 done');
+      console.log("set Mark1 done");
     }
   }
 
   async function generateMark3DecisionPro(mark2Ref) {
     setRunningMark3(true);
-    setGeneratedMark3DecisionPro('');
+    setGeneratedMark3DecisionPro("");
     setDoneMark3(false);
     setLoading(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark3.current = currentExecutionId;
-    const mark3 = await fetch('/api/mainApiPro/api6Mark3DecisionPro', {
-      method: 'POST',
+    const mark3 = await fetch("/api/mainApiPro/api6Mark3DecisionPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -782,7 +782,7 @@ export default function fullPlanPro({
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark3.ok) {
       setIsError(true);
@@ -817,23 +817,23 @@ export default function fullPlanPro({
     if (executionIdRefMark3.current === currentExecutionId) {
       setDoneMark3(true);
       setRunningMark3(false);
-      console.log('set Mark3 done');
+      console.log("set Mark3 done");
     }
   }
 
   async function generateMark4ProductPro(mark2Ref) {
     // PROBLEM HERE
     setRunningMark4(true);
-    setGeneratedMark4ProductPro('');
+    setGeneratedMark4ProductPro("");
     setDoneMark4(false);
     setLoading(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark4.current = currentExecutionId;
-    const mark4 = await fetch('/api/mainApiPro/api7Mark4ProductPro', {
-      method: 'POST',
+    const mark4 = await fetch("/api/mainApiPro/api7Mark4ProductPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -884,7 +884,7 @@ export default function fullPlanPro({
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark4.ok) {
       setIsError(true);
@@ -918,23 +918,23 @@ export default function fullPlanPro({
     if (executionIdRefMark4.current === currentExecutionId) {
       setDoneMark4(true);
       setRunningMark4(false);
-      console.log('set Mark4 done');
+      console.log("set Mark4 done");
     }
   }
 
   async function generateMark5PriceDistPro(mark2Ref) {
     // PROBLEM HERE
     setRunningMark5(true);
-    setGeneratedMark5PriceDistPro('');
+    setGeneratedMark5PriceDistPro("");
     setDoneMark5(false);
     setLoading(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark5.current = currentExecutionId;
-    const mark5 = await fetch('/api/mainApiPro/api8Mark5PriceDistPro', {
-      method: 'POST',
+    const mark5 = await fetch("/api/mainApiPro/api8Mark5PriceDistPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -985,7 +985,7 @@ export default function fullPlanPro({
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark5.ok) {
       setIsError(true);
@@ -1019,23 +1019,23 @@ export default function fullPlanPro({
     if (executionIdRefMark5.current === currentExecutionId) {
       setDoneMark5(true);
       setRunningMark5(false);
-      console.log('set Mark5 done');
+      console.log("set Mark5 done");
     }
   }
 
   async function generateMark6AdPro(mark2Ref) {
     // PROBLEM HERE
     setRunningMark6(true);
-    setGeneratedMark6AdPro('');
+    setGeneratedMark6AdPro("");
     setDoneMark6(false);
     setLoading(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark6.current = currentExecutionId;
-    const mark6 = await fetch('/api/mainApiPro/api9Mark6AdPro', {
-      method: 'POST',
+    const mark6 = await fetch("/api/mainApiPro/api9Mark6AdPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1086,7 +1086,7 @@ export default function fullPlanPro({
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark6.ok) {
       setIsError(true);
@@ -1120,7 +1120,7 @@ export default function fullPlanPro({
     if (executionIdRefMark6.current === currentExecutionId) {
       setDoneMark6(true);
       setRunningMark6(false);
-      console.log('set Mark6 done');
+      console.log("set Mark6 done");
     }
   }
 
@@ -1128,17 +1128,17 @@ export default function fullPlanPro({
 
   async function generateExecPro() {
     setRunningExec(true);
-    setGeneratedExecPro('');
+    setGeneratedExecPro("");
     setDoneExec(false);
     setLoading(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefExec.current = currentExecutionId;
 
-    const exec = await fetch('/api/mainApiPro/api1ExecPro', {
-      method: 'POST',
+    const exec = await fetch("/api/mainApiPro/api1ExecPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1184,7 +1184,7 @@ export default function fullPlanPro({
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!exec.ok) {
       setIsError(true);
@@ -1219,17 +1219,17 @@ export default function fullPlanPro({
     if (executionIdRefExec.current === currentExecutionId) {
       setDoneExec(true);
       setRunningExec(false);
-      console.log('set Exec done');
+      console.log("set Exec done");
     }
   }
 
   const doneRef1 = useRef(false);
-  const generatedSitu1Ref = useRef('');
+  const generatedSitu1Ref = useRef("");
 
   async function generateSitu1IndKeyPro() {
     setRunningSitu1(true);
     // generate situ1 first
-    setGeneratedSitu1IndKeyPro('');
+    setGeneratedSitu1IndKeyPro("");
     setDoneSitu1(false);
     setDoneMark1(false);
     setLoading(true);
@@ -1238,10 +1238,10 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu1.current = currentExecutionId;
-    const situ1 = await fetch('/api/mainApiPro/api2Situ1IndKeyPro', {
-      method: 'POST',
+    const situ1 = await fetch("/api/mainApiPro/api2Situ1IndKeyPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1281,7 +1281,7 @@ export default function fullPlanPro({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!situ1.ok) {
       setIsError(true);
@@ -1318,23 +1318,23 @@ export default function fullPlanPro({
     if (executionIdRefSitu1.current === currentExecutionId) {
       setDoneSitu1(true);
       setRunningSitu1(false);
-      console.log('set Situ1 done');
+      console.log("set Situ1 done");
     }
   }
 
   async function generateSitu2SWOTPro() {
     setRunningSitu2(true);
-    setGeneratedSitu2SWOTPro('');
+    setGeneratedSitu2SWOTPro("");
     setDoneSitu2(false);
     setLoading(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu2.current = currentExecutionId;
 
-    const situ2 = await fetch('/api/mainApiPro/api3Situ2SWOTPro', {
-      method: 'POST',
+    const situ2 = await fetch("/api/mainApiPro/api3Situ2SWOTPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1375,7 +1375,7 @@ export default function fullPlanPro({
       }),
     });
 
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!situ2.ok) {
       setIsError(true);
@@ -1410,16 +1410,16 @@ export default function fullPlanPro({
     if (executionIdRefSitu2.current === currentExecutionId) {
       setDoneSitu2(true);
       setRunningSitu2(false);
-      console.log('set Situ2 done');
+      console.log("set Situ2 done");
     }
   }
 
   const doneRefMark2 = useRef(false);
-  const generatedMark2Ref = useRef('');
+  const generatedMark2Ref = useRef("");
 
   async function generateMark2STPPro() {
     setRunningMark2(true);
-    setGeneratedMark2STPPro('');
+    setGeneratedMark2STPPro("");
     setDoneMark2(false);
     setLoading(true);
     doneRefMark2.current = false;
@@ -1427,10 +1427,10 @@ export default function fullPlanPro({
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark2.current = currentExecutionId;
 
-    const mark2 = await fetch('/api/mainApiPro/api5Mark2STPPro', {
-      method: 'POST',
+    const mark2 = await fetch("/api/mainApiPro/api5Mark2STPPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1478,7 +1478,7 @@ export default function fullPlanPro({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!mark2.ok) {
       setIsError(true);
@@ -1514,22 +1514,22 @@ export default function fullPlanPro({
     if (executionIdRefMark2.current === currentExecutionId) {
       setDoneMark2(true);
       setRunningMark2(false);
-      console.log('set Mark2 done');
+      console.log("set Mark2 done");
     }
   }
 
   async function generateOp1ActKPIsPro() {
     setRunningOp1(true);
-    setGeneratedOp1ActKPIsPro('');
+    setGeneratedOp1ActKPIsPro("");
     setDoneOp1(false);
     setLoading(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefOp1.current = currentExecutionId;
-    const op1 = await fetch('/api/mainApiPro/api10Op1ActKPIsPro', {
-      method: 'POST',
+    const op1 = await fetch("/api/mainApiPro/api10Op1ActKPIsPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1596,7 +1596,7 @@ export default function fullPlanPro({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!op1.ok) {
       setIsError(true);
@@ -1631,22 +1631,22 @@ export default function fullPlanPro({
     if (executionIdRefOp1.current === currentExecutionId) {
       setDoneOp1(true);
       setRunningOp1(false);
-      console.log('set Op1 done');
+      console.log("set Op1 done");
     }
   }
 
   async function generateOp2QCImpPlanPro() {
     setRunningOp2(true);
-    setGeneratedOp2QCImpPlanPro('');
+    setGeneratedOp2QCImpPlanPro("");
     setDoneOp2(false);
     setLoading(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefOp2.current = currentExecutionId;
-    const op2 = await fetch('/api/mainApiPro/api11Op2QCImpPlanPro', {
-      method: 'POST',
+    const op2 = await fetch("/api/mainApiPro/api11Op2QCImpPlanPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1713,7 +1713,7 @@ export default function fullPlanPro({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!op2.ok) {
       setIsError(true);
@@ -1748,22 +1748,22 @@ export default function fullPlanPro({
     if (executionIdRefOp2.current === currentExecutionId) {
       setDoneOp2(true);
       setRunningOp2(false);
-      console.log('set Op2 done');
+      console.log("set Op2 done");
     }
   }
 
   async function generateTech1AllPro() {
     setRunningTech1(true);
-    setGeneratedTech1AllPro('');
+    setGeneratedTech1AllPro("");
     setDoneTech1(false);
     setLoading(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefTech1.current = currentExecutionId;
-    const Tech1 = await fetch('/api/mainApiPro/api12Tech1AllPro', {
-      method: 'POST',
+    const Tech1 = await fetch("/api/mainApiPro/api12Tech1AllPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1830,7 +1830,7 @@ export default function fullPlanPro({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!Tech1.ok) {
       setIsError(true);
@@ -1865,22 +1865,22 @@ export default function fullPlanPro({
     if (executionIdRefTech1.current === currentExecutionId) {
       setDoneTech1(true);
       setRunningTech1(false);
-      console.log('set Tech1 done');
+      console.log("set Tech1 done");
     }
   }
 
   async function generateTech2DigiPro() {
     setRunningTech2(true);
-    setGeneratedTech2DigiPro('');
+    setGeneratedTech2DigiPro("");
     setDoneTech2(false);
     setLoading(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefTech2.current = currentExecutionId;
-    const Tech2 = await fetch('/api/mainApiPro/api13Tech2DigiPro', {
-      method: 'POST',
+    const Tech2 = await fetch("/api/mainApiPro/api13Tech2DigiPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1947,7 +1947,7 @@ export default function fullPlanPro({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!Tech2.ok) {
       setIsError(true);
@@ -1982,16 +1982,16 @@ export default function fullPlanPro({
     if (executionIdRefTech2.current === currentExecutionId) {
       setDoneTech2(true);
       setRunningTech2(false);
-      console.log('set Tech2 done');
+      console.log("set Tech2 done");
     }
   }
 
   const doneRefMang1 = useRef(false);
-  const generatedMang1Ref = useRef('');
+  const generatedMang1Ref = useRef("");
 
   async function generateMang1StrucRolePro() {
     setRunningMang1(true);
-    setGeneratedMang1StrucRolePro('');
+    setGeneratedMang1StrucRolePro("");
     setDoneMang1(false);
     setDoneMang2(false);
     setLoading(true);
@@ -1999,10 +1999,10 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMang1.current = currentExecutionId;
-    const Mang1 = await fetch('/api/mainApiPro/api14Mang1StrucRolePro', {
-      method: 'POST',
+    const Mang1 = await fetch("/api/mainApiPro/api14Mang1StrucRolePro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2069,7 +2069,7 @@ export default function fullPlanPro({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!Mang1.ok) {
       setIsError(true);
@@ -2105,22 +2105,22 @@ export default function fullPlanPro({
     if (executionIdRefMang1.current === currentExecutionId) {
       setDoneMang1(true);
       setRunningMang1(false);
-      console.log('set Mang1 done');
+      console.log("set Mang1 done");
     }
   }
 
   async function generateMang2RecTrainCSRPro(mang1Ref) {
     setRunningMang2(true);
-    setGeneratedMang2RecTrainCSRPro('');
+    setGeneratedMang2RecTrainCSRPro("");
     setDoneMang2(false);
     setLoading(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMang2.current = currentExecutionId;
-    const Mang2 = await fetch('/api/mainApiPro/api15Mang2RecTrainCSRPro', {
-      method: 'POST',
+    const Mang2 = await fetch("/api/mainApiPro/api15Mang2RecTrainCSRPro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2188,7 +2188,7 @@ export default function fullPlanPro({
         mang1Ref,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!Mang2.ok) {
       setIsError(true);
@@ -2223,22 +2223,22 @@ export default function fullPlanPro({
     if (executionIdRefMang2.current === currentExecutionId) {
       setDoneMang2(true);
       setRunningMang2(false);
-      console.log('set Mang2 done');
+      console.log("set Mang2 done");
     }
   }
 
   async function generateGrowthPro() {
     setRunningGrowth(true);
-    setGeneratedGrowthPro('');
+    setGeneratedGrowthPro("");
     setDoneGrowth(false);
     setLoading(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefGrowth.current = currentExecutionId;
-    const Growth = await fetch('/api/mainApiPro/api16Growth1Pro', {
-      method: 'POST',
+    const Growth = await fetch("/api/mainApiPro/api16Growth1Pro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2305,7 +2305,7 @@ export default function fullPlanPro({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!Growth.ok) {
       setIsError(true);
@@ -2340,22 +2340,22 @@ export default function fullPlanPro({
     if (executionIdRefGrowth.current === currentExecutionId) {
       setDoneGrowth(true);
       setRunningGrowth(false);
-      console.log('set Growth done');
+      console.log("set Growth done");
     }
   }
 
   async function generateRiskPro() {
     setRunningRisk(true);
-    setGeneratedRiskPro('');
+    setGeneratedRiskPro("");
     setDoneRisk(false);
     setLoading(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefRisk1.current = currentExecutionId;
-    const Risk1 = await fetch('/api/mainApiPro/api17Risk1Pro', {
-      method: 'POST',
+    const Risk1 = await fetch("/api/mainApiPro/api17Risk1Pro", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2403,7 +2403,7 @@ export default function fullPlanPro({
         productInfoPrompt,
       }),
     });
-    console.log('Edge function returned.');
+    console.log("Edge function returned.");
 
     if (!Risk1.ok) {
       setIsError(true);
@@ -2438,7 +2438,7 @@ export default function fullPlanPro({
     if (executionIdRefRisk1.current === currentExecutionId) {
       setDoneRisk(true);
       setRunningRisk(false);
-      console.log('set Risk1 done');
+      console.log("set Risk1 done");
     }
   }
 
@@ -2548,15 +2548,15 @@ export default function fullPlanPro({
     };
 
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify(dataTosend),
     };
 
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/addPlan`, options)
+    await fetch(`/api/addPlan`, options)
       .then(async (res) => {
         if (res.status === 403) {
           const data = await res.json();
@@ -2583,7 +2583,7 @@ export default function fullPlanPro({
 
   const [allDoneandFullContent, setAllDoneAndFullContent] = useState(false);
 
-  const [latestPlanIDPro, setLatestPlanIDStarterPro] = useState('');
+  const [latestPlanIDPro, setLatestPlanIDStarterPro] = useState("");
 
   //set setLatestPlanIDStarterPro with userData.latestPlanID
   useEffect(() => {
@@ -2594,8 +2594,8 @@ export default function fullPlanPro({
 
   //set latestPlanIDPro to local storage use useEffect
   useEffect(() => {
-    console.log('storing latestPlanIDPro:', latestPlanIDPro);
-    localStorage.setItem('latestPlanIDPro', latestPlanIDPro);
+    console.log("storing latestPlanIDPro:", latestPlanIDPro);
+    localStorage.setItem("latestPlanIDPro", latestPlanIDPro);
   }, [latestPlanIDPro]);
 
   const [hasAddedNewPlanPro, setHasAddedNewPlanPro] = useState(false);
@@ -2603,9 +2603,9 @@ export default function fullPlanPro({
   useEffect(() => {
     if (session) {
       const storedValue = localStorage.getItem(
-        `hasAddedNewPlanPro_${session.user.email}_${latestPlanIDPro}`,
+        `hasAddedNewPlanPro_${session.user.email}_${latestPlanIDPro}`
       );
-      if (storedValue === 'true') {
+      if (storedValue === "true") {
         setHasAddedNewPlanPro(true);
       }
     }
@@ -2632,18 +2632,18 @@ export default function fullPlanPro({
       doneAndFullContentRisk &&
       !hasAddedNewPlanPro
     ) {
-      console.log('addNewPlanPro running');
+      console.log("addNewPlanPro running");
       addNewPlan();
       if (session) {
         localStorage.setItem(
           `hasAddedNewPlanPro_${session.user.email}_${latestPlanIDPro}`,
-          'true',
+          "true"
         );
       }
       setHasAddedNewPlanPro(true);
       setAllDoneAndFullContent(true);
       setLoading(false);
-      if (planLanguage === 'en-uk') {
+      if (planLanguage === "en-uk") {
         setGeneratedExecPro(us2gb(generatedExecPro));
         setGeneratedSitu1IndKeyPro(us2gb(generatedSitu1IndKeyPro));
         setGeneratedSitu2SWOTPro(us2gb(generatedSitu2SWOTPro));
@@ -2686,23 +2686,23 @@ export default function fullPlanPro({
   ]);
 
   useEffect(() => {
-    console.log('doneAndFullContentExec:', doneAndFullContentExec);
-    console.log('doneAndFullContentSitu1:', doneAndFullContentSitu1);
-    console.log('doneAndFullContentSitu2:', doneAndFullContentSitu2);
-    console.log('doneAndFullContentMark1:', doneAndFullContentMark1);
-    console.log('doneAndFullContentMark2:', doneAndFullContentMark2);
-    console.log('doneAndFullContentMark3:', doneAndFullContentMark3);
-    console.log('doneAndFullContentMark4:', doneAndFullContentMark4);
-    console.log('doneAndFullContentMark5:', doneAndFullContentMark5);
-    console.log('doneAndFullContentMark6:', doneAndFullContentMark6);
-    console.log('doneAndFullContentOp1:', doneAndFullContentOp1);
-    console.log('doneAndFullContentOp2:', doneAndFullContentOp2);
-    console.log('doneAndFullContentTech1:', doneAndFullContentTech1);
-    console.log('doneAndFullContentTech2:', doneAndFullContentTech2);
-    console.log('doneAndFullContentMang1:', doneAndFullContentMang1);
-    console.log('doneAndFullContentMang2:', doneAndFullContentMang2);
-    console.log('doneAndFullContentGrowth:', doneAndFullContentGrowth);
-    console.log('doneAndFullContentRisk:', doneAndFullContentRisk);
+    console.log("doneAndFullContentExec:", doneAndFullContentExec);
+    console.log("doneAndFullContentSitu1:", doneAndFullContentSitu1);
+    console.log("doneAndFullContentSitu2:", doneAndFullContentSitu2);
+    console.log("doneAndFullContentMark1:", doneAndFullContentMark1);
+    console.log("doneAndFullContentMark2:", doneAndFullContentMark2);
+    console.log("doneAndFullContentMark3:", doneAndFullContentMark3);
+    console.log("doneAndFullContentMark4:", doneAndFullContentMark4);
+    console.log("doneAndFullContentMark5:", doneAndFullContentMark5);
+    console.log("doneAndFullContentMark6:", doneAndFullContentMark6);
+    console.log("doneAndFullContentOp1:", doneAndFullContentOp1);
+    console.log("doneAndFullContentOp2:", doneAndFullContentOp2);
+    console.log("doneAndFullContentTech1:", doneAndFullContentTech1);
+    console.log("doneAndFullContentTech2:", doneAndFullContentTech2);
+    console.log("doneAndFullContentMang1:", doneAndFullContentMang1);
+    console.log("doneAndFullContentMang2:", doneAndFullContentMang2);
+    console.log("doneAndFullContentGrowth:", doneAndFullContentGrowth);
+    console.log("doneAndFullContentRisk:", doneAndFullContentRisk);
   }, [
     doneAndFullContentExec,
     doneAndFullContentSitu1,
@@ -2784,12 +2784,12 @@ export default function fullPlanPro({
     if (userData && userData.plans[0].originalVer.planContent && planLanguage) {
       const planContent = userData.plans[0].originalVer.planContent;
       let limit;
-      if (planLanguage === 'ja') limit = 400;
-      else if (planLanguage === 'ar') limit = 900;
+      if (planLanguage === "ja") limit = 400;
+      else if (planLanguage === "ar") limit = 900;
       else limit = 1000;
 
       if (planContent.generatedExecPro.length < limit) {
-        console.log('exec length less than limit');
+        console.log("exec length less than limit");
         generateExecPro();
       }
       if (planContent.generatedSitu1IndKeyPro.length < limit)
@@ -2809,9 +2809,9 @@ export default function fullPlanPro({
   const [limit, setLimit] = useState(1000);
 
   useEffect(() => {
-    if (planLanguage === 'ja') {
+    if (planLanguage === "ja") {
       setLimit(400);
-    } else if (planLanguage === 'ar') {
+    } else if (planLanguage === "ar") {
       setLimit(900);
     } else {
       setLimit(1000);
@@ -2820,13 +2820,13 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneExec && limit) {
-      const cleanedTextExec = generatedExecPro.replace(/^"|"$/g, '');
+      const cleanedTextExec = generatedExecPro.replace(/^"|"$/g, "");
       setGeneratedExecPro(cleanedTextExec);
 
       const execLength = generatedExecPro.length;
       if (execLength <= limit) {
         console.log(
-          `generatedExecPro has less than ${limit} chars, generating again`,
+          `generatedExecPro has less than ${limit} chars, generating again`
         );
         generateExecPro();
       } else {
@@ -2837,13 +2837,13 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneSitu1 && limit) {
-      const cleanedTextSitu1 = generatedSitu1IndKeyPro.replace(/^"|"$/g, '');
+      const cleanedTextSitu1 = generatedSitu1IndKeyPro.replace(/^"|"$/g, "");
       setGeneratedSitu1IndKeyPro(cleanedTextSitu1);
 
       const situ1Length = generatedSitu1IndKeyPro.length;
       if (situ1Length <= limit) {
         console.log(
-          `generatedSitu1IndKeyPro has less than ${limit} chars, generating again`,
+          `generatedSitu1IndKeyPro has less than ${limit} chars, generating again`
         );
         generateSitu1IndKeyPro(); // this will trigger mark1
       } else {
@@ -2861,13 +2861,13 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneSitu2 && limit) {
-      const cleanedTextSitu2 = generatedSitu2SWOTPro.replace(/^"|"$/g, '');
+      const cleanedTextSitu2 = generatedSitu2SWOTPro.replace(/^"|"$/g, "");
       setGeneratedSitu2SWOTPro(cleanedTextSitu2);
 
       const situ2Length = generatedSitu2SWOTPro.length;
       if (situ2Length <= limit) {
         console.log(
-          `generatedSitu2SWOTPro has less than ${limit} chars, generating again`,
+          `generatedSitu2SWOTPro has less than ${limit} chars, generating again`
         );
         generateSitu2SWOTPro();
       } else {
@@ -2878,13 +2878,13 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneMark1 && limit) {
-      const cleanedTextMark1 = generatedMark1ObjPro.replace(/^"|"$/g, '');
+      const cleanedTextMark1 = generatedMark1ObjPro.replace(/^"|"$/g, "");
       setGeneratedMark1ObjPro(cleanedTextMark1);
 
       const mark1Length = generatedMark1ObjPro.length;
       if (mark1Length <= limit && doneSitu1) {
         console.log(
-          `generatedMark1ObjPro has less than ${limit} chars, generating again`,
+          `generatedMark1ObjPro has less than ${limit} chars, generating again`
         );
         generateMark1ObjPro(generatedSitu1IndKeyPro);
       } else {
@@ -2895,13 +2895,13 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneMark2 && limit) {
-      const cleanedTextMark2 = generatedMark2STPPro.replace(/^"|"$/g, '');
+      const cleanedTextMark2 = generatedMark2STPPro.replace(/^"|"$/g, "");
       setGeneratedMark2STPPro(cleanedTextMark2);
 
       const mark2Length = generatedMark2STPPro.length;
       if (mark2Length <= limit) {
         console.log(
-          `generatedMark2STPPro has less than ${limit} chars, generating again`,
+          `generatedMark2STPPro has less than ${limit} chars, generating again`
         );
         generateMark2STPPro();
       } else {
@@ -2912,13 +2912,13 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneMark3 && limit) {
-      const cleanedTextMark3 = generatedMark3DecisionPro.replace(/^"|"$/g, '');
+      const cleanedTextMark3 = generatedMark3DecisionPro.replace(/^"|"$/g, "");
       setGeneratedMark3DecisionPro(cleanedTextMark3);
 
       const mark3Length = generatedMark3DecisionPro.length;
       if (mark3Length <= limit) {
         console.log(
-          `generatedMark3DecisionPro again / mark3Length: ${mark3Length} <= limit: ${limit} /  `,
+          `generatedMark3DecisionPro again / mark3Length: ${mark3Length} <= limit: ${limit} /  `
         );
         if (doneAndFullContentMark2)
           generateMark3DecisionPro(generatedMark2STPPro);
@@ -2930,7 +2930,7 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneMark4 && limit) {
-      const cleanedTextMark4 = generatedMark4ProductPro.replace(/^"|"$/g, '');
+      const cleanedTextMark4 = generatedMark4ProductPro.replace(/^"|"$/g, "");
       setGeneratedMark4ProductPro(cleanedTextMark4);
 
       const mark4Length = generatedMark4ProductPro.length;
@@ -2945,7 +2945,7 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneMark5 && limit) {
-      const cleanedTextMark5 = generatedMark5PriceDistPro.replace(/^"|"$/g, '');
+      const cleanedTextMark5 = generatedMark5PriceDistPro.replace(/^"|"$/g, "");
       setGeneratedMark5PriceDistPro(cleanedTextMark5);
 
       const mark5Length = generatedMark5PriceDistPro.length;
@@ -2960,7 +2960,7 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneMark6 && limit) {
-      const cleanedTextMark6 = generatedMark6AdPro.replace(/^"|"$/g, '');
+      const cleanedTextMark6 = generatedMark6AdPro.replace(/^"|"$/g, "");
       setGeneratedMark6AdPro(cleanedTextMark6);
 
       const mark6Length = generatedMark6AdPro.length;
@@ -2974,7 +2974,7 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneOp1 && limit) {
-      const cleanedTextOp1 = generatedOp1ActKPIsPro.replace(/^"|"$/g, '');
+      const cleanedTextOp1 = generatedOp1ActKPIsPro.replace(/^"|"$/g, "");
       setGeneratedOp1ActKPIsPro(cleanedTextOp1);
 
       const op1Length = generatedOp1ActKPIsPro.length;
@@ -2988,7 +2988,7 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneOp2 && limit) {
-      const cleanedTextOp2 = generatedOp2QCImpPlanPro.replace(/^"|"$/g, '');
+      const cleanedTextOp2 = generatedOp2QCImpPlanPro.replace(/^"|"$/g, "");
       setGeneratedOp2QCImpPlanPro(cleanedTextOp2);
 
       const op2Length = generatedOp2QCImpPlanPro.length;
@@ -3002,7 +3002,7 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneTech1 && limit) {
-      const cleanedTextTech1 = generatedTech1AllPro.replace(/^"|"$/g, '');
+      const cleanedTextTech1 = generatedTech1AllPro.replace(/^"|"$/g, "");
       setGeneratedTech1AllPro(cleanedTextTech1);
 
       const tech1Length = generatedTech1AllPro.length;
@@ -3016,7 +3016,7 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneTech2 && limit) {
-      const cleanedTextTech2 = generatedTech2DigiPro.replace(/^"|"$/g, '');
+      const cleanedTextTech2 = generatedTech2DigiPro.replace(/^"|"$/g, "");
       setGeneratedTech2DigiPro(cleanedTextTech2);
 
       const tech2Length = generatedTech2DigiPro.length;
@@ -3030,7 +3030,7 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneMang1 && limit) {
-      const cleanedTextMang1 = generatedMang1StrucRolePro.replace(/^"|"$/g, '');
+      const cleanedTextMang1 = generatedMang1StrucRolePro.replace(/^"|"$/g, "");
       setGeneratedMang1StrucRolePro(cleanedTextMang1);
 
       const mang1Length = generatedMang1StrucRolePro.length;
@@ -3052,7 +3052,7 @@ export default function fullPlanPro({
     if (doneMang2 && limit) {
       const cleanedTextMang2 = generatedMang2RecTrainCSRPro.replace(
         /^"|"$/g,
-        '',
+        ""
       );
       setGeneratedMang2RecTrainCSRPro(cleanedTextMang2);
 
@@ -3067,7 +3067,7 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneGrowth && limit) {
-      const cleanedTextGrowth = generatedGrowthPro.replace(/^"|"$/g, '');
+      const cleanedTextGrowth = generatedGrowthPro.replace(/^"|"$/g, "");
       setGeneratedGrowthPro(cleanedTextGrowth);
 
       const growthLength = generatedGrowthPro.length;
@@ -3081,7 +3081,7 @@ export default function fullPlanPro({
 
   useEffect(() => {
     if (doneRisk && limit) {
-      const cleanedTextRisk = generatedRiskPro.replace(/^"|"$/g, '');
+      const cleanedTextRisk = generatedRiskPro.replace(/^"|"$/g, "");
       setGeneratedRiskPro(cleanedTextRisk);
 
       const riskLength = generatedRiskPro.length;
@@ -3117,12 +3117,12 @@ export default function fullPlanPro({
     if (runningExec) {
       timerRefExec.current = setTimeout(() => {
         console.log(
-          'generateExecPro took longer than 2 minutes, generating again',
+          "generateExecPro took longer than 2 minutes, generating again"
         );
         generateExecPro();
       }, 300000);
     } else {
-      console.log('runningExec is false, clearing timeout');
+      console.log("runningExec is false, clearing timeout");
       clearTimeout(timerRefExec.current);
     }
 
@@ -3135,12 +3135,12 @@ export default function fullPlanPro({
     if (runningSitu1) {
       timerRefSitu1.current = setTimeout(() => {
         console.log(
-          'generateSitu1IndKeyPro() took longer than 4 minutes, generating again',
+          "generateSitu1IndKeyPro() took longer than 4 minutes, generating again"
         );
         generateSitu1IndKeyPro();
       }, 300000);
     } else {
-      console.log('runningSitu1 is false, clearing timeout');
+      console.log("runningSitu1 is false, clearing timeout");
       clearTimeout(timerRefSitu1.current);
     }
 
@@ -3153,17 +3153,17 @@ export default function fullPlanPro({
     if (runningSitu2) {
       timerRefSitu2.current = setTimeout(() => {
         console.log(
-          'generateSitu2SWOTPro took longer than 2 minutes, generating again',
+          "generateSitu2SWOTPro took longer than 2 minutes, generating again"
         );
         generateSitu2SWOTPro();
       }, 300000);
     } else {
-      console.log('runningSitu2 is false, clearing timeout');
+      console.log("runningSitu2 is false, clearing timeout");
       clearTimeout(timerRefSitu2.current);
     }
 
     return () => {
-      console.log('Cleanup: clearing timeout');
+      console.log("Cleanup: clearing timeout");
       clearTimeout(timerRefSitu2.current);
     };
   }, [runningSitu2]);
@@ -3173,13 +3173,13 @@ export default function fullPlanPro({
       if (doneAndFullContentSitu1) {
         timerRefMark1.current = setTimeout(() => {
           console.log(
-            'generateMark1ObjPro took longer than 2 minutes, generating again',
+            "generateMark1ObjPro took longer than 2 minutes, generating again"
           );
           generateMark1ObjPro(generatedSitu1IndKeyPro);
         }, 300000);
       }
     } else {
-      console.log('runningMark1 is false, clearing timeout');
+      console.log("runningMark1 is false, clearing timeout");
       clearTimeout(timerRefMark1.current);
     }
 
@@ -3192,12 +3192,12 @@ export default function fullPlanPro({
     if (runningMark2) {
       timerRefMark2.current = setTimeout(() => {
         console.log(
-          'generateMark2STPPro took longer than 2 minutes, generating again',
+          "generateMark2STPPro took longer than 2 minutes, generating again"
         );
         generateMark2STPPro();
       }, 300000);
     } else {
-      console.log('runningMark2 is false, clearing timeout');
+      console.log("runningMark2 is false, clearing timeout");
       clearTimeout(timerRefMark2.current);
     }
 
@@ -3214,7 +3214,7 @@ export default function fullPlanPro({
         }, 300000);
       }
     } else {
-      console.log('runningMark3 is false, clearing timeout');
+      console.log("runningMark3 is false, clearing timeout");
       clearTimeout(timerRefMark3.current);
     }
 
@@ -3231,7 +3231,7 @@ export default function fullPlanPro({
         }, 300000);
       }
     } else {
-      console.log('runningMark4 is false, clearing timeout');
+      console.log("runningMark4 is false, clearing timeout");
       clearTimeout(timerRefMark4.current);
     }
 
@@ -3248,7 +3248,7 @@ export default function fullPlanPro({
         }, 300000);
       }
     } else {
-      console.log('runningMark5 is false, clearing timeout');
+      console.log("runningMark5 is false, clearing timeout");
       clearTimeout(timerRefMark5.current);
     }
 
@@ -3265,7 +3265,7 @@ export default function fullPlanPro({
         }, 300000);
       }
     } else {
-      console.log('runningMark6 is false, clearing timeout');
+      console.log("runningMark6 is false, clearing timeout");
       clearTimeout(timerRefMark6.current);
     }
 
@@ -3280,7 +3280,7 @@ export default function fullPlanPro({
         generateOp1ActKPIsPro();
       }, 300000);
     } else {
-      console.log('runningOp1 is false, clearing timeout');
+      console.log("runningOp1 is false, clearing timeout");
       clearTimeout(timerRefOp1.current);
     }
 
@@ -3295,7 +3295,7 @@ export default function fullPlanPro({
         generateOp2QCImpPlanPro();
       }, 300000);
     } else {
-      console.log('runningOp2 is false, clearing timeout');
+      console.log("runningOp2 is false, clearing timeout");
       clearTimeout(timerRefOp2.current);
     }
 
@@ -3310,7 +3310,7 @@ export default function fullPlanPro({
         generateTech1AllPro();
       }, 300000);
     } else {
-      console.log('runningTech1 is false, clearing timeout');
+      console.log("runningTech1 is false, clearing timeout");
       clearTimeout(timerRefTech1.current);
     }
 
@@ -3325,7 +3325,7 @@ export default function fullPlanPro({
         generateTech2DigiPro();
       }, 300000);
     } else {
-      console.log('runningTech2 is false, clearing timeout');
+      console.log("runningTech2 is false, clearing timeout");
       clearTimeout(timerRefTech2.current);
     }
 
@@ -3340,7 +3340,7 @@ export default function fullPlanPro({
         generateMang1StrucRolePro();
       }, 300000);
     } else {
-      console.log('runningMang1 is false, clearing timeout');
+      console.log("runningMang1 is false, clearing timeout");
       clearTimeout(timerRefMang1.current);
     }
 
@@ -3357,7 +3357,7 @@ export default function fullPlanPro({
         }, 300000);
       }
     } else {
-      console.log('runningMang2 is false, clearing timeout');
+      console.log("runningMang2 is false, clearing timeout");
       clearTimeout(timerRefMang2.current);
     }
 
@@ -3372,7 +3372,7 @@ export default function fullPlanPro({
         generateGrowthPro();
       }, 300000);
     } else {
-      console.log('runningGrowth is false, clearing timeout');
+      console.log("runningGrowth is false, clearing timeout");
       clearTimeout(timerRefGrowth.current);
     }
 
@@ -3387,7 +3387,7 @@ export default function fullPlanPro({
         generateRiskPro();
       }, 300000);
     } else {
-      console.log('runningRisk is false, clearing timeout');
+      console.log("runningRisk is false, clearing timeout");
       clearTimeout(timerRefRisk.current);
     }
 
@@ -3397,23 +3397,23 @@ export default function fullPlanPro({
   }, [runningRisk]);
 
   useEffect(() => {
-    if (runningExec) console.log('runningExec is true');
-    if (runningSitu1) console.log('runningSitu1 is true');
-    if (runningSitu2) console.log('runningSitu2 is true');
-    if (runningMark1) console.log('runningMark1 is true');
-    if (runningMark2) console.log('runningMark2 is true');
-    if (runningMark3) console.log('runningMark3 is true');
-    if (runningMark4) console.log('runningMark4 is true');
-    if (runningMark5) console.log('runningMark5 is true');
-    if (runningMark6) console.log('runningMark6 is true');
-    if (runningOp1) console.log('runningOp1 is true');
-    if (runningOp2) console.log('runningOp2 is true');
-    if (runningTech1) console.log('runningTech1 is true');
-    if (runningTech2) console.log('runningTech2 is true');
-    if (runningGrowth) console.log('runningGrowth is true');
-    if (runningMang1) console.log('runningMang1 is true');
-    if (runningMang2) console.log('runningMang2 is true');
-    if (runningRisk) console.log('runningRisk is true');
+    if (runningExec) console.log("runningExec is true");
+    if (runningSitu1) console.log("runningSitu1 is true");
+    if (runningSitu2) console.log("runningSitu2 is true");
+    if (runningMark1) console.log("runningMark1 is true");
+    if (runningMark2) console.log("runningMark2 is true");
+    if (runningMark3) console.log("runningMark3 is true");
+    if (runningMark4) console.log("runningMark4 is true");
+    if (runningMark5) console.log("runningMark5 is true");
+    if (runningMark6) console.log("runningMark6 is true");
+    if (runningOp1) console.log("runningOp1 is true");
+    if (runningOp2) console.log("runningOp2 is true");
+    if (runningTech1) console.log("runningTech1 is true");
+    if (runningTech2) console.log("runningTech2 is true");
+    if (runningGrowth) console.log("runningGrowth is true");
+    if (runningMang1) console.log("runningMang1 is true");
+    if (runningMang2) console.log("runningMang2 is true");
+    if (runningRisk) console.log("runningRisk is true");
   }, [
     runningExec,
     runningSitu1,
@@ -3434,9 +3434,9 @@ export default function fullPlanPro({
     runningRisk,
   ]);
 
-  const [textAlign, setTextAlign] = useState('');
+  const [textAlign, setTextAlign] = useState("");
   useEffect(() => {
-    if (planLanguage === 'ar') setTextAlign('text-right');
+    if (planLanguage === "ar") setTextAlign("text-right");
   }, [planLanguage]);
 
   return (
@@ -3463,14 +3463,14 @@ export default function fullPlanPro({
             <div className={stylesW.loading_box}>
               <div className="flex gap-4 items-center justify-center">
                 <div>
-                  <MoonLoader size={20} speedMultiplier={0.7} />{' '}
+                  <MoonLoader size={20} speedMultiplier={0.7} />{" "}
                 </div>
                 <div>
                   {t(
-                    'Generating plan, once done you can edit and save at the top of the page.',
-                  )}{' '}
-                  <strong>{t('DO NOT QUIT')}</strong>{' '}
-                  {t(', it can take a while')}
+                    "Generating plan, once done you can edit and save at the top of the page."
+                  )}{" "}
+                  <strong>{t("DO NOT QUIT")}</strong>{" "}
+                  {t(", it can take a while")}
                 </div>
               </div>
             </div>
@@ -3481,8 +3481,8 @@ export default function fullPlanPro({
             <div className={stylesW.loading_box}>
               <div className="flex gap-1 items-center justify-center">
                 <div>
-                  <strong>{t('All done!')}</strong>{' '}
-                  {t('you can edit and save at the top of the page')}
+                  <strong>{t("All done!")}</strong>{" "}
+                  {t("you can edit and save at the top of the page")}
                 </div>
               </div>
             </div>
@@ -3515,7 +3515,7 @@ export default function fullPlanPro({
                   aria-current="page"
                   className="nav-button-transparent"
                 >
-                  {t('My Plans')}
+                  {t("My Plans")}
                 </a>
               </div>
             </div>
@@ -3534,20 +3534,20 @@ export default function fullPlanPro({
                             role="alert"
                           >
                             <strong className="font-bold text-red-700">
-                              {t('Failed to load business plan ')}
+                              {t("Failed to load business plan ")}
                             </strong>
                             <span className="block sm:inline">
-                              {t('Please try again')}
+                              {t("Please try again")}
                             </span>
                             <br />
                             <span>
-                              {t('Or contact us at help@15minuteplan.ai')}
+                              {t("Or contact us at help@15minuteplan.ai")}
                             </span>
                           </div>
                           <br />
                           <div>
                             <button onClick={generatePlan} className="button">
-                              {t('Regenerate Plan')}
+                              {t("Regenerate Plan")}
                             </button>
                           </div>
                         </div>
@@ -3562,23 +3562,23 @@ export default function fullPlanPro({
                               <p>
                                 <strong>
                                   {t(
-                                    'Congratulations On Making Your First Plan!',
+                                    "Congratulations On Making Your First Plan!"
                                   )}
                                 </strong>
                               </p>
                               <Link
                                 href={{
-                                  pathname: '/editPlanPro',
+                                  pathname: "/editPlanPro",
                                   query: { planId: 1 },
                                 }}
                                 className="button"
                                 onClick={() => {
                                   trackEvent({
-                                    event_name: 'edit_and_save_button',
+                                    event_name: "edit_and_save_button",
                                   });
                                 }}
                               >
-                                {t('Edit & Save')}
+                                {t("Edit & Save")}
                               </Link>
                             </div>
                           ) : (
@@ -3590,10 +3590,10 @@ export default function fullPlanPro({
                               <MoonLoader size={25} />
                               <div>
                                 {t(
-                                  'Generating plan, once done you can edit and save at the top of the page.',
-                                )}{' '}
-                                <strong>{t('DO NOT QUIT')}</strong>{' '}
-                                {t(', it can take a while')}
+                                  "Generating plan, once done you can edit and save at the top of the page."
+                                )}{" "}
+                                <strong>{t("DO NOT QUIT")}</strong>{" "}
+                                {t(", it can take a while")}
                               </div>
                             </div>
                           )}
@@ -3619,7 +3619,7 @@ export default function fullPlanPro({
                           <div
                             dangerouslySetInnerHTML={{
                               __html: DOMPurify.sanitize(
-                                generatedSitu1IndKeyPro,
+                                generatedSitu1IndKeyPro
                               ),
                             }}
                           />
@@ -3649,7 +3649,7 @@ export default function fullPlanPro({
                           <div
                             dangerouslySetInnerHTML={{
                               __html: DOMPurify.sanitize(
-                                generatedMark3DecisionPro,
+                                generatedMark3DecisionPro
                               ),
                             }}
                           />
@@ -3658,7 +3658,7 @@ export default function fullPlanPro({
                           <div
                             dangerouslySetInnerHTML={{
                               __html: DOMPurify.sanitize(
-                                generatedMark4ProductPro,
+                                generatedMark4ProductPro
                               ),
                             }}
                           />
@@ -3667,7 +3667,7 @@ export default function fullPlanPro({
                           <div
                             dangerouslySetInnerHTML={{
                               __html: DOMPurify.sanitize(
-                                generatedMark5PriceDistPro,
+                                generatedMark5PriceDistPro
                               ),
                             }}
                           />
@@ -3683,7 +3683,7 @@ export default function fullPlanPro({
                           <div
                             dangerouslySetInnerHTML={{
                               __html: DOMPurify.sanitize(
-                                generatedOp1ActKPIsPro,
+                                generatedOp1ActKPIsPro
                               ),
                             }}
                           />
@@ -3692,7 +3692,7 @@ export default function fullPlanPro({
                           <div
                             dangerouslySetInnerHTML={{
                               __html: DOMPurify.sanitize(
-                                generatedOp2QCImpPlanPro,
+                                generatedOp2QCImpPlanPro
                               ),
                             }}
                           />
@@ -3715,7 +3715,7 @@ export default function fullPlanPro({
                           <div
                             dangerouslySetInnerHTML={{
                               __html: DOMPurify.sanitize(
-                                generatedMang1StrucRolePro,
+                                generatedMang1StrucRolePro
                               ),
                             }}
                           />
@@ -3724,7 +3724,7 @@ export default function fullPlanPro({
                           <div
                             dangerouslySetInnerHTML={{
                               __html: DOMPurify.sanitize(
-                                generatedMang2RecTrainCSRPro,
+                                generatedMang2RecTrainCSRPro
                               ),
                             }}
                           />
@@ -3799,15 +3799,15 @@ export default function fullPlanPro({
                         className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-5 rounded relative"
                         role="alert"
                       >
-                        {t('There was a problem with your payment')}
+                        {t("There was a problem with your payment")}
                       </div>
                     ) : (
-                      <span>{t('Verifying Payment...')}</span>
+                      <span>{t("Verifying Payment...")}</span>
                     )}
                     <br />
                     <span>
                       {t(
-                        'If you have paid but are unable to view the plan please contact us at help@15minuteplan.ai',
+                        "If you have paid but are unable to view the plan please contact us at help@15minuteplan.ai"
                       )}
                     </span>
                   </div>
@@ -3830,7 +3830,7 @@ export async function getStaticProps({ locale }) {
       secretKey,
       fbPixelId,
       conversionDestinationId,
-      ...(await serverSideTranslations(locale, ['index'])),
+      ...(await serverSideTranslations(locale, ["index"])),
     },
   };
 }
