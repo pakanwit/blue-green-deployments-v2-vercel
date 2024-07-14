@@ -154,15 +154,16 @@ export async function middleware(req: NextRequest) {
     return getDeploymentWithCookieBasedOnEnvVar(req);
   }
   // default cookies
+  const response = NextResponse.next();
+
   if (
     selectedDeploymentDomain ===
     new URL(canary.deploymentExistingDomain || "").hostname
   ) {
     console.log("<<<<<<<< if default cookies >>>>>>>");
-    const response = NextResponse.next();
-    response.cookies.set("experiment_id", experimentId);
-    response.cookies.set("variant_id", "1");
-    response.cookies.set("hostname", req.nextUrl.hostname);
+    response.cookies.set({ name: "experiment_id", value: experimentId });
+    response.cookies.set({ name: "variant_id", value: "1" });
+    response.cookies.set({ name: "hostname", value: req.nextUrl.hostname });
     await saveVariantIDCount("1", experimentId);
     console.log("<<<<<<<< if default cookies DONE >>>>>>>");
   }
