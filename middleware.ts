@@ -86,6 +86,11 @@ export async function middleware(req: NextRequest) {
 
   console.log("experiment_id: Coolie", experiment_id);
 
+  if (experimentId === "NO_EXPERIMENT") {
+    console.log("if =====> NO_EXPERIMENT");
+    return clearCookies(experimentId);
+  }
+
   if (
     req.cookies.has("experiment_id") &&
     experiment_id.value === experimentId &&
@@ -223,6 +228,14 @@ async function saveVariantIDCount(variantID, experimentID) {
     console.error("Error:", error);
     throw error;
   }
+}
+
+async function clearCookies(experimentId: string) {
+  const response = NextResponse.next();
+  response.cookies.set("experiment_id", experimentId);
+  response.cookies.delete("variant_id");
+  response.cookies.delete("hostname");
+  return response;
 }
 
 async function getDeploymentWithCookieBasedOnEnvVar(
