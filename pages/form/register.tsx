@@ -1,34 +1,34 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import { useFormik, FormikHelpers } from 'formik';
-import { useContext, useEffect, useState } from 'react';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import registerFormValidate from '../../utils/registerFormValidate';
-import styles from '../../styles/Wizard.module.css';
-import { motion } from 'framer-motion';
-import React from 'react';
-import { signIn, useSession } from 'next-auth/react';
-import { checkout } from '../../utils/checkout';
-import { FaStripe } from 'react-icons/fa';
-import { BsFillShieldLockFill } from 'react-icons/bs';
-import { MoonLoader } from 'react-spinners';
-import { event } from 'nextjs-google-analytics';
-import { v4 as uuidv4 } from 'uuid';
-import { useTranslation } from 'react-i18next';
-import { API_KEY_HEADER } from '../api/constants';
-import Input from '../../components/input';
-import trackEvent from '../../utils/trackEvent';
-import Navbar from '../../components/navbar';
-import PrivacyPolicyModal from '../../components/modal/PrivacyPolicyModal';
-import RefundPolicyModal from '../../components/modal/RefundPolicyModal';
-import { useLoadFormData } from '../../hooks/useLoadFormData';
-import { useRouter } from 'next/router';
-import { AppContext } from '../../context/appContext';
-import { ROUTE_PATH } from '../../constants/path';
-import TrustBox from '../../components/trustBox';
-import { IReviewsResponse } from '../../model/Schema';
-import Image from 'next/image';
-import useBeforeUnload from '../../hooks/useBeforeUnload';
+import Head from "next/head";
+import Link from "next/link";
+import { useFormik, FormikHelpers } from "formik";
+import { useContext, useEffect, useState } from "react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import registerFormValidate from "../../utils/registerFormValidate";
+import styles from "../../styles/Wizard.module.css";
+import { motion } from "framer-motion";
+import React from "react";
+import { signIn, useSession } from "next-auth/react";
+import { checkout } from "../../utils/checkout";
+import { FaStripe } from "react-icons/fa";
+import { BsFillShieldLockFill } from "react-icons/bs";
+import { MoonLoader } from "react-spinners";
+import { event } from "nextjs-google-analytics";
+import { v4 as uuidv4 } from "uuid";
+import { useTranslation } from "react-i18next";
+import { API_KEY_HEADER } from "../api/constants";
+import Input from "../../components/input";
+import trackEvent from "../../utils/trackEvent";
+import Navbar from "../../components/navbar";
+import PrivacyPolicyModal from "../../components/modal/PrivacyPolicyModal";
+import RefundPolicyModal from "../../components/modal/RefundPolicyModal";
+import { useLoadFormData } from "../../hooks/useLoadFormData";
+import { useRouter } from "next/router";
+import { AppContext } from "../../context/appContext";
+import { ROUTE_PATH } from "../../constants/path";
+import TrustBox from "../../components/trustBox";
+import { IReviewsResponse } from "../../model/Schema";
+import Image from "next/image";
+import useBeforeUnload from "../../hooks/useBeforeUnload";
 
 // create interface for props passing from mainWizard.tsx
 interface FormValues {
@@ -38,7 +38,7 @@ interface FormValues {
 }
 
 export default function Register1({ secretKey, fbPixelId }) {
-  const { t, i18n } = useTranslation('Register1');
+  const { t, i18n } = useTranslation("Register1");
   const {
     businessOperationalStatus,
     businessPlanObj,
@@ -109,10 +109,10 @@ export default function Register1({ secretKey, fbPixelId }) {
   } = useLoadFormData();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { t: tv } = useTranslation('validate');
+  const { t: tv } = useTranslation("validate");
   const { data: session } = useSession();
-  const [userEmail, setUserEmail] = useState('');
-  const [country, setCountry] = useState('');
+  const [userEmail, setUserEmail] = useState("");
+  const [country, setCountry] = useState("");
   const [reviews, setReviews] = useState<IReviewsResponse[]>([]);
 
   const {
@@ -128,12 +128,12 @@ export default function Register1({ secretKey, fbPixelId }) {
     },
     set: { setStarterPrice, setProPrice },
   } = useContext(AppContext);
-  
+
   const [isUnloadActive, setIsUnloadActive] = useState(true);
   useBeforeUnload(isUnloadActive);
 
   const fetchReviews = async () => {
-    const res = await fetch('/api/trustpilot/reviewsRegister', {
+    const res = await fetch("/api/trustpilot/reviewsRegister", {
       headers: {
         [API_KEY_HEADER]: secretKey,
       },
@@ -149,16 +149,16 @@ export default function Register1({ secretKey, fbPixelId }) {
   }, [session]);
 
   useEffect(() => {
-    event('Register1_component_view', {
-      category: 'Component View',
-      label: 'Register1 Component View',
+    event("Register1_component_view", {
+      category: "Component View",
+      label: "Register1 Component View",
     });
     window.scrollTo(0, 0);
     let countryFromLocal;
-    if (typeof window !== 'undefined') {
-      countryFromLocal = localStorage.getItem('country');
+    if (typeof window !== "undefined") {
+      countryFromLocal = localStorage.getItem("country");
     }
-    console.log('country:', countryFromLocal )
+    console.log("country:", countryFromLocal);
     setCountry(countryFromLocal);
     fetchReviews();
   }, []);
@@ -184,16 +184,16 @@ export default function Register1({ secretKey, fbPixelId }) {
 
   async function onSubmit(
     values: FormValues,
-    { setErrors, setSubmitting }: FormikHelpers<FormValues>,
+    { setErrors, setSubmitting }: FormikHelpers<FormValues>
   ) {
     if (isSubmitting) return;
     setSubmitting(true);
     setIsSubmitting(true);
 
-    const variantIDFromLocal = localStorage.getItem('variantID');
-    const experimentIDFromLocal = localStorage.getItem('experimentID');
+    const variantIDFromLocal = localStorage.getItem("variantID");
+    const experimentIDFromLocal = localStorage.getItem("experimentID");
 
-    console.log('experimentID from register1: ', experimentIDFromLocal);
+    console.log("experimentID from register1: ", experimentIDFromLocal);
 
     const userInput = {
       businessOperationalStatus,
@@ -297,26 +297,26 @@ export default function Register1({ secretKey, fbPixelId }) {
     };
 
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify(dataToSend),
     };
 
-    await fetch('/api/auth/signup', options)
+    await fetch("/api/auth/signup", options)
       .then(async (res) => {
         if (res.status === 422) {
           const data = await res.json();
           setErrors({ email: data.message });
         } else if (res.status === 401) {
-          setErrors({ email: 'Unauthorized' });
+          setErrors({ email: "Unauthorized" });
         } else {
           const data = await res.json();
           if (data) {
             // log the user in with next-auth using credentials with the email and password provided in the form
-            await signIn('credentials', {
+            await signIn("credentials", {
               redirect: false,
               email: values.email,
               password: values.password,
@@ -324,9 +324,9 @@ export default function Register1({ secretKey, fbPixelId }) {
 
             //set values.email to localstorage
 
-            localStorage.setItem('Ido', uuid);
-            localStorage.setItem('email', values.email);
-            localStorage.setItem('country', country);
+            localStorage.setItem("Ido", uuid);
+            localStorage.setItem("email", values.email);
+            localStorage.setItem("country", country);
 
             setUserEmail(values.email);
           }
@@ -339,15 +339,15 @@ export default function Register1({ secretKey, fbPixelId }) {
     // Incase of testing on localhost or vercel development.
     // Do not send email to zapier.
     if (
-      window.location.hostname !== 'localhost' &&
-      window.location.hostname !== '15minuteplan-ai.vercel.app'
+      window.location.hostname !== "localhost" &&
+      window.location.hostname !== "15minuteplan-ai.vercel.app"
     ) {
       //send email to zapier
       try {
-        const response = await fetch('/api/sendEmailToZapier', {
-          method: 'POST',
+        const response = await fetch("/api/sendEmailToZapier", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             [API_KEY_HEADER]: secretKey,
           },
           body: JSON.stringify({
@@ -362,7 +362,7 @@ export default function Register1({ secretKey, fbPixelId }) {
         const data = await response.json();
         console.log(data);
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
       }
     }
 
@@ -372,9 +372,9 @@ export default function Register1({ secretKey, fbPixelId }) {
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
-      CPassword: '',
+      email: "",
+      password: "",
+      CPassword: "",
     },
     validate: (values) => registerFormValidate(values, tv),
     onSubmit,
@@ -383,388 +383,390 @@ export default function Register1({ secretKey, fbPixelId }) {
   const locale = i18n.language;
 
   const variantIDFromLocal =
-    typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+    typeof window !== "undefined" ? localStorage.getItem("variantID") : "";
 
   useEffect(() => {
-    let priceId = '';
+    let priceId = "";
 
-    const starterTestPlanPriceId = 'price_1OzIhaHawG1pyJK2fK0esDAj';
-    const professionalTestPlanPriceId = 'price_1OzIhsHawG1pyJK29nl3qO1h';
+    const starterTestPlanPriceId = "price_1OzIhaHawG1pyJK2fK0esDAj";
+    const professionalTestPlanPriceId = "price_1OzIhsHawG1pyJK29nl3qO1h";
 
     if (planPackage) {
-      if (country === 'BN') {
-        console.log('test country Brunei')
+      if (country === "BN") {
+        console.log("test country Brunei");
         priceId =
-          planPackage === 'starter'
-            ? 'price_1PVzsEHawG1pyJK2n6nn7tkZ'
-            : 'price_1PVzt3HawG1pyJK2o2QyBxNP';
-      } else if (country === 'TH') {
-        console.log('is inside TH');
+          planPackage === "starter"
+            ? "price_1PVzsEHawG1pyJK2n6nn7tkZ"
+            : "price_1PVzt3HawG1pyJK2o2QyBxNP";
+      } else if (country === "TH") {
+        console.log("is inside TH");
         priceId =
-          planPackage === 'starter'
-            ? 'price_1PVzbDHawG1pyJK2wDOR9FQg'
-            : 'price_1PVzc8HawG1pyJK2WujgH2tn';
+          planPackage === "starter"
+            ? "price_1PVzbDHawG1pyJK2wDOR9FQg"
+            : "price_1PVzc8HawG1pyJK2WujgH2tn";
       } else {
-        if (planPackage === 'starter') {
-          priceId = 'price_1PBJjSHawG1pyJK2fA0XH2je';
-        } else if (planPackage === 'professional') {
-          priceId = 'price_1PBJJCHawG1pyJK2ZWC8pUDA';
+        if (planPackage === "starter") {
+          priceId = "price_1PBJjSHawG1pyJK2fA0XH2je";
+        } else if (planPackage === "professional") {
+          priceId = "price_1PBJJCHawG1pyJK2ZWC8pUDA";
         } else {
-          console.log('no planPackage');
+          console.log("no planPackage");
         }
       }
 
       // Incase of testing on localhost or vercel development.
       if (
-        window.location.hostname === 'localhost' ||
-        window.location.hostname === '15minuteplan-ai.vercel.app'
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "15minuteplan-ai.vercel.app" ||
+        window.location.hostname === "canary-15minuteplan-ai.kanoonth.com" ||
+        window.location.hostname === "15minuteplan-ai.kanoonth.com"
       ) {
         priceId =
-          planPackage === 'starter'
+          planPackage === "starter"
             ? starterTestPlanPriceId
             : professionalTestPlanPriceId;
       }
 
-      if (country !== 'BN') {
+      if (country !== "BN") {
         const currencyMappingsVAR1 = {
           AE: {
-            currency: 'AED',
-            starterPrice: 'د.إ365',
-            proPrice: 'د.إ499',
-            starterPriceVariant2: 'د.249',
-            proPriceVariant2: 'د.365',
-            discountedStarterPrice: 'د.إ255',
-            discountedProPrice: 'د.إ349',
+            currency: "AED",
+            starterPrice: "د.إ365",
+            proPrice: "د.إ499",
+            starterPriceVariant2: "د.249",
+            proPriceVariant2: "د.365",
+            discountedStarterPrice: "د.إ255",
+            discountedProPrice: "د.إ349",
           },
           AU: {
-            currency: 'AUD',
-            starterPrice: 'A$ 155',
-            proPrice: 'A$ 219',
-            starterPriceVariant2: 'A$ 109',
-            proPriceVariant2: 'A$ 155',
-            discountedStarterPrice: 'A$ 108',
-            discountedProPrice: 'A$ 153',
+            currency: "AUD",
+            starterPrice: "A$ 155",
+            proPrice: "A$ 219",
+            starterPriceVariant2: "A$ 109",
+            proPriceVariant2: "A$ 155",
+            discountedStarterPrice: "A$ 108",
+            discountedProPrice: "A$ 153",
           },
           CA: {
-            currency: 'CAD',
-            starterPrice: 'CA$ 135',
-            proPrice: 'CA$ 189',
-            starterPriceVariant2: 'CA$ 95',
-            proPriceVariant2: 'CA$ 135',
-            discountedStarterPrice: 'CA$ 94',
-            discountedProPrice: 'CA$ 132',
+            currency: "CAD",
+            starterPrice: "CA$ 135",
+            proPrice: "CA$ 189",
+            starterPriceVariant2: "CA$ 95",
+            proPriceVariant2: "CA$ 135",
+            discountedStarterPrice: "CA$ 94",
+            discountedProPrice: "CA$ 132",
           },
           CH: {
-            currency: 'CHF',
-            starterPrice: 'CHF 89',
-            proPrice: 'CHF 125',
-            starterPriceVariant2: 'CHF 65',
-            proPriceVariant2: 'CHF 89',
-            discountedStarterPrice: 'CHF 62',
-            discountedProPrice: 'CHF 88',
+            currency: "CHF",
+            starterPrice: "CHF 89",
+            proPrice: "CHF 125",
+            starterPriceVariant2: "CHF 65",
+            proPriceVariant2: "CHF 89",
+            discountedStarterPrice: "CHF 62",
+            discountedProPrice: "CHF 88",
           },
           EU: {
-            currency: 'EUR',
-            starterPrice: '€95',
-            proPrice: '€129',
-            starterPriceVariant2: '€65',
-            proPriceVariant2: '€95',
-            discountedStarterPrice: '€66',
-            discountedProPrice: '€90',
+            currency: "EUR",
+            starterPrice: "€95",
+            proPrice: "€129",
+            starterPriceVariant2: "€65",
+            proPriceVariant2: "€95",
+            discountedStarterPrice: "€66",
+            discountedProPrice: "€90",
           },
           GB: {
-            currency: 'GBP',
-            starterPrice: '£79',
-            proPrice: '£109',
-            starterPriceVariant2: '£55',
-            proPriceVariant2: '£79',
-            discountedStarterPrice: '£55',
-            discountedProPrice: '£76',
+            currency: "GBP",
+            starterPrice: "£79",
+            proPrice: "£109",
+            starterPriceVariant2: "£55",
+            proPriceVariant2: "£79",
+            discountedStarterPrice: "£55",
+            discountedProPrice: "£76",
           },
           NZ: {
-            currency: 'NZD',
-            starterPrice: 'NZ$ 169',
-            proPrice: 'NZ$ 235',
-            starterPriceVariant2: 'NZ$ 115',
-            proPriceVariant2: 'NZ$ 169',
-            discountedStarterPrice: 'NZ$ 118',
-            discountedProPrice: 'NZ$ 164',
+            currency: "NZD",
+            starterPrice: "NZ$ 169",
+            proPrice: "NZ$ 235",
+            starterPriceVariant2: "NZ$ 115",
+            proPriceVariant2: "NZ$ 169",
+            discountedStarterPrice: "NZ$ 118",
+            discountedProPrice: "NZ$ 164",
           },
           SG: {
-            currency: 'SGD',
-            starterPrice: 'SGD 135',
-            proPrice: 'SGD 189',
-            starterPriceVariant2: 'SGD 95',
-            proPriceVariant2: 'SGD 135',
-            discountedStarterPrice: 'SGD 94',
-            discountedProPrice: 'SGD 132',
+            currency: "SGD",
+            starterPrice: "SGD 135",
+            proPrice: "SGD 189",
+            starterPriceVariant2: "SGD 95",
+            proPriceVariant2: "SGD 135",
+            discountedStarterPrice: "SGD 94",
+            discountedProPrice: "SGD 132",
           },
           ZA: {
-            currency: 'ZAR',
-            starterPrice: 'R1,850',
-            proPrice: 'R2,590',
-            starterPriceVariant2: 'R1,290',
-            proPriceVariant2: 'R1,850',
-            discountedStarterPrice: 'R1,295',
-            discountedProPrice: 'R1,813',
+            currency: "ZAR",
+            starterPrice: "R1,850",
+            proPrice: "R2,590",
+            starterPriceVariant2: "R1,290",
+            proPriceVariant2: "R1,850",
+            discountedStarterPrice: "R1,295",
+            discountedProPrice: "R1,813",
           },
           HK: {
-            currency: 'HKD',
-            starterPrice: 'HK$ 779',
-            proPrice: 'HK$ 1,090',
-            starterPriceVariant2: 'HK$ 539',
-            proPriceVariant2: 'HK$ 779',
-            discountedStarterPrice: 'HK$ 545',
-            discountedProPrice: 'HK$ 763',
+            currency: "HKD",
+            starterPrice: "HK$ 779",
+            proPrice: "HK$ 1,090",
+            starterPriceVariant2: "HK$ 539",
+            proPriceVariant2: "HK$ 779",
+            discountedStarterPrice: "HK$ 545",
+            discountedProPrice: "HK$ 763",
           },
           SE: {
-            currency: 'SEK',
-            starterPrice: '1,090kr',
-            proPrice: '1,490kr',
-            starterPriceVariant2: '759kr',
-            proPriceVariant2: '1,090kr',
-            discountedStarterPrice: '763kr',
-            discountedProPrice: '1,043kr',
+            currency: "SEK",
+            starterPrice: "1,090kr",
+            proPrice: "1,490kr",
+            starterPriceVariant2: "759kr",
+            proPriceVariant2: "1,090kr",
+            discountedStarterPrice: "763kr",
+            discountedProPrice: "1,043kr",
           },
           DK: {
-            currency: 'DKK',
-            starterPrice: '709kr',
-            proPrice: '990kr',
-            starterPriceVariant2: '479kr',
-            proPriceVariant2: '709kr',
-            discountedStarterPrice: '496kr',
-            discountedProPrice: '693kr',
+            currency: "DKK",
+            starterPrice: "709kr",
+            proPrice: "990kr",
+            starterPriceVariant2: "479kr",
+            proPriceVariant2: "709kr",
+            discountedStarterPrice: "496kr",
+            discountedProPrice: "693kr",
           },
           NO: {
-            currency: 'NOK',
-            starterPrice: '1090kr',
-            proPrice: '1490kr',
-            starterPriceVariant2: '765kr',
-            proPriceVariant2: '1090kr',
-            discountedStarterPrice: '763kr',
-            discountedProPrice: '1,043kr',
+            currency: "NOK",
+            starterPrice: "1090kr",
+            proPrice: "1490kr",
+            starterPriceVariant2: "765kr",
+            proPriceVariant2: "1090kr",
+            discountedStarterPrice: "763kr",
+            discountedProPrice: "1,043kr",
           },
           JP: {
-            currency: 'JPY',
-            starterPrice: '¥14,900',
-            proPrice: '¥20,900',
-            starterPriceVariant2: '¥10,900',
-            proPriceVariant2: '¥14,900',
-            discountedStarterPrice: '¥10,430',
-            discountedProPrice: '¥14,630',
+            currency: "JPY",
+            starterPrice: "¥14,900",
+            proPrice: "¥20,900",
+            starterPriceVariant2: "¥10,900",
+            proPriceVariant2: "¥14,900",
+            discountedStarterPrice: "¥10,430",
+            discountedProPrice: "¥14,630",
           },
           QA: {
-            currency: 'QAR',
-            starterPrice: 'QR 359',
-            proPrice: 'QR 509',
-            starterPriceVariant2: 'QR 249',
-            proPriceVariant2: 'QR 359',
-            discountedStarterPrice: 'QR 251',
-            discountedProPrice: 'QR 356',
+            currency: "QAR",
+            starterPrice: "QR 359",
+            proPrice: "QR 509",
+            starterPriceVariant2: "QR 249",
+            proPriceVariant2: "QR 359",
+            discountedStarterPrice: "QR 251",
+            discountedProPrice: "QR 356",
           },
           SA: {
-            currency: 'SAR',
-            starterPrice: 'SR 379',
-            proPrice: 'SR 519',
-            starterPriceVariant2: 'SR 259',
-            proPriceVariant2: 'SR 379',
-            discountedStarterPrice: 'SR 265',
-            discountedProPrice: 'SR 363',
+            currency: "SAR",
+            starterPrice: "SR 379",
+            proPrice: "SR 519",
+            starterPriceVariant2: "SR 259",
+            proPriceVariant2: "SR 379",
+            discountedStarterPrice: "SR 265",
+            discountedProPrice: "SR 363",
           },
           IN: {
-            currency: 'INR',
-            starterPrice: '₹2,990',
-            proPrice: '₹3,990',
-            starterPriceVariant2: '₹2,990',
-            proPriceVariant2: '₹3,990',
-            discountedStarterPrice: '₹2,093',
-            discountedProPrice: '₹2,793',
+            currency: "INR",
+            starterPrice: "₹2,990",
+            proPrice: "₹3,990",
+            starterPriceVariant2: "₹2,990",
+            proPriceVariant2: "₹3,990",
+            discountedStarterPrice: "₹2,093",
+            discountedProPrice: "₹2,793",
           },
           AR: {
-            currency: 'ARS',
-            starterPrice: 'ARS 29,000',
-            proPrice: 'ARS 39,500',
-            starterPriceVariant2: 'ARS 29,000',
-            proPriceVariant2: 'ARS 39,500',
-            discountedStarterPrice: 'ARS 20,300',
-            discountedProPrice: 'ARS 27,650',
+            currency: "ARS",
+            starterPrice: "ARS 29,000",
+            proPrice: "ARS 39,500",
+            starterPriceVariant2: "ARS 29,000",
+            proPriceVariant2: "ARS 39,500",
+            discountedStarterPrice: "ARS 20,300",
+            discountedProPrice: "ARS 27,650",
           },
           CL: {
-            currency: 'CLP',
-            starterPrice: 'CLP 32,900',
-            proPrice: 'CLP 43,900',
-            starterPriceVariant2: 'CLP 32,900',
-            proPriceVariant2: 'CLP 43,900',
-            discountedStarterPrice: 'CLP 23,030',
-            discountedProPrice: 'CLP 30,730',
+            currency: "CLP",
+            starterPrice: "CLP 32,900",
+            proPrice: "CLP 43,900",
+            starterPriceVariant2: "CLP 32,900",
+            proPriceVariant2: "CLP 43,900",
+            discountedStarterPrice: "CLP 23,030",
+            discountedProPrice: "CLP 30,730",
           },
           BR: {
-            currency: 'BRL',
-            starterPrice: 'R$ 175',
-            proPrice: 'R$ 235',
-            starterPriceVariant2: 'R$ 175',
-            proPriceVariant2: 'R$ 235',
-            discountedStarterPrice: 'R$ 122',
-            discountedProPrice: 'R$ 164',
+            currency: "BRL",
+            starterPrice: "R$ 175",
+            proPrice: "R$ 235",
+            starterPriceVariant2: "R$ 175",
+            proPriceVariant2: "R$ 235",
+            discountedStarterPrice: "R$ 122",
+            discountedProPrice: "R$ 164",
           },
         };
         // split test code here
         const currencyMappingsVAR2 = {
           AE: {
-            currency: 'AED',
-            starterPrice: 'د.إ249',
-            proPrice: 'د.إ365',
+            currency: "AED",
+            starterPrice: "د.إ249",
+            proPrice: "د.إ365",
           },
           AR: {
-            currency: 'ARS',
-            starterPrice: 'ARS 29,000',
-            proPrice: 'ARS 39,500',
+            currency: "ARS",
+            starterPrice: "ARS 29,000",
+            proPrice: "ARS 39,500",
           },
           AU: {
-            currency: 'AUD',
-            starterPrice: 'A$ 109',
-            proPrice: 'A$ 155',
+            currency: "AUD",
+            starterPrice: "A$ 109",
+            proPrice: "A$ 155",
           },
           BR: {
-            currency: 'BRL',
-            starterPrice: 'R$ 175',
-            proPrice: 'R$ 235',
+            currency: "BRL",
+            starterPrice: "R$ 175",
+            proPrice: "R$ 235",
           },
           CA: {
-            currency: 'CAD',
-            starterPrice: 'CA$ 95',
-            proPrice: 'CA$ 135',
+            currency: "CAD",
+            starterPrice: "CA$ 95",
+            proPrice: "CA$ 135",
           },
           CH: {
-            currency: 'CHF',
-            starterPrice: 'CHF 65',
-            proPrice: 'CHF 89',
+            currency: "CHF",
+            starterPrice: "CHF 65",
+            proPrice: "CHF 89",
           },
           CL: {
-            currency: 'CLP',
-            starterPrice: 'CLP 32,900',
-            proPrice: 'CLP 43,900',
+            currency: "CLP",
+            starterPrice: "CLP 32,900",
+            proPrice: "CLP 43,900",
           },
           DK: {
-            currency: 'DKK',
-            starterPrice: '479kr',
-            proPrice: '709kr',
+            currency: "DKK",
+            starterPrice: "479kr",
+            proPrice: "709kr",
           },
           EU: {
-            currency: 'EUR',
-            starterPrice: '€65',
-            proPrice: '€95',
+            currency: "EUR",
+            starterPrice: "€65",
+            proPrice: "€95",
           },
           GB: {
-            currency: 'GBP',
-            starterPrice: '£55',
-            proPrice: '£79',
+            currency: "GBP",
+            starterPrice: "£55",
+            proPrice: "£79",
           },
           HK: {
-            currency: 'HKD',
-            starterPrice: 'HK$ 539',
-            proPrice: 'HK$ 779',
+            currency: "HKD",
+            starterPrice: "HK$ 539",
+            proPrice: "HK$ 779",
           },
           IN: {
-            currency: 'INR',
-            starterPrice: '₹2,990',
-            proPrice: '₹3,990',
+            currency: "INR",
+            starterPrice: "₹2,990",
+            proPrice: "₹3,990",
           },
           JP: {
-            currency: 'JPY',
-            starterPrice: '¥10,900',
-            proPrice: '¥14,900',
+            currency: "JPY",
+            starterPrice: "¥10,900",
+            proPrice: "¥14,900",
           },
           NO: {
-            currency: 'NOK',
-            starterPrice: '765kr',
-            proPrice: '1090kr',
+            currency: "NOK",
+            starterPrice: "765kr",
+            proPrice: "1090kr",
           },
           NZ: {
-            currency: 'NZD',
-            starterPrice: 'NZ$ 115',
-            proPrice: 'NZ$ 169',
+            currency: "NZD",
+            starterPrice: "NZ$ 115",
+            proPrice: "NZ$ 169",
           },
           QA: {
-            currency: 'QAR',
-            starterPrice: 'QR 249',
-            proPrice: 'QR 359',
+            currency: "QAR",
+            starterPrice: "QR 249",
+            proPrice: "QR 359",
           },
           SA: {
-            currency: 'SAR',
-            starterPrice: 'SR 259',
-            proPrice: 'SR 379',
+            currency: "SAR",
+            starterPrice: "SR 259",
+            proPrice: "SR 379",
           },
           SE: {
-            currency: 'SEK',
-            starterPrice: '759kr',
-            proPrice: '1,090kr',
+            currency: "SEK",
+            starterPrice: "759kr",
+            proPrice: "1,090kr",
           },
           SG: {
-            currency: 'SGD',
-            starterPrice: 'SGD 95',
-            proPrice: 'SGD 135',
+            currency: "SGD",
+            starterPrice: "SGD 95",
+            proPrice: "SGD 135",
           },
           ZA: {
-            currency: 'ZAR',
-            starterPrice: 'R1,290',
-            proPrice: 'R1,850',
+            currency: "ZAR",
+            starterPrice: "R1,290",
+            proPrice: "R1,850",
           },
           TH: {
-            currency: 'THB',
-            starterPrice: '690 THB',
-            proPrice: '990 THB',
+            currency: "THB",
+            starterPrice: "690 THB",
+            proPrice: "990 THB",
           },
         };
 
         const euroCountries = [
-          'DE',
-          'FR',
-          'IT',
-          'ES',
-          'NL',
-          'BE',
-          'LU',
-          'IE',
-          'PT',
-          'AT',
-          'FI',
-          'GR',
-          'CY',
-          'MT',
-          'EE',
-          'LV',
-          'LT',
-          'SK',
-          'SI',
+          "DE",
+          "FR",
+          "IT",
+          "ES",
+          "NL",
+          "BE",
+          "LU",
+          "IE",
+          "PT",
+          "AT",
+          "FI",
+          "GR",
+          "CY",
+          "MT",
+          "EE",
+          "LV",
+          "LT",
+          "SK",
+          "SI",
         ];
 
         let countryMapping;
         countryMapping = currencyMappingsVAR2[country];
 
         if (!euroCountries.includes(country) && countryMapping) {
-          console.log('not euro country inside: ', country);
+          console.log("not euro country inside: ", country);
           setStarterPrice(countryMapping.starterPrice);
           setProPrice(countryMapping.proPrice);
           // setDiscountedStarterPrice(countryMapping.discountedStarterPrice);
           // setDiscountedProPrice(countryMapping.discountedProPrice);
         } else if (euroCountries.includes(country)) {
-          console.log('is euro country inside: ', country);
-          setStarterPrice('€65');
-          setProPrice('€95');
+          console.log("is euro country inside: ", country);
+          setStarterPrice("€65");
+          setProPrice("€95");
           // setDiscountedStarterPrice('€66');
           // setDiscountedProPrice('€90');
         } else {
-          console.log('no country match inside: ', country);
-          setStarterPrice('$69');
-          setProPrice('$99');
+          console.log("no country match inside: ", country);
+          setStarterPrice("$69");
+          setProPrice("$99");
           // setDiscountedStarterPrice('$69');
           // setDiscountedProPrice('$97');
         }
       } else {
-        console.log('no country: ', country);
-        setStarterPrice('10 THB');
-        setProPrice('10 THB');
+        console.log("no country: ", country);
+        setStarterPrice("10 THB");
+        setProPrice("10 THB");
         // setDiscountedStarterPrice('$69');
         // setDiscountedProPrice('$97');
       }
@@ -782,7 +784,7 @@ export default function Register1({ secretKey, fbPixelId }) {
         });
       }
     } else {
-      console.log('no plan package');
+      console.log("no plan package");
     }
   }, [country, planPackage, userEmail]);
 
@@ -799,16 +801,16 @@ export default function Register1({ secretKey, fbPixelId }) {
 
   useEffect(() => {
     if (isSubmitting) {
-      event('final_register_and_purchase_clicked', {
-        category: 'Button Click',
-        label: 'Register and Purchase button clicked at Register1 component',
+      event("final_register_and_purchase_clicked", {
+        category: "Button Click",
+        label: "Register and Purchase button clicked at Register1 component",
       });
     }
   }, [isSubmitting]);
 
   const submitting = () => {
     trackEvent({
-      event_name: 'payment_cta_button',
+      event_name: "payment_cta_button",
     });
     if (Object.keys(formik.errors).length > 0) {
       return;
@@ -821,7 +823,7 @@ export default function Register1({ secretKey, fbPixelId }) {
 
   function handleBackandCancelDiscount() {
     trackEvent({
-      event_name: 'payment_back_button',
+      event_name: "payment_back_button",
     });
     handleBack();
   }
@@ -837,12 +839,12 @@ export default function Register1({ secretKey, fbPixelId }) {
         transition={{ duration: 0.2 }}
       >
         <Head>
-          <title>{t('Register')}</title>
+          <title>{t("Register")}</title>
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1, maximum-scale=1"
           />
-          <meta name="description" content={t('Plan Generator')} />
+          <meta name="description" content={t("Plan Generator")} />
         </Head>
 
         <main>
@@ -851,7 +853,7 @@ export default function Register1({ secretKey, fbPixelId }) {
               <div className="section-full wf-section">
                 <div className="get-started2">
                   <div className="form-bg">
-                    <h4 className="">{t('Registration and Payment')}</h4>
+                    <h4 className="">{t("Registration and Payment")}</h4>
 
                     <div className="form-block-started w-form">
                       <form
@@ -871,21 +873,21 @@ export default function Register1({ secretKey, fbPixelId }) {
 
                         <div className="mb-6">
                           <label htmlFor="email" className={styles.label}>
-                            {t('Email')}{' '}
-                            <span className="text-sm">{t('(required)')}</span>
+                            {t("Email")}{" "}
+                            <span className="text-sm">{t("(required)")}</span>
                           </label>
                           <Input
-                            {...formik.getFieldProps('email')}
+                            {...formik.getFieldProps("email")}
                             onChange={(e) => {
                               formik.setFieldValue(
-                                'email',
-                                e.target.value.toLowerCase(),
+                                "email",
+                                e.target.value.toLowerCase()
                               );
                             }}
                             type="email"
                             name="email"
                             id="email"
-                            className={`${styles.text_input} ${formik.errors.email && formik.touched.email ? 'border-rose-400' : 'border-gray-300'} `}
+                            className={`${styles.text_input} ${formik.errors.email && formik.touched.email ? "border-rose-400" : "border-gray-300"} `}
                             page="Register1"
                           />
                           {formik.errors.email && formik.touched.email ? (
@@ -899,15 +901,15 @@ export default function Register1({ secretKey, fbPixelId }) {
 
                         <div className="mb-6">
                           <label htmlFor="password" className={styles.label}>
-                            {t('Password')}{' '}
-                            <span className="text-sm">{t('(required)')}</span>
+                            {t("Password")}{" "}
+                            <span className="text-sm">{t("(required)")}</span>
                           </label>
                           <Input
-                            {...formik.getFieldProps('password')}
+                            {...formik.getFieldProps("password")}
                             type="password"
                             name="password"
                             id="password"
-                            className={`${styles.text_input} ${formik.errors.password && formik.touched.password ? 'border-rose-400' : 'border-gray-300'} `}
+                            className={`${styles.text_input} ${formik.errors.password && formik.touched.password ? "border-rose-400" : "border-gray-300"} `}
                             page="Register1"
                           />
                           {formik.errors.password && formik.touched.password ? (
@@ -921,15 +923,15 @@ export default function Register1({ secretKey, fbPixelId }) {
 
                         <div className="mb-6">
                           <label htmlFor="CPassword" className={styles.label}>
-                            {t('Confirm Password')}{' '}
-                            <span className="text-sm">{t('(required)')}</span>
+                            {t("Confirm Password")}{" "}
+                            <span className="text-sm">{t("(required)")}</span>
                           </label>
                           <Input
-                            {...formik.getFieldProps('CPassword')}
+                            {...formik.getFieldProps("CPassword")}
                             type="password"
                             name="CPassword"
                             id="CPassword"
-                            className={`${styles.text_input} ${formik.errors.CPassword && formik.touched.CPassword ? 'border-rose-400' : 'border-gray-300'}`}
+                            className={`${styles.text_input} ${formik.errors.CPassword && formik.touched.CPassword ? "border-rose-400" : "border-gray-300"}`}
                             page="Register1"
                           />
                           {formik.errors.CPassword &&
@@ -948,44 +950,44 @@ export default function Register1({ secretKey, fbPixelId }) {
                             <div className="p-6 text-center">
                               <strong className="text-lg">
                                 {t(
-                                  'Redirecting to payment page, this can take a minute',
+                                  "Redirecting to payment page, this can take a minute"
                                 )}
                               </strong>
                             </div>
                           </div>
                         )}
 
-                        {planPackage === 'starter' && (
+                        {planPackage === "starter" && (
                           <div className="flex flex-col mt-5 border border-gray-400 p-5 rounded-xl">
                             <div className="font-bold">
-                              {t('Order Summary:')}
+                              {t("Order Summary:")}
                             </div>
                             <div className="flex justify-between">
                               <div className="">
-                                {t('Starter Business Plan')}
+                                {t("Starter Business Plan")}
                               </div>
                               <div className="">{`${starterPrice}`}</div>
                             </div>
 
                             <div className="">
-                              {t('Pay Once, use forever. No extra costs.')}{' '}
+                              {t("Pay Once, use forever. No extra costs.")}{" "}
                             </div>
                           </div>
                         )}
 
-                        {planPackage === 'professional' && (
+                        {planPackage === "professional" && (
                           <div className="flex flex-col mt-5 border border-gray-400 p-5 rounded-xl">
                             <div className="font-bold">
-                              {t('Order Summary:')}
+                              {t("Order Summary:")}
                             </div>
                             <div className="flex justify-between">
                               <div className="">
-                                {t('Professional Business Plan')}
+                                {t("Professional Business Plan")}
                               </div>
                               <div className="">{`${proPrice}`}</div>
                             </div>
                             <div className="">
-                              {t('Pay Once, use forever. No extra costs.')}{' '}
+                              {t("Pay Once, use forever. No extra costs.")}{" "}
                             </div>
                           </div>
                         )}
@@ -993,9 +995,9 @@ export default function Register1({ secretKey, fbPixelId }) {
                         <div className="flex flex-col justify-center items-center mt-5 text-center">
                           <div className="flex gap-1 items-center">
                             <div>
-                              {t('Guaranteed')}{' '}
-                              <strong>{t('Safe and Secure')}</strong>{' '}
-                              {t('Payment Powered by')}
+                              {t("Guaranteed")}{" "}
+                              <strong>{t("Safe and Secure")}</strong>{" "}
+                              {t("Payment Powered by")}
                             </div>
                           </div>
                           <div className="flex justify-center gap-2 items-center">
@@ -1007,45 +1009,45 @@ export default function Register1({ secretKey, fbPixelId }) {
                           (formik.errors.CPassword &&
                             formik.touched.CPassword) ? (
                             <span className="text-rose-400">
-                              {t('Please check your inputs')}
+                              {t("Please check your inputs")}
                             </span>
                           ) : (
                             <></>
                           )}
                           <div className="text-center text-sm mb-2">
                             {t("By registering you're agreeing to our")}
+                            <button
+                              type="button"
+                              className="text-ksy-500 underline ml-1"
+                              onClick={onOpenRefundPolicyModal}
+                            >
+                              {t("refund_policy_link")}
+                            </button>
+
+                            <>
+                              {t("agreement_link_conjunction")}
                               <button
                                 type="button"
                                 className="text-ksy-500 underline ml-1"
-                                onClick={onOpenRefundPolicyModal}
+                                onClick={onOpenPrivacyPolicyModal}
                               >
-                                {t('refund_policy_link')}
+                                {t("privacy_policy_link")}
                               </button>
-
-                              <>
-                                {t('agreement_link_conjunction')}
-                                <button
-                                  type="button"
-                                  className="text-ksy-500 underline ml-1"
-                                  onClick={onOpenPrivacyPolicyModal}
-                                >
-                                  {t('privacy_policy_link')}
-                                </button>
-                              </>
+                            </>
                           </div>
                           <button
                             onClick={submitting}
                             type="submit"
                             className="button-2 w-button m-auto"
                           >
-                            {t('Register & Purchase')}
+                            {t("Register & Purchase")}
                           </button>
                         </div>
                         <div className="mt-3 text-center text-rose-600">
                           {t(
-                            "warning: If you don't complete payment your plan will be",
-                          )}{' '}
-                          <strong className="text-rose-600">{t('LOST')}</strong>{' '}
+                            "warning: If you don't complete payment your plan will be"
+                          )}{" "}
+                          <strong className="text-rose-600">{t("LOST")}</strong>{" "}
                         </div>
                         {reviews.length > 0 && (
                           <div className="w-full flex flex-col items-center justify-center gap-4 mb-12">
@@ -1056,9 +1058,9 @@ export default function Register1({ secretKey, fbPixelId }) {
                                 </div>
                               ))}
                             </div>
-                            <br/>
+                            <br />
                             <div className="flex flex-row items-center gap-2 text-black">
-                              {t('Reviews From')}
+                              {t("Reviews From")}
                               <Image
                                 src="https://plannit.ai/assets/trustpilot.svg"
                                 width={100}
@@ -1074,7 +1076,7 @@ export default function Register1({ secretKey, fbPixelId }) {
                             onClick={handleBackandCancelDiscount}
                             className="button back-button white"
                           >
-                            {t('Back')}
+                            {t("Back")}
                           </button>
                         </div>
                       </form>
@@ -1102,7 +1104,7 @@ export async function getStaticProps({ locale }) {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['Register1'])),
+      ...(await serverSideTranslations(locale, ["Register1"])),
       secretKey,
       fbPixelId,
     },
