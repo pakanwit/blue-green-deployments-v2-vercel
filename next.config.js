@@ -3,6 +3,28 @@ const { withSentryConfig } = require("@sentry/nextjs");
 const { i18n } = require("./next-i18next.config");
 
 const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value:
+              "https://15minuteplan-ai.kanoonth.com, https://canary-15minuteplan-ai.kanoonth.com, http://localhost:3000", // Set your origin
+          },
+          {
+            key: "Access-Control-Allow-Methods",
+            value: "GET, POST, PUT, DELETE, OPTIONS",
+          },
+          {
+            key: "Access-Control-Allow-Headers",
+            value: "Content-Type, Authorization",
+          },
+        ],
+      },
+    ];
+  },
   assetPrefix: process.env.BASE_URL
     ? `https://${process.env.BASE_URL}`
     : undefined,
