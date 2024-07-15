@@ -76,6 +76,7 @@ export async function middleware(req: NextRequest) {
   console.log("origin ====> ", {
     origin,
     pathname: pathname.includes("/api/"),
+    API_KEY: process.env.API_KEY,
   });
   if (pathname.includes("/api/") && allowedOrigin.includes(origin)) {
     console.log("if ===> origin", origin);
@@ -89,6 +90,7 @@ export async function middleware(req: NextRequest) {
       "Access-Control-Allow-Headers",
       "Accept, Accept-Version, Content-Length, Content-Type"
     );
+    res.headers.append("Api-Key", process.env.API_KEY);
     return res;
   }
   if (
