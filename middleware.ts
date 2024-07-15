@@ -84,7 +84,7 @@ export async function middleware(req: NextRequest) {
     res.headers.append("Access-Control-Allow-Credentials", "true");
     res.headers.append(
       "Access-Control-Allow-Methods",
-      "GET,DELETE,PATCH,POST,PUT,OPTIONS"
+      "GET,DELETE,PATCH,POST,PUT"
     );
     res.headers.append(
       "Access-Control-Allow-Headers",
