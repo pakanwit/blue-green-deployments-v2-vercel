@@ -63,33 +63,23 @@ interface CanaryConfig {
 
 const PUBLIC_FILE = /\.(.*)$/;
 
-const allowedOrigin = {
-  localhost: "http://localhost:3000",
-  "15minuteplan-ai.kanoonth.com": "https://15minuteplan-ai.kanoonth.com",
-  "canary-15minuteplan-ai.kanoonth":
-    "https://canary-15minuteplan-ai.kanoonth.com",
-};
+const allowedOrigin = [
+  "http://localhost:3000",
+  "https://15minuteplan-ai.kanoonth.com",
+  "https://canary-15minuteplan-ai.kanoonth.com",
+];
 
 export async function middleware(req: NextRequest) {
   // We don't want to run blue-green during development.
-  const { pathname } = req.nextUrl;
-  const hostname = req.cookies.get("hostname");
+  const { pathname, origin } = req.nextUrl;
   const res = NextResponse.next();
   console.log("origin ====> ", {
-    hostname,
-    headers: req.headers.get("hostname"),
-    nextUrl: req.nextUrl,
+    origin,
     pathname: pathname.includes("/api/"),
   });
-  if (
-    pathname.includes("/api/") &&
-    Object.keys(allowedOrigin).includes(hostname.value)
-  ) {
-    console.log("if ===> origin", allowedOrigin[hostname.value]);
-    res.headers.append(
-      "Access-Control-Allow-Origin",
-      allowedOrigin[hostname.value]
-    );
+  if (pathname.includes("/api/") && allowedOrigin.includes(origin)) {
+    console.log("if ===> origin", origin);
+    res.headers.append("Access-Control-Allow-Origin", origin);
     res.headers.append("Access-Control-Allow-Credentials", "true");
     res.headers.append(
       "Access-Control-Allow-Methods",
@@ -97,7 +87,7 @@ export async function middleware(req: NextRequest) {
     );
     res.headers.append(
       "Access-Control-Allow-Headers",
-      "Accept, Accept-Version, Content-Length, Content-MD5, Content-Type"
+      "Accept, Accept-Version, Content-Length, Content-Type"
     );
     return res;
   }
