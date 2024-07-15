@@ -63,10 +63,23 @@ interface CanaryConfig {
 
 const PUBLIC_FILE = /\.(.*)$/;
 
+const allowedOrigin = [
+  "http://localhost:3000",
+  "https://15minuteplan-ai.kanoonth.com",
+  "https://canary-15minuteplan-ai.kanoonth.com"
+]
+
 export async function middleware(req: NextRequest) {
   // We don't want to run blue-green during development.
   const { pathname } = req.nextUrl;
-
+  const origin = req.headers.get("origin");
+  console.log('origin ====> ', origin);
+  if (pathname.startsWith("/api") &&allowedOrigin.includes(origin)) {
+    console.log('if ===> origin' );
+    const res = NextResponse.next()
+    res.headers.append('Access-Control-Allow-Origin', origin)
+    return res
+  }
   if (
     pathname.startsWith("/_next") || // exclude Next.js internals
     pathname.startsWith("/api") || //  exclude all API routes
