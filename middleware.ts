@@ -93,6 +93,7 @@ export async function middleware(req: NextRequest) {
       "Access-Control-Allow-Headers",
       "Content-Type,Authorization"
     );
+    res.headers.set("api-key", "xxxx");
     return res;
   }
   if (
