@@ -72,14 +72,23 @@ const allowedOrigin = [
 export async function middleware(req: NextRequest) {
   // We don't want to run blue-green during development.
   const { pathname } = req.nextUrl;
-  // const origin = req.headers.get("origin");
-  // console.log('origin ====> ', origin);
-  // if (pathname.startsWith("/api") &&allowedOrigin.includes(origin)) {
-  //   console.log('if ===> origin' );
-  //   const res = NextResponse.next()
-  //   res.headers.append('Access-Control-Allow-Origin', origin)
-  //   return res
-  // }
+  const origin = req.headers.get("origin");
+  const res = NextResponse.next();
+  console.log("origin ====> ", origin, pathname.includes("/api/"));
+  if (pathname.includes("/api/") && allowedOrigin.includes(origin)) {
+    console.log("if ===> origin");
+    res.headers.append("Access-Control-Allow-Origin", origin);
+    res.headers.append("Access-Control-Allow-Credentials", "true");
+    res.headers.append(
+      "Access-Control-Allow-Methods",
+      "GET,DELETE,PATCH,POST,PUT,OPTIONS"
+    );
+    res.headers.append(
+      "Access-Control-Allow-Headers",
+      "Accept, Accept-Version, Content-Length, Content-MD5, Content-Type"
+    );
+    return res;
+  }
   if (
     pathname.startsWith("/_next") || // exclude Next.js internals
     pathname.startsWith("/api") || //  exclude all API routes
