@@ -78,19 +78,21 @@ export async function middleware(req: NextRequest) {
     pathname: pathname.includes("/api/"),
     API_KEY: process.env.API_KEY,
   });
-  if (pathname.includes("/api/") && allowedOrigin.includes(origin)) {
-    console.log("if ===> origin", origin);
-    res.headers.append("Access-Control-Allow-Origin", origin);
-    res.headers.append("Access-Control-Allow-Credentials", "true");
-    res.headers.append(
+  if (pathname.includes("/api/")) {
+    if (allowedOrigin.includes(origin)) {
+      console.log("if ===> origin", origin);
+      res.headers.set("Access-Control-Allow-Origin", origin);
+    }
+    res.headers.set("Access-Control-Allow-Credentials", "true");
+    res.headers.set(
       "Access-Control-Allow-Methods",
-      "GET,DELETE,PATCH,POST,PUT"
+      "GET,DELETE,PATCH,POST,PUT,OPTIONS"
     );
-    res.headers.append(
+    res.headers.set(
       "Access-Control-Allow-Headers",
-      "Accept, Accept-Version, Content-Length, Content-Type"
+      "Content-Type,Authorization"
     );
-    res.headers.append("Api-Key", process.env.API_KEY);
+    console.log("res.headers value >>>>", res.headers.values());
     return res;
   }
   if (
