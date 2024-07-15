@@ -76,10 +76,10 @@ export async function middleware(req: NextRequest) {
   console.log("origin ====> ", {
     origin,
     reqOrigin: req.headers.get("origin"),
-    pathname: pathname.includes("/api/"),
+    pathname: pathname.startsWith("/api/"),
     API_KEY: process.env.API_KEY,
   });
-  if (pathname.includes("/api/")) {
+  if (pathname.startsWith("/api/")) {
     if (allowedOrigin.includes(origin)) {
       console.log("if ===> origin", origin);
       res.headers.set("Access-Control-Allow-Origin", origin);
