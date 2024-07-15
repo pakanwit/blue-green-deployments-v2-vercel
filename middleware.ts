@@ -75,6 +75,7 @@ export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
   console.log("origin ====> ", {
     origin,
+    reqOrigin: req.headers.get("origin"),
     pathname: pathname.includes("/api/"),
     API_KEY: process.env.API_KEY,
   });
@@ -92,7 +93,6 @@ export async function middleware(req: NextRequest) {
       "Access-Control-Allow-Headers",
       "Content-Type,Authorization"
     );
-    console.log("res.headers value >>>>", res.headers.values());
     return res;
   }
   if (
