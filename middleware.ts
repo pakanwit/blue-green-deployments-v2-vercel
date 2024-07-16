@@ -73,7 +73,7 @@ export async function middleware(req: NextRequest) {
   // We don't want to run blue-green during development.
   const { pathname, origin } = req.nextUrl;
   const res = NextResponse.next();
-  console.log("origin ====> ", {
+  console.log("[canary] origin ====> ", {
     origin,
     reqOrigin: req.headers.get("origin"),
     pathname: pathname.startsWith("/api/"),
@@ -93,7 +93,12 @@ export async function middleware(req: NextRequest) {
       "Access-Control-Allow-Headers",
       "Content-Type,Authorization"
     );
-    res.headers.set("api-key", "xxxx");
+    // Handle preflight requests
+    console.log("req.method", req.method);
+    if (req.method === "OPTIONS") {
+      console.log("Handling OPTIONS request"); // Debugging log
+      return new NextResponse(null, { status: 204, headers: res.headers });
+    }
     return res;
   }
   if (
