@@ -186,20 +186,16 @@ export async function middleware(req: NextRequest) {
     return getDeploymentWithCookieBasedOnEnvVar(req);
   }
 
+  // default cookies
+  if (
+    selectedDeploymentDomain ===
+    new URL(canary.deploymentExistingDomain || "").hostname
+  ) {
+    console.log("<<<<<<<< if default cookies >>>>>>>");
+    return setDefaultCookies(selectedDeploymentDomain);
+  }
+
   // Fetch the HTML document from the selected deployment domain and return it to the user.
-  // const headers = new Headers(req.headers);
-  // headers.set("x-deployment-override", selectedDeploymentDomain);
-  // headers.set(
-  //   "x-vercel-protection-bypass",
-  //   process.env.VERCEL_AUTOMATION_BYPASS_SECRET || "unknown"
-  // );
-  // const url = new URL(req.url);
-  // url.hostname = selectedDeploymentDomain;
-  // console.log("url ==", url);
-  // return fetch(url, {
-  //   headers,
-  //   redirect: "manual",
-  // });
   return fetchDocument(req, selectedDeploymentDomain);
 }
 
@@ -272,6 +268,12 @@ async function clearCookies(experimentId: string) {
   return response;
 }
 
+function setDefaultCookies(hostname: string) {
+  const response = NextResponse.next();
+  response.cookies.set("experiment_id", "NO_EXPERIMENT");
+  response.cookies.set("hostname", hostname);
+  return response;
+}
 async function getDeploymentWithCookieBasedOnEnvVar(
   req: NextRequest,
   defaultVariantID?: string
@@ -281,7 +283,7 @@ async function getDeploymentWithCookieBasedOnEnvVar(
     req.nextUrl.hostname
   );
   const response = NextResponse.next();
-  const experimentId = process.env.EXPERIMENT_ID || "NO_EXPERIMENT";
+  const experimentId = process.env.EXPERIMENT_ID;
 
   if (!req.cookies.has("experiment_id")) {
     const experiment_id = req.cookies.get("experiment_id");
