@@ -87,11 +87,11 @@ export async function middleware(req: NextRequest) {
     res.headers.set("Access-Control-Allow-Credentials", "true");
     res.headers.set(
       "Access-Control-Allow-Methods",
-      "GET,DELETE,PATCH,POST,PUT,OPTIONS"
+      "GET, DELETE, PATCH, POST, PUT, OPTIONS"
     );
     res.headers.set(
       "Access-Control-Allow-Headers",
-      "Content-Type,Authorization"
+      "Content-Type, Authorization, Api-Key"
     );
     // Handle preflight requests
     console.log("req.method", req.method);
