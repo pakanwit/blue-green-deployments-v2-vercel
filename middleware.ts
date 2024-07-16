@@ -71,19 +71,16 @@ const allowedOrigin = [
 
 export async function middleware(req: NextRequest) {
   // We don't want to run blue-green during development.
+  if (process.env.NODE_ENV !== "production") {
+    return NextResponse.next();
+  }
+
   const { pathname } = req.nextUrl;
   const origin = req.headers.get("origin") || "";
 
   const res = NextResponse.next();
-  console.log("[canary] origin ====> ", {
-    origin,
-    reqOrigin: req.headers.get("origin"),
-    pathname: pathname.startsWith("/api/"),
-    API_KEY: process.env.API_KEY,
-  });
   if (pathname.startsWith("/api/")) {
     if (allowedOrigin.includes(origin)) {
-      console.log("if ===> origin", origin);
       res.headers.set("Access-Control-Allow-Origin", origin);
     }
     res.headers.set("Access-Control-Allow-Credentials", "true");
@@ -96,27 +93,21 @@ export async function middleware(req: NextRequest) {
       "Content-Type, Authorization, Api-Key"
     );
     // Handle preflight requests
-    console.log("req.method", req.method);
     if (req.method === "OPTIONS") {
-      console.log("Handling OPTIONS request"); // Debugging log
       return new NextResponse(null, { status: 204, headers: res.headers });
     }
     return res;
   }
   if (
     pathname.startsWith("/_next") || // exclude Next.js internals
-    pathname.startsWith("/api") || //  exclude all API routes
     pathname.startsWith("/static") || // exclude static files
-    pathname.startsWith("/favicon") ||
+    pathname.includes("/favicon") ||
     PUBLIC_FILE.test(pathname) // exclude all files in the public folder
   ) {
     return NextResponse.next();
   }
   console.log("Middleware ==========", { pathname });
 
-  if (process.env.NODE_ENV !== "production") {
-    return NextResponse.next();
-  }
   const experiment_id = req.cookies.get("experiment_id");
   const experimentId = process.env.EXPERIMENT_ID || "NO_EXPERIMENT";
 
@@ -194,17 +185,25 @@ export async function middleware(req: NextRequest) {
     console.log("servingDeploymentDomain === selectedDeploymentDomain");
     return getDeploymentWithCookieBasedOnEnvVar(req);
   }
-  // default cookies
-  if (
-    selectedDeploymentDomain ===
-    new URL(canary.deploymentExistingDomain || "").hostname
-  ) {
-    console.log("<<<<<<<< if default cookies >>>>>>>");
-    return getDeploymentWithCookieBasedOnEnvVar(req, "1");
-  }
 
-  console.log("all cookies <<<<<<<<<", req.cookies.getAll());
   // Fetch the HTML document from the selected deployment domain and return it to the user.
+  // const headers = new Headers(req.headers);
+  // headers.set("x-deployment-override", selectedDeploymentDomain);
+  // headers.set(
+  //   "x-vercel-protection-bypass",
+  //   process.env.VERCEL_AUTOMATION_BYPASS_SECRET || "unknown"
+  // );
+  // const url = new URL(req.url);
+  // url.hostname = selectedDeploymentDomain;
+  // console.log("url ==", url);
+  // return fetch(url, {
+  //   headers,
+  //   redirect: "manual",
+  // });
+  return fetchDocument(req, selectedDeploymentDomain);
+}
+
+async function fetchDocument(req: NextRequest, selectedDeploymentDomain) {
   const headers = new Headers(req.headers);
   headers.set("x-deployment-override", selectedDeploymentDomain);
   headers.set(
@@ -219,7 +218,6 @@ export async function middleware(req: NextRequest) {
     redirect: "manual",
   });
 }
-
 // Selects the deployment domain based on the blue-green configuration.
 function selectDeploymentDomain(canaryConfig: CanaryConfig) {
   const random = Math.random() * 100;
