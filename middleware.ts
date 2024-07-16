@@ -71,7 +71,9 @@ const allowedOrigin = [
 
 export async function middleware(req: NextRequest) {
   // We don't want to run blue-green during development.
-  const { pathname, origin } = req.nextUrl;
+  const { pathname } = req.nextUrl;
+  const origin = req.headers.get("origin") || "";
+
   const res = NextResponse.next();
   console.log("[canary] origin ====> ", {
     origin,
