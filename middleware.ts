@@ -78,15 +78,7 @@ export async function middleware(req: NextRequest) {
 
   console.log("hostname", hostname);
   const canary = await get<CanaryConfig>("canary-configuration");
-  if (
-    pathname.startsWith("/_next") || // exclude Next.js internals
-    pathname.startsWith("/static") || // exclude static files
-    pathname.includes("/favicon") ||
-    PUBLIC_FILE.test(pathname) || // exclude all files in the public folder
-    hostname === new URL(canary.deploymentExistingDomain).hostname
-  ) {
-    return NextResponse.next();
-  }
+
   console.log("Middleware ==========", { pathname });
 
   const experiment_id = req.cookies.get("experiment_id");
@@ -142,6 +134,16 @@ export async function middleware(req: NextRequest) {
       return new NextResponse(null, { status: 204, headers: res.headers });
     }
     return res;
+  }
+
+  if (
+    pathname.startsWith("/_next") || // exclude Next.js internals
+    pathname.startsWith("/static") || // exclude static files
+    pathname.includes("/favicon") ||
+    PUBLIC_FILE.test(pathname) || // exclude all files in the public folder
+    hostname === new URL(canary.deploymentExistingDomain).hostname
+  ) {
+    return NextResponse.next();
   }
 
   // Skip if the middleware has already run.
