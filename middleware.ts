@@ -71,9 +71,20 @@ const allowedOrigin = [
 
 export async function middleware(req: NextRequest) {
   // We don't want to run blue-green during development.
+  const { pathname } = req.nextUrl;
   if (process.env.NODE_ENV !== "production") {
     return NextResponse.next();
   }
+
+  if (
+    pathname.startsWith("/_next") || // exclude Next.js internals
+    pathname.startsWith("/static") || // exclude static files
+    pathname.includes("/favicon") ||
+    PUBLIC_FILE.test(pathname) // exclude all files in the public folder
+  ) {
+    return NextResponse.next();
+  }
+  console.log("Middleware ==========", { pathname });
 
   const experiment_id = req.cookies.get("experiment_id");
   const experimentId = process.env.EXPERIMENT_ID || "NO_EXPERIMENT";
@@ -107,7 +118,6 @@ export async function middleware(req: NextRequest) {
   }
 
   // If pathname is /api/..., set allowed origin.
-  const { pathname } = req.nextUrl;
   const origin = req.headers.get("origin") || "";
 
   const res = NextResponse.next();
@@ -130,15 +140,6 @@ export async function middleware(req: NextRequest) {
     }
     return res;
   }
-  if (
-    pathname.startsWith("/_next") || // exclude Next.js internals
-    pathname.startsWith("/static") || // exclude static files
-    pathname.includes("/favicon") ||
-    PUBLIC_FILE.test(pathname) // exclude all files in the public folder
-  ) {
-    return NextResponse.next();
-  }
-  console.log("Middleware ==========", { pathname });
 
   // Skip if the middleware has already run.
   if (req.headers.get("x-deployment-override")) {
