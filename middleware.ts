@@ -71,16 +71,19 @@ const allowedOrigin = [
 
 export async function middleware(req: NextRequest) {
   // We don't want to run blue-green during development.
-  const { pathname } = req.nextUrl;
+  const { pathname, hostname } = req.nextUrl;
   if (process.env.NODE_ENV !== "production") {
     return NextResponse.next();
   }
 
+  console.log("hostname", hostname);
+  const canary = await get<CanaryConfig>("canary-configuration");
   if (
     pathname.startsWith("/_next") || // exclude Next.js internals
     pathname.startsWith("/static") || // exclude static files
     pathname.includes("/favicon") ||
-    PUBLIC_FILE.test(pathname) // exclude all files in the public folder
+    PUBLIC_FILE.test(pathname) || // exclude all files in the public folder
+    hostname === new URL(canary.deploymentExistingDomain).hostname
   ) {
     return NextResponse.next();
   }
@@ -170,7 +173,6 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
   // Get the blue-green configuration from Edge Config.
-  const canary = await get<CanaryConfig>("canary-configuration");
   if (!canary) {
     console.warn("No canary configuration found");
     return NextResponse.next();
