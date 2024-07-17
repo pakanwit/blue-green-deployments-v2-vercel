@@ -75,6 +75,38 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  const experiment_id = req.cookies.get("experiment_id");
+  const experimentId = process.env.EXPERIMENT_ID || "NO_EXPERIMENT";
+
+  console.log("experiment_id: Coolie", experiment_id);
+
+  if (experimentId === "NO_EXPERIMENT") {
+    console.log("if =====> NO_EXPERIMENT");
+    return clearCookies(experimentId);
+  }
+
+  if (
+    req.cookies.has("experiment_id") &&
+    experiment_id.value === experimentId &&
+    req.cookies.has("hostname")
+  ) {
+    console.log("if cookies =====");
+    const hostname = req.cookies.get("hostname");
+    const headers = new Headers(req.headers);
+    headers.set("x-deployment-override", hostname.value);
+    headers.set(
+      "x-vercel-protection-bypass",
+      process.env.VERCEL_AUTOMATION_BYPASS_SECRET || "unknown"
+    );
+    const url = new URL(req.url);
+    url.hostname = hostname.value;
+    return fetch(url, {
+      headers,
+      redirect: "manual",
+    });
+  }
+
+  // If pathname is /api/..., set allowed origin.
   const { pathname } = req.nextUrl;
   const origin = req.headers.get("origin") || "";
 
@@ -108,36 +140,6 @@ export async function middleware(req: NextRequest) {
   }
   console.log("Middleware ==========", { pathname });
 
-  const experiment_id = req.cookies.get("experiment_id");
-  const experimentId = process.env.EXPERIMENT_ID || "NO_EXPERIMENT";
-
-  console.log("experiment_id: Coolie", experiment_id);
-
-  if (experimentId === "NO_EXPERIMENT") {
-    console.log("if =====> NO_EXPERIMENT");
-    return clearCookies(experimentId);
-  }
-
-  if (
-    req.cookies.has("experiment_id") &&
-    experiment_id.value === experimentId &&
-    req.cookies.has("hostname")
-  ) {
-    console.log("if cookies =====");
-    const hostname = req.cookies.get("hostname");
-    const headers = new Headers(req.headers);
-    headers.set("x-deployment-override", hostname.value);
-    headers.set(
-      "x-vercel-protection-bypass",
-      process.env.VERCEL_AUTOMATION_BYPASS_SECRET || "unknown"
-    );
-    const url = new URL(req.url);
-    url.hostname = hostname.value;
-    return fetch(url, {
-      headers,
-      redirect: "manual",
-    });
-  }
   // Skip if the middleware has already run.
   if (req.headers.get("x-deployment-override")) {
     console.log("if =====> x-deployment-override");
