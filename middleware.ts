@@ -1,6 +1,5 @@
 import { get } from "@vercel/edge-config";
 import { NextRequest, NextResponse } from "next/server";
-import { hostname } from "os";
 ///(:locale)/path
 // export const config = {
 //   matcher: [
@@ -75,19 +74,18 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  const experiment_id = req.cookies.get("experiment_id");
+  const experimentId = process.env.EXPERIMENT_ID;
+
+  console.log("experiment_id: Coolie", experiment_id);
+
   if (
-    pathname.startsWith("/_next") || // exclude Next.js internals
-    pathname.startsWith("/static") || // exclude static files
-    pathname.includes("/favicon") ||
-    PUBLIC_FILE.test(pathname) // exclude all files in the public folder
+    experimentId === "NO_EXPERIMENT" ||
+    experiment_id?.value === "NO_EXPERIMENT"
   ) {
+    console.log("if =====> NO_EXPERIMENT");
     return NextResponse.next();
   }
-  console.log("Middleware ==========", {
-    pathname,
-    hostname,
-    nextData: req.headers.get("X-Nextjs-Data"),
-  });
 
   // If pathname is /api/..., set allowed origin.
   const origin = req.headers.get("origin") || "";
@@ -113,18 +111,19 @@ export async function middleware(req: NextRequest) {
     return res;
   }
 
-  const experiment_id = req.cookies.get("experiment_id");
-  const experimentId = process.env.EXPERIMENT_ID;
-
-  console.log("experiment_id: Coolie", experiment_id);
-
   if (
-    experimentId === "NO_EXPERIMENT" ||
-    experiment_id.value === "NO_EXPERIMENT"
+    pathname.startsWith("/_next") || // exclude Next.js internals
+    pathname.startsWith("/static") || // exclude static files
+    pathname.includes("/favicon") ||
+    PUBLIC_FILE.test(pathname) // exclude all files in the public folder
   ) {
-    console.log("if =====> NO_EXPERIMENT");
     return NextResponse.next();
   }
+  console.log("Middleware ==========", {
+    pathname,
+    hostname,
+    nextData: req.headers.get("X-Nextjs-Data"),
+  });
 
   if (
     req.cookies.has("experiment_id") &&
