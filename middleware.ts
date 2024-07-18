@@ -114,13 +114,16 @@ export async function middleware(req: NextRequest) {
   }
 
   const experiment_id = req.cookies.get("experiment_id");
-  const experimentId = process.env.EXPERIMENT_ID || "NO_EXPERIMENT";
+  const experimentId = process.env.EXPERIMENT_ID;
 
   console.log("experiment_id: Coolie", experiment_id);
 
-  if (experimentId === "NO_EXPERIMENT") {
+  if (
+    experimentId === "NO_EXPERIMENT" ||
+    experiment_id.value === "NO_EXPERIMENT"
+  ) {
     console.log("if =====> NO_EXPERIMENT");
-    return clearCookies(experimentId);
+    return NextResponse.next();
   }
 
   if (
@@ -162,6 +165,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
   if (req.headers.get("sec-fetch-dest") !== "document") {
+    console.log("if sec-fetch-dest");
     return NextResponse.next();
   }
   // Skip if the request is coming from Vercel's deployment system.
