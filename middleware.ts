@@ -2,57 +2,56 @@ import { get } from "@vercel/edge-config";
 import { NextRequest, NextResponse } from "next/server";
 import { hostname } from "os";
 ///(:locale)/path
-// export const config = {
-//   matcher: [
-//     "/",
-//     "/(:locale)",
-//     "/(:locale)/editPlanPro",
-//     "/(:locale)/editPlanStarter",
-//     "/(:locale)/fullPlan",
-//     "/(:locale)/fullPlanPro",
-//     "/(:locale)/fullPlanStarter",
-//     "/(:locale)/loggedInFullPlan",
-//     "/(:locale)/loggedInFullPlanPro",
-//     "/(:locale)/mainWizard",
-//     "/(:locale)/login",
-//     "/(:locale)/privacy-policy",
-//     "/(:locale)/refundPolicy",
-//     "/(:locale)/userHomepage",
-//     "/(:locale)/form/business-info",
-//     "/(:locale)/form/customer-group",
-//     "/(:locale)/form/finance",
-//     "/(:locale)/form/example-plan",
-//     "/(:locale)/form/generate-result",
-//     "/(:locale)/form/investment-items",
-//     "/(:locale)/form/objective",
-//     "/(:locale)/form/product-and-service",
-//     "/(:locale)/form/register",
-//     "/(:locale)/form/success-drivers",
-//     // "/en/",
-//     // "/en/editPlanPro",
-//     // "/en/editPlanStarter",
-//     // "/en/fullPlan",
-//     // "/en/fullPlanPro",
-//     // "/en/fullPlanStarter",
-//     // "/en/loggedInFullPlan",
-//     // "/en/loggedInFullPlanPro",
-//     // "/en/mainWizard",
-//     // "/en/login",
-//     // "/en/privacy-policy",
-//     // "/en/refundPolicy",
-//     // "/en/userHomepage",
-//     // "/en/form/business-info",
-//     // "/en/form/customer-group",
-//     // "/en/form/finance",
-//     // "/en/form/example-plan",
-//     // "/en/form/generate-result",
-//     // "/en/form/investment-items",
-//     // "/en/form/objective",
-//     // "/en/form/product-and-service",
-//     // "/en/form/register",
-//     // "/en/form/success-drivers",
-//   ],
-// };
+export const config = {
+  matcher: [
+    "/",
+    "/editPlanPro",
+    "/editPlanStarter",
+    "/fullPlan",
+    "/fullPlanPro",
+    "/fullPlanStarter",
+    "/loggedInFullPlan",
+    "/loggedInFullPlanPro",
+    "/mainWizard",
+    "/login",
+    "/privacy-policy",
+    "/refundPolicy",
+    "/userHomepage",
+    "/form/business-info",
+    "/form/customer-group",
+    "/form/finance",
+    "/form/example-plan",
+    "/form/generate-result",
+    "/form/investment-items",
+    "/form/objective",
+    "/form/product-and-service",
+    "/form/register",
+    "/form/success-drivers",
+    // "/en/",
+    // "/en/editPlanPro",
+    // "/en/editPlanStarter",
+    // "/en/fullPlan",
+    // "/en/fullPlanPro",
+    // "/en/fullPlanStarter",
+    // "/en/loggedInFullPlan",
+    // "/en/loggedInFullPlanPro",
+    // "/en/mainWizard",
+    // "/en/login",
+    // "/en/privacy-policy",
+    // "/en/refundPolicy",
+    // "/en/userHomepage",
+    // "/en/form/business-info",
+    // "/en/form/customer-group",
+    // "/en/form/finance",
+    // "/en/form/example-plan",
+    // "/en/form/generate-result",
+    // "/en/form/investment-items",
+    // "/en/form/objective",
+    // "/en/form/product-and-service",
+    // "/en/form/register",
+    // "/en/form/success-drivers",
+  ],
+};
 
 // Configuration stored in Edge Config.
 interface CanaryConfig {
@@ -71,7 +70,7 @@ const allowedOrigin = [
 
 export async function middleware(req: NextRequest) {
   // We don't want to run canary during development.
-  const { pathname, hostname, ...rest } = req.nextUrl;
+  const { pathname, hostname } = req.nextUrl;
   if (process.env.NODE_ENV !== "production") {
     return NextResponse.next();
   }
@@ -84,7 +83,11 @@ export async function middleware(req: NextRequest) {
   ) {
     return NextResponse.next();
   }
-  console.log("Middleware ==========", { pathname, hostname, rest });
+  console.log("Middleware ==========", {
+    pathname,
+    hostname,
+    nextData: req.headers.get("X-Nextjs-Data"),
+  });
 
   // If pathname is /api/..., set allowed origin.
   const origin = req.headers.get("origin") || "";
