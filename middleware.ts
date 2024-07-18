@@ -70,16 +70,45 @@ const allowedOrigin = [
 ];
 
 export async function middleware(req: NextRequest) {
-  // We don't want to run blue-green during development.
-  const { pathname, hostname } = req.nextUrl;
+  // We don't want to run canary during development.
+  const { pathname, hostname, ...rest } = req.nextUrl;
   if (process.env.NODE_ENV !== "production") {
     return NextResponse.next();
   }
 
-  console.log("hostname", hostname);
-  const canary = await get<CanaryConfig>("canary-configuration");
+  if (
+    pathname.startsWith("/_next") || // exclude Next.js internals
+    pathname.startsWith("/static") || // exclude static files
+    pathname.includes("/favicon") ||
+    PUBLIC_FILE.test(pathname) // exclude all files in the public folder
+  ) {
+    return NextResponse.next();
+  }
+  console.log("Middleware ==========", { pathname, hostname, rest });
 
-  console.log("Middleware ==========", { pathname });
+  // If pathname is /api/..., set allowed origin.
+  const origin = req.headers.get("origin") || "";
+
+  const res = NextResponse.next();
+  if (pathname.startsWith("/api/")) {
+    if (allowedOrigin.includes(origin)) {
+      res.headers.set("Access-Control-Allow-Origin", origin);
+    }
+    res.headers.set("Access-Control-Allow-Credentials", "true");
+    res.headers.set(
+      "Access-Control-Allow-Methods",
+      "GET, DELETE, PATCH, POST, PUT, OPTIONS"
+    );
+    res.headers.set(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization, Api-Key"
+    );
+    // Handle preflight requests
+    if (req.method === "OPTIONS") {
+      return new NextResponse(null, { status: 204, headers: res.headers });
+    }
+    return res;
+  }
 
   const experiment_id = req.cookies.get("experiment_id");
   const experimentId = process.env.EXPERIMENT_ID || "NO_EXPERIMENT";
@@ -112,46 +141,12 @@ export async function middleware(req: NextRequest) {
     });
   }
 
-  // If pathname is /api/..., set allowed origin.
-  const origin = req.headers.get("origin") || "";
-
-  const res = NextResponse.next();
-  if (pathname.startsWith("/api/")) {
-    if (allowedOrigin.includes(origin)) {
-      res.headers.set("Access-Control-Allow-Origin", origin);
-    }
-    res.headers.set("Access-Control-Allow-Credentials", "true");
-    res.headers.set(
-      "Access-Control-Allow-Methods",
-      "GET, DELETE, PATCH, POST, PUT, OPTIONS"
-    );
-    res.headers.set(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization, Api-Key"
-    );
-    // Handle preflight requests
-    if (req.method === "OPTIONS") {
-      return new NextResponse(null, { status: 204, headers: res.headers });
-    }
-    return res;
-  }
-
-  if (
-    pathname.startsWith("/_next") || // exclude Next.js internals
-    pathname.startsWith("/static") || // exclude static files
-    pathname.includes("/favicon") ||
-    PUBLIC_FILE.test(pathname) || // exclude all files in the public folder
-    hostname === new URL(canary.deploymentExistingDomain).hostname
-  ) {
-    return NextResponse.next();
-  }
-
   // Skip if the middleware has already run.
   if (req.headers.get("x-deployment-override")) {
     console.log("if =====> x-deployment-override");
     return getDeploymentWithCookieBasedOnEnvVar(req);
   }
-  // We skip blue-green when accesing from deployment urls
+  // We skip canary when accesing from deployment urls
   if (req.nextUrl.hostname === process.env.VERCEL_URL) {
     console.log("hostname === VERCEL_URL ------------->><<<<<<", {
       hostname: req.nextUrl.hostname,
@@ -159,7 +154,7 @@ export async function middleware(req: NextRequest) {
     });
     return NextResponse.next();
   }
-  // We only want to run blue-green for GET requests that are for HTML documents.
+  // We only want to run canary for GET requests that are for HTML documents.
   if (req.method !== "GET") {
     return NextResponse.next();
   }
@@ -174,7 +169,9 @@ export async function middleware(req: NextRequest) {
     console.warn("EDGE_CONFIG env variable not set. Skipping canary.");
     return NextResponse.next();
   }
-  // Get the blue-green configuration from Edge Config.
+  // Get the canary configuration from Edge Config.
+  const canary = await get<CanaryConfig>("canary-configuration");
+
   if (!canary) {
     console.warn("No canary configuration found");
     return NextResponse.next();
@@ -221,7 +218,7 @@ async function fetchDocument(req: NextRequest, selectedDeploymentDomain) {
     redirect: "manual",
   });
 }
-// Selects the deployment domain based on the blue-green configuration.
+// Selects the deployment domain based on the canary configuration.
 function selectDeploymentDomain(canaryConfig: CanaryConfig) {
   const random = Math.random() * 100;
 
