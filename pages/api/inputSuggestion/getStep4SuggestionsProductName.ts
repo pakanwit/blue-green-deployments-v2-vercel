@@ -1,3 +1,6 @@
+import { promptForSuggestionResponseFormat } from '../../../constants/prompt/firework/format';
+import { splitTextByDoubleSlash } from '../../../utils/aiResponseParser/text';
+import { FireworksAI } from '../../../utils/llama3/FireworksAI';
 import { withApiKeyValidation } from '../utils/withApiKeyValidation';
 
 export default async function handler(request, response) {
@@ -30,6 +33,7 @@ export default async function handler(request, response) {
         productDescription5,
 
         locale,
+        variantID,
       } = req.body;
 
       const productNameArr = [
@@ -159,43 +163,74 @@ export default async function handler(request, response) {
       }
 
       try {
-        const openAIResponse = await fetch(
-          'https://api.openai.com/v1/chat/completions',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        const basePayload = {
+          temperature: 0.7,
+          top_p: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+          max_tokens: 500,
+          stream: false,
+          n: 1,
+        };
+        if (variantID === '2') {
+          const response = await FireworksAI(
+            {
+              ...basePayload,
+              messages: [
+                { role: 'user', content: finalPrompt },
+                {
+                  role: 'system',
+                  content:
+                    locale === 'de'
+                      ? promptForSuggestionResponseFormat['de']
+                      : promptForSuggestionResponseFormat['en'],
+                },
+              ],
             },
-            body: JSON.stringify({
-              model: 'gpt-3.5-turbo', // Specify the model you want to use
-              messages: [{ role: 'user', content: finalPrompt }],
-              temperature: 0.7,
-              top_p: 1,
-              frequency_penalty: 0,
-              presence_penalty: 0,
-              max_tokens: 500,
-              stream: false,
-              n: 1,
-            }),
-          },
-        );
-
-        const { choices } = await openAIResponse.json();
-        console.log('choices', choices);
-        const responseText = choices[0].message.content.trim();
-
-        // Split the response text into an array of customer group names
-        let productNameArr = responseText
-          .split('//')
-          .map((name) => name.trim());
-
-        productNameArr = productNameArr.map((name) => name.replace(/"/g, ''));
-
-        if (responseText) {
-          res.status(200).json(productNameArr);
+            'string',
+          );
+          const recommendations = splitTextByDoubleSlash(response);
+          console.log({
+            message:
+              'getStep4SuggestionsProductNameHandler: Fireworks AI recommendations',
+            recommendations,
+          });
+          if (recommendations.length > 0) {
+            res.status(200).json(recommendations);
+          } else {
+            throw new Error('response text is empty.');
+          }
         } else {
-          throw new Error('response text is empty.');
+          const openAIResponse = await fetch(
+            'https://api.openai.com/v1/chat/completions',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+              },
+              body: JSON.stringify({
+                model: 'gpt-3.5-turbo', // Specify the model you want to use
+                messages: [{ role: 'user', content: finalPrompt }],
+                ...basePayload,
+              }),
+            },
+          );
+
+          const { choices } = await openAIResponse.json();
+          console.log('choices', choices);
+          const responseText = choices[0].message.content.trim();
+
+          // Split the response text into an array of customer group names
+          let productNameArr = splitTextByDoubleSlash(responseText);
+
+          productNameArr = productNameArr.map((name) => name.replace(/"/g, ''));
+
+          if (responseText) {
+            res.status(200).json(productNameArr);
+          } else {
+            throw new Error('response text is empty.');
+          }
         }
       } catch (error) {
         console.error(error);
@@ -211,5 +246,8 @@ export default async function handler(request, response) {
   const getStep4SuggestionsProductNameHandlerWithApiKeyValidation =
     withApiKeyValidation(getStep4SuggestionsProductNameHandler);
 
-  await getStep4SuggestionsProductNameHandlerWithApiKeyValidation(request, response);
+  await getStep4SuggestionsProductNameHandlerWithApiKeyValidation(
+    request,
+    response,
+  );
 }

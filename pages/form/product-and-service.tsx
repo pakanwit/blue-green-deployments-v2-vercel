@@ -78,7 +78,7 @@ export default function Step4Product({ fbPixelId, secretKey }) {
     router.prefetch(ROUTE_PATH.successDrivers);
   }, [router]);
 
-  useBeforeUnload()
+  useBeforeUnload();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -360,6 +360,9 @@ export default function Step4Product({ fbPixelId, secretKey }) {
   const pendingExecutionProductName = useRef(null);
 
   async function getSuggestionProductName(id, retryCount = 0) {
+    const variantID =
+      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+
     callCounterProductName.current += 1;
 
     if (callCounterProductName.current >= 2) {
@@ -414,7 +417,7 @@ export default function Step4Product({ fbPixelId, secretKey }) {
         }
 
         const responsePromise = fetch(
-          '/api/inputSuggestion/getStep4SuggestionsProductName',
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/inputSuggestion/getStep4SuggestionsProductName`,
           {
             method: 'POST',
             headers: {
@@ -448,6 +451,7 @@ export default function Step4Product({ fbPixelId, secretKey }) {
               productDescription5: formik.values.productDescription5,
 
               locale,
+              variantID,
             }),
           },
         );
@@ -543,6 +547,9 @@ export default function Step4Product({ fbPixelId, secretKey }) {
   const locale = i18n.language;
 
   async function getSuggestionProductDescription(id, retryCount = 0) {
+    const variantID =
+      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+
     console.log('getSuggestionProductDescription called id: ', id);
     callCounterProductDescription.current += 1;
 
@@ -598,7 +605,7 @@ export default function Step4Product({ fbPixelId, secretKey }) {
         }
 
         const responsePromise = fetch(
-          '/api/inputSuggestion/getStep4SuggestionsProductDescription',
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/inputSuggestion/getStep4SuggestionsProductDescription`,
           {
             method: 'POST',
             headers: {
@@ -632,6 +639,7 @@ export default function Step4Product({ fbPixelId, secretKey }) {
               productDescription5: formik.values.productDescription5,
               id,
               locale,
+              variantID,
             }),
           },
         );

@@ -465,28 +465,30 @@ export const situationAnalysisSwotAnalysis = (
                         Dette er ${situ2TopicNO} du kom opp med:`,
   };
 
-  const payload = {
-    messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-    temperature: 0.5,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 1500,
-    stream: true,
-    n: 1,
-  };
-  return FireworksAIStream(payload);
-
-  // const payload = {
-  //   model: 'gpt-3.5-turbo',
-  //   messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-  //   temperature: 0.5,
-  //   top_p: 1,
-  //   frequency_penalty: 0,
-  //   presence_penalty: 0,
-  //   max_tokens: 1500,
-  //   stream: true,
-  //   n: 1,
-  // };
-  // return OpenAIStream(payload);
+  if (variantID === '2') {
+    const payload = {
+      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return FireworksAIStream(payload);
+  } else {
+    const payload = {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return OpenAIStream(payload);
+  }
 };

@@ -7,13 +7,15 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Pixel from '../components/Pixel';
 
 import trackEvent from '../utils/trackEvent';
+import XPixel from '../components/XPixel';
 
-export default ({ fbPixelId }) => {
+export default ({ fbPixelId, xPixelId }) => {
   const { t } = useTranslation('privacy_policy');
 
   return (
     <>
       <Pixel id={fbPixelId} />
+      <XPixel id={xPixelId} />
       <motion.div
         key="component-seven"
         initial={{ opacity: 0 }}
@@ -84,11 +86,13 @@ export default ({ fbPixelId }) => {
 
 export async function getStaticProps({ locale = 'en' }) {
   const fbPixelId = process.env.FB_PIXEL_ID;
+  const xPixelId = process.env.X_PIXEL_ID;
 
   return {
     props: {
       ...(await serverSideTranslations(locale, ['privacy_policy', 'index'])),
       fbPixelId,
+      xPixelId,
     },
   };
 }

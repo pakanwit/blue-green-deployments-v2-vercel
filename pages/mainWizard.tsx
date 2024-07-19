@@ -1,40 +1,42 @@
-import { useEffect, useState, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
-import Head from "next/head";
-import Step1Obj from "../components/Step1Obj";
-import Step2BasicInfo from "../components/Step2BasicInfo";
-import Step3CustGroup from "../components/Step3CustGroup";
-import Step4Product from "../components/Step4Product";
-import Step5KeySuccess from "../components/Step5KeySuccess";
-import Step6InitialInvestment from "../components/Step6InitialInvestment";
-import Step7Finance from "../components/Step7Finance";
-import LastStepPlanGen from "../components/LastStepPlanGen_testing";
-import Register1 from "../components/Register1_testing";
-import React from "react";
-import { useSession, signOut } from "next-auth/react";
-import { MoonLoader } from "react-spinners";
-import AlertOnLeave from "../components/AlertOnLeave";
-import ConfirmLink from "../components/ConfirmLink";
-import ExamplePlan from "../components/ExamplePlan";
-import Router from "next/router";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
-import us2gb from "../utils/us2gb";
-import RefundPolicy from "../components/RefundPolicy";
-import useLocale from "../hooks/useLocale";
-import { API_KEY_HEADER } from "./api/constants";
-import trackEvent from "../utils/trackEvent";
-import { formDataTitle } from "../constants/formTitle";
-import Pixel from "../components/Pixel";
+import { useEffect, useState, useRef } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
+import Head from 'next/head';
+import Step1Obj from '../components/Step1Obj';
+import Step2BasicInfo from '../components/Step2BasicInfo';
+import Step3CustGroup from '../components/Step3CustGroup';
+import Step4Product from '../components/Step4Product';
+import Step5KeySuccess from '../components/Step5KeySuccess';
+import Step6InitialInvestment from '../components/Step6InitialInvestment';
+import Step7Finance from '../components/Step7Finance';
+import LastStepPlanGen from '../components/LastStepPlanGen_testing';
+import Register1 from '../components/Register1_testing';
+import React from 'react';
+import { useSession, signOut } from 'next-auth/react';
+import { MoonLoader } from 'react-spinners';
+import AlertOnLeave from '../components/AlertOnLeave';
+import ConfirmLink from '../components/ConfirmLink';
+import ExamplePlan from '../components/ExamplePlan';
+import Router from 'next/router';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
+import us2gb from '../utils/us2gb';
+import RefundPolicy from '../components/RefundPolicy';
+import useLocale from '../hooks/useLocale';
+import { API_KEY_HEADER } from './api/constants';
+import trackEvent from '../utils/trackEvent';
+import { formDataTitle } from '../constants/formTitle';
+import Pixel from '../components/Pixel';
+import XPixel from '../components/XPixel';
 
 interface MainWizardProps {
   secretKey: string;
   fbPixelId: string;
+  xPixelId: string;
 }
 
-export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
+export default function mainWizard({ secretKey, fbPixelId, xPixelId }: MainWizardProps) {
   const { data: session } = useSession();
 
   const [loading, setLoading] = useState(false);
@@ -54,74 +56,74 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   const [allDoneGenerating, setAllDoneGenerating] = useState(false);
   // for collecting data -----------------------------------------------
   const [businessOperationalStatus, setBusinessOperationalStatus] =
-    useState("");
+    useState('');
   const [refId, setRefId] = useState(undefined);
-  const [businessPlanObj, setBusinessPlanObj] = useState("");
+  const [businessPlanObj, setBusinessPlanObj] = useState('');
 
   //basic info-----------------------------------------------------------
-  const [businessName, setBusinessName] = useState("");
-  const [businessType, setBusinessType] = useState("");
+  const [businessName, setBusinessName] = useState('');
+  const [businessType, setBusinessType] = useState('');
   const [NEmployee, setNEmployee] = useState(0);
-  const [location, setLocation] = useState("");
-  const [productOrService, setProductOrService] = useState("");
-  const [salesChannel, setSalesChannel] = useState("");
+  const [location, setLocation] = useState('');
+  const [productOrService, setProductOrService] = useState('');
+  const [salesChannel, setSalesChannel] = useState('');
 
   //customer info-------------------------------------------------------
-  const [customerIncome1, setCustomerIncome1] = useState("");
-  const [customerDescription1, setCustomerDescription1] = useState("");
+  const [customerIncome1, setCustomerIncome1] = useState('');
+  const [customerDescription1, setCustomerDescription1] = useState('');
 
-  const [customerIncome2, setCustomerIncome2] = useState("");
-  const [customerDescription2, setCustomerDescription2] = useState("");
+  const [customerIncome2, setCustomerIncome2] = useState('');
+  const [customerDescription2, setCustomerDescription2] = useState('');
 
-  const [customerIncome3, setCustomerIncome3] = useState("");
-  const [customerDescription3, setCustomerDescription3] = useState("");
+  const [customerIncome3, setCustomerIncome3] = useState('');
+  const [customerDescription3, setCustomerDescription3] = useState('');
 
   //product --------------------------------------------------------
-  const [productName1, setProductName1] = useState("");
-  const [productDescription1, setProductDescription1] = useState("");
-  const [productName2, setProductName2] = useState("");
-  const [productDescription2, setProductDescription2] = useState("");
-  const [productName3, setProductName3] = useState("");
-  const [productDescription3, setProductDescription3] = useState("");
-  const [productName4, setProductName4] = useState("");
-  const [productDescription4, setProductDescription4] = useState("");
-  const [productName5, setProductName5] = useState("");
-  const [productDescription5, setProductDescription5] = useState("");
+  const [productName1, setProductName1] = useState('');
+  const [productDescription1, setProductDescription1] = useState('');
+  const [productName2, setProductName2] = useState('');
+  const [productDescription2, setProductDescription2] = useState('');
+  const [productName3, setProductName3] = useState('');
+  const [productDescription3, setProductDescription3] = useState('');
+  const [productName4, setProductName4] = useState('');
+  const [productDescription4, setProductDescription4] = useState('');
+  const [productName5, setProductName5] = useState('');
+  const [productDescription5, setProductDescription5] = useState('');
 
   const [runGeneratePrompt, setRunGeneratePrompt] = useState(false);
-  const [productInfoPrompt, setProductInfoPrompt] = useState("");
+  const [productInfoPrompt, setProductInfoPrompt] = useState('');
 
   // success factors and weakness--------------------------------------
   // ***********one has s one doesn't!!!!!!!*******
-  const [successFactors1, setSuccessFactor1] = useState("");
-  const [successFactors2, setSuccessFactor2] = useState("");
-  const [successFactors3, setSuccessFactor3] = useState("");
-  const [weakness1, setWeakness1] = useState("");
-  const [weakness2, setWeakness2] = useState("");
-  const [weakness3, setWeakness3] = useState("");
+  const [successFactors1, setSuccessFactor1] = useState('');
+  const [successFactors2, setSuccessFactor2] = useState('');
+  const [successFactors3, setSuccessFactor3] = useState('');
+  const [weakness1, setWeakness1] = useState('');
+  const [weakness2, setWeakness2] = useState('');
+  const [weakness3, setWeakness3] = useState('');
 
   // Initial Investment -------------------------------------------------------
   const [initialInvestmentAmount, setInitialInvestmentAmount] = useState(0);
 
-  const [investmentItem1, setInvestmentItem1] = useState("");
+  const [investmentItem1, setInvestmentItem1] = useState('');
   const [investmentAmountItem1, setInvestmentAmountItem1] = useState(0);
-  const [investmentItem2, setInvestmentItem2] = useState("");
+  const [investmentItem2, setInvestmentItem2] = useState('');
   const [investmentAmountItem2, setInvestmentAmountItem2] = useState(0);
-  const [investmentItem3, setInvestmentItem3] = useState("");
+  const [investmentItem3, setInvestmentItem3] = useState('');
   const [investmentAmountItem3, setInvestmentAmountItem3] = useState(0);
-  const [investmentItem4, setInvestmentItem4] = useState("");
+  const [investmentItem4, setInvestmentItem4] = useState('');
   const [investmentAmountItem4, setInvestmentAmountItem4] = useState(0);
-  const [investmentItem5, setInvestmentItem5] = useState("");
+  const [investmentItem5, setInvestmentItem5] = useState('');
   const [investmentAmountItem5, setInvestmentAmountItem5] = useState(0);
-  const [investmentItem6, setInvestmentItem6] = useState("");
+  const [investmentItem6, setInvestmentItem6] = useState('');
   const [investmentAmountItem6, setInvestmentAmountItem6] = useState(0);
-  const [investmentItem7, setInvestmentItem7] = useState("");
+  const [investmentItem7, setInvestmentItem7] = useState('');
   const [investmentAmountItem7, setInvestmentAmountItem7] = useState(0);
-  const [investmentItem8, setInvestmentItem8] = useState("");
+  const [investmentItem8, setInvestmentItem8] = useState('');
   const [investmentAmountItem8, setInvestmentAmountItem8] = useState(0);
-  const [investmentItem9, setInvestmentItem9] = useState("");
+  const [investmentItem9, setInvestmentItem9] = useState('');
   const [investmentAmountItem9, setInvestmentAmountItem9] = useState(0);
-  const [investmentItem10, setInvestmentItem10] = useState("");
+  const [investmentItem10, setInvestmentItem10] = useState('');
   const [investmentAmountItem10, setInvestmentAmountItem10] = useState(0);
   // Finance--------------------------------------------------------
   const [firstYearRevenue, setFirstYearRevenue] = useState(0);
@@ -140,22 +142,22 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   const [taxCostP, setTaxCostP] = useState(0);
 
   // generated plan states--------------------------------------------
-  const [generatedExec, setGeneratedExec] = useState("");
-  const [generatedSitu1, setGeneratedSitu1] = useState("");
-  const [generatedSitu2, setGeneratedSitu2] = useState("");
-  const [generatedMark1, setGeneratedMark1] = useState("");
-  const [generatedMark2, setGeneratedMark2] = useState("");
-  const [generatedMark3, setGeneratedMark3] = useState("");
-  const [generatedMark4, setGeneratedMark4] = useState("");
-  const [generatedOp1, setGeneratedOp1] = useState("");
-  const [generatedOp2, setGeneratedOp2] = useState("");
-  const [generatedMang1, setGeneratedMang1] = useState("");
-  const [generatedMang2, setGeneratedMang2] = useState("");
-  const [generatedFin1, setGeneratedFin1] = useState("");
-  const [generatedRisk1, setGeneratedRisk1] = useState("");
+  const [generatedExec, setGeneratedExec] = useState('');
+  const [generatedSitu1, setGeneratedSitu1] = useState('');
+  const [generatedSitu2, setGeneratedSitu2] = useState('');
+  const [generatedMark1, setGeneratedMark1] = useState('');
+  const [generatedMark2, setGeneratedMark2] = useState('');
+  const [generatedMark3, setGeneratedMark3] = useState('');
+  const [generatedMark4, setGeneratedMark4] = useState('');
+  const [generatedOp1, setGeneratedOp1] = useState('');
+  const [generatedOp2, setGeneratedOp2] = useState('');
+  const [generatedMang1, setGeneratedMang1] = useState('');
+  const [generatedMang2, setGeneratedMang2] = useState('');
+  const [generatedFin1, setGeneratedFin1] = useState('');
+  const [generatedRisk1, setGeneratedRisk1] = useState('');
 
   // CTA -----------------------------------------------
-  const [callToAction, setCallToAction] = useState("");
+  const [callToAction, setCallToAction] = useState('');
   // cancel stream--------------------------
   const executionIdRefExec = useRef(null);
   const executionIdRefSitu1 = useRef(null);
@@ -173,20 +175,20 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   const executionIdRefCTA = useRef(null);
 
   // language -----------------------------------------------
-  const [planLanguage, setPlanLanguage] = useState("");
+  const [planLanguage, setPlanLanguage] = useState('');
 
   // currency -----------------------------------------------
-  const [planCurrency, setPlanCurrency] = useState("");
-  const [planCurrencySymbol, setPlanCurrencySymbol] = useState(""); // currency symbol for other is 1 space
+  const [planCurrency, setPlanCurrency] = useState('');
+  const [planCurrencySymbol, setPlanCurrencySymbol] = useState(''); // currency symbol for other is 1 space
 
   // country ------------------------------------------------
-  const [country, setCountry] = useState("");
+  const [country, setCountry] = useState('');
 
   // prices -------------------------------------------------
-  const [starterPrice, setStarterPrice] = useState("");
-  const [proPrice, setProPrice] = useState("");
-  const [discountedStarterPrice, setDiscountedStarterPrice] = useState("");
-  const [discountedProPrice, setDiscountedProPrice] = useState("");
+  const [starterPrice, setStarterPrice] = useState('');
+  const [proPrice, setProPrice] = useState('');
+  const [discountedStarterPrice, setDiscountedStarterPrice] = useState('');
+  const [discountedProPrice, setDiscountedProPrice] = useState('');
 
   // check if there is a session if there is a session send a get request with fetch to getUserData api route to get the user data then check if userData.planQuota is less than 1 if it is less than 1 then render a div which contains a button to redirect to checkout page
   const [fetchLoading, setFetchLoading] = useState(false);
@@ -204,7 +206,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
     async function fetchUserData() {
       setFetchLoading(true);
-      const res = await fetch("/api/getUserData", {
+      const res = await fetch('/api/getUserData', {
         headers: {
           [API_KEY_HEADER]: secretKey,
         },
@@ -213,7 +215,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       setuserData(data);
 
       if (data) {
-        console.log("User data fetched successfully: ", data);
+        console.log('User data fetched successfully: ', data);
         setFetchLoading(false);
         clearInterval(interval);
       } else {
@@ -248,46 +250,46 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   // set initial value to test-------------------------------------------------
   useEffect(() => {
     //CHANGE BACK******************************************************
-    setBusinessOperationalStatus("");
-    setBusinessPlanObj("");
-    setBusinessName("");
-    setBusinessType("");
+    setBusinessOperationalStatus('');
+    setBusinessPlanObj('');
+    setBusinessName('');
+    setBusinessType('');
     setNEmployee(0);
-    setLocation(""); //where do you serve your customer
-    setProductOrService("");
-    setSalesChannel(""); // what channel you sell ur product on
+    setLocation(''); //where do you serve your customer
+    setProductOrService('');
+    setSalesChannel(''); // what channel you sell ur product on
 
-    setCustomerDescription1("");
-    setCustomerIncome1("");
-    setCustomerDescription2("");
-    setCustomerIncome2("");
-    setCustomerDescription3("");
-    setCustomerIncome3("");
+    setCustomerDescription1('');
+    setCustomerIncome1('');
+    setCustomerDescription2('');
+    setCustomerIncome2('');
+    setCustomerDescription3('');
+    setCustomerIncome3('');
 
-    setProductName1("");
-    setProductDescription1("");
-    setProductName2("");
-    setProductDescription2("");
-    setProductName3("");
-    setProductDescription3("");
-    setProductName4("");
-    setProductDescription4("");
-    setProductName5("");
-    setProductDescription5("");
+    setProductName1('');
+    setProductDescription1('');
+    setProductName2('');
+    setProductDescription2('');
+    setProductName3('');
+    setProductDescription3('');
+    setProductName4('');
+    setProductDescription4('');
+    setProductName5('');
+    setProductDescription5('');
 
-    setSuccessFactor1("");
-    setSuccessFactor2("");
-    setSuccessFactor3("");
-    setWeakness1("");
-    setWeakness2("");
-    setWeakness3("");
+    setSuccessFactor1('');
+    setSuccessFactor2('');
+    setSuccessFactor3('');
+    setWeakness1('');
+    setWeakness2('');
+    setWeakness3('');
 
     setInitialInvestmentAmount(0); // add dollar to input
-    setInvestmentItem1("");
+    setInvestmentItem1('');
     setInvestmentAmountItem1(0);
-    setInvestmentItem2("");
+    setInvestmentItem2('');
     setInvestmentAmountItem2(0);
-    setInvestmentItem3("");
+    setInvestmentItem3('');
     setInvestmentAmountItem3(0);
 
     setFirstYearRevenue(0);
@@ -446,9 +448,9 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     productName4,
     productDescription4,
     productName5,
-    productDescription5
+    productDescription5,
   ) {
-    let prompt = "";
+    let prompt = '';
 
     for (let i = 1; i <= 5; i++) {
       const productName = arguments[(i - 1) * 2];
@@ -477,13 +479,13 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       productName4,
       productDescription4,
       productName5,
-      productDescription5
+      productDescription5,
     );
     setProductInfoPrompt(prompt);
   }, [runGeneratePrompt]);
 
   async function generateMark1(situ1Ref) {
-    setGeneratedMark1("");
+    setGeneratedMark1('');
 
     setAllDoneGenerating(false);
     setDoneMark1(false);
@@ -492,10 +494,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark1.current = currentExecutionId;
 
-    const mark1 = await fetch("/api/mainApi/api4Mark1", {
-      method: "POST",
+    const mark1 = await fetch('/api/mainApi/api4Mark1', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -538,7 +540,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mark1.ok) {
       setIsError(true);
@@ -576,7 +578,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   //main functions------------------------------------------------------------
   async function generateExec() {
-    setGeneratedExec("");
+    setGeneratedExec('');
 
     setAllDoneGenerating(false);
     setDoneExec(false);
@@ -585,10 +587,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefExec.current = currentExecutionId;
 
-    const exec = await fetch("/api/mainApi/api1Exec", {
-      method: "POST",
+    const exec = await fetch('/api/mainApi/api1Exec', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -635,7 +637,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!exec.ok) {
       setIsError(true);
@@ -673,11 +675,11 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   }
 
   const doneRef1 = useRef(false);
-  const generatedSitu1Ref = useRef("");
+  const generatedSitu1Ref = useRef('');
 
   async function generateSitu1andMark1() {
     // generate situ1 first
-    setGeneratedSitu1("");
+    setGeneratedSitu1('');
 
     setAllDoneGenerating(false);
     setDoneSitu1(false);
@@ -688,10 +690,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu1.current = currentExecutionId;
 
-    const situ1 = await fetch("/api/mainApi/api2Situ1", {
-      method: "POST",
+    const situ1 = await fetch('/api/mainApi/api2Situ1', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -732,7 +734,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         planQuota: 100,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!situ1.ok) {
       setIsError(true);
@@ -776,7 +778,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   }
 
   async function generateSitu2() {
-    setGeneratedSitu2("");
+    setGeneratedSitu2('');
 
     setAllDoneGenerating(false);
     setDoneSitu2(false);
@@ -785,10 +787,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu2.current = currentExecutionId;
 
-    const situ2 = await fetch("/api/mainApi/api3Situ2", {
-      method: "POST",
+    const situ2 = await fetch('/api/mainApi/api3Situ2', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -830,7 +832,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!situ2.ok) {
       setIsError(true);
@@ -868,10 +870,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   }
 
   const doneRef2 = useRef(false);
-  const generatedMark2Ref = useRef("");
+  const generatedMark2Ref = useRef('');
 
   async function generateMark2() {
-    setGeneratedMark2("");
+    setGeneratedMark2('');
 
     setAllDoneGenerating(false);
     setDoneMark2(false);
@@ -882,10 +884,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark2.current = currentExecutionId;
 
-    const mark2 = await fetch("/api/mainApi/api5Mark2", {
-      method: "POST",
+    const mark2 = await fetch('/api/mainApi/api5Mark2', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -934,7 +936,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         planQuota: 100,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mark2.ok) {
       setIsError(true);
@@ -975,7 +977,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   useEffect(() => {
     if (doneExec && doneSitu1 && doneSitu2 && doneMark1 && doneMark2) {
       setAllDoneGenerating(true);
-      if (planLanguage === "en-uk") {
+      if (planLanguage === 'en-uk') {
         setGeneratedExec(us2gb(generatedExec));
         setGeneratedSitu1(us2gb(generatedSitu1));
         setGeneratedSitu2(us2gb(generatedSitu2));
@@ -989,31 +991,31 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     let limit = 1000;
-    if (planLanguage === "ja") {
+    if (planLanguage === 'ja') {
       limit -= 600;
-    } else if (planLanguage === "ar") {
+    } else if (planLanguage === 'ar') {
       limit -= 100;
     }
 
     if (allDoneGenerating) {
-      console.log("Length of generatedExec: ", generatedExec.length);
+      console.log('Length of generatedExec: ', generatedExec.length);
       if (generatedExec.length < limit) {
         generateExec();
       }
-      console.log("Length of generatedSitu2: ", generatedSitu2.length);
+      console.log('Length of generatedSitu2: ', generatedSitu2.length);
       if (generatedSitu2.length < limit) {
         generateSitu2();
       }
-      console.log("Length of generatedSitu1: ", generatedSitu1.length);
+      console.log('Length of generatedSitu1: ', generatedSitu1.length);
       if (generatedSitu1.length < limit) {
         generateSitu1andMark1();
       } else {
-        console.log("Length of generatedMark1: ", generatedMark1.length);
+        console.log('Length of generatedMark1: ', generatedMark1.length);
         if (generatedMark1.length < limit) {
           generateMark1(generatedSitu1);
         }
       }
-      console.log("Length of generatedMark2: ", generatedMark2.length);
+      console.log('Length of generatedMark2: ', generatedMark2.length);
       if (generatedMark2.length < limit) {
         generateMark2();
       }
@@ -1052,8 +1054,8 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   useEffect(() => {
     if (allDoneGenerating) {
       console.log(
-        "allDoneGenerating is true, clearing interval: ",
-        intervalIdRef.current
+        'allDoneGenerating is true, clearing interval: ',
+        intervalIdRef.current,
       );
       clearInterval(intervalIdRef.current);
       setLoading(false);
@@ -1103,7 +1105,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   // starter generation functions---------------------------------------------------------
 
   async function generateMark1Starter(situ1Ref) {
-    setGeneratedMark1("");
+    setGeneratedMark1('');
 
     setAllDoneGeneratingStarter(false);
     setDoneMark1Starter(false);
@@ -1111,10 +1113,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark1Starter.current = currentExecutionId;
-    const mark1 = await fetch("/api/mainApi/api4Mark1", {
-      method: "POST",
+    const mark1 = await fetch('/api/mainApi/api4Mark1', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1156,7 +1158,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mark1.ok) {
       setIsErrorStarter(true);
@@ -1193,7 +1195,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   }
 
   async function generateMark3Starter(mark2Ref) {
-    setGeneratedMark3("");
+    setGeneratedMark3('');
 
     setAllDoneGeneratingStarter(false);
     setDoneMark3Starter(false);
@@ -1201,10 +1203,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark3Starter.current = currentExecutionId;
-    const mark3 = await fetch("/api/mainApi/api6Mark3", {
-      method: "POST",
+    const mark3 = await fetch('/api/mainApi/api6Mark3', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1254,7 +1256,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mark3.ok) {
       setIsErrorStarter(true);
@@ -1293,7 +1295,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   async function generateMark4Starter(mark2Ref) {
     // PROBLEM HERE
-    setGeneratedMark4("");
+    setGeneratedMark4('');
 
     setAllDoneGeneratingStarter(false);
     setDoneMark4Starter(false);
@@ -1301,10 +1303,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark4Starter.current = currentExecutionId;
-    const mark4 = await fetch("/api/mainApi/api7Mark4", {
-      method: "POST",
+    const mark4 = await fetch('/api/mainApi/api7Mark4', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1355,7 +1357,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mark4.ok) {
       setIsErrorStarter(true);
@@ -1393,7 +1395,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   //main functions------------------------------------------------------------
   async function generateExecStarter() {
-    setGeneratedExec("");
+    setGeneratedExec('');
 
     setAllDoneGeneratingStarter(false);
     setDoneExecStarter(false);
@@ -1402,10 +1404,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefExecStarter.current = currentExecutionId;
 
-    const exec = await fetch("/api/mainApi/api1Exec", {
-      method: "POST",
+    const exec = await fetch('/api/mainApi/api1Exec', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1451,7 +1453,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!exec.ok) {
       setIsErrorStarter(true);
@@ -1489,11 +1491,11 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   }
 
   const doneRef1Starter = useRef(false);
-  const generatedSitu1RefStarter = useRef("");
+  const generatedSitu1RefStarter = useRef('');
 
   async function generateSitu1andMark1Starter() {
     // generate situ1 first
-    setGeneratedSitu1("");
+    setGeneratedSitu1('');
 
     setAllDoneGeneratingStarter(false);
     setDoneSitu1Starter(false);
@@ -1504,10 +1506,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu1Starter.current = currentExecutionId;
-    const situ1 = await fetch("/api/mainApi/api2Situ1", {
-      method: "POST",
+    const situ1 = await fetch('/api/mainApi/api2Situ1', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1547,7 +1549,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         productInfoPrompt,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!situ1.ok) {
       setIsErrorStarter(true);
@@ -1592,7 +1594,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   }
 
   async function generateSitu2Starter() {
-    setGeneratedSitu2("");
+    setGeneratedSitu2('');
 
     setAllDoneGeneratingStarter(false);
     setDoneSitu2Starter(false);
@@ -1601,10 +1603,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu2Starter.current = currentExecutionId;
 
-    const situ2 = await fetch("/api/mainApi/api3Situ2", {
-      method: "POST",
+    const situ2 = await fetch('/api/mainApi/api3Situ2', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1645,7 +1647,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!situ2.ok) {
       setIsErrorStarter(true);
@@ -1683,10 +1685,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   }
 
   const doneRef2Starter = useRef(false);
-  const generatedMark2RefStarter = useRef("");
+  const generatedMark2RefStarter = useRef('');
 
   async function generateMark2Mark3Mark4Starter() {
-    setGeneratedMark2("");
+    setGeneratedMark2('');
 
     setAllDoneGeneratingStarter(false);
     setDoneMark2Starter(false);
@@ -1698,10 +1700,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark2Starter.current = currentExecutionId;
 
-    const mark2 = await fetch("/api/mainApi/api5Mark2", {
-      method: "POST",
+    const mark2 = await fetch('/api/mainApi/api5Mark2', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1749,7 +1751,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         productInfoPrompt,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mark2.ok) {
       setIsErrorStarter(true);
@@ -1794,7 +1796,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   }
 
   async function generateMark2Starter() {
-    setGeneratedMark2("");
+    setGeneratedMark2('');
 
     setAllDoneGeneratingStarter(false);
     setDoneMark2Starter(false);
@@ -1805,10 +1807,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark2Starter.current = currentExecutionId;
 
-    const mark2 = await fetch("/api/mainApi/api5Mark2", {
-      method: "POST",
+    const mark2 = await fetch('/api/mainApi/api5Mark2', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1856,7 +1858,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         productInfoPrompt,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mark2.ok) {
       setIsErrorStarter(true);
@@ -1896,7 +1898,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   }
 
   async function generateOp1Starter() {
-    setGeneratedOp1("");
+    setGeneratedOp1('');
 
     setAllDoneGeneratingStarter(false);
     setDoneOp1Starter(false);
@@ -1904,10 +1906,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefOp1Starter.current = currentExecutionId;
-    const op1 = await fetch("/api/mainApi/api8Op1", {
-      method: "POST",
+    const op1 = await fetch('/api/mainApi/api8Op1', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -1974,7 +1976,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         productInfoPrompt,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!op1.ok) {
       setIsErrorStarter(true);
@@ -2012,7 +2014,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   }
 
   async function generateMang1Starter() {
-    setGeneratedMang1("");
+    setGeneratedMang1('');
 
     setAllDoneGeneratingStarter(false);
     setDoneMang1Starter(false);
@@ -2020,10 +2022,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMang1Starter.current = currentExecutionId;
-    const mang1 = await fetch("/api/mainApi/api9Mang1", {
-      method: "POST",
+    const mang1 = await fetch('/api/mainApi/api9Mang1', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2071,7 +2073,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         productInfoPrompt,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mang1.ok) {
       setIsErrorStarter(true);
@@ -2109,7 +2111,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   }
 
   async function generateRisk1Starter() {
-    setGeneratedRisk1("");
+    setGeneratedRisk1('');
 
     setAllDoneGeneratingStarter(false);
     setDoneRisk1Starter(false);
@@ -2117,10 +2119,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefRisk1Starter.current = currentExecutionId;
-    const risk1 = await fetch("/api/mainApi/api11Risk1", {
-      method: "POST",
+    const risk1 = await fetch('/api/mainApi/api11Risk1', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2168,7 +2170,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         productInfoPrompt,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!risk1.ok) {
       setIsErrorStarter(true);
@@ -2219,7 +2221,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       doneRisk1Starter
     ) {
       setAllDoneGeneratingStarter(true);
-      if (planLanguage === "en-uk") {
+      if (planLanguage === 'en-uk') {
         setGeneratedExec(us2gb(generatedExec));
         setGeneratedSitu1(us2gb(generatedSitu1));
         setGeneratedSitu2(us2gb(generatedSitu2));
@@ -2250,7 +2252,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   // this is used when user already signs up and is logged in
   async function addNewPlanStarter() {
-    console.log("addNewPlanStarter running");
+    console.log('addNewPlanStarter running');
     const userInput = {
       businessPlanObj,
       businessName,
@@ -2345,15 +2347,15 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     };
 
     const options = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify(dataTosend),
     };
 
-    await fetch(`/api/addPlan`, options)
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/addPlan`, options)
       .then(async (res) => {
         if (res.status === 403) {
           const data = await res.json();
@@ -2378,7 +2380,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       });
   }
 
-  const [latestPlanIDStarter, setLatestPlanIDStarter] = useState("");
+  const [latestPlanIDStarter, setLatestPlanIDStarter] = useState('');
 
   //set setLatestPlanIDStarter with userData.latestPlanID
   useEffect(() => {
@@ -2389,8 +2391,8 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   //set latestPlanID to local storage use useEffect
   useEffect(() => {
-    console.log("storing latestPlanID:", latestPlanIDStarter);
-    localStorage.setItem("latestPlanIDStarter", latestPlanIDStarter);
+    console.log('storing latestPlanID:', latestPlanIDStarter);
+    localStorage.setItem('latestPlanIDStarter', latestPlanIDStarter);
   }, [latestPlanIDStarter]);
 
   const [hasAddedNewPlan, setHasAddedNewPlan] = useState(false);
@@ -2398,9 +2400,9 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   useEffect(() => {
     if (session) {
       const storedValue = localStorage.getItem(
-        `hasAddedNewPlanStarter_${session.user.email}_${latestPlanIDStarter}`
+        `hasAddedNewPlanStarter_${session.user.email}_${latestPlanIDStarter}`,
       );
-      if (storedValue === "true") {
+      if (storedValue === 'true') {
         setHasAddedNewPlan(true);
       }
     }
@@ -2417,7 +2419,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       if (session) {
         localStorage.setItem(
           `hasAddedNewPlanStarter_${session.user.email}_${latestPlanIDStarter}`,
-          "true"
+          'true',
         );
       }
       setHasAddedNewPlan(true);
@@ -2469,9 +2471,9 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   useEffect(() => {
     if (planLanguage) {
       let limit = 1000;
-      if (planLanguage === "ja") {
+      if (planLanguage === 'ja') {
         limit = 400;
-      } else if (planLanguage === "ar") {
+      } else if (planLanguage === 'ar') {
         limit = 900;
       }
 
@@ -2504,17 +2506,17 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   // console.log all done starters
   useEffect(() => {
-    console.log("doneExecStarter:", doneExecStarter);
-    console.log("doneSitu1Starter:", doneSitu1Starter);
-    console.log("doneSitu2Starter:", doneSitu2Starter);
-    console.log("doneMark1Starter:", doneMark1Starter);
-    console.log("doneMark2Starter:", doneMark2Starter);
-    console.log("doneMark3Starter:", doneMark3Starter);
-    console.log("doneMark4Starter:", doneMark4Starter);
-    console.log("doneOp1Starter:", doneOp1Starter);
-    console.log("doneMang1Starter:", doneMang1Starter);
-    console.log("doneRisk1Starter:", doneRisk1Starter);
-    console.log("allDoneGeneratingStarter:", allDoneGeneratingStarter);
+    console.log('doneExecStarter:', doneExecStarter);
+    console.log('doneSitu1Starter:', doneSitu1Starter);
+    console.log('doneSitu2Starter:', doneSitu2Starter);
+    console.log('doneMark1Starter:', doneMark1Starter);
+    console.log('doneMark2Starter:', doneMark2Starter);
+    console.log('doneMark3Starter:', doneMark3Starter);
+    console.log('doneMark4Starter:', doneMark4Starter);
+    console.log('doneOp1Starter:', doneOp1Starter);
+    console.log('doneMang1Starter:', doneMang1Starter);
+    console.log('doneRisk1Starter:', doneRisk1Starter);
+    console.log('allDoneGeneratingStarter:', allDoneGeneratingStarter);
   }, [
     allDoneGeneratingStarter,
     doneExecStarter,
@@ -2609,27 +2611,27 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     useState(false);
 
   // generated plan states--------------------------------------------
-  const [generatedExecPro, setGeneratedExecPro] = useState("");
-  const [generatedSitu1IndKeyPro, setGeneratedSitu1IndKeyPro] = useState("");
-  const [generatedSitu2SWOTPro, setGeneratedSitu2SWOTPro] = useState("");
-  const [generatedMark1ObjPro, setGeneratedMark1ObjPro] = useState("");
-  const [generatedMark2STPPro, setGeneratedMark2STPPro] = useState("");
+  const [generatedExecPro, setGeneratedExecPro] = useState('');
+  const [generatedSitu1IndKeyPro, setGeneratedSitu1IndKeyPro] = useState('');
+  const [generatedSitu2SWOTPro, setGeneratedSitu2SWOTPro] = useState('');
+  const [generatedMark1ObjPro, setGeneratedMark1ObjPro] = useState('');
+  const [generatedMark2STPPro, setGeneratedMark2STPPro] = useState('');
   const [generatedMark3DecisionPro, setGeneratedMark3DecisionPro] =
-    useState("");
-  const [generatedMark4ProductPro, setGeneratedMark4ProductPro] = useState("");
+    useState('');
+  const [generatedMark4ProductPro, setGeneratedMark4ProductPro] = useState('');
   const [generatedMark5PriceDistPro, setGeneratedMark5PriceDistPro] =
-    useState("");
-  const [generatedMark6AdPro, setGeneratedMark6AdPro] = useState("");
-  const [generatedOp1ActKPIsPro, setGeneratedOp1ActKPIsPro] = useState("");
-  const [generatedOp2QCImpPlanPro, setGeneratedOp2QCImpPlanPro] = useState("");
-  const [generatedTech1AllPro, setGeneratedTech1AllPro] = useState("");
-  const [generatedTech2DigiPro, setGeneratedTech2DigiPro] = useState("");
+    useState('');
+  const [generatedMark6AdPro, setGeneratedMark6AdPro] = useState('');
+  const [generatedOp1ActKPIsPro, setGeneratedOp1ActKPIsPro] = useState('');
+  const [generatedOp2QCImpPlanPro, setGeneratedOp2QCImpPlanPro] = useState('');
+  const [generatedTech1AllPro, setGeneratedTech1AllPro] = useState('');
+  const [generatedTech2DigiPro, setGeneratedTech2DigiPro] = useState('');
   const [generatedMang1StrucRolePro, setGeneratedMang1StrucRolePro] =
-    useState("");
+    useState('');
   const [generatedMang2RecTrainCSRPro, setGeneratedMang2RecTrainCSRPro] =
-    useState("");
-  const [generatedGrowthPro, setGeneratedGrowthPro] = useState("");
-  const [generatedRiskPro, setGeneratedRiskPro] = useState("");
+    useState('');
+  const [generatedGrowthPro, setGeneratedGrowthPro] = useState('');
+  const [generatedRiskPro, setGeneratedRiskPro] = useState('');
 
   // cancel stream--------------------------
   const executionIdRefExecPro = useRef(null);
@@ -2657,15 +2659,15 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   async function generateMark1ObjPro(situ1Ref) {
     setRunningMark1Pro(true);
-    setGeneratedMark1ObjPro("");
+    setGeneratedMark1ObjPro('');
     setDoneMark1Pro(false);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark1Pro.current = currentExecutionId;
-    const mark1 = await fetch("/api/mainApiPro/api4Mark1ObjPro", {
-      method: "POST",
+    const mark1 = await fetch('/api/mainApiPro/api4Mark1ObjPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2709,7 +2711,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mark1.ok) {
       setIsErrorPro(true);
@@ -2743,22 +2745,22 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefMark1Pro.current === currentExecutionId) {
       setDoneMark1Pro(true);
       setRunningMark1Pro(false);
-      console.log("set Mark1 done");
+      console.log('set Mark1 done');
     }
   }
 
   async function generateMark3DecisionPro(mark2Ref) {
     setRunningMark3Pro(true);
-    setGeneratedMark3DecisionPro("");
+    setGeneratedMark3DecisionPro('');
     setDoneMark3Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark3Pro.current = currentExecutionId;
-    const mark3 = await fetch("/api/mainApiPro/api6Mark3DecisionPro", {
-      method: "POST",
+    const mark3 = await fetch('/api/mainApiPro/api6Mark3DecisionPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2809,7 +2811,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mark3.ok) {
       setIsErrorPro(true);
@@ -2844,23 +2846,23 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefMark3Pro.current === currentExecutionId) {
       setDoneMark3Pro(true);
       setRunningMark3Pro(false);
-      console.log("set Mark3 done");
+      console.log('set Mark3 done');
     }
   }
 
   async function generateMark4ProductPro(mark2Ref) {
     // PROBLEM HERE
     setRunningMark4Pro(true);
-    setGeneratedMark4ProductPro("");
+    setGeneratedMark4ProductPro('');
     setDoneMark4Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark4Pro.current = currentExecutionId;
-    const mark4 = await fetch("/api/mainApiPro/api7Mark4ProductPro", {
-      method: "POST",
+    const mark4 = await fetch('/api/mainApiPro/api7Mark4ProductPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -2912,7 +2914,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mark4.ok) {
       setIsErrorPro(true);
@@ -2946,23 +2948,23 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefMark4Pro.current === currentExecutionId) {
       setDoneMark4Pro(true);
       setRunningMark4Pro(false);
-      console.log("set Mark4 done");
+      console.log('set Mark4 done');
     }
   }
 
   async function generateMark5PriceDistPro(mark2Ref) {
     // PROBLEM HERE
     setRunningMark5Pro(true);
-    setGeneratedMark5PriceDistPro("");
+    setGeneratedMark5PriceDistPro('');
     setDoneMark5Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark5Pro.current = currentExecutionId;
-    const mark5 = await fetch("/api/mainApiPro/api8Mark5PriceDistPro", {
-      method: "POST",
+    const mark5 = await fetch('/api/mainApiPro/api8Mark5PriceDistPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3014,7 +3016,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mark5.ok) {
       setIsErrorPro(true);
@@ -3048,23 +3050,23 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefMark5Pro.current === currentExecutionId) {
       setDoneMark5Pro(true);
       setRunningMark5Pro(false);
-      console.log("set Mark5 done");
+      console.log('set Mark5 done');
     }
   }
 
   async function generateMark6AdPro(mark2Ref) {
     // PROBLEM HERE
     setRunningMark6Pro(true);
-    setGeneratedMark6AdPro("");
+    setGeneratedMark6AdPro('');
     setDoneMark6Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark6Pro.current = currentExecutionId;
-    const mark6 = await fetch("/api/mainApiPro/api9Mark6AdPro", {
-      method: "POST",
+    const mark6 = await fetch('/api/mainApiPro/api9Mark6AdPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3116,7 +3118,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mark6.ok) {
       setIsErrorPro(true);
@@ -3150,7 +3152,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefMark6Pro.current === currentExecutionId) {
       setDoneMark6Pro(true);
       setRunningMark6Pro(false);
-      console.log("set Mark6 done");
+      console.log('set Mark6 done');
     }
   }
 
@@ -3158,17 +3160,17 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   async function generateExecPro() {
     setRunningExecPro(true);
-    setGeneratedExecPro("");
+    setGeneratedExecPro('');
     setDoneExecPro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefExecPro.current = currentExecutionId;
 
-    const exec = await fetch("/api/mainApiPro/api1ExecPro", {
-      method: "POST",
+    const exec = await fetch('/api/mainApiPro/api1ExecPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3215,7 +3217,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!exec.ok) {
       setIsErrorPro(true);
@@ -3250,17 +3252,17 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefExecPro.current === currentExecutionId) {
       setDoneExecPro(true);
       setRunningExecPro(false);
-      console.log("set Exec done");
+      console.log('set Exec done');
     }
   }
 
   const doneRef1Pro = useRef(false);
-  const generatedSitu1RefPro = useRef("");
+  const generatedSitu1RefPro = useRef('');
 
   async function generateSitu1IndKeyPro() {
     setRunningSitu1Pro(true);
     // generate situ1 first
-    setGeneratedSitu1IndKeyPro("");
+    setGeneratedSitu1IndKeyPro('');
     setDoneSitu1Pro(false);
     setDoneMark1Pro(false);
     setLoadingPro(true);
@@ -3269,10 +3271,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu1Pro.current = currentExecutionId;
-    const situ1 = await fetch("/api/mainApiPro/api2Situ1IndKeyPro", {
-      method: "POST",
+    const situ1 = await fetch('/api/mainApiPro/api2Situ1IndKeyPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3313,7 +3315,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!situ1.ok) {
       setIsErrorPro(true);
@@ -3350,23 +3352,23 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefSitu1Pro.current === currentExecutionId) {
       setDoneSitu1Pro(true);
       setRunningSitu1Pro(false);
-      console.log("set Situ1 done");
+      console.log('set Situ1 done');
     }
   }
 
   async function generateSitu2SWOTPro() {
     setRunningSitu2Pro(true);
-    setGeneratedSitu2SWOTPro("");
+    setGeneratedSitu2SWOTPro('');
     setDoneSitu2Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu2Pro.current = currentExecutionId;
 
-    const situ2 = await fetch("/api/mainApiPro/api3Situ2SWOTPro", {
-      method: "POST",
+    const situ2 = await fetch('/api/mainApiPro/api3Situ2SWOTPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3408,7 +3410,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       }),
     });
 
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!situ2.ok) {
       setIsErrorPro(true);
@@ -3443,16 +3445,16 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefSitu2Pro.current === currentExecutionId) {
       setDoneSitu2Pro(true);
       setRunningSitu2Pro(false);
-      console.log("set Situ2 done");
+      console.log('set Situ2 done');
     }
   }
 
   const doneRefMark2Pro = useRef(false);
-  const generatedMark2RefPro = useRef("");
+  const generatedMark2RefPro = useRef('');
 
   async function generateMark2STPPro() {
     setRunningMark2Pro(true);
-    setGeneratedMark2STPPro("");
+    setGeneratedMark2STPPro('');
     setDoneMark2Pro(false);
     setLoadingPro(true);
     doneRefMark2Pro.current = false;
@@ -3460,10 +3462,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark2Pro.current = currentExecutionId;
 
-    const mark2 = await fetch("/api/mainApiPro/api5Mark2STPPro", {
-      method: "POST",
+    const mark2 = await fetch('/api/mainApiPro/api5Mark2STPPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3512,7 +3514,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!mark2.ok) {
       setIsErrorPro(true);
@@ -3548,22 +3550,22 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefMark2Pro.current === currentExecutionId) {
       setDoneMark2Pro(true);
       setRunningMark2Pro(false);
-      console.log("set Mark2 done");
+      console.log('set Mark2 done');
     }
   }
 
   async function generateOp1ActKPIsPro() {
     setRunningOp1Pro(true);
-    setGeneratedOp1ActKPIsPro("");
+    setGeneratedOp1ActKPIsPro('');
     setDoneOp1Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefOp1Pro.current = currentExecutionId;
-    const op1 = await fetch("/api/mainApiPro/api10Op1ActKPIsPro", {
-      method: "POST",
+    const op1 = await fetch('/api/mainApiPro/api10Op1ActKPIsPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3631,7 +3633,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!op1.ok) {
       setIsErrorPro(true);
@@ -3666,22 +3668,22 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefOp1Pro.current === currentExecutionId) {
       setDoneOp1Pro(true);
       setRunningOp1Pro(false);
-      console.log("set Op1 done");
+      console.log('set Op1 done');
     }
   }
 
   async function generateOp2QCImpPlanPro() {
     setRunningOp2Pro(true);
-    setGeneratedOp2QCImpPlanPro("");
+    setGeneratedOp2QCImpPlanPro('');
     setDoneOp2Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefOp2Pro.current = currentExecutionId;
-    const op2 = await fetch("/api/mainApiPro/api11Op2QCImpPlanPro", {
-      method: "POST",
+    const op2 = await fetch('/api/mainApiPro/api11Op2QCImpPlanPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3749,7 +3751,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!op2.ok) {
       setIsErrorPro(true);
@@ -3784,22 +3786,22 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefOp2Pro.current === currentExecutionId) {
       setDoneOp2Pro(true);
       setRunningOp2Pro(false);
-      console.log("set Op2 done");
+      console.log('set Op2 done');
     }
   }
 
   async function generateTech1AllPro() {
     setRunningTech1Pro(true);
-    setGeneratedTech1AllPro("");
+    setGeneratedTech1AllPro('');
     setDoneTech1Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefTech1Pro.current = currentExecutionId;
-    const Tech1 = await fetch("/api/mainApiPro/api12Tech1AllPro", {
-      method: "POST",
+    const Tech1 = await fetch('/api/mainApiPro/api12Tech1AllPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3867,7 +3869,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!Tech1.ok) {
       setIsErrorPro(true);
@@ -3902,22 +3904,22 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefTech1Pro.current === currentExecutionId) {
       setDoneTech1Pro(true);
       setRunningTech1Pro(false);
-      console.log("set Tech1 done");
+      console.log('set Tech1 done');
     }
   }
 
   async function generateTech2DigiPro() {
     setRunningTech2Pro(true);
-    setGeneratedTech2DigiPro("");
+    setGeneratedTech2DigiPro('');
     setDoneTech2Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefTech2Pro.current = currentExecutionId;
-    const Tech2 = await fetch("/api/mainApiPro/api13Tech2DigiPro", {
-      method: "POST",
+    const Tech2 = await fetch('/api/mainApiPro/api13Tech2DigiPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -3985,7 +3987,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!Tech2.ok) {
       setIsErrorPro(true);
@@ -4020,16 +4022,16 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefTech2Pro.current === currentExecutionId) {
       setDoneTech2Pro(true);
       setRunningTech2Pro(false);
-      console.log("set Tech2 done");
+      console.log('set Tech2 done');
     }
   }
 
   const doneRefMang1Pro = useRef(false);
-  const generatedMang1RefPro = useRef("");
+  const generatedMang1RefPro = useRef('');
 
   async function generateMang1StrucRolePro() {
     setRunningMang1Pro(true);
-    setGeneratedMang1StrucRolePro("");
+    setGeneratedMang1StrucRolePro('');
     setDoneMang1Pro(false);
     setDoneMang2Pro(false);
     setLoadingPro(true);
@@ -4037,10 +4039,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMang1Pro.current = currentExecutionId;
-    const Mang1 = await fetch("/api/mainApiPro/api14Mang1StrucRolePro", {
-      method: "POST",
+    const Mang1 = await fetch('/api/mainApiPro/api14Mang1StrucRolePro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -4108,7 +4110,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!Mang1.ok) {
       setIsErrorPro(true);
@@ -4144,22 +4146,22 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefMang1Pro.current === currentExecutionId) {
       setDoneMang1Pro(true);
       setRunningMang1Pro(false);
-      console.log("set Mang1 done");
+      console.log('set Mang1 done');
     }
   }
 
   async function generateMang2RecTrainCSRPro(mang1Ref) {
     setRunningMang2Pro(true);
-    setGeneratedMang2RecTrainCSRPro("");
+    setGeneratedMang2RecTrainCSRPro('');
     setDoneMang2Pro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMang2Pro.current = currentExecutionId;
-    const Mang2 = await fetch("/api/mainApiPro/api15Mang2RecTrainCSRPro", {
-      method: "POST",
+    const Mang2 = await fetch('/api/mainApiPro/api15Mang2RecTrainCSRPro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -4228,7 +4230,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         mang1Ref,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!Mang2.ok) {
       setIsErrorPro(true);
@@ -4263,22 +4265,22 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefMang2Pro.current === currentExecutionId) {
       setDoneMang2Pro(true);
       setRunningMang2Pro(false);
-      console.log("set Mang2 done");
+      console.log('set Mang2 done');
     }
   }
 
   async function generateGrowthPro() {
     setRunningGrowthPro(true);
-    setGeneratedGrowthPro("");
+    setGeneratedGrowthPro('');
     setDoneGrowthPro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefGrowthPro.current = currentExecutionId;
-    const Growth = await fetch("/api/mainApiPro/api16Growth1Pro", {
-      method: "POST",
+    const Growth = await fetch('/api/mainApiPro/api16Growth1Pro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -4346,7 +4348,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!Growth.ok) {
       setIsErrorPro(true);
@@ -4381,22 +4383,22 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefGrowthPro.current === currentExecutionId) {
       setDoneGrowthPro(true);
       setRunningGrowthPro(false);
-      console.log("set Growth done");
+      console.log('set Growth done');
     }
   }
 
   async function generateRiskPro() {
     setRunningRiskPro(true);
-    setGeneratedRiskPro("");
+    setGeneratedRiskPro('');
     setDoneRiskPro(false);
     setLoadingPro(true);
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefRisk1Pro.current = currentExecutionId;
-    const Risk1 = await fetch("/api/mainApiPro/api17Risk1Pro", {
-      method: "POST",
+    const Risk1 = await fetch('/api/mainApiPro/api17Risk1Pro', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
@@ -4445,7 +4447,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         planQuota: userData.planQuota,
       }),
     });
-    console.log("Edge function returned.");
+    console.log('Edge function returned.');
 
     if (!Risk1.ok) {
       setIsErrorPro(true);
@@ -4480,13 +4482,13 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (executionIdRefRisk1Pro.current === currentExecutionId) {
       setDoneRiskPro(true);
       setRunningRiskPro(false);
-      console.log("set Risk1 done");
+      console.log('set Risk1 done');
     }
   }
 
   // this is used when user already signs up and is logged in
   async function addNewPlanPro() {
-    console.log("addNewPlanPro running");
+    console.log('addNewPlanPro running');
     const userInput = {
       businessPlanObj,
       businessName,
@@ -4589,15 +4591,15 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     };
 
     const options = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify(dataTosend),
     };
 
-    await fetch(`/api/addPlan`, options)
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/addPlan`, options)
       .then(async (res) => {
         if (res.status === 403) {
           const data = await res.json();
@@ -4625,7 +4627,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   const [allDoneAndFullContentPro, setAllDoneAndFullContentPro] =
     useState(false);
 
-  const [latestPlanIDPro, setLatestPlanIDStarterPro] = useState("");
+  const [latestPlanIDPro, setLatestPlanIDStarterPro] = useState('');
 
   //set setLatestPlanIDStarterPro with userData.latestPlanID
   useEffect(() => {
@@ -4636,8 +4638,8 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   //set latestPlanIDPro to local storage use useEffect
   useEffect(() => {
-    console.log("storing latestPlanIDPro:", latestPlanIDPro);
-    localStorage.setItem("latestPlanIDPro", latestPlanIDPro);
+    console.log('storing latestPlanIDPro:', latestPlanIDPro);
+    localStorage.setItem('latestPlanIDPro', latestPlanIDPro);
   }, [latestPlanIDPro]);
 
   const [hasAddedNewPlanPro, setHasAddedNewPlanPro] = useState(false);
@@ -4645,9 +4647,9 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   useEffect(() => {
     if (session) {
       const storedValue = localStorage.getItem(
-        `hasAddedNewPlanPro_${session.user.email}_${latestPlanIDPro}`
+        `hasAddedNewPlanPro_${session.user.email}_${latestPlanIDPro}`,
       );
-      if (storedValue === "true") {
+      if (storedValue === 'true') {
         setHasAddedNewPlanPro(true);
       }
     }
@@ -4674,18 +4676,18 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       doneAndFullContentRiskPro &&
       !hasAddedNewPlanPro
     ) {
-      console.log("addNewPlanPro running");
+      console.log('addNewPlanPro running');
       addNewPlanPro();
       if (session) {
         localStorage.setItem(
           `hasAddedNewPlanPro_${session.user.email}_${latestPlanIDPro}`,
-          "true"
+          'true',
         );
       }
       setHasAddedNewPlanPro(true);
       setAllDoneAndFullContentPro(true);
       setLoadingPro(false);
-      if (planLanguage === "en-uk") {
+      if (planLanguage === 'en-uk') {
         setGeneratedExecPro(us2gb(generatedExecPro));
         setGeneratedSitu1IndKeyPro(us2gb(generatedSitu1IndKeyPro));
         setGeneratedSitu2SWOTPro(us2gb(generatedSitu2SWOTPro));
@@ -4773,9 +4775,9 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   const [limit, setLimit] = useState(1000);
 
   useEffect(() => {
-    if (planLanguage === "ja") {
+    if (planLanguage === 'ja') {
       setLimit(400);
-    } else if (planLanguage === "ar") {
+    } else if (planLanguage === 'ar') {
       setLimit(900);
     } else {
       setLimit(1000);
@@ -4784,13 +4786,13 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneExecPro && limit) {
-      const cleanedTextExec = generatedExecPro.replace(/^"|"$/g, "");
+      const cleanedTextExec = generatedExecPro.replace(/^"|"$/g, '');
       setGeneratedExecPro(cleanedTextExec);
 
       const execLength = generatedExecPro.length;
       if (execLength <= limit) {
         console.log(
-          `generatedExecPro has less than ${limit} chars, generating again`
+          `generatedExecPro has less than ${limit} chars, generating again`,
         );
         generateExecPro();
       } else {
@@ -4801,13 +4803,13 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneSitu1Pro && limit) {
-      const cleanedTextSitu1 = generatedSitu1IndKeyPro.replace(/^"|"$/g, "");
+      const cleanedTextSitu1 = generatedSitu1IndKeyPro.replace(/^"|"$/g, '');
       setGeneratedSitu1IndKeyPro(cleanedTextSitu1);
 
       const situ1Length = generatedSitu1IndKeyPro.length;
       if (situ1Length <= limit) {
         console.log(
-          `generatedSitu1IndKeyPro has less than ${limit} chars, generating again`
+          `generatedSitu1IndKeyPro has less than ${limit} chars, generating again`,
         );
         generateSitu1IndKeyPro(); // this will trigger mark1
       } else {
@@ -4824,13 +4826,13 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneSitu2Pro && limit) {
-      const cleanedTextSitu2 = generatedSitu2SWOTPro.replace(/^"|"$/g, "");
+      const cleanedTextSitu2 = generatedSitu2SWOTPro.replace(/^"|"$/g, '');
       setGeneratedSitu2SWOTPro(cleanedTextSitu2);
 
       const situ2Length = generatedSitu2SWOTPro.length;
       if (situ2Length <= limit) {
         console.log(
-          `generatedSitu2SWOTPro has less than ${limit} chars, generating again`
+          `generatedSitu2SWOTPro has less than ${limit} chars, generating again`,
         );
         generateSitu2SWOTPro();
       } else {
@@ -4841,13 +4843,13 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneMark1Pro && limit) {
-      const cleanedTextMark1 = generatedMark1ObjPro.replace(/^"|"$/g, "");
+      const cleanedTextMark1 = generatedMark1ObjPro.replace(/^"|"$/g, '');
       setGeneratedMark1ObjPro(cleanedTextMark1);
 
       const mark1Length = generatedMark1ObjPro.length;
       if (mark1Length <= limit) {
         console.log(
-          `generatedMark1ObjPro has less than ${limit} chars, generating again`
+          `generatedMark1ObjPro has less than ${limit} chars, generating again`,
         );
         if (doneAndFullContentSitu1Pro)
           generateMark1ObjPro(generatedSitu1IndKeyPro);
@@ -4859,13 +4861,13 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneMark2Pro && limit) {
-      const cleanedTextMark2 = generatedMark2STPPro.replace(/^"|"$/g, "");
+      const cleanedTextMark2 = generatedMark2STPPro.replace(/^"|"$/g, '');
       setGeneratedMark2STPPro(cleanedTextMark2);
 
       const mark2Length = generatedMark2STPPro.length;
       if (mark2Length <= limit) {
         console.log(
-          `generatedMark2STPPro has less than ${limit} chars, generating again`
+          `generatedMark2STPPro has less than ${limit} chars, generating again`,
         );
         generateMark2STPPro();
       } else {
@@ -4885,7 +4887,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneMark3Pro && limit) {
-      const cleanedTextMark3 = generatedMark3DecisionPro.replace(/^"|"$/g, "");
+      const cleanedTextMark3 = generatedMark3DecisionPro.replace(/^"|"$/g, '');
       setGeneratedMark3DecisionPro(cleanedTextMark3);
 
       const mark3Length = generatedMark3DecisionPro.length;
@@ -4900,7 +4902,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneMark4Pro && limit) {
-      const cleanedTextMark4 = generatedMark4ProductPro.replace(/^"|"$/g, "");
+      const cleanedTextMark4 = generatedMark4ProductPro.replace(/^"|"$/g, '');
       setGeneratedMark4ProductPro(cleanedTextMark4);
 
       const mark4Length = generatedMark4ProductPro.length;
@@ -4915,7 +4917,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneMark5Pro && limit) {
-      const cleanedTextMark5 = generatedMark5PriceDistPro.replace(/^"|"$/g, "");
+      const cleanedTextMark5 = generatedMark5PriceDistPro.replace(/^"|"$/g, '');
       setGeneratedMark5PriceDistPro(cleanedTextMark5);
 
       const mark5Length = generatedMark5PriceDistPro.length;
@@ -4930,7 +4932,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneMark6Pro && limit) {
-      const cleanedTextMark6 = generatedMark6AdPro.replace(/^"|"$/g, "");
+      const cleanedTextMark6 = generatedMark6AdPro.replace(/^"|"$/g, '');
       setGeneratedMark6AdPro(cleanedTextMark6);
 
       const mark6Length = generatedMark6AdPro.length;
@@ -4945,7 +4947,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneOp1Pro && limit) {
-      const cleanedTextOp1 = generatedOp1ActKPIsPro.replace(/^"|"$/g, "");
+      const cleanedTextOp1 = generatedOp1ActKPIsPro.replace(/^"|"$/g, '');
       setGeneratedOp1ActKPIsPro(cleanedTextOp1);
 
       const op1Length = generatedOp1ActKPIsPro.length;
@@ -4959,7 +4961,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneOp2Pro && limit) {
-      const cleanedTextOp2 = generatedOp2QCImpPlanPro.replace(/^"|"$/g, "");
+      const cleanedTextOp2 = generatedOp2QCImpPlanPro.replace(/^"|"$/g, '');
       setGeneratedOp2QCImpPlanPro(cleanedTextOp2);
 
       const op2Length = generatedOp2QCImpPlanPro.length;
@@ -4973,7 +4975,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneTech1Pro && limit) {
-      const cleanedTextTech1 = generatedTech1AllPro.replace(/^"|"$/g, "");
+      const cleanedTextTech1 = generatedTech1AllPro.replace(/^"|"$/g, '');
       setGeneratedTech1AllPro(cleanedTextTech1);
 
       const tech1Length = generatedTech1AllPro.length;
@@ -4987,7 +4989,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneTech2Pro && limit) {
-      const cleanedTextTech2 = generatedTech2DigiPro.replace(/^"|"$/g, "");
+      const cleanedTextTech2 = generatedTech2DigiPro.replace(/^"|"$/g, '');
       setGeneratedTech2DigiPro(cleanedTextTech2);
 
       const tech2Length = generatedTech2DigiPro.length;
@@ -5001,7 +5003,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneMang1Pro && limit) {
-      const cleanedTextMang1 = generatedMang1StrucRolePro.replace(/^"|"$/g, "");
+      const cleanedTextMang1 = generatedMang1StrucRolePro.replace(/^"|"$/g, '');
       setGeneratedMang1StrucRolePro(cleanedTextMang1);
 
       const mang1Length = generatedMang1StrucRolePro.length;
@@ -5023,7 +5025,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (doneMang2Pro && limit) {
       const cleanedTextMang2 = generatedMang2RecTrainCSRPro.replace(
         /^"|"$/g,
-        ""
+        '',
       );
       setGeneratedMang2RecTrainCSRPro(cleanedTextMang2);
 
@@ -5038,7 +5040,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneGrowthPro && limit) {
-      const cleanedTextGrowth = generatedGrowthPro.replace(/^"|"$/g, "");
+      const cleanedTextGrowth = generatedGrowthPro.replace(/^"|"$/g, '');
       setGeneratedGrowthPro(cleanedTextGrowth);
 
       const growthLength = generatedGrowthPro.length;
@@ -5052,7 +5054,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   useEffect(() => {
     if (doneRiskPro && limit) {
-      const cleanedTextRisk = generatedRiskPro.replace(/^"|"$/g, "");
+      const cleanedTextRisk = generatedRiskPro.replace(/^"|"$/g, '');
       setGeneratedRiskPro(cleanedTextRisk);
 
       const riskLength = generatedRiskPro.length;
@@ -5086,12 +5088,12 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (runningExecPro) {
       timerRefExecPro.current = setTimeout(() => {
         console.log(
-          "generateExecPro took longer than 2 minutes, generating again"
+          'generateExecPro took longer than 2 minutes, generating again',
         );
         generateExecPro();
       }, 120000);
     } else {
-      console.log("runningExecPro is false, clearing timeout");
+      console.log('runningExecPro is false, clearing timeout');
       clearTimeout(timerRefExecPro.current);
     }
 
@@ -5104,12 +5106,12 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (runningSitu1Pro) {
       timerRefSitu1Pro.current = setTimeout(() => {
         console.log(
-          "generateSitu1IndKeyPro() took longer than 4 minutes, generating again"
+          'generateSitu1IndKeyPro() took longer than 4 minutes, generating again',
         );
         generateSitu1IndKeyPro();
       }, 240000);
     } else {
-      console.log("runningSitu1Pro is false, clearing timeout");
+      console.log('runningSitu1Pro is false, clearing timeout');
       clearTimeout(timerRefSitu1Pro.current);
     }
 
@@ -5122,17 +5124,17 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (runningSitu2Pro) {
       timerRefSitu2Pro.current = setTimeout(() => {
         console.log(
-          "generateSitu2SWOTPro took longer than 2 minutes, generating again"
+          'generateSitu2SWOTPro took longer than 2 minutes, generating again',
         );
         generateSitu2SWOTPro();
       }, 180000);
     } else {
-      console.log("runningSitu2Pro is false, clearing timeout");
+      console.log('runningSitu2Pro is false, clearing timeout');
       clearTimeout(timerRefSitu2Pro.current);
     }
 
     return () => {
-      console.log("Cleanup: clearing timeout");
+      console.log('Cleanup: clearing timeout');
       clearTimeout(timerRefSitu2Pro.current);
     };
   }, [runningSitu2Pro]);
@@ -5142,13 +5144,13 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
       if (doneAndFullContentSitu1Pro) {
         timerRefMark1Pro.current = setTimeout(() => {
           console.log(
-            "generateMark1ObjPro took longer than 2 minutes, generating again"
+            'generateMark1ObjPro took longer than 2 minutes, generating again',
           );
           generateMark1ObjPro(generatedSitu1IndKeyPro);
         }, 180000);
       }
     } else {
-      console.log("runningMark1Pro is false, clearing timeout");
+      console.log('runningMark1Pro is false, clearing timeout');
       clearTimeout(timerRefMark1Pro.current);
     }
 
@@ -5161,12 +5163,12 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     if (runningMark2Pro) {
       timerRefMark2Pro.current = setTimeout(() => {
         console.log(
-          "generateMark2STPPro took longer than 2 minutes, generating again"
+          'generateMark2STPPro took longer than 2 minutes, generating again',
         );
         generateMark2STPPro();
       }, 180000);
     } else {
-      console.log("runningMark2Pro is false, clearing timeout");
+      console.log('runningMark2Pro is false, clearing timeout');
       clearTimeout(timerRefMark2Pro.current);
     }
 
@@ -5183,7 +5185,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         }, 180000);
       }
     } else {
-      console.log("runningMark3Pro is false, clearing timeout");
+      console.log('runningMark3Pro is false, clearing timeout');
       clearTimeout(timerRefMark3Pro.current);
     }
 
@@ -5200,7 +5202,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         }, 180000);
       }
     } else {
-      console.log("runningMark4Pro is false, clearing timeout");
+      console.log('runningMark4Pro is false, clearing timeout');
       clearTimeout(timerRefMark4Pro.current);
     }
 
@@ -5217,7 +5219,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         }, 180000);
       }
     } else {
-      console.log("runningMark5Pro is false, clearing timeout");
+      console.log('runningMark5Pro is false, clearing timeout');
       clearTimeout(timerRefMark5Pro.current);
     }
 
@@ -5234,7 +5236,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         }, 180000);
       }
     } else {
-      console.log("runningMark6Pro is false, clearing timeout");
+      console.log('runningMark6Pro is false, clearing timeout');
       clearTimeout(timerRefMark6Pro.current);
     }
 
@@ -5249,7 +5251,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         generateOp1ActKPIsPro();
       }, 180000);
     } else {
-      console.log("runningOp1Pro is false, clearing timeout");
+      console.log('runningOp1Pro is false, clearing timeout');
       clearTimeout(timerRefOp1Pro.current);
     }
 
@@ -5264,7 +5266,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         generateOp2QCImpPlanPro();
       }, 180000);
     } else {
-      console.log("runningOp2Pro is false, clearing timeout");
+      console.log('runningOp2Pro is false, clearing timeout');
       clearTimeout(timerRefOp2Pro.current);
     }
 
@@ -5279,7 +5281,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         generateTech1AllPro();
       }, 180000);
     } else {
-      console.log("runningTech1Pro is false, clearing timeout");
+      console.log('runningTech1Pro is false, clearing timeout');
       clearTimeout(timerRefTech1Pro.current);
     }
 
@@ -5294,7 +5296,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         generateTech2DigiPro();
       }, 180000);
     } else {
-      console.log("runningTech2Pro is false, clearing timeout");
+      console.log('runningTech2Pro is false, clearing timeout');
       clearTimeout(timerRefTech2Pro.current);
     }
 
@@ -5309,7 +5311,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         generateMang1StrucRolePro();
       }, 180000);
     } else {
-      console.log("runningMang1Pro is false, clearing timeout");
+      console.log('runningMang1Pro is false, clearing timeout');
       clearTimeout(timerRefMang1Pro.current);
     }
 
@@ -5326,7 +5328,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         }, 180000);
       }
     } else {
-      console.log("runningMang2Pro is false, clearing timeout");
+      console.log('runningMang2Pro is false, clearing timeout');
       clearTimeout(timerRefMang2Pro.current);
     }
 
@@ -5341,7 +5343,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         generateGrowthPro();
       }, 180000);
     } else {
-      console.log("runningGrowthPro is false, clearing timeout");
+      console.log('runningGrowthPro is false, clearing timeout');
       clearTimeout(timerRefGrowthPro.current);
     }
 
@@ -5356,7 +5358,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
         generateRiskPro();
       }, 180000);
     } else {
-      console.log("runningRiskPro is false, clearing timeout");
+      console.log('runningRiskPro is false, clearing timeout');
       clearTimeout(timerRefRiskPro.current);
     }
 
@@ -5366,23 +5368,23 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   }, [runningRiskPro]);
 
   useEffect(() => {
-    if (runningExecPro) console.log("runningExec is true");
-    if (runningSitu1Pro) console.log("runningSitu1 is true");
-    if (runningSitu2Pro) console.log("runningSitu2 is true");
-    if (runningMark1Pro) console.log("runningMark1 is true");
-    if (runningMark2Pro) console.log("runningMark2 is true");
-    if (runningMark3Pro) console.log("runningMark3 is true");
-    if (runningMark4Pro) console.log("runningMark4 is true");
-    if (runningMark5Pro) console.log("runningMark5 is true");
-    if (runningMark6Pro) console.log("runningMark6 is true");
-    if (runningOp1Pro) console.log("runningOp1 is true");
-    if (runningOp2Pro) console.log("runningOp2 is true");
-    if (runningTech1Pro) console.log("runningTech1 is true");
-    if (runningTech2Pro) console.log("runningTech2 is true");
-    if (runningGrowthPro) console.log("runningGrowth is true");
-    if (runningMang1Pro) console.log("runningMang1 is true");
-    if (runningMang2Pro) console.log("runningMang2 is true");
-    if (runningRiskPro) console.log("runningRisk is true");
+    if (runningExecPro) console.log('runningExec is true');
+    if (runningSitu1Pro) console.log('runningSitu1 is true');
+    if (runningSitu2Pro) console.log('runningSitu2 is true');
+    if (runningMark1Pro) console.log('runningMark1 is true');
+    if (runningMark2Pro) console.log('runningMark2 is true');
+    if (runningMark3Pro) console.log('runningMark3 is true');
+    if (runningMark4Pro) console.log('runningMark4 is true');
+    if (runningMark5Pro) console.log('runningMark5 is true');
+    if (runningMark6Pro) console.log('runningMark6 is true');
+    if (runningOp1Pro) console.log('runningOp1 is true');
+    if (runningOp2Pro) console.log('runningOp2 is true');
+    if (runningTech1Pro) console.log('runningTech1 is true');
+    if (runningTech2Pro) console.log('runningTech2 is true');
+    if (runningGrowthPro) console.log('runningGrowth is true');
+    if (runningMang1Pro) console.log('runningMang1 is true');
+    if (runningMang2Pro) console.log('runningMang2 is true');
+    if (runningRiskPro) console.log('runningRisk is true');
   }, [
     runningExecPro,
     runningSitu1Pro,
@@ -5431,11 +5433,11 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   const [enableAlertOnLeave, setEnableAlertOnLeave] = useState(true);
 
   const [formattedFirstYearRevenue, setFormattedFirstYearRevenue] =
-    useState("");
+    useState('');
 
   const [isSession, setIsSession] = useState(false);
 
-  const [planPackage, setPlanPackage] = useState("starter");
+  const [planPackage, setPlanPackage] = useState('starter');
 
   // if there is a session then set isSession to true
   useEffect(() => {
@@ -5468,7 +5470,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     setCurrentStep(currentStep - 3);
   };
 
-  const [examplePackage, setExamplePackage] = useState("");
+  const [examplePackage, setExamplePackage] = useState('');
 
   let component;
 
@@ -5476,15 +5478,15 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   //split test code ////////////////////////////////////////////////////
   useEffect(() => {
     if (userData && !userData.variantID) {
-      fetch("/api/updateUserVariant", {
-        method: "POST",
+      fetch('/api/updateUserVariant', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           [API_KEY_HEADER]: secretKey,
         },
         body: JSON.stringify({
           email: userData.email,
-          variantID: localStorage.getItem("variantID"),
+          variantID: localStorage.getItem('variantID'),
         }),
       })
         .then((res) => res.json())
@@ -5497,12 +5499,12 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     }
   }, [userData]);
 
-  const { t } = useTranslation("common");
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     let countryFromLocal;
-    if (typeof window !== "undefined") {
-      countryFromLocal = localStorage.getItem("country");
+    if (typeof window !== 'undefined') {
+      countryFromLocal = localStorage.getItem('country');
     }
     setCountry(countryFromLocal);
   }, []);
@@ -5512,18 +5514,18 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   useLocale(country);
 
   useEffect(() => {
-    console.log("Country from mainWizard: ", country);
+    console.log('Country from mainWizard: ', country);
   }, [country]);
 
-  const { t: tv } = useTranslation("validate");
+  const { t: tv } = useTranslation('validate');
 
   useEffect(() => {
-    console.log("isShow: ", isShow);
-    console.log("isError: ", isError);
+    console.log('isShow: ', isShow);
+    console.log('isError: ', isError);
   }, [isShow, isError, isPaid]);
 
   useEffect(() => {
-    const formData = JSON.parse(localStorage.getItem("formData")) || {};
+    const formData = JSON.parse(localStorage.getItem('formData')) || {};
     if (formData[formDataTitle.REF_ID]) {
       setRefId(formData[formDataTitle.REF_ID]);
     }
@@ -5694,7 +5696,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
     }
     if (formData[formDataTitle.FORM7_2]) {
       setRevenueGrowthRate(
-        parseFloat(formData[formDataTitle.FORM7_2].value) / 100
+        parseFloat(formData[formDataTitle.FORM7_2].value) / 100,
       );
     }
     if (formData[formDataTitle.FORM7_3]) {
@@ -6289,10 +6291,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 
   const handleSignOut = () => {
     trackEvent({
-      event_name: "sign_out_button",
+      event_name: 'sign_out_button',
     });
     signOut();
-    Router.push("/");
+    Router.push('/');
   };
 
   //   const chat = new ChatOpenAI({ temperature: 0 });
@@ -6313,9 +6315,10 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
   return (
     <>
       <Pixel id={fbPixelId} />
+      <XPixel id={xPixelId} />
       {!enableAlertOnLeave ? <></> : <AlertOnLeave />}
       <Head>
-        <title>{t("Plan Generator")}</title>
+        <title>{t('Plan Generator')}</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
@@ -6330,7 +6333,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
               <div className="nav">
                 <ConfirmLink
                   href="/"
-                  message={t("All your progress will be lost if you quit now")}
+                  message={t('All your progress will be lost if you quit now')}
                   aria-current="page"
                   className="brand w-nav-brand w--current"
                 >
@@ -6349,12 +6352,12 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
                   <ConfirmLink
                     href="/"
                     message={t(
-                      "All your progress will be lost if you quit now"
+                      'All your progress will be lost if you quit now',
                     )}
                     aria-current="page"
                     className="nav-button-transparent"
                   >
-                    {t("Home")}
+                    {t('Home')}
                   </ConfirmLink>
                 </div>
               ) : (
@@ -6364,7 +6367,7 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
                     aria-current="page"
                     className="nav-button-transparent"
                   >
-                    {t("Back")}
+                    {t('Back')}
                   </button>
                 </div>
               )}
@@ -6394,14 +6397,14 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
                 <div className="get-started">
                   <div className="form-bg">
                     <div className="flex flex-col justify-center items-center mt-5">
-                      <h4>{t("Plan Quota Limit Reached")}</h4>
+                      <h4>{t('Plan Quota Limit Reached')}</h4>
                       <p>
                         {t(
-                          "To make more plan click the button below and click 'Make Business Plan'. Fill out the form and create a new account"
+                          "To make more plan click the button below and click 'Make Business Plan'. Fill out the form and create a new account",
                         )}
                       </p>
                       <button onClick={handleSignOut} className="button">
-                        {t("Sign Out and Make New Plan")}
+                        {t('Sign Out and Make New Plan')}
                       </button>
                     </div>
                   </div>
@@ -6418,26 +6421,28 @@ export default function mainWizard({ secretKey, fbPixelId }: MainWizardProps) {
 export async function getServerSideProps({ locale }) {
   const secretKey = process.env.API_KEY;
   const fbPixelId = process.env.FB_PIXEL_ID;
+  const xPixelId = process.env.X_PIXEL_ID;
   return {
     props: {
       ...(await serverSideTranslations(locale, [
-        "Step1Obj",
-        "Step2BasicInfo",
-        "Step3CustGroup",
-        "Step4Product",
-        "Step5KeySuccess",
-        "Step6InitialInvestment",
-        "Step7Finance",
-        "LastStepPlanGen",
-        "Register1",
-        "ExamplePlan",
-        "validate",
-        "common",
-        "index",
-        "privacy_policy",
+        'Step1Obj',
+        'Step2BasicInfo',
+        'Step3CustGroup',
+        'Step4Product',
+        'Step5KeySuccess',
+        'Step6InitialInvestment',
+        'Step7Finance',
+        'LastStepPlanGen',
+        'Register1',
+        'ExamplePlan',
+        'validate',
+        'common',
+        'index',
+        'privacy_policy',
       ])),
       secretKey,
       fbPixelId,
+      xPixelId,
       // Will be passed to the page component as props
     },
   };

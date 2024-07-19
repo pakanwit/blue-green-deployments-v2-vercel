@@ -1,3 +1,4 @@
+import { FireworksAIStream } from '../../../utils/llama3/FireworksAIStream';
 import { OpenAIStream } from '../../../utils/OpenAIChatStream';
 // a bunch of states to be input into prompts of payloads
 
@@ -17,6 +18,7 @@ export default async function editPreview1Exec(request, response) {
     editInputExec,
 
     userInput,
+    variantID,
   } = await request.json();
 
   console.log('promptContentExec:', promptContentExec);
@@ -34,16 +36,31 @@ export default async function editPreview1Exec(request, response) {
     everything in the edited Executive Summary should remain the same execpt for the changes the client wants you to make. Make sure that all content is in the relevant html tags.
     This is the edited version of the Executive Summary you came up with:
     `;
-  const payload = {
-    model: 'gpt-3.5-turbo',
-    messages: [{ role: 'user', content: editPromptExec }],
-    temperature: 0.5,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 2000,
-    stream: true,
-    n: 1,
-  };
-  return OpenAIStream(payload);
+
+  if (variantID === '2') {
+    const payload = {
+      messages: [{ role: 'user', content: editPromptExec }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return FireworksAIStream(payload);
+  } else {
+    const payload = {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: editPromptExec }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 2000,
+      stream: true,
+      n: 1,
+    };
+    return OpenAIStream(payload);
+  }
 }

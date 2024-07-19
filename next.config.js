@@ -23,6 +23,7 @@ const nextConfig = {
     GOOGLE_ID: process.env.GOOGLE_ID,
     GOOGLE_SECRET: process.env.GOOGLE_SECRET,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    X_PIXEL_CONTENT_ID: process.env.X_PIXEL_CONTENT_ID,
   },
   i18n,
   sentry: {},

@@ -74,7 +74,7 @@ export default function ExamplePlan({ fbPixelId }) {
   const searchParams = useSearchParams();
   const packagePlan = searchParams.get('packagePlan') || 'starter';
 
-  useBeforeUnload()
+  useBeforeUnload();
 
   const handleBack = () => {
     router.push(ROUTE_PATH.generateResult);

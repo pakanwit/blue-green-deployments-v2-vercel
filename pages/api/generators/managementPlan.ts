@@ -109,7 +109,6 @@ export const managementPlan = (request: IManagementPlan) => {
                         Die Anzahl der Positionen sollte kleiner als ${NEmployee} sein. Bedenken Sie, dass die Anzahl der Mitarbeiter nicht mit der Anzahl der Stellen übereinstimmen muss.
                         
                         Wiederholen Sie keine Geschäftsdetails.
-                        Verwenden Sie 1500 Token, um ${mang1TopicDE} zu generieren.
                         Beginnen Sie die Vervollständigung mit „<h3>Verwaltung</h3>“, gefolgt von „<h4>Mitarbeiterrollen</h4>“.
                         Fertigstellung auf Deutsch generieren.
                         
@@ -131,7 +130,6 @@ export const managementPlan = (request: IManagementPlan) => {
                         Le nombre de postes devrait être inférieur à ${NEmployee}. Gardez à l'esprit que le nombre d'employés n'a pas à correspondre au nombre de postes.
                         
                         Ne répétez pas les détails de l'entreprise.
-                        Utilisez 1500 tokens pour générer ${mang1TopicFR}.
                         Commencez la réalisation avec "<h3>Management</h3>" suivi de "<h4>Rôles des employés</h4>"
                         génère tout en français
                         Voici le ${mang1TopicFR} long, détaillé et approfondi que vous avez élaboré :`,
@@ -152,7 +150,6 @@ export const managementPlan = (request: IManagementPlan) => {
                         El número de posiciones debería ser menor que ${NEmployee}. Ten en cuenta que el número de empleados no tiene que coincidir con el número de posiciones.
                         
                         No repitas los detalles del negocio.
-                        usa 1500 tokens para generar ${mang1TopicES}.  
                         Comienza la realización con "<h3>Management</h3>" seguido de "<h4>Roles de los empleados</h4>"
                         genera todo en español
                         Este es el ${mang1TopicES} largo, detallado y extenso que has elaborado:`,
@@ -173,7 +170,6 @@ export const managementPlan = (request: IManagementPlan) => {
                         Il numero di posizioni dovrebbe essere inferiore a ${NEmployee}. Tieni presente che il numero di dipendenti non deve corrispondere al numero di posizioni.
                         
                         Non ripetere i dettagli dell'azienda.
-                        usa 1500 token per generare ${mang1TopicIT}.  
                         Inizia la realizzazione con "<h3>Gestione</h3>" seguito da "<h4>Ruoli dei dipendenti</h4>"
                         genera tutto in italiano
                         Questo è il ${mang1TopicIT} lungo, dettagliato e approfondito che hai elaborato:`,
@@ -195,7 +191,6 @@ export const managementPlan = (request: IManagementPlan) => {
                         Het aantal posities moet minder zijn dan ${NEmployee}. Houd er rekening mee dat het aantal werknemers niet hoeft overeen te komen met het aantal posities.
                         
                         Herhaal de bedrijfsdetails niet.
-                        gebruik 1500 tokens om ${mang1TopicNL} te genereren.  
                         Begin de voltooiing met "<h3>Management</h3>" gevolgd door "<h4>Werknemersrollen</h4>"
                         Genereer alles in het Nederlands.
                         Dit is het lange, gedetailleerde en uitgebreide ${mang1TopicNL} dat je hebt bedacht:
@@ -218,7 +213,6 @@ export const managementPlan = (request: IManagementPlan) => {
                         ポジションの数は${NEmployee}より少なくなければなりません。従業員の数がポジションの数と一致する必要はないことを覚えておいてください。
                         
                         ビジネスの詳細を繰り返さないでください。
-                        ${mang1TopicJA}を生成するために1500トークンを使用します。
                         完成を"<h3>経営</h3>"で始め、その後に"<h4>従業員の役割</h4>"を続けます。
                         すべてを日本語で生成します。
                         これがあなたが考え出した長く、詳細で、長い${mang1TopicJA}です：
@@ -241,7 +235,6 @@ export const managementPlan = (request: IManagementPlan) => {
                         يجب أن يكون عدد الوظائف أقل من ${NEmployee}. تذكر أن عدد الموظفين لا يجب أن يتطابق مع عدد الوظائف.
                         
                         لا تكرر تفاصيل العمل.
-                        استخدم 1500 رمز لتوليد ${mang1TopicAR}.  
                         ابدأ الإكمال بـ "<h3>الإدارة</h3>" تليها "<h4>أدوار الموظفين</h4>"
                         أنشئ كل شيء باللغة العربية.
                         هذا هو ${mang1TopicAR} الطويل والمفصل والمطول الذي ابتكرته:
@@ -264,7 +257,6 @@ export const managementPlan = (request: IManagementPlan) => {
                         Antalet positioner bör vara mindre än ${NEmployee}. Kom ihåg att antalet anställda inte behöver matcha antalet positioner.
                         
                         Upprepa inte affärsdetaljer.
-                        använd 1500 tokens för att generera ${mang1TopicSV}.  
                         Börja utfyllnaden med "<h3>Ledning</h3>" följt av "<h4>Anställdas roller</h4>"
                         Generera allt på svenska.
                         Detta är den långa, detaljerade och omfattande ${mang1TopicSV} du kom på:
@@ -287,7 +279,6 @@ export const managementPlan = (request: IManagementPlan) => {
                         Asemien määrän tulisi olla vähemmän kuin ${NEmployee}. Muista, että työntekijöiden määrän ei tarvitse vastata asemien määrää.
                         
                         Älä toista liiketoiminnan tietoja.
-                        käytä 1500 merkkiä generoimaan ${mang1TopicFI}.  
                         Aloita täydennys "<h3>Johto</h3>" seuraa "<h4>Työntekijöiden roolit</h4>"
                         Generoi kaikki suomeksi.
                         Tämä on pitkä, yksityiskohtainen ja laaja ${mang1TopicFI}, jonka keksit:
@@ -310,7 +301,6 @@ export const managementPlan = (request: IManagementPlan) => {
                         Antallet af positioner skal være mindre end ${NEmployee}. Husk at antallet af medarbejdere ikke behøver at matche antallet af positioner.
                         
                         Gentag ikke forretningsdetaljer.
-                        brug 1500 tokens til at generere ${mang1TopicDA}.  
                         Begynd udfyldningen med "<h3>Ledelse</h3>" efterfulgt af "<h4>Medarbejderroller</h4>"
                         Generer alt på dansk.
                         Dette er den lange, detaljerede og omfattende ${mang1TopicDA} du kom op med:
@@ -333,35 +323,36 @@ export const managementPlan = (request: IManagementPlan) => {
                         Antall posisjoner skal være mindre enn ${NEmployee}. Husk at antall ansatte ikke trenger å matche antall posisjoner.
                         
                         Ikke gjenta forretningsdetaljer.
-                        bruk 1500 tokens for å generere ${mang1TopicNO}.  
                         Begynn utfyllingen med "<h3>Ledelse</h3>" etterfulgt av "<h4>Ansatte Roller</h4>"
                         Generer alt på norsk.
                         Dette er den lange, detaljerte og omfattende ${mang1TopicNO} du kom opp med:
                         `,
   };
 
-  const payload = {
-    messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-    temperature: 0.5,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 1500,
-    stream: true,
-    n: 1,
-  };
-  return FireworksAIStream(payload);
-
-  // const payload = {
-  //   model: 'gpt-3.5-turbo',
-  //   messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-  //   temperature: 0.5,
-  //   top_p: 1,
-  //   frequency_penalty: 0,
-  //   presence_penalty: 0,
-  //   max_tokens: 1500,
-  //   stream: true,
-  //   n: 1,
-  // };
-  // return OpenAIStream(payload);
+  if (variantID === '2') {
+    const payload = {
+      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return FireworksAIStream(payload);
+  } else {
+    const payload = {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return OpenAIStream(payload);
+  }
 };

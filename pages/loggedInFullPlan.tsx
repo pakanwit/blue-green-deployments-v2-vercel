@@ -17,8 +17,9 @@ import useLocale from '../hooks/useLocale';
 import { API_KEY_HEADER } from './api/constants';
 import trackEvent from '../utils/trackEvent';
 import Pixel from '../components/Pixel';
+import XPixel from '../components/XPixel';
 
-export default function LastStepPlanGen({ secretKey, fbPixelId }) {
+export default function LastStepPlanGen({ secretKey, fbPixelId, xPixelId }) {
   const { t } = useTranslation('loggedInFullPlan');
 
   useEffect(() => {
@@ -46,11 +47,14 @@ export default function LastStepPlanGen({ secretKey, fbPixelId }) {
     async function fetchUserData() {
       console.log('fetchUserData triggered');
       setLoading(true);
-      const res = await fetch('/api/getAllUserData', {
-        headers: {
-          [API_KEY_HEADER]: secretKey,
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/getAllUserData`,
+        {
+          headers: {
+            [API_KEY_HEADER]: secretKey,
+          },
         },
-      });
+      );
       const data = await res.json();
 
       if (data) {
@@ -213,7 +217,7 @@ export default function LastStepPlanGen({ secretKey, fbPixelId }) {
   //   const newHeadingHtmlContent = updateHeadingTags(htmlContent);
 
   //   try {
-  //     const response = await fetch('/api/convertToDocx', {
+  //     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/convertToDocx`, {
   //       method: 'POST',
   //       headers: {
   //         'Content-Type': 'application/json'
@@ -255,6 +259,7 @@ export default function LastStepPlanGen({ secretKey, fbPixelId }) {
   return (
     <>
       <Pixel id={fbPixelId} />
+      <XPixel id={xPixelId} />
       <motion.div
         key="component-seven"
         initial={{ opacity: 0 }}
@@ -864,11 +869,13 @@ export default function LastStepPlanGen({ secretKey, fbPixelId }) {
 export async function getStaticProps({ locale }) {
   const secretKey = process.env.API_KEY;
   const fbPixelId = process.env.FB_PIXEL_ID;
+  const xPixelId = process.env.X_PIXEL_ID;
   return {
     props: {
       ...(await serverSideTranslations(locale, ['loggedInFullPlan', 'index'])),
       secretKey,
       fbPixelId,
+      xPixelId,
       // Will be passed to the page component as props
     },
   };

@@ -27,15 +27,18 @@ import dayjs from 'dayjs';
 import { is45MinutesPassed } from '../utils/date';
 import { ROUTE_PATH } from '../constants/path';
 import TrustpilotModal from '../components/modal/TrustpilotModal';
+import XPixel from '../components/XPixel';
 
 interface EditPlanStarterProps {
   secretKey: string;
   fbPixelId: string;
+  xPixelId: string;
 }
 
 export default function editPlanStarter({
   secretKey,
   fbPixelId,
+  xPixelId,
 }: EditPlanStarterProps) {
   const { t } = useTranslation('editPlanStarter');
   const router = useRouter();
@@ -172,11 +175,14 @@ export default function editPlanStarter({
     async function fetchUserData() {
       console.log('fetchUserData triggered');
       setLoading(true);
-      const res = await fetch('/api/getAllUserData', {
-        headers: {
-          [API_KEY_HEADER]: secretKey,
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/getAllUserData`,
+        {
+          headers: {
+            [API_KEY_HEADER]: secretKey,
+          },
         },
-      });
+      );
       const data = await res.json();
 
       if (data) {
@@ -489,14 +495,17 @@ export default function editPlanStarter({
     const newHeadingHtmlContent = htmlContent;
 
     try {
-      const response = await fetch('/api/convertToDocx', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/convertToDocx`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            [API_KEY_HEADER]: secretKey,
+          },
+          body: JSON.stringify({ htmlContent: newHeadingHtmlContent }),
         },
-        body: JSON.stringify({ htmlContent: newHeadingHtmlContent }),
-      });
+      );
 
       if (response.ok) {
         const { base64data, filename } = await response.json();
@@ -549,14 +558,17 @@ export default function editPlanStarter({
     const newHeadingHtmlContent = htmlContent;
 
     try {
-      const response = await fetch('/api/convertToPDF', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/convertToPDF`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            [API_KEY_HEADER]: secretKey,
+          },
+          body: JSON.stringify({ htmlContent: newHeadingHtmlContent }),
         },
-        body: JSON.stringify({ htmlContent: newHeadingHtmlContent }),
-      });
+      );
 
       if (response.ok) {
         const { base64data, filename } = await response.json();
@@ -629,14 +641,17 @@ export default function editPlanStarter({
 
   const getInvitationLink = async (email) => {
     try {
-      const res = await fetch('/api/trustpilot/getInvitationLink', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/trustpilot/getInvitationLink`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            [API_KEY_HEADER]: secretKey,
+          },
+          body: JSON.stringify({ email }),
         },
-        body: JSON.stringify({ email }),
-      });
+      );
       const data: ITrustpilotInvitationLinksResponse = await res.json();
 
       if (data && data.url) {
@@ -757,6 +772,7 @@ export default function editPlanStarter({
   return (
     <>
       <Pixel id={fbPixelId} />
+      <XPixel id={xPixelId} />
       {showTrustpilotModal && trustpilotInvitationLink && (
         <TrustpilotModal onClick={handleRedirectToTrustpilot} />
       )}
@@ -1079,6 +1095,7 @@ export default function editPlanStarter({
 export async function getStaticProps({ locale }) {
   const secretKey = process.env.API_KEY;
   const fbPixelId = process.env.FB_PIXEL_ID;
+  const xPixelId = process.env.X_PIXEL_ID;
   return {
     props: {
       ...(await serverSideTranslations(locale, [
@@ -1092,6 +1109,7 @@ export async function getStaticProps({ locale }) {
       ])),
       secretKey,
       fbPixelId,
+      xPixelId,
       // Will be passed to the page component as props
     },
   };

@@ -34,7 +34,7 @@ export default function Step1Obj({ fbPixelId, secretKey }) {
   const closePrivacyPolicyModal = (): void =>
     setIsPrivacyPolicyModalOpen(false);
 
-  useBeforeUnload()
+  useBeforeUnload();
 
   useEffect(() => {
     router.prefetch(ROUTE_PATH.businessInfo);
@@ -134,11 +134,14 @@ export default function Step1Obj({ fbPixelId, secretKey }) {
 
     async function fetchUserData() {
       try {
-        const res = await fetch('/api/getUserData', {
-          headers: {
-            [API_KEY_HEADER]: secretKey,
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/getUserData`,
+          {
+            headers: {
+              [API_KEY_HEADER]: secretKey,
+            },
           },
-        });
+        );
         const data = await res.json();
 
         if (data) {
@@ -195,20 +198,23 @@ export default function Step1Obj({ fbPixelId, secretKey }) {
                 <div className="flex justify-center items-center mt-5 mb-8 text-black">
                   {t('STEP 1 OF 7')}
                 </div>
-                  <div className="text-center bg-sky-100 rounded-lg border border-solid border-blue-500 p-4 mb-8">
-                    <h5 className="m-0 mb-2">{t('privacy_policy_header')}</h5>
-                    <div>
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: t('privacy_policy_content'),
-                        }}
-                      />
+                <div className="text-center bg-sky-100 rounded-lg border border-solid border-blue-500 p-4 mb-8">
+                  <h5 className="m-0 mb-2">{t('privacy_policy_header')}</h5>
+                  <div>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: t('privacy_policy_content'),
+                      }}
+                    />
 
-                      <strong onClick={onOpenPrivacyPolicyModal} className="cursor-pointer underline">
-                        {t('privacy_policy_link')}
-                      </strong>
-                    </div>
+                    <strong
+                      onClick={onOpenPrivacyPolicyModal}
+                      className="cursor-pointer underline"
+                    >
+                      {t('privacy_policy_link')}
+                    </strong>
                   </div>
+                </div>
                 <h4 className="">{t('Select Business Plan Objective')}</h4>
                 <div className="form-block-started w-form">
                   <form

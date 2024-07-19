@@ -74,7 +74,7 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
   });
   const isCleanCase = Object.keys(formik.errors).length === 0;
 
-  useBeforeUnload()
+  useBeforeUnload();
 
   useEffect(() => {
     router.prefetch(ROUTE_PATH.investmentItems);
@@ -247,6 +247,9 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
   const locale = i18n.language;
 
   async function getSuggestionSuccessFactors(id, retryCount = 0) {
+    const variantID =
+      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+
     callCounterSuccess.current += 1;
 
     if (callCounterSuccess.current >= 2) {
@@ -295,7 +298,7 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
         }
 
         const responsePromise = fetch(
-          '/api/inputSuggestion/getStep5SuggestionsKeySuccess',
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/inputSuggestion/getStep5SuggestionsKeySuccess`,
           {
             method: 'POST',
             headers: {
@@ -333,6 +336,7 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
               successFactors3: formik.values.successFactors3,
 
               locale,
+              variantID,
             }),
           },
         );
@@ -436,6 +440,9 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
   const pendingExecutionWeakness = useRef(null);
 
   async function getSuggestionWeakness(id, retryCount = 0) {
+    const variantID =
+      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+
     callCounterWeakness.current += 1;
 
     if (callCounterWeakness.current >= 2) {
@@ -484,7 +491,7 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
         }
 
         const responsePromise = fetch(
-          '/api/inputSuggestion/getStep5SuggestionsWeakness',
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/inputSuggestion/getStep5SuggestionsWeakness`,
           {
             method: 'POST',
             headers: {
@@ -522,6 +529,7 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
               successFactors3: formik.values.successFactors3,
 
               locale,
+              variantID,
             }),
           },
         );
@@ -697,11 +705,14 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
 
     async function fetchUserData() {
       try {
-        const res = await fetch('/api/getUserData', {
-          headers: {
-            [API_KEY_HEADER]: secretKey,
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/getUserData`,
+          {
+            headers: {
+              [API_KEY_HEADER]: secretKey,
+            },
           },
-        });
+        );
         const data = await res.json();
 
         if (data) {

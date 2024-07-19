@@ -1,3 +1,4 @@
+import { FireworksAIStream } from '../../../utils/llama3/FireworksAIStream';
 import { OpenAIStream } from '../../../utils/OpenAIChatStream';
 // a bunch of states to be input into prompts of payloads
 
@@ -19,6 +20,7 @@ export default async function editStarter(request, response) {
     sectionName,
     parsedPositioning, // not using this
     planLanguage,
+    variantID,
   } = await request.json();
 
   console.log('planLanguage: ', planLanguage);
@@ -38,7 +40,9 @@ export default async function editStarter(request, response) {
     ${editInstruction}
     
     everything in the edited ${sectionName} should remain the same execpt for the changes the client wants you to make. Make sure that all content is in the relevant html tags.
-    This is the edited version of the ${sectionName} you came up with:
+    Generate in the language of this 2 letter code: ${planLanguage}
+    only include the edited content don't prepend or append any words or sentence.
+    This is the edited version of the ${sectionName} you came up with in "${planLanguage}" language:
     `;
 
   //german lang--------------------------------------------------------------------------
@@ -58,6 +62,7 @@ export default async function editStarter(request, response) {
   
     Alles im bearbeiteten ${sectionName} sollte gleich bleiben, mit Ausnahme der Änderungen, die der Client von Ihnen verlangt. Stellen Sie sicher, dass sich alle Inhalte in den relevanten HTML-Tags befinden.
     Fertigstellung auf Deutsch generieren.
+    nur den bearbeiteten Inhalt einfügen, keine Wörter oder Sätze voranstellen oder anhängen.
     Dies ist die bearbeitete Version von ${sectionName}, die Sie erstellt haben:
   `;
 
@@ -73,16 +78,30 @@ export default async function editStarter(request, response) {
 
   console.log('editPromptFinal', editPromptFinal);
 
-  const payload = {
-    model: 'gpt-3.5-turbo',
-    messages: [{ role: 'user', content: editPromptFinal }],
-    temperature: 0.5,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 2000,
-    stream: true,
-    n: 1,
-  };
-  return OpenAIStream(payload);
+  if (variantID === '2') {
+    const payload = {
+      messages: [{ role: 'user', content: editPromptFinal }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return FireworksAIStream(payload);
+  } else {
+    const payload = {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: editPromptFinal }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 2000,
+      stream: true,
+      n: 1,
+    };
+    return OpenAIStream(payload);
+  }
 }

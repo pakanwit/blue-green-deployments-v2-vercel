@@ -11,10 +11,13 @@ import { API_KEY_HEADER } from './api/constants';
 import Pixel from '../components/Pixel';
 import getPriceByPlanAndCountry from '../utils/getPriceByPlanAndCountry';
 import { planType } from '../constants/plan';
+import XPixel from '../components/XPixel';
 
 export default function fullPlan({
   secretKey,
   fbPixelId,
+  xPixelId,
+  xPixelPurchaseId,
   conversionDestinationId,
 }) {
   const { t } = useTranslation('fullPlan');
@@ -63,7 +66,10 @@ export default function fullPlan({
         }),
       };
 
-      const res = await fetch('/api/getAllUserDataFirstLogin', options);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/getAllUserDataFirstLogin`,
+        options,
+      );
       const data = await res.json();
       setuserData(data);
 
@@ -107,22 +113,36 @@ export default function fullPlan({
   }, []);
   useEffect(() => {
     const isVisitFullPlan = localStorage.getItem('isVisitFullPlan');
-
-    if (
-      typeof window !== 'undefined' &&
-      !isVisitFullPlan &&
-      (isStarter || isPro)
-    ) {
-      const value = getPriceByPlanAndCountry(
-        isStarter ? planType.STARTER : planType.PRO,
-        userData.country,
-      );
-      value &&
-        window.fbq('track', 'fullplan_pageview_conversion', {
-          value,
-          currency: 'USD',
-        });
-      localStorage.setItem('isVisitFullPlan', 'true');
+    try {
+      if (
+        typeof window !== 'undefined' &&
+        !isVisitFullPlan &&
+        (isStarter || isPro)
+      ) {
+        const value = getPriceByPlanAndCountry(
+          isStarter ? planType.STARTER : planType.PRO,
+          userData.country,
+        );
+        value &&
+          window.fbq('track', 'fullplan_pageview_conversion', {
+            value,
+            currency: 'USD',
+          });
+        value &&
+          window.twq('event', xPixelPurchaseId, {
+            value,
+            currency: 'USD',
+            contents: [
+              {
+                content_id: 'email',
+                content_name: userData.email,
+              },
+            ],
+          });
+        localStorage.setItem('isVisitFullPlan', 'true');
+      }
+    } catch {
+      console.error('error tracking full plan pageview conversion');
     }
   }, [isStarter, isPro]);
   useEffect(() => {
@@ -138,7 +158,12 @@ export default function fullPlan({
   useLocale(country);
   return (
     <>
-      {!isStarter && !isPro && <Pixel id={fbPixelId} />}
+      {!isStarter && !isPro && (
+        <>
+          <Pixel id={fbPixelId} />
+          <XPixel id={xPixelId} />
+        </>
+      )}
       {!userData && (
         <div className=" flex justify-center mt-5 m-auto">
           <MoonLoader size={20} />
@@ -149,6 +174,7 @@ export default function fullPlan({
           userData={userData}
           secretKey={secretKey}
           fbPixelId={fbPixelId}
+          xPixelId={xPixelId}
           conversionDestinationId={conversionDestinationId}
         />
       ) : (
@@ -159,6 +185,7 @@ export default function fullPlan({
           userData={userData}
           secretKey={secretKey}
           fbPixelId={fbPixelId}
+          xPixelId={xPixelId}
           conversionDestinationId={conversionDestinationId}
         />
       ) : (
@@ -194,6 +221,8 @@ export default function fullPlan({
 export async function getStaticProps({ locale }) {
   const secretKey = process.env.API_KEY;
   const fbPixelId = process.env.FB_PIXEL_ID;
+  const xPixelPurchaseId = process.env.X_PIXEL_PURCHASE_ID;
+  const xPixelId = process.env.X_PIXEL_ID;
   const conversionDestinationId = process.env.GOOGLE_TAG_CONVERSION_DESTINATION;
   return {
     props: {
@@ -206,6 +235,8 @@ export async function getStaticProps({ locale }) {
       ])),
       secretKey,
       fbPixelId,
+      xPixelId,
+      xPixelPurchaseId,
       conversionDestinationId,
     },
   };

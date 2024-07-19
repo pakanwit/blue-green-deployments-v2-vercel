@@ -15,8 +15,9 @@ import dayjs from 'dayjs';
 import { is45MinutesPassed } from '../utils/date';
 import Survey from '../components/Survey';
 import { ROUTE_PATH } from '../constants/path';
+import XPixel from '../components/XPixel';
 
-export default function userHomepage({ secretKey, fbPixelId }) {
+export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
   const [userData, setuserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -42,11 +43,14 @@ export default function userHomepage({ secretKey, fbPixelId }) {
 
     async function fetchUserData() {
       setLoading(true);
-      const res = await fetch('/api/getAllUserData', {
-        headers: {
-          [API_KEY_HEADER]: secretKey,
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/getAllUserData`,
+        {
+          headers: {
+            [API_KEY_HEADER]: secretKey,
+          },
         },
-      });
+      );
       const data = await res.json();
 
       if (data) {
@@ -143,6 +147,7 @@ export default function userHomepage({ secretKey, fbPixelId }) {
   return (
     <>
       <Pixel id={fbPixelId} />
+      <XPixel id={xPixelId} />
       <div>{session ? User({ session }) : Guest()}</div>
     </>
   );
@@ -227,11 +232,11 @@ export default function userHomepage({ secretKey, fbPixelId }) {
                           {t(' more plans')}
                         </p>
                       </div>
-                        <p className="text-sm">
-                          {t(
-                            "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.",
-                          )}
-                        </p>
+                      <p className="text-sm">
+                        {t(
+                          "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.",
+                        )}
+                      </p>
                     </div>
                     <h3 className="">{t('My Plans:')}</h3>
 
@@ -450,11 +455,13 @@ export default function userHomepage({ secretKey, fbPixelId }) {
 export async function getStaticProps({ locale }) {
   const secretKey = process.env.API_KEY;
   const fbPixelId = process.env.FB_PIXEL_ID;
+  const xPixelId = process.env.X_PIXEL_ID;
   return {
     props: {
       ...(await serverSideTranslations(locale, ['userHomepage', 'index'])),
       secretKey,
-      fbPixelId: process.env.FB_PIXEL_ID,
+      fbPixelId,
+      xPixelId,
       // Will be passed to the page component as props
     },
   };

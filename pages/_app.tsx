@@ -108,7 +108,7 @@ function App({ Component, pageProps }) {
       </Head>
 
       <SessionProvider session={pageProps.session}>
-        <GoogleAnalytics trackPageViews nonce='rAnD0m1z5'/>
+        <GoogleAnalytics trackPageViews nonce="rAnD0m1z5" />
         <AppContext.Provider
           value={{
             get: {

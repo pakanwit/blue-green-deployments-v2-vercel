@@ -28,11 +28,14 @@ export default function RequestPasswordReset({
         [API_KEY_HEADER]: apiKey,
       };
 
-      const response = await fetch('/api/auth/passwordReset1', {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({ email }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/passwordReset1`,
+        {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ email }),
+        },
+      );
 
       if (!response.ok) {
         const data = await response.json();

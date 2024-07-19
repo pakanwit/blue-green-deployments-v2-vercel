@@ -77,7 +77,7 @@ export default function Fincance({ fbPixelId, secretKey }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTextLanguage, setSelectedTextLanguage] = useState('Language');
 
-  useBeforeUnload()
+  useBeforeUnload();
 
   useEffect(() => {
     router.prefetch(ROUTE_PATH.generateResult);
@@ -383,11 +383,14 @@ export default function Fincance({ fbPixelId, secretKey }) {
 
     async function fetchUserData() {
       try {
-        const res = await fetch('/api/getUserData', {
-          headers: {
-            [API_KEY_HEADER]: secretKey,
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/getUserData`,
+          {
+            headers: {
+              [API_KEY_HEADER]: secretKey,
+            },
           },
-        });
+        );
         const data = await res.json();
 
         if (data) {

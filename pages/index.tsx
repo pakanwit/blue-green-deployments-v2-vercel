@@ -31,6 +31,7 @@ import { API_KEY_HEADER } from './api/constants';
 import TrustBox from '../components/trustBox';
 import { IReviewsResponse } from '../model/Schema';
 import { ROUTE_PATH } from '../constants/path';
+import XPixel from '../components/XPixel';
 
 declare global {
   interface Window {
@@ -38,7 +39,7 @@ declare global {
   }
 }
 
-export default function Home({ fbPixelId, secretKey }) {
+export default function Home({ fbPixelId, secretKey, xPixelId }) {
   const [variantID, setVariantID] = useState('');
 
   function addition(a, b) {
@@ -61,11 +62,14 @@ export default function Home({ fbPixelId, secretKey }) {
 
     async function fetchUserData() {
       try {
-        const res = await fetch('/api/getUserData', {
-          headers: {
-            [API_KEY_HEADER]: secretKey,
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/getUserData`,
+          {
+            headers: {
+              [API_KEY_HEADER]: secretKey,
+            },
           },
-        });
+        );
         const data = await res.json();
 
         if (data) {
@@ -99,7 +103,7 @@ export default function Home({ fbPixelId, secretKey }) {
   //split test code ////////////////////////////////////////////////////
   useEffect(() => {
     if (userData && !userData.variantID) {
-      fetch('/api/updateUserVariant', {
+      fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/updateUserVariant`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -138,11 +142,14 @@ export default function Home({ fbPixelId, secretKey }) {
   };
 
   const fetchReviews = async () => {
-    const res = await fetch('/api/trustpilot/reviews', {
-      headers: {
-        [API_KEY_HEADER]: secretKey,
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/trustpilot/reviews`,
+      {
+        headers: {
+          [API_KEY_HEADER]: secretKey,
+        },
       },
-    });
+    );
     const data = await res.json();
     setReviews(data);
   };
@@ -182,6 +189,7 @@ export default function Home({ fbPixelId, secretKey }) {
   return (
     <>
       <Pixel id={fbPixelId} />
+      <XPixel id={xPixelId} />
       <Head>
         <meta charSet="utf-8" />
         <title>{t('AI Business Plan Generator | Be Done In 15 Minutes')}</title>
@@ -505,26 +513,49 @@ export default function Home({ fbPixelId, secretKey }) {
                     />
                   </div>
                 </div>
-                {reviews.length > 0 && (
-                  <div className="w-full flex flex-col items-center justify-center gap-4 mt-8 mb-12">
-                    <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-                      {reviews?.map((review) => (
-                        <div key={review.id} className="w-full">
-                          <TrustBox {...review} />
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex flex-row items-center gap-2 text-black">
-                      {t('Reviews From')}
-                      <Image
-                        src="https://plannit.ai/assets/trustpilot.svg"
-                        width={100}
-                        height={100}
-                        alt="Trustpilot"
-                      />
-                    </div>
+                <div className="w-full flex flex-col items-center justify-center gap-4 mt-8 mb-12">
+                  <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+                    {reviews?.map((review) => (
+                      <div key={review.id} className="w-full">
+                        <TrustBox {...review} />
+                      </div>
+                    ))}
                   </div>
-                )}
+
+                  <Link
+                    href="https://www.trustpilot.com/review/15minuteplan.ai"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block hover:opacity-80 transition-opacity no-underline text-inherit"
+                  >
+                    <div className="flex flex-col items-center gap-2 text-black mt-3">
+                      <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-2">
+                        <div className="flex flex-row items-center gap-2 mr-4">
+                          <span className="text-lg">Reviews From</span>
+                          <div className="flex items-center -mt-2">
+                            <Image
+                              src="https://plannit.ai/assets/trustpilot.svg"
+                              width={120}
+                              height={30}
+                              alt="Trustpilot"
+                            />
+                          </div>
+                        </div>
+                        <Image
+                          src="/img/TrustStar4-5.png"
+                          width={160}
+                          height={24}
+                          alt="4.5 star rating"
+                        />
+                        <div className="text-lg text-center sm:text-left sm:ml-4">
+                          TrustScore <strong>4.7</strong> | <strong>74</strong>{' '}
+                          Reviews
+                        </div>
+                      </div>
+                      <span className="text-xl mt-2">Excellent</span>
+                    </div>
+                  </Link>
+                </div>
               </div>
             </div>
 
@@ -1030,12 +1061,12 @@ export default function Home({ fbPixelId, secretKey }) {
                   <Link href="/refundPolicy" className="underline text-center">
                     {t('Refund Policy')}
                   </Link>
-                    <Link
-                      href="/privacy-policy"
-                      className="underline text-center"
-                    >
-                      {t('privacy_policy_link')}
-                    </Link>
+                  <Link
+                    href="/privacy-policy"
+                    className="underline text-center"
+                  >
+                    {t('privacy_policy_link')}
+                  </Link>
                 </div>
                 <div className="footer-down">
                   <div className="text-footer-down">

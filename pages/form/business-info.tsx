@@ -22,7 +22,7 @@ export default function Step2BasicInfo({ fbPixelId }) {
   const { data: session } = useSession();
   const router = useRouter();
 
-  useBeforeUnload()
+  useBeforeUnload();
 
   const formik = useFormik<FormValues>({
     initialValues: {

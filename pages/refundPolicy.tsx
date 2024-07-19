@@ -8,8 +8,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Pixel from '../components/Pixel';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import XPixel from '../components/XPixel';
 
-export default function LastStepPlanGen({ fbPixelId }) {
+export default function LastStepPlanGen({ fbPixelId, xPixelId }) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -609,6 +610,7 @@ export default function LastStepPlanGen({ fbPixelId }) {
   return (
     <>
       <Pixel id={fbPixelId} />
+      <XPixel id={xPixelId} />
       <motion.div
         key="component-seven"
         initial={{ opacity: 0 }}
@@ -656,10 +658,12 @@ export default function LastStepPlanGen({ fbPixelId }) {
 
 export async function getStaticProps({ locale }) {
   const fbPixelId = process.env.FB_PIXEL_ID;
+  const xPixelId = process.env.X_PIXEL_ID;
   return {
     props: {
       ...(await serverSideTranslations(locale, ['index'])),
       fbPixelId,
+      xPixelId,
       // Will be passed to the page component as props
     },
   };

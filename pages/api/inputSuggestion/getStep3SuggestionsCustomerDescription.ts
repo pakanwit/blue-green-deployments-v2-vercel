@@ -1,13 +1,11 @@
-import { NextApiRequest } from "next";
-import { withApiKeyValidation } from "../utils/withApiKeyValidation";
+import { splitTextByDoubleSlash } from './../../../utils/aiResponseParser/text';
+import { FireworksAI } from '../../../utils/llama3/FireworksAI';
+import { withApiKeyValidation } from '../utils/withApiKeyValidation';
+import { promptForSuggestionResponseFormat } from '../../../constants/prompt/firework/format';
 
-export default async function handler(request: NextApiRequest, response) {
-  const getStep3SuggestionsCustomerDescriptionHandler = async (
-    req: NextApiRequest,
-    res
-  ) => {
-    console.log("getStep3SuggestionsCustomerDescriptionHandler ======= main");
-    if (req.method === "POST") {
+export default async function handler(request, response) {
+  const getStep3SuggestionsCustomerDescriptionHandler = async (req, res) => {
+    if (req.method === 'POST') {
       const {
         businessName,
         businessType,
@@ -24,6 +22,8 @@ export default async function handler(request: NextApiRequest, response) {
         customerIncome3,
 
         locale,
+
+        variantID,
       } = req.body;
 
       const customerDescriptionArr = [
@@ -37,7 +37,7 @@ export default async function handler(request: NextApiRequest, response) {
         customerIncome3,
       ];
 
-      let duplicateCustomerPromptEN = "";
+      let duplicateCustomerPromptEN = '';
 
       customerDescriptionArr.forEach((customerDescription, i) => {
         if (customerDescription) {
@@ -69,7 +69,7 @@ export default async function handler(request: NextApiRequest, response) {
 
       // german lang --------------------------------------------------------------------------
 
-      let duplicateCustomerPromptDE = "";
+      let duplicateCustomerPromptDE = '';
 
       customerDescriptionArr.forEach((customerDescription, i) => {
         if (customerDescription) {
@@ -100,66 +100,101 @@ Sie sind ein professioneller Unternehmensberater. Basierend auf den bereitgestel
 Hier ist, was Sie erstellt haben:
 
   `;
-      let finalPrompt = "";
 
-      if (locale === "de") {
+      console.log('variantID', variantID);
+
+      let finalPrompt = '';
+
+      if (locale === 'de') {
         finalPrompt = promptDE; // Make sure promptDE is defined in your code
-      } else if (locale === "en") {
+      } else if (locale === 'en') {
         finalPrompt = promptEN; // Make sure promptEN is defined in your code
       } else {
-        console.log("no locale");
+        console.log('no locale');
         finalPrompt = promptEN; // Default to English if no locale is provided
       }
 
       try {
-        const openAIResponse = await fetch(
-          "https://api.openai.com/v1/chat/completions",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        const basePayload = {
+          temperature: 0.7,
+          top_p: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+          max_tokens: 500,
+          stream: false,
+          n: 1,
+        };
+        if (variantID === '2') {
+          const response = await FireworksAI(
+            {
+              ...basePayload,
+              messages: [
+                { role: 'user', content: finalPrompt },
+                {
+                  role: 'system',
+                  content:
+                    locale === 'de'
+                      ? promptForSuggestionResponseFormat['de']
+                      : promptForSuggestionResponseFormat['en'],
+                },
+              ],
             },
-            body: JSON.stringify({
-              model: "gpt-3.5-turbo", // Specify the model you want to use
-              messages: [{ role: "user", content: finalPrompt }],
-              temperature: 0.7,
-              top_p: 1,
-              frequency_penalty: 0,
-              presence_penalty: 0,
-              max_tokens: 500,
-              stream: false,
-              n: 1,
-            }),
+            'string',
+          );
+          const recommendations = splitTextByDoubleSlash(response);
+          console.log({
+            message:
+              'getStep3SuggestionsCustomerDescriptionHandler: Fireworks AI recommendations',
+            recommendations,
+          });
+          if (recommendations.length > 0) {
+            console.log('used llama 3 fireworks recommendations', recommendations);
+            res.status(200).json(recommendations);
+          } else {
+            throw new Error('response text is empty.');
           }
-        );
-
-        const { choices } = await openAIResponse.json();
-        console.log("choices", choices);
-        const responseText = choices[0].message.content.trim();
-
-        // Split the response text into an array of customer group names
-        let customerDescriptionArr = responseText
-          .split("//")
-          .map((name) => name.trim());
-
-        customerDescriptionArr = customerDescriptionArr.map((name) =>
-          name.replace(/"/g, "")
-        );
-
-        if (responseText) {
-          res.status(200).json(customerDescriptionArr);
         } else {
-          throw new Error("response text is empty.");
+          const openAIResponse = await fetch(
+            'https://api.openai.com/v1/chat/completions',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+              },
+              body: JSON.stringify({
+                model: 'gpt-3.5-turbo', // Specify the model you want to use
+                messages: [{ role: 'user', content: finalPrompt }],
+                ...basePayload,
+              }),
+            },
+          );
+
+          const { choices } = await openAIResponse.json();
+          console.log('choices', choices);
+          const responseText = choices[0].message.content.trim();
+
+          // Split the response text into an array of customer group names
+          let customerDescriptionArr = splitTextByDoubleSlash(responseText);
+
+          customerDescriptionArr = customerDescriptionArr.map((name) =>
+            name.replace(/"/g, ''),
+          );
+
+          if (responseText) {
+            res.status(200).json(customerDescriptionArr);
+          } else {
+            throw new Error('response text is empty.');
+          }
         }
       } catch (error) {
         console.error(error);
         res
           .status(500)
-          .json({ error: "An error occurred while processing your request." });
+          .json({ error: 'An error occurred while processing your request.' });
       }
     } else {
-      res.status(405).json({ error: "Method Not Allowed." });
+      res.status(405).json({ error: 'Method Not Allowed.' });
     }
   };
 
@@ -168,6 +203,6 @@ Hier ist, was Sie erstellt haben:
 
   await getStep3SuggestionsCustomerDescriptionHandlerWithApiKeyValidation(
     request,
-    response
+    response,
   );
 }

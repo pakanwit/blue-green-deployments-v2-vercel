@@ -140,7 +140,6 @@ export const executiveSummary = (request: IExecutiveSummary) => {
                         Dies ist der erwartete Umsatz: ${firstYearRevenue}
                         Dies ist die erwartete zukünftige Wachstumsrate: ${revenueGrowthRate1}
                         
-                        Verwenden Sie 500 Wörter, um diese Zusammenfassung zu erstellen.
                         Schreiben Sie so, als ob Sie der Eigentümer des Unternehmens wären, verwenden Sie "wir" und nicht "ich".
                         Die Zusammenfassung sollte die folgenden Themen enthalten: Überblick über das Unternehmen, Ursprünge des Unternehmens, Wettbewerbsvorteil, finanzielle Zusammenfassung. Nehmen Sie keine anderen Themen auf, es sei denn, sie sind hier angegeben. Seien Sie bei der Erstellung der einzelnen Themen sehr anschaulich.
                         Erzeugen Sie eine Antwort in HTML, die die Hauptthemen mit dem Tag h4 umgibt. 
@@ -170,7 +169,6 @@ export const executiveSummary = (request: IExecutiveSummary) => {
                         Voici le revenu prévu : ${firstYearRevenue}
                         Voici le taux de croissance futur prévu : ${revenueGrowthRate1}
                         
-                        Utilisez 500 mots pour générer ce résumé exécutif.
                         Rédigez cela comme si vous étiez le propriétaire de l'entreprise, en utilisant "nous" et non "je".
                         Le résumé exécutif doit inclure ces sujets : Aperçu de l'entreprise, Origines de l'entreprise, Avantage concurrentiel, Résumé financier. N'incluez pas d'autres sujets à moins qu'ils ne soient spécifiés ici. Soyez très descriptif lors de la génération de chaque sujet.
                         Générez une réponse en html entourant les sujets clés avec la balise h4. 
@@ -199,7 +197,6 @@ export const executiveSummary = (request: IExecutiveSummary) => {
                         Este es el ingreso esperado: ${firstYearRevenue}
                         Esta es la tasa de crecimiento futuro esperada: ${revenueGrowthRate1}
                         
-                        use 500 palabras para generar este resumen ejecutivo.
                         Escriba esto como si fuera el dueño del negocio, usando "nosotros" no use "yo".
                         El Resumen Ejecutivo debe incluir estos temas: Resumen del Negocio, Orígenes del Negocio, Ventaja Competitiva, Resumen Financiero. No incluya otros temas a menos que se especifique aquí. sea muy descriptivo al generar cada tema.
                         Genere la respuesta en html rodeando los temas clave con la etiqueta h4. 
@@ -228,7 +225,6 @@ export const executiveSummary = (request: IExecutiveSummary) => {
                         Questo è il fatturato previsto: ${firstYearRevenue}
                         Questo è il tasso di crescita futura previsto: ${revenueGrowthRate1}
                         
-                        usa 500 parole per generare questo riassunto esecutivo.
                         Scrivi come se fossi il proprietario dell'azienda, usando "noi" non usare "io".
                         Il Riassunto Esecutivo dovrebbe includere questi argomenti: Panoramica dell'azienda, Origini dell'azienda, Vantaggio competitivo, Riassunto finanziario. Non includere altri argomenti a meno che non siano specificati qui. sii molto descrittivo quando generi ogni argomento.
                         Genera la risposta in html circondando i temi chiave con il tag h4. 
@@ -257,7 +253,6 @@ export const executiveSummary = (request: IExecutiveSummary) => {
                         Dit is de verwachte omzet: ${firstYearRevenue}
                         Dit is het verwachte toekomstige groeipercentage: ${revenueGrowthRate1}
                         
-                        Gebruik 500 woorden om deze executive summary te genereren.
                         Schrijf alsof je de eigenaar van het bedrijf bent, gebruik "wij" niet "ik".
                         De Executive Summary moet deze onderwerpen bevatten: Overzicht van het bedrijf, Oorsprong van het bedrijf, Concurrentievoordeel, Financieel overzicht. Voeg geen andere onderwerpen toe tenzij ze hier worden gespecificeerd. Wees zeer beschrijvend bij het genereren van elk onderwerp.
                         Genereer het antwoord in html door de sleutelthema's te omringen met de h4-tag. 
@@ -287,7 +282,6 @@ export const executiveSummary = (request: IExecutiveSummary) => {
                         これが予想される収益です：${firstYearRevenue}
                         これが予想される未来の成長率です：${revenueGrowthRate1}
                         
-                        このエグゼクティブサマリーを生成するために500語を使用します。
                         あなたがビジネスのオーナーであるかのようにこれを書きます、"我々"を使用し、"I"を使用しないでください。
                         エグゼクティブサマリーには、ビジネスの概要、ビジネスの起源、競争優位性、財務要約を含める必要があります。ここで指定されていない他のトピックを含めないでください。各トピックを生成するときに非常に詳細になるようにしてください。
                         h4タグでキートピックを囲んでhtmlでレスポンスを生成します。 
@@ -317,7 +311,6 @@ export const executiveSummary = (request: IExecutiveSummary) => {
                         هذا هو الإيرادات المتوقعة: ${firstYearRevenue}
                         هذا هو معدل النمو المستقبلي المتوقع: ${revenueGrowthRate1}
                         
-                        استخدم 500 كلمة لإنشاء هذا الملخص التنفيذي.
                         اكتب هذا كما لو كنت صاحب العمل، باستخدام "نحن" لا تستخدم "أنا".
                         يجب أن يتضمن الملخص التنفيذي هذه المواضيع: نظرة عامة على الأعمال، أصول الأعمال، الميزة التنافسية، الملخص المالي. لا تتضمن مواضيع أخرى ما لم يتم تحديدها هنا. كن وصفياً جداً عند إنشاء كل موضوع.
                         أنشئ الرد في html محيطاً المواضيع الرئيسية بوسم h4. 
@@ -347,7 +340,6 @@ export const executiveSummary = (request: IExecutiveSummary) => {
                         Detta är den förväntade intäkten: ${firstYearRevenue}
                         Detta är den förväntade framtida tillväxthastigheten: ${revenueGrowthRate1}
                         
-                        använd 500 ord för att generera denna sammanfattning.
                         Skriv detta som om du är ägaren till företaget, använd "vi" inte "jag".
                         Sammanfattningen bör inkludera dessa ämnen: Företagsöversikt, Företagets ursprung, Konkurrensfördel, Finansiell sammanfattning. Inkludera inte andra ämnen om det inte specificeras här. var mycket beskrivande när du genererar varje ämne.
                         Generera svar i html omger nyckelämnen med h4-taggen. 
@@ -377,7 +369,6 @@ export const executiveSummary = (request: IExecutiveSummary) => {
                         Tämä on odotettu liikevaihto: ${firstYearRevenue}
                         Tämä on odotettu tulevaisuuden kasvuvauhti: ${revenueGrowthRate1}
                         
-                        käytä 500 sanaa tämän yhteenvedon luomiseen.
                         Kirjoita tämä kuin olisit yrityksen omistaja, käytä "me", älä käytä "minä".
                         Toimitusjohtajan yhteenvedon tulisi sisältää nämä aiheet: Yrityksen yleiskatsaus, Yrityksen alkuperä, Kilpailuetu, Taloudellinen yhteenveto. Älä sisällytä muita aiheita, ellei niitä ole tässä määritelty. ole hyvin kuvaileva luodessasi jokaista aihetta.
                         Luo vastaus html-muodossa, jossa avainaiheet on ympäröity h4-tagilla. 
@@ -407,7 +398,6 @@ export const executiveSummary = (request: IExecutiveSummary) => {
                         Dette er den forventede indtægt: ${firstYearRevenue}
                         Dette er den forventede fremtidige vækstrate: ${revenueGrowthRate1}
                         
-                        brug 500 ord til at generere denne ledelsesresumé.
                         Skriv dette, som om du er ejeren af virksomheden, brug "vi", brug ikke "jeg".
                         Ledelsesresuméet skal inkludere disse emner: Virksomhedsoversigt, Virksomhedens oprindelse, Konkurrencemæssig fordel, Finansiel oversigt. Inkluder ikke andre emner, medmindre det er specificeret her. vær meget beskrivende, når du genererer hvert emne.
                         Generer svar i html, der omgiver nøgleemner med h4-tag. 
@@ -437,7 +427,6 @@ export const executiveSummary = (request: IExecutiveSummary) => {
                         Dette er den forventede inntekten: ${firstYearRevenue}
                         Dette er den forventede fremtidige vekstraten: ${revenueGrowthRate1}
                         
-                        bruk 500 ord for å generere denne ledelsesoppsummeringen.
                         Skriv dette som om du er eieren av virksomheten, bruk "vi", ikke bruk "jeg".
                         Ledelsesoppsummeringen skal inkludere disse emnene: Oversikt over virksomheten, Virksomhetens opprinnelse, Konkurransefortrinn, Finansiell oppsummering. Ikke inkluder andre emner med mindre det er spesifisert her. vær veldig beskrivende når du genererer hvert emne.
                         Generer svar i html, omgir nøkkeltemaer med h4-taggen. 
@@ -446,28 +435,30 @@ export const executiveSummary = (request: IExecutiveSummary) => {
                         Dette er den lange, detaljerte og lange ledelsesoppsummeringen du kom opp med:`,
   };
 
-  const payload = {
-    messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-    temperature: 0.5,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 1500,
-    stream: true,
-    n: 1,
-  };
-  return FireworksAIStream(payload);
-
-  // const payload = {
-  //   model: 'gpt-3.5-turbo',
-  //   messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-  //   temperature: 0.5,
-  //   top_p: 1,
-  //   frequency_penalty: 0,
-  //   presence_penalty: 0,
-  //   max_tokens: 1500,
-  //   stream: true,
-  //   n: 1,
-  // };
-  // return OpenAIStream(payload);
+  if (variantID === '2') {
+    const payload = {
+      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return FireworksAIStream(payload);
+  } else {
+    const payload = {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return OpenAIStream(payload);
+  }
 };

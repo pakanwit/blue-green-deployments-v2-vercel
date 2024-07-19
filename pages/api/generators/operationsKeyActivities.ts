@@ -308,7 +308,6 @@ export const operationsKeyActivities = (request: IOperationsKeyActivities) => {
                 Beim Thema „Technologiestrategie“ sollte hier beschrieben werden, wie Technologie das Unternehmen verbessern kann. Verpacken Sie jede Technologietaktik mit dem <li>-Tag.
             
                 Wiederholen Sie keine Geschäftsdetails.
-                Verwenden Sie 2000 Token, um ${op1TopicDE} zu generieren.
                 Schreiben Sie dies so, als ob Sie der Eigentümer des Unternehmens wären. Verwenden Sie „wir“ und nicht „ich“.
                 Beginnen Sie den Abschluss mit „<h3>Betrieb</h3>“, gefolgt von „<h4>Wichtigste Aktivitäten</h4>“.
                 Fertigstellung auf Deutsch generieren.
@@ -338,7 +337,6 @@ export const operationsKeyActivities = (request: IOperationsKeyActivities) => {
                 Pour le sujet de la "Stratégie technologique", cela devrait décrire comment la technologie peut améliorer l'entreprise. Entourez chaque tactique technologique avec la balise <li>.
             
                 Ne répétez pas les détails de l'entreprise.
-                Utilisez 2000 tokens pour générer ${op1TopicFR}.
                 Écrivez cela comme si vous étiez le propriétaire de l'entreprise, en utilisant "nous" et non "je".
                 Commencez la réalisation avec "<h3>Opérations</h3>" suivi de "<h4>Activités clés</h4>"
                 génère tout en français
@@ -367,7 +365,6 @@ export const operationsKeyActivities = (request: IOperationsKeyActivities) => {
                 para el tema de la Estrategia tecnológica, esto debería describir cómo la tecnología puede mejorar el negocio. envuelve cada táctica tecnológica con la etiqueta <li>. 
                 
                 No repitas los detalles del negocio.
-                usa 2000 tokens para generar ${op1TopicES}. 
                 Escribe esto como si fueras el dueño del negocio, usando "nosotros" no uses "yo".
                 Comienza la realización con "<h3>Operaciones</h3>" seguido de "<h4>Actividades clave</h4>"
                 genera todo en español
@@ -396,7 +393,6 @@ export const operationsKeyActivities = (request: IOperationsKeyActivities) => {
                 per l'argomento della Strategia tecnologica, questo dovrebbe descrivere come la tecnologia può migliorare l'azienda. racchiudi ogni tattica tecnologica nel tag <li>. 
                 
                 Non ripetere i dettagli aziendali.
-                usa 2000 token per generare ${op1TopicIT}. 
                 Scrivi come se fossi il proprietario dell'azienda, usando "noi" non usare "io".
                 Inizia il completamento con "<h3>Operazioni</h3>" seguito da "<h4>Attività chiave</h4>"
                 genera tutto in italiano
@@ -425,7 +421,6 @@ export const operationsKeyActivities = (request: IOperationsKeyActivities) => {
                 voor het onderwerp Technologiestrategie, dit moet beschrijven hoe technologie het bedrijf kan verbeteren. omring elke technologische tactiek met de <li> tag. 
                 
                 Herhaal de bedrijfsdetails niet.
-                gebruik 2000 tokens om ${op1TopicNL} te genereren. 
                 Schrijf dit alsof je de eigenaar van het bedrijf bent, gebruik "wij" niet "ik".
                 Begin de voltooiing met "<h3>Operaties</h3>" gevolgd door "<h4>Kernactiviteiten</h4>"
                 Genereer alles in het Nederlands.
@@ -454,7 +449,6 @@ export const operationsKeyActivities = (request: IOperationsKeyActivities) => {
                 技術戦略のトピックでは、技術がビジネスをどのように強化できるかを説明する必要があります。各技術戦略を<li>タグで囲みます。
                 
                 ビジネスの詳細を繰り返さないでください。
-                ${op1TopicJA}を生成するために2000トークンを使用します。
                 あなたがビジネスのオーナーであるかのように書き、"私たちは"を使用し、"私"は使用しないでください。
                 完成を"<h3>オペレーション</h3>"で始め、次に"<h4>主要な活動</h4>"を続けます。
                 すべてを日本語で生成します。
@@ -483,7 +477,6 @@ export const operationsKeyActivities = (request: IOperationsKeyActivities) => {
                 بالنسبة لموضوع استراتيجية التكنولوجيا، يجب أن يصف كيف يمكن للتكنولوجيا تعزيز العمل. احاطة كل تكتيك تكنولوجي بوسم <li>.
                 
                 لا تكرر تفاصيل العمل.
-                استخدم 2000 رمز لتوليد ${op1TopicAR}. 
                 اكتب هذا كما لو كنت صاحب العمل، باستخدام "نحن" لا تستخدم "أنا".
                 ابدأ الإكمال بـ "<h3>العمليات</h3>" تليها "<h4>الأنشطة الرئيسية</h4>"
                 أنشئ كل شيء باللغة العربية
@@ -512,7 +505,6 @@ export const operationsKeyActivities = (request: IOperationsKeyActivities) => {
                 För ämnet "teknikstrategi" bör detta beskriva hur tekniken kan förbättra verksamheten. Omslut varje tekniktaktik med <li>-taggen.
                 
                 Upprepa inte affärsdetaljer.
-                Använd 2000 tokens för att generera ${op1TopicSV}. 
                 Skriv detta som om du är ägaren till företaget, använd "vi" inte "jag".
                 Börja kompletteringen med "<h3>Operationer</h3>" följt av "<h4>Nyckelaktiviteter</h4>"
                 Generera allt på svenska.
@@ -541,7 +533,6 @@ export const operationsKeyActivities = (request: IOperationsKeyActivities) => {
                 Teknologiastrategia-aiheen osalta tämän tulisi kuvailla, miten teknologia voi parantaa liiketoimintaa. kääri jokainen teknologiataktiikka <li>-tagiin. 
                 
                 Älä toista liiketoiminnan yksityiskohtia.
-                käytä 2000 merkkiä generoidaksesi ${op1TopicFI}. 
                 Kirjoita tämä kuin olisit yrityksen omistaja, käyttäen "me", älä käytä "minä".
                 Aloita täydennys "<h3>Toiminta</h3>" seuraa "<h4>Avaintoiminnot</h4>"
                 Generoi kaikki suomeksi.
@@ -570,7 +561,6 @@ export const operationsKeyActivities = (request: IOperationsKeyActivities) => {
                 for emnet "teknologistrategi", dette skal beskrive, hvordan teknologi kan forbedre virksomheden. omgiv hver teknologitaktik med <li>-taggen. 
                 
                 Gentag ikke forretningsdetaljer.
-                brug 2000 tokens til at generere ${op1TopicDA}. 
                 Skriv dette, som om du er ejeren af virksomheden, brug "vi", brug ikke "jeg".
                 Begynd udfyldningen med "<h3>Drift</h3>" efterfulgt af "<h4>Nøgleaktiviteter</h4>"
                 Generer alt på dansk.
@@ -599,35 +589,36 @@ export const operationsKeyActivities = (request: IOperationsKeyActivities) => {
                 for Teknologistrategi emnet, dette skal beskrive hvordan teknologi kan forbedre virksomheten. omgir hver teknologitaktikk med <li>-taggen. 
                 
                 Gjenta ikke forretningsdetaljer.
-                bruk 2000 tokens for å generere ${op1TopicNO}. 
                 Skriv dette som om du er eieren av virksomheten, bruk "vi", bruk ikke "jeg".
                 Begynn utfyllingen med "<h3>Drift</h3>" etterfulgt av "<h4>Nøkkelaktiviteter</h4>"
                 Generer alt på norsk.
                 Dette er den lange, detaljerte og omfattende ${op1TopicNO} du kom opp med:`,
   };
 
-  const payload = {
-    messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-    temperature: 0.5,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 1500,
-    stream: true,
-    n: 1,
-  };
-  return FireworksAIStream(payload);
-
-  // const payload = {
-  //   model: 'gpt-3.5-turbo',
-  //   messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-  //   temperature: 0.5,
-  //   top_p: 1,
-  //   frequency_penalty: 0,
-  //   presence_penalty: 0,
-  //   max_tokens: 1500,
-  //   stream: true,
-  //   n: 1,
-  // };
-  // return OpenAIStream(payload);
+  if (variantID === '2') {
+    const payload = {
+      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return FireworksAIStream(payload);
+  } else {
+    const payload = {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return OpenAIStream(payload);
+  }
 };

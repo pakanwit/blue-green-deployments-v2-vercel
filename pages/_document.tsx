@@ -1,6 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import React from "react";
 import Pixel from "../components/Pixel";
+import XPixel from "../components/XPixel";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
@@ -12,6 +13,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Pixel id={process.env.FB_PIXEL_ID} />
+        <XPixel id={process.env.X_PIXEL_ID} />
         <Head>
           <script
             nonce="rAnD0m1z6"

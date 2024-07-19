@@ -398,7 +398,6 @@ use british english spelling and grammar
             ${productInfoPrompt}
             Diese Produkt- oder Dienstleistungsdetails MÜSSEN in das ${mark3TopicDE} aufgenommen werden.
             
-            Verwenden Sie 500 Wörter, um ${mark3TopicDE} zu erstellen. 
             Dies sind die Themen, die generiert werden sollten: ${mark3TopicDE}, fügen Sie keine anderen Themen ein, es sei denn, sie sind hier angegeben. Seien Sie sehr beschreibend bei der Erstellung von Inhalten für jedes Thema.
         
             ${customerPrompt}
@@ -437,7 +436,6 @@ use british english spelling and grammar
             ${productInfoPrompt}
             Ces détails sur les produits ou services DOIVENT être inclus dans le ${mark3TopicFR}.
             
-            Utilisez 500 mots pour générer ${mark3TopicFR}. 
             Voici le sujet qui devrait être généré : ${mark3TopicFR}, n'incluez pas d'autres sujets à moins qu'ils ne soient spécifiés ici. Soyez très descriptif en générant du contenu pour chaque sujet.
         
             ${customerPrompt}
@@ -473,7 +471,6 @@ use british english spelling and grammar
             ${productInfoPrompt}
             Estos detalles de productos o servicios DEBEN ser incluidos en la ${mark3TopicES}.
             
-            use 500 palabras para generar la ${mark3TopicES}. 
             Estos son los temas que deben generarse: ${mark3TopicES}, no incluya otros temas a menos que se especifique aquí. Sea muy descriptivo al generar contenido para cada tema.
         
             ${customerPrompt}
@@ -509,7 +506,6 @@ use british english spelling and grammar
             ${productInfoPrompt}
             Questi dettagli sui prodotti o servizi DEVONO essere inclusi nella ${mark3TopicIT}.
             
-            usa 500 parole per generare ${mark3TopicIT}. 
             Questi sono gli argomenti che dovrebbero essere generati: ${mark3TopicIT}, non includere altri argomenti a meno che non siano specificati qui. Sii molto descrittivo nel generare contenuti per ogni argomento.
         
             ${customerPrompt}
@@ -546,7 +542,6 @@ use british english spelling and grammar
             ${productInfoPrompt}
             Deze product- of dienstdetails MOETEN worden opgenomen in de ${mark3TopicNL}.
             
-            gebruik 500 woorden om ${mark3TopicNL} te genereren. 
             Dit zijn de onderwerpen die gegenereerd moeten worden: ${mark3TopicNL}, voeg geen andere onderwerpen toe tenzij hier gespecificeerd. Wees zeer beschrijvend bij het genereren van inhoud voor elk onderwerp.
         
             ${customerPrompt}
@@ -654,7 +649,6 @@ use british english spelling and grammar
             ${productInfoPrompt}
             Dessa produkter eller tjänster detaljer MÅSTE inkluderas i ${mark3TopicSV}.
             
-            använd 500 ord för att generera ${mark3TopicSV}. 
             Dessa är ämnet som ska genereras: ${mark3TopicSV}, inkludera inte andra ämnen om inte specificerat här. Var mycket beskrivande när du genererar innehåll för varje ämne.
         
               ${customerPrompt}
@@ -692,7 +686,6 @@ use british english spelling and grammar
             ${productInfoPrompt}
             Nämä tuotteiden tai palveluiden tiedot ON sisällytettävä ${mark3TopicFI}.
             
-            käytä 500 sanaa generoidaksesi ${mark3TopicFI}. 
             Nämä ovat aihe, joka pitäisi generoida: ${mark3TopicFI}, älä sisällytä muita aiheita, ellei tässä ole määritetty. Ole erittäin kuvaileva generoidessasi sisältöä jokaiselle aiheelle.
         
               ${customerPrompt}
@@ -730,7 +723,6 @@ use british english spelling and grammar
             ${productInfoPrompt}
             Disse produkter eller tjenester detaljer SKAL inkluderes i ${mark3TopicDA}.
             
-            brug 500 ord til at generere ${mark3TopicDA}. 
             Dette er emnet, der skal genereres: ${mark3TopicDA}, inkluder ikke andre emner, medmindre det er specificeret her. Vær meget beskrivende i generering af indhold for hvert emne.
         
               ${customerPrompt}
@@ -768,7 +760,6 @@ use british english spelling and grammar
             ${productInfoPrompt}
             Disse produktene eller tjenestene detaljer MÅ inkluderes i ${mark3TopicNO}.
             
-            bruk 500 ord for å generere ${mark3TopicNO}. 
             Dette er emnet som skal genereres: ${mark3TopicNO}, inkluder ikke andre emner, med mindre det er spesifisert her. Vær veldig beskrivende i generering av innhold for hvert emne.
         
               ${customerPrompt}
@@ -794,28 +785,30 @@ use british english spelling and grammar
             `,
   };
 
-  const payload = {
-    messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-    temperature: 0.5,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 1500,
-    stream: true,
-    n: 1,
-  };
-  return FireworksAIStream(payload);
-
-  // const payload = {
-  //   model: 'gpt-3.5-turbo',
-  //   messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-  //   temperature: 0.5,
-  //   top_p: 1,
-  //   frequency_penalty: 0,
-  //   presence_penalty: 0,
-  //   max_tokens: 1500,
-  //   stream: true,
-  //   n: 1,
-  // };
-  // return OpenAIStream(payload);
+  if (variantID === '2') {
+    const payload = {
+      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return FireworksAIStream(payload);
+  } else {
+    const payload = {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return OpenAIStream(payload);
+  }
 };

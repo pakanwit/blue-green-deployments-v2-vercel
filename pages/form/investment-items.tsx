@@ -159,7 +159,7 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
     weakness3,
   } = useLoadFormData();
 
-  useBeforeUnload()
+  useBeforeUnload();
 
   useEffect(() => {
     router.prefetch(ROUTE_PATH.finance);
@@ -453,6 +453,9 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
   const locale = i18n.language;
 
   async function getSuggestionInvestmentItem(id, retryCount = 0) {
+    const variantID =
+      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+
     callCounterInvestmentItem.current += 1;
 
     if (callCounterInvestmentItem.current >= 2) {
@@ -498,7 +501,7 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
           },
         }));
         const responsePromise = fetch(
-          '/api/inputSuggestion/getStep6SuggestionsInvestmentItem',
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/inputSuggestion/getStep6SuggestionsInvestmentItem`,
           {
             method: 'POST',
             headers: {
@@ -551,6 +554,7 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
               investmentItem10: formik.values.investmentItems[9]?.itemName || 0,
 
               locale,
+              variantID,
             }),
           },
         );

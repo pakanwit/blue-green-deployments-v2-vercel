@@ -15,8 +15,9 @@ import useLocale from '../hooks/useLocale';
 import trackEvent from '../utils/trackEvent';
 import Pixel from '../components/Pixel';
 import { API_KEY_HEADER } from './api/constants';
+import XPixel from '../components/XPixel';
 
-export default function Login({ fbPixelId, secretKey }) {
+export default function Login({ fbPixelId, secretKey, xPixelId }) {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
@@ -25,11 +26,14 @@ export default function Login({ fbPixelId, secretKey }) {
 
   async function onSubmit(values) {
     async function fetchUserData() {
-      const res = await fetch('/api/getAllUserData', {
-        headers: {
-          [API_KEY_HEADER]: secretKey,
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/getAllUserData`,
+        {
+          headers: {
+            [API_KEY_HEADER]: secretKey,
+          },
         },
-      });
+      );
       const data = await res.json();
       localStorage.setItem('userId', data._id);
     }
@@ -77,6 +81,7 @@ export default function Login({ fbPixelId, secretKey }) {
   return (
     <>
       <Pixel id={fbPixelId} />
+      <XPixel id={xPixelId} />
       <Head>
         <title>{t('Login')}</title>
         <meta
@@ -219,11 +224,13 @@ export default function Login({ fbPixelId, secretKey }) {
 export async function getStaticProps({ locale }) {
   const fbPixelId = process.env.FB_PIXEL_ID;
   const secretKey = process.env.API_KEY;
+  const xPixelId = process.env.X_PIXEL_ID;
   return {
     props: {
       ...(await serverSideTranslations(locale, ['login', 'index'])),
       fbPixelId,
       secretKey,
+      xPixelId,
       // Will be passed to the page component as props
     },
   };

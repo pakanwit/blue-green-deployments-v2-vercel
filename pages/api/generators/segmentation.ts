@@ -190,7 +190,7 @@ use british english spelling and grammar
                 Dies sind Details zu den Produkten oder Dienstleistungen des Kunden:
                 ${productInfoPrompt}
                 
-                Verwenden Sie 500 Wörter, um ${mark2TopicDE} zu erstellen. Wiederholen Sie nicht die Geschäftsdetails. Schließen Sie keine anderen Themen ein, es sei denn, sie sind hier angegeben.
+                Wiederholen Sie nicht die Geschäftsdetails.Schließen Sie keine anderen Themen ein, es sei denn, sie sind hier angegeben.
                 
                 Um ${mark2TopicDE} zu generieren. Im Thema Segmentierung sollten viele Kundensegmente vorhanden sein. Schließen Sie alle Segmente in der Beschreibung der Kundengruppe ein (behalten Sie dies im Hinterkopf, aber erwähnen Sie es nicht wörtlich im Abschluss). Jedes Segment sollte eine Kundenpersona repräsentieren. Jedes Segment sollte sich vom anderen unterscheiden. Beschreiben Sie die Bedürfnisse jedes Segments. Jedes Segment sollte unterschiedliche Kundenbedürfnisse haben. Beschreiben Sie die Demografie für jedes Segment. Beschreiben Sie das Kaufverhalten für jedes Segment. Verwenden Sie das <li>-Tag für jedes Segment. Wenn es nur 3 Segmente aus den Kundendetails gibt, fügen Sie 2 weitere Segmente hinzu.
                 Seien Sie nicht zu allgemein bei der Definition eines Segments.
@@ -222,7 +222,7 @@ use british english spelling and grammar
                 Voici les détails des produits ou services du client :
                 ${productInfoPrompt}
                 
-                utilisez 500 mots pour générer ${mark2TopicFR}. Ne répétez pas les détails de l'entreprise. N'incluez pas d'autres sujets sauf s'ils sont spécifiés ici.
+                Ne répétez pas les détails de l'entreprise. N'incluez pas d'autres sujets sauf s'ils sont spécifiés ici.
                 
                 pour générer ${mark2TopicFR}. Dans le sujet de la Segmentation, il devrait y avoir de nombreux segments de clients. incluez tous les segments dans la description du groupe de clients (gardez cela à l'esprit mais ne mentionnez pas cela mot pour mot dans le texte final). Chaque segment devrait représenter une persona de client. Chaque segment devrait être différent des autres. décrivez les besoins des clients pour chaque segment. Chaque segment devrait avoir des besoins différents. décrivez la démographie pour chaque segment. décrivez le comportement d'achat pour chaque segment. utilisez la balise <li> pour chaque segment. S'il n'y a que 3 segments issus des détails des clients, ajoutez 2 segments supplémentaires.
                 Ne soyez pas trop vague lors de la définition d'un segment.
@@ -254,7 +254,7 @@ use british english spelling and grammar
                 Estos son detalles de los productos o servicios del cliente:
                 ${productInfoPrompt}
                 
-                usa 500 palabras para generar ${mark2TopicES}. No repitas los detalles del negocio. No incluyas otros temas a menos que se especifiquen aquí.
+                No repitas los detalles del negocio. No incluyas otros temas a menos que se especifiquen aquí.
                 
                 para generar ${mark2TopicES}. En el tema de Segmentación, debería haber muchos segmentos de clientes. Incluye todos los segmentos en la descripción del grupo de clientes (ten esto en cuenta pero no lo menciones textualmente en la finalización). Cada segmento debe representar una persona cliente. Cada segmento debe ser diferente de los demás. Describe las necesidades de los clientes para cada segmento. Cada segmento debe tener necesidades de clientes diferentes. Describe la demografía de cada segmento. Describe el comportamiento de compra de cada segmento. Usa la etiqueta <li> para cada segmento. Si solo hay 3 segmentos de los detalles del cliente, añade 2 segmentos más.
                 No seas demasiado general al definir un segmento.
@@ -285,7 +285,7 @@ use british english spelling and grammar
                 Questi sono i dettagli dei prodotti o servizi del cliente:
                 ${productInfoPrompt}
             
-                usa 500 parole per generare ${mark2TopicIT}. Non ripetere i dettagli aziendali. Non includere altri argomenti a meno che non sia specificato qui.
+                Non ripetere i dettagli aziendali. Non includere altri argomenti a meno che non sia specificato qui.
                 
                 per generare ${mark2TopicIT}. Nel tema della Segmentazione, dovrebbero esserci molti segmenti di clienti. include segmenti dal dettaglio del cliente 1, dettaglio del cliente 2 e dettaglio del cliente 3 (tienilo a mente ma non menzionarlo verbatim nella realizzazione). Ogni segmento dovrebbe rappresentare una persona del cliente. Ogni segmento dovrebbe essere diverso l'uno dall'altro. descrive le esigenze dei clienti per ogni segmento. Ogni segmento dovrebbe avere esigenze diverse dei clienti. descrive la demografia per ogni segmento. descrive il comportamento di acquisto per ogni segmento. usa il tag <li> per ogni segmento. Se ci sono solo 3 segmenti nei dettagli del cliente, aggiungi 2 segmenti in più.
                 Non essere troppo ampio nella definizione di un segmento.
@@ -317,7 +317,7 @@ use british english spelling and grammar
                 Dit zijn details van de producten of diensten van de klant:
                 ${productInfoPrompt}
             
-                gebruik 500 woorden om ${mark2TopicNL} te genereren. Herhaal de bedrijfsdetails niet. Neem geen andere onderwerpen op tenzij hier gespecificeerd.
+                Herhaal de bedrijfsdetails niet. Neem geen andere onderwerpen op tenzij hier gespecificeerd.
                 
                 om ${mark2TopicNL} te genereren. In het onderwerp Segmentatie moeten er veel klantsegmenten zijn. neem alle segmenten op in de beschrijving van de klantengroep (houd dit in gedachten maar vermeld dit niet letterlijk in de voltooiing). Elk segment moet een klantpersona vertegenwoordigen. Elk segment moet anders zijn dan de andere. beschrijf de klantbehoeften voor elk segment. Elk segment moet verschillende klantbehoeften hebben. beschrijf de demografie voor elk segment. beschrijf het aankoopgedrag voor elk segment. gebruik de <li> tag voor elk segment. Als er slechts 3 segmenten zijn uit de klantdetails, voeg dan 2 extra segmenten toe.
                 Wees niet te breed bij het definiëren van een segment.
@@ -349,7 +349,7 @@ use british english spelling and grammar
                 これらはクライアントの製品またはサービスの詳細です：
                 ${productInfoPrompt}
             
-                ${mark2TopicJA}を生成するために500語を使用します。ビジネスの詳細を繰り返さないでください。ここで指定されていない他のトピックを含めないでください。
+                ビジネスの詳細を繰り返さないでください。ここで指定されていない他のトピックを含めないでください。
                 
                 ${mark2TopicJA}を生成するために、セグメンテーションのトピックでは、顧客の多くのセグメントがあるべきです。顧客グループの説明にすべてのセグメントを含めます（これを心に留めておき、完成品ではこれを逐語的に言及しないでください）。各セグメントは顧客のパーソナを表すべきです。各セグメントは互いに異なるべきです。各セグメントの顧客のニーズを説明します。各セグメントは異なる顧客のニーズを持つべきです。各セグメントの人口統計を説明します。各セグメントの購買行動を説明します。各セグメントに<li>タグを使用します。顧客の詳細からセグメントが3つしかない場合は、2つのセグメントを追加します。
                 セグメントを定義するときには広すぎないでください。
@@ -381,7 +381,7 @@ use british english spelling and grammar
                 هذه هي تفاصيل المنتجات أو الخدمات للعميل:
                 ${productInfoPrompt}
             
-                استخدم 500 كلمة لتوليد ${mark2TopicAR}. لا تكرر تفاصيل العمل. لا تتضمن مواضيع أخرى ما لم يتم تحديدها هنا.
+              لا تكرر تفاصيل العمل. لا تتضمن مواضيع أخرى ما لم يتم تحديدها هنا.
                 
                 لتوليد ${mark2TopicAR}. في موضوع التفريق، يجب أن يكون هناك العديد من شرائح العملاء. تضمين جميع الشرائح في وصف مجموعة العملاء (ضع هذا في اعتبارك ولكن لا تذكر هذا حرفيا في الاكتمال). يجب أن تمثل كل شريحة شخصية العميل. يجب أن تكون كل شريحة مختلفة عن الأخرى. اصف احتياجات العملاء لكل شريحة. يجب أن تكون لكل شريحة احتياجات عملاء مختلفة. اصف الديموغرافيا لكل شريحة. اصف سلوك الشراء لكل شريحة. استخدم الوسم <li> لكل شريحة. إذا كانت هناك فقط 3 شرائح من تفاصيل العملاء، أضف شريحتين إضافيتين.
                 لا تكن واسعًا جدًا عند تحديد شريحة.
@@ -413,7 +413,7 @@ use british english spelling and grammar
                 Detta är detaljer om kundens produkter eller tjänster:
                 ${productInfoPrompt}
             
-                använd 500 ord för att generera ${mark2TopicSV}. Upprepa inte företagsdetaljerna. Inkludera inte andra ämnen om det inte specificeras här.
+                Upprepa inte företagsdetaljerna. Inkludera inte andra ämnen om det inte specificeras här.
                 
                 för att generera ${mark2TopicSV}. I ämnet Segmentering bör det finnas många kundsegment. inkludera alla segment i beskrivningen av kundgruppen (kom ihåg detta men nämn det inte ordagrant i slutförandet). Varje segment bör representera en kundpersona. Varje segment bör skilja sig från varandra. beskriv kundens behov för varje segment. Varje segment bör ha olika kundbehov. beskriv demografi för varje segment. beskriv köpbeteende för varje segment. använd <li> taggen för varje segment. Om det bara finns 3 segment från kunddetaljer, lägg till 2 fler segment.
                 Var inte för bred när du definierar ett segment.
@@ -445,7 +445,7 @@ use british english spelling and grammar
                 Nämä ovat asiakkaan tuotteiden tai palveluiden tiedot:
                 ${productInfoPrompt}
             
-                käytä 500 sanaa generoimaan ${mark2TopicFI}. Älä toista liiketoiminnan tietoja. Älä sisällytä muita aiheita, ellei niitä ole määritelty tässä.
+                Älä toista liiketoiminnan tietoja. Älä sisällytä muita aiheita, ellei niitä ole määritelty tässä.
                 
                 generoidaksesi ${mark2TopicFI}. Segmentoinnin aiheessa tulisi olla monia asiakassegmenttejä. sisällytä kaikki segmentit asiakasryhmän kuvaus (pidä tämä mielessä, mutta älä mainitse tätä sanatarkasti täydennyksessä). Jokaisen segmentin tulisi edustaa asiakaspersoonaa. Jokaisen segmentin tulisi olla erilainen toisistaan. kuvaile asiakkaan tarpeita jokaiselle segmentille. Jokaisella segmentillä tulisi olla erilaiset asiakastarpeet. kuvaile demografiaa jokaiselle segmentille. kuvaile ostokäyttäytymistä jokaiselle segmentille. käytä <li> tagia jokaiselle segmentille. Jos asiakastiedoista on vain 3 segmenttiä, lisää 2 lisäsegmenttiä.
                 Älä ole liian laaja määritellessäsi segmenttiä.
@@ -477,7 +477,7 @@ use british english spelling and grammar
                 Dette er detaljer om klientens produkter eller tjenester:
                 ${productInfoPrompt}
             
-                brug 500 ord til at generere ${mark2TopicDA}. Gentag ikke forretningsdetaljerne. Inkluder ikke andre emner, medmindre det er specificeret her.
+                Gentag ikke forretningsdetaljerne. Inkluder ikke andre emner, medmindre det er specificeret her.
                 
                 for at generere ${mark2TopicDA}. I emnet Segmentering, skal der være mange kundesegmenter. inkluder alle segmenter i beskrivelsen af kundegruppen (hold dette i tankerne, men nævn det ikke ordret i fuldførelsen). Hvert segment skal repræsentere en kundepersona. Hvert segment skal være forskelligt fra hinanden. beskriv kundens behov for hvert segment. Hvert segment skal have forskellige kundebehov. beskriv demografi for hvert segment. beskriv købsadfærd for hvert segment. brug <li> tag for hvert segment. Hvis der kun er 3 segmenter fra kundedetaljerne, tilføj 2 flere segmenter.
                 Vær ikke for bred, når du definerer et segment.
@@ -509,7 +509,7 @@ use british english spelling and grammar
                 Dette er detaljer om klientens produkter eller tjenester:
                 ${productInfoPrompt}
             
-                bruk 500 ord til å generere ${mark2TopicNO}. Gjenta ikke forretningsdetaljene. Ikke inkluder andre emner, med mindre det er spesifisert her.
+                Gjenta ikke forretningsdetaljene. Ikke inkluder andre emner, med mindre det er spesifisert her.
                 
                 for å generere ${mark2TopicNO}. I emnet Segmentering, skal det være mange kundesegmenter. inkluder alle segmenter i beskrivelsen av kundegruppen (hold dette i tankene, men nevn det ikke ordrett i fullførelsen). Hvert segment skal representere en kundepersona. Hvert segment skal være forskjellig fra hverandre. beskriv kundens behov for hvert segment. Hvert segment skal ha forskjellige kundebehov. beskriv demografi for hvert segment. beskriv kjøpsatferd for hvert segment. bruk <li> tag for hvert segment. Hvis det bare er 3 segmenter fra kundedetaljene, legg til 2 flere segmenter.
                 Vær ikke for bred når du definerer et segment.
@@ -525,28 +525,30 @@ use british english spelling and grammar
                 Dette er den lange, detaljerte og omfattende ${mark2TopicNO} du kom opp med:`,
   };
 
-  const payload = {
-    messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-    temperature: 0.5,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 1500,
-    stream: true,
-    n: 1,
-  };
-  return FireworksAIStream(payload);
-
-  // const payload = {
-  //   model: 'gpt-3.5-turbo',
-  //   messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-  //   temperature: 0.5,
-  //   top_p: 1,
-  //   frequency_penalty: 0,
-  //   presence_penalty: 0,
-  //   max_tokens: 1500,
-  //   stream: true,
-  //   n: 1,
-  // };
-  // return OpenAIStream(payload);
+  if (variantID === '2') {
+    const payload = {
+      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return FireworksAIStream(payload);
+  } else {
+    const payload = {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+      temperature: 0.5,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      max_tokens: 1500,
+      stream: true,
+      n: 1,
+    };
+    return OpenAIStream(payload);
+  }
 };
