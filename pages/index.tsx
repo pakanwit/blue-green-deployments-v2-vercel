@@ -1,16 +1,16 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import FadeAnimation from '../components/animations/fadeAnimation';
-import FadeInFromBottom from '../components//animations/fadeInFromBottom';
-import { event } from 'nextjs-google-analytics';
-import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import LanguageSwitcher from '../components/LanguageSwitcher';
-import useLocale from '../hooks/useLocale';
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import FadeAnimation from "../components/animations/fadeAnimation";
+import FadeInFromBottom from "../components//animations/fadeInFromBottom";
+import { event } from "nextjs-google-analytics";
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import LanguageSwitcher from "../components/LanguageSwitcher";
+import useLocale from "../hooks/useLocale";
 import {
   US,
   DE,
@@ -24,14 +24,14 @@ import {
   FI,
   DK,
   NO,
-} from 'country-flag-icons/react/3x2';
-import trackEvent from '../utils/trackEvent';
-import Pixel from '../components/Pixel';
-import { API_KEY_HEADER } from './api/constants';
-import TrustBox from '../components/trustBox';
-import { IReviewsResponse } from '../model/Schema';
-import { ROUTE_PATH } from '../constants/path';
-import XPixel from '../components/XPixel';
+} from "country-flag-icons/react/3x2";
+import trackEvent from "../utils/trackEvent";
+import Pixel from "../components/Pixel";
+import { API_KEY_HEADER } from "./api/constants";
+import TrustBox from "../components/trustBox";
+import { IReviewsResponse } from "../model/Schema";
+import { ROUTE_PATH } from "../constants/path";
+import XPixel from "../components/XPixel";
 
 declare global {
   interface Window {
@@ -40,7 +40,7 @@ declare global {
 }
 
 export default function Home({ fbPixelId, secretKey, xPixelId }) {
-  const [variantID, setVariantID] = useState('');
+  const [variantID, setVariantID] = useState("");
 
   function addition(a, b) {
     return a + b;
@@ -68,12 +68,12 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
             headers: {
               [API_KEY_HEADER]: secretKey,
             },
-          },
+          }
         );
         const data = await res.json();
 
         if (data) {
-          if (data.paymentStatus !== 'paid') {
+          if (data.paymentStatus !== "paid") {
             setUserData(data);
             signOut(); // signOut if not paid
             return;
@@ -96,7 +96,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
     interval = setInterval(() => {
       fetchUserData();
     }, 3000);
-    push('/userHomepage');
+    push("/userHomepage");
     return () => clearInterval(interval);
   }, [session]);
 
@@ -104,9 +104,9 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
   useEffect(() => {
     if (userData && !userData.variantID) {
       fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/updateUserVariant`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           [API_KEY_HEADER]: secretKey,
         },
         body: JSON.stringify({
@@ -127,18 +127,18 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
 
   // split test code ////////////////////////////////////////////////////
   // NO_EXPERIMENT for no experiment ****there are some first few with value other than NO_EXPERIMENT****
-  const [country, setCountry] = useState('');
-  const [userLocalData, setUserLocalData] = useState('');
+  const [country, setCountry] = useState("");
+  const [userLocalData, setUserLocalData] = useState("");
   const [reviews, setReviews] = useState<IReviewsResponse[]>([]);
 
   const fetchCountry = async () => {
     const response = await fetch(
-      `https://ipinfo.io/json?token=${process.env.NEXT_PUBLIC_IPINFO_API_KEY}`,
+      `https://ipinfo.io/json?token=${process.env.NEXT_PUBLIC_IPINFO_API_KEY}`
     );
     const data = await response.json();
     const country = data.country;
     setCountry(country);
-    localStorage.setItem('country', country);
+    localStorage.setItem("country", country);
   };
 
   const fetchReviews = async () => {
@@ -148,7 +148,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
         headers: {
           [API_KEY_HEADER]: secretKey,
         },
-      },
+      }
     );
     const data = await res.json();
     setReviews(data);
@@ -156,16 +156,16 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
 
   useEffect(() => {
     const variantID =
-      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+      typeof window !== "undefined" ? localStorage.getItem("variantID") : "";
     setVariantID(variantID);
 
-    event('index_page_view', {
-      category: 'Page View',
-      label: 'Index Page View',
+    event("index_page_view", {
+      category: "Page View",
+      label: "Index Page View",
     });
     const userLocalData =
-      typeof window !== 'undefined'
-        ? window.localStorage.getItem('formData')
+      typeof window !== "undefined"
+        ? window.localStorage.getItem("formData")
         : null;
     setUserLocalData(userLocalData);
     fetchCountry();
@@ -176,15 +176,15 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
 
   const { push } = useRouter();
 
-  const { t } = useTranslation('index');
+  const { t, i18n } = useTranslation("index");
 
   // set locale based on user's browser language
   useLocale(country);
 
-  const makePlanButton = userLocalData ? t('Continue') : t('Make Plan');
+  const makePlanButton = userLocalData ? t("Continue") : t("Make Plan");
   const makeBusinessPlanButton = userLocalData
-    ? t('Continue')
-    : t('Make Business Plan');
+    ? t("Continue")
+    : t("Make Business Plan");
 
   return (
     <>
@@ -192,34 +192,34 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
       <XPixel id={xPixelId} />
       <Head>
         <meta charSet="utf-8" />
-        <title>{t('AI Business Plan Generator | Be Done In 15 Minutes')}</title>
+        <title>{t("AI Business Plan Generator | Be Done In 15 Minutes")}</title>
         <meta
           content={t(
-            '15 Minutes Needed | 24/7 Support | Professional Business Plan | Presentation-Ready. Make a Business Plan In Minutes With 15minuteplan.ai Using AI',
+            "15 Minutes Needed | 24/7 Support | Professional Business Plan | Presentation-Ready. Make a Business Plan In Minutes With 15minuteplan.ai Using AI"
           )}
           name="description"
         />
         <meta
           content={t(
-            'Get Started - 15minuteplan.ai - AI business plan generator',
+            "Get Started - 15minuteplan.ai - AI business plan generator"
           )}
           property="og:title"
         />
         <meta
           content={t(
-            '15 Minutes Needed | 24/7 Support | Professional Business Plan | Presentation-Ready. Make a Business Plan In Minutes With 15minuteplan.ai Using AI',
+            "15 Minutes Needed | 24/7 Support | Professional Business Plan | Presentation-Ready. Make a Business Plan In Minutes With 15minuteplan.ai Using AI"
           )}
           property="og:description"
         />
         <meta
           content={t(
-            'Get Started - 15minuteplan.ai - AI business plan generator',
+            "Get Started - 15minuteplan.ai - AI business plan generator"
           )}
           property="twitter:title"
         />
         <meta
           content={t(
-            '15 Minutes Needed | 24/7 Support | Professional Business Plan | Presentation-Ready. Make a Business Plan In Minutes With 15minuteplan.ai Using AI',
+            "15 Minutes Needed | 24/7 Support | Professional Business Plan | Presentation-Ready. Make a Business Plan In Minutes With 15minuteplan.ai Using AI"
           )}
           property="twitter:description"
         />
@@ -249,9 +249,10 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                 href="/"
                 aria-current="page"
                 className="brand"
+                lang={i18n.language}
                 onClick={() => {
                   trackEvent({
-                    event_name: 'home_button',
+                    event_name: "home_button",
                   });
                 }}
               >
@@ -272,7 +273,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                 className="nav-button w-button"
                 onClick={() => {
                   trackEvent({
-                    event_name: 'landing_page_top_make_plan_button',
+                    event_name: "landing_page_top_make_plan_button",
                   });
                 }}
               >
@@ -296,7 +297,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
 
                   <p className="text-xl">
                     {t(
-                      'Fill out simple forms, select language, and get a business plan in under 15 minutes. Try It Out!',
+                      "Fill out simple forms, select language, and get a business plan in under 15 minutes. Try It Out!"
                     )}
                   </p>
 
@@ -307,9 +308,9 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         className="button"
                         onClick={() => {
                           const time = performance.now();
-                          console.log('index', time);
+                          console.log("index", time);
                           trackEvent({
-                            event_name: 'landing_page_center_make_plan_button',
+                            event_name: "landing_page_center_make_plan_button",
                           });
                         }}
                       >
@@ -319,15 +320,15 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                     <br />
                     <div className="flex items-center justify-between mb-8">
                       <div className="w-1/2 border-b border-gray-300"></div>
-                      <div className="text-gray-600 px-4">{t('or')}</div>
+                      <div className="text-gray-600 px-4">{t("or")}</div>
                       <div className="w-1/2 border-b border-gray-300"></div>
                     </div>
                     <Link
-                      href={{ pathname: '/login' }}
+                      href={{ pathname: "/login" }}
                       className="transparent-button w-button"
                       onClick={() => {
                         trackEvent({
-                          event_name: 'landing_page_top_login_button',
+                          event_name: "landing_page_top_login_button",
                         });
                       }}
                     >
@@ -361,7 +362,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
             <div className="section wf-section">
               <div className="content">
                 <div className="block-heading">
-                  <h2 className=" heading">{t('Who is this for?')}</h2>
+                  <h2 className=" heading">{t("Who is this for?")}</h2>
                 </div>
                 <div className="w-layout-grid grid-3-columns">
                   <FadeInFromBottom>
@@ -376,11 +377,11 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         />
                       </div>
                       <h6 className="heading-sequence">
-                        {t('Entrepreneurs looking for investor funding')}
+                        {t("Entrepreneurs looking for investor funding")}
                       </h6>
                       <p>
                         {t(
-                          'Our AI business plan generator helps entrepreneurs in creating professional business plans designed to impress potential investors and secure funding',
+                          "Our AI business plan generator helps entrepreneurs in creating professional business plans designed to impress potential investors and secure funding"
                         )}
                       </p>
                     </div>
@@ -399,12 +400,12 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                       </div>
                       <h6 className="heading-sequence">
                         {t(
-                          'Business owners and entrepreneurs looking for a bank loan',
+                          "Business owners and entrepreneurs looking for a bank loan"
                         )}
                       </h6>
                       <p>
                         {t(
-                          "Our AI business plan generator is SBA-approved and follows to most banks' business plan template.",
+                          "Our AI business plan generator is SBA-approved and follows to most banks' business plan template."
                         )}
                       </p>
                     </div>
@@ -422,11 +423,11 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         />
                       </div>
                       <h6 className="heading-sequence">
-                        {t('For anyone looking to make a business plan')}
+                        {t("For anyone looking to make a business plan")}
                       </h6>
                       <p>
                         {t(
-                          "Whether you want an AI generated business plan for self-learning, as a reference for a project, or for submission to a non-financial institution, we've got you covered.",
+                          "Whether you want an AI generated business plan for self-learning, as a reference for a project, or for submission to a non-financial institution, we've got you covered."
                         )}
                       </p>
                     </div>
@@ -439,20 +440,20 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
               <div className="content">
                 <div className="block-heading">
                   <h2 className=" heading">
-                    {t('What customers say about us')}
+                    {t("What customers say about us")}
                   </h2>
                   <p className="text-xl">
-                    {t('Our ultimate goal is to make a product that')}{' '}
-                    <strong>{t('you')}</strong>{' '}
+                    {t("Our ultimate goal is to make a product that")}{" "}
+                    <strong>{t("you")}</strong>{" "}
                     {t(
-                      'love, to do that we need feedback. So we try to talk to as many customers as we can',
+                      "love, to do that we need feedback. So we try to talk to as many customers as we can"
                     )}
                   </p>
                 </div>
                 <div className="w-layout-grid grid-3-columns">
                   <div className="sequence shadow-on-hover">
                     <p className="text-2xl">
-                      <strong>{t('Zede H.')}</strong>
+                      <strong>{t("Zede H.")}</strong>
                     </p>
                     <Image
                       src="/img/zede1.png"
@@ -473,7 +474,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
 
                   <div className="sequence shadow-on-hover">
                     <p className="text-2xl">
-                      <strong>{t('Jason C.')}</strong>
+                      <strong>{t("Jason C.")}</strong>
                     </p>
                     <Image
                       src="/img/jason2.png"
@@ -494,7 +495,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
 
                   <div className="sequence shadow-on-hover">
                     <p className="text-2xl">
-                      <strong>{t('Parker A.')}</strong>
+                      <strong>{t("Parker A.")}</strong>
                     </p>
                     <Image
                       src="/img/parker1.png"
@@ -548,7 +549,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                           alt="4.5 star rating"
                         />
                         <div className="text-lg text-center sm:text-left sm:ml-4">
-                          TrustScore <strong>4.7</strong> | <strong>74</strong>{' '}
+                          TrustScore <strong>4.7</strong> | <strong>74</strong>{" "}
                           Reviews
                         </div>
                       </div>
@@ -563,7 +564,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
               <div className="content">
                 <div className="block-heading">
                   <h2 className=" heading">
-                    {t('Mentioned In..')}{' '}
+                    {t("Mentioned In..")}{" "}
                     {/*******add in locale json********* */}
                   </h2>
                 </div>
@@ -576,7 +577,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                     rel="noopener noreferrer"
                   >
                     <Image
-                      src={'/img/AsMentionLogos/AP_logo_rmb.png'}
+                      src={"/img/AsMentionLogos/AP_logo_rmb.png"}
                       alt="AP_logo"
                       width={80}
                       height={100}
@@ -589,7 +590,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                     rel="noopener noreferrer"
                   >
                     <Image
-                      src={'/img/AsMentionLogos/yahoo_logo_rmb.png'}
+                      src={"/img/AsMentionLogos/yahoo_logo_rmb.png"}
                       alt="yahoo_logo"
                       width={150}
                       height={100}
@@ -602,7 +603,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                     rel="noopener noreferrer"
                   >
                     <Image
-                      src={'/img/AsMentionLogos/marketWatch_logo_rmb.svg'}
+                      src={"/img/AsMentionLogos/marketWatch_logo_rmb.svg"}
                       alt="marketWatch_logo"
                       width={200}
                       height={100}
@@ -616,7 +617,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                   >
                     <Image
                       src={
-                        '/img/AsMentionLogos/Bloomberg_Terminal_logo_rmb.png'
+                        "/img/AsMentionLogos/Bloomberg_Terminal_logo_rmb.png"
                       }
                       alt="Bloomberg_Terminal_logo"
                       width={150}
@@ -630,7 +631,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                     rel="noopener noreferrer"
                   >
                     <Image
-                      src={'/img/AsMentionLogos/Medium_logo_rmb.png'}
+                      src={"/img/AsMentionLogos/Medium_logo_rmb.png"}
                       alt="Medium_logo"
                       width={200}
                       height={100}
@@ -643,7 +644,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                     rel="noopener noreferrer"
                   >
                     <Image
-                      src={'/img/AsMentionLogos/seeking_alpha_logo_rmb.png'}
+                      src={"/img/AsMentionLogos/seeking_alpha_logo_rmb.png"}
                       alt="seeking_alpha_logo"
                       width={200}
                       height={100}
@@ -656,7 +657,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                     rel="noopener noreferrer"
                   >
                     <Image
-                      src={'/img/AsMentionLogos/finanzen_logo_rmb.png'}
+                      src={"/img/AsMentionLogos/finanzen_logo_rmb.png"}
                       alt="finanzen_logo"
                       width={200}
                       height={100}
@@ -669,7 +670,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                     rel="noopener noreferrer"
                   >
                     <Image
-                      src={'/img/AsMentionLogos/benzinga_logo_rmb.png'}
+                      src={"/img/AsMentionLogos/benzinga_logo_rmb.png"}
                       alt="benzinga_logo"
                       width={200}
                       height={100}
@@ -682,7 +683,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                     rel="noopener noreferrer"
                   >
                     <Image
-                      src={'/img/AsMentionLogos/10web_logo_rmb.png'}
+                      src={"/img/AsMentionLogos/10web_logo_rmb.png"}
                       alt="10web_logo"
                       width={200}
                       height={100}
@@ -696,12 +697,12 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
               <div className="content">
                 <div className="block-heading">
                   <h2 className=" heading">
-                    {t('Language Support')}{' '}
+                    {t("Language Support")}{" "}
                     {/*******add in locale json********* */}
                   </h2>
                   <p>
                     {t(
-                      'At the end of the plan creation process you can choose to generate a plan in multiple languages including..',
+                      "At the end of the plan creation process you can choose to generate a plan in multiple languages including.."
                     )}
                   </p>
                 </div>
@@ -712,7 +713,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         <US title="US" className="w-20 h-20" />
                       </div>
                       <div className="w-1/2 flex justify-start items-center">
-                        {t('English (US & UK)')}
+                        {t("English (US & UK)")}
                       </div>
                     </div>
                   </FadeInFromBottom>
@@ -722,7 +723,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         <DE title="DE" className="w-20 h-20" />
                       </div>
                       <div className="w-1/2 flex justify-start items-center">
-                        {t('German')}
+                        {t("German")}
                       </div>
                     </div>
                   </FadeInFromBottom>
@@ -732,7 +733,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         <FR title="FR" className="w-20 h-20" />
                       </div>
                       <div className="w-1/2 flex justify-start items-center">
-                        {t('French')}
+                        {t("French")}
                       </div>
                     </div>
                   </FadeInFromBottom>
@@ -742,7 +743,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         <ES title="ES" className="w-20 h-20" />
                       </div>
                       <div className="w-1/2 flex justify-start items-center">
-                        {t('Spanish')}
+                        {t("Spanish")}
                       </div>
                     </div>
                   </FadeInFromBottom>
@@ -752,7 +753,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         <IT title="IT" className="w-20 h-20" />
                       </div>
                       <div className="w-1/2 flex justify-start items-center">
-                        {t('Italian')}
+                        {t("Italian")}
                       </div>
                     </div>
                   </FadeInFromBottom>
@@ -762,7 +763,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         <NL title="NL" className="w-20 h-20" />
                       </div>
                       <div className="w-1/2 flex justify-start items-center">
-                        {t('Dutch')}
+                        {t("Dutch")}
                       </div>
                     </div>
                   </FadeInFromBottom>
@@ -772,7 +773,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         <JP title="JP" className="w-20 h-20 border" />
                       </div>
                       <div className="w-1/2 flex justify-start items-center">
-                        {t('Japanese')}
+                        {t("Japanese")}
                       </div>
                     </div>
                   </FadeInFromBottom>
@@ -782,7 +783,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         <SA title="SA" className="w-20 h-20" />
                       </div>
                       <div className="w-1/2 flex justify-start items-center">
-                        {t('Arabic')}
+                        {t("Arabic")}
                       </div>
                     </div>
                   </FadeInFromBottom>
@@ -792,7 +793,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         <SE title="SE" className="w-20 h-20" />
                       </div>
                       <div className="w-1/2 flex justify-start items-center">
-                        {t('Swedish')}
+                        {t("Swedish")}
                       </div>
                     </div>
                   </FadeInFromBottom>
@@ -802,7 +803,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         <FI title="FI" className="w-20 h-20" />
                       </div>
                       <div className="w-1/2 flex justify-start items-center">
-                        {t('Finnish')}
+                        {t("Finnish")}
                       </div>
                     </div>
                   </FadeInFromBottom>
@@ -812,7 +813,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         <DK title="DK" className="w-20 h-20" />
                       </div>
                       <div className="w-1/2 flex justify-start items-center">
-                        {t('Danish')}
+                        {t("Danish")}
                       </div>
                     </div>
                   </FadeInFromBottom>
@@ -822,7 +823,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         <NO title="NO" className="w-20 h-20" />
                       </div>
                       <div className="w-1/2 flex justify-start items-center">
-                        {t('Norwegian')}
+                        {t("Norwegian")}
                       </div>
                     </div>
                   </FadeInFromBottom>
@@ -833,10 +834,10 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
             <div className="section wf-section">
               <div className="content">
                 <div className="block-heading">
-                  <h2 className=" heading">{t('How it works?')}</h2>
+                  <h2 className=" heading">{t("How it works?")}</h2>
                   <p className="text-xl">
                     {t(
-                      'Our AI business plan generator guides you through a few questions, once done a business plan example will be generated',
+                      "Our AI business plan generator guides you through a few questions, once done a business plan example will be generated"
                     )}
                   </p>
                 </div>
@@ -856,11 +857,11 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         </div>
                       </div>
                       <h6 className="heading-sequence">
-                        {t('Enter General Business Information')}
+                        {t("Enter General Business Information")}
                       </h6>
                       <p>
                         {t(
-                          'Only basic business information is required e.g. business name, number of employees, and a little financial data',
+                          "Only basic business information is required e.g. business name, number of employees, and a little financial data"
                         )}
                       </p>
                     </div>
@@ -880,10 +881,10 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                           <div className="number-sequence">2</div>
                         </div>
                       </div>
-                      <h6 className="heading-sequence">{t('Edit and Save')}</h6>
+                      <h6 className="heading-sequence">{t("Edit and Save")}</h6>
                       <p>
                         {t(
-                          'Once your AI plan is generated you can easily edit the plan with our "Talk To Plan" feature. You can input what you want changed and AI will take care of the rest',
+                          'Once your AI plan is generated you can easily edit the plan with our "Talk To Plan" feature. You can input what you want changed and AI will take care of the rest'
                         )}
                       </p>
                     </div>
@@ -895,7 +896,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
             <div className="section wf-section">
               <div className="content">
                 <div className="block-heading">
-                  <h2 className=" heading">{t('Key Benefits')}</h2>
+                  <h2 className=" heading">{t("Key Benefits")}</h2>
                 </div>
                 <div className="w-layout-grid grid-2-columns">
                   <FadeInFromBottom>
@@ -910,16 +911,16 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                         />
                         <h5 className="heading-feature">
                           {t(
-                            'Our AI draws business knowledge from the entire internet',
+                            "Our AI draws business knowledge from the entire internet"
                           )}
                         </h5>
                       </div>
                       <p>
                         {t(
-                          'GPT-3.5 and GPT-4 are our cutting-edge language models, trained on vast quantities of internet, book-based resources, business plan examples, and has demonstrated its knowledge by',
-                        )}{' '}
-                        <strong>{t('passing the Wharton MBA exam')}</strong>{' '}
-                        {t('among many others')}
+                          "GPT-3.5 and GPT-4 are our cutting-edge language models, trained on vast quantities of internet, book-based resources, business plan examples, and has demonstrated its knowledge by"
+                        )}{" "}
+                        <strong>{t("passing the Wharton MBA exam")}</strong>{" "}
+                        {t("among many others")}
                       </p>
                       <Image
                         src="/img/benefit1V2.png"
@@ -942,12 +943,12 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                           className="icon-feature"
                         />
                         <h5 className="heading-feature">
-                          {t('The whole process can literally take 15 minutes')}
+                          {t("The whole process can literally take 15 minutes")}
                         </h5>
                       </div>
                       <p>
                         {t(
-                          'Gone are the days of laboring over business plans for weeks on end, our AI business plan generator can create a comprehensive plan in just 15 minutes.',
+                          "Gone are the days of laboring over business plans for weeks on end, our AI business plan generator can create a comprehensive plan in just 15 minutes."
                         )}
                       </p>
                       <Image
@@ -968,12 +969,12 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
               <div className="block-right">
                 <h2 className="heading">
                   {t(
-                    "Our AI generated business plan template won't let you down",
+                    "Our AI generated business plan template won't let you down"
                   )}
                 </h2>
                 <p className="paragraph-large">
                   {t(
-                    'create a professional business plan in just 15 minutes with our AI business plan generator',
+                    "create a professional business plan in just 15 minutes with our AI business plan generator"
                   )}
                 </p>
                 <div className="flex flex-col">
@@ -985,7 +986,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                     className="button w-button"
                     onClick={() => {
                       trackEvent({
-                        event_name: 'landing_page_bottom_make_plan_button',
+                        event_name: "landing_page_bottom_make_plan_button",
                       });
                     }}
                   >
@@ -994,7 +995,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                   <br />
                   <div className="flex items-center justify-between mb-8">
                     <div className="w-1/2 border-b border-gray-300"></div>
-                    <div className="text-gray-600 px-4">{t('or')}</div>
+                    <div className="text-gray-600 px-4">{t("or")}</div>
                     <div className="w-1/2 border-b border-gray-300"></div>
                   </div>
                   <Link
@@ -1002,7 +1003,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                     className="transparent-button w-button"
                     onClick={() => {
                       trackEvent({
-                        event_name: 'landing_page_center_login_button',
+                        event_name: "landing_page_center_login_button",
                       });
                     }}
                   >
@@ -1054,23 +1055,23 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                       className="icon-link-footer w-inline-block"
                     >
                       <div className="text-footer">
-                        {t('Contact us at: help@15minuteplan.ai')}
+                        {t("Contact us at: help@15minuteplan.ai")}
                       </div>
                     </a>
                   </div>
                   <Link href="/refundPolicy" className="underline text-center">
-                    {t('Refund Policy')}
+                    {t("Refund Policy")}
                   </Link>
                   <Link
                     href="/privacy-policy"
                     className="underline text-center"
                   >
-                    {t('privacy_policy_link')}
+                    {t("privacy_policy_link")}
                   </Link>
                 </div>
                 <div className="footer-down">
                   <div className="text-footer-down">
-                    {t('©2023 15minuteplan.ai All rights reserved.')}
+                    {t("©2023 15minuteplan.ai All rights reserved.")}
                   </div>
                 </div>
               </div>
@@ -1088,7 +1089,7 @@ export async function getServerSideProps({ locale }) {
   const secretKey = process.env.API_KEY;
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['index'])),
+      ...(await serverSideTranslations(locale, ["index"])),
       fbPixelId,
       xPixelId,
       secretKey,
