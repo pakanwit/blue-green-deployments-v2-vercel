@@ -11,7 +11,7 @@ interface CanaryConfig {
 const PUBLIC_FILE = /\.(.*)$/;
 
 const allowedOrigins = process.env.ALLOWED_ORIGIN.split(",") || [
-  "https://www.15minuteplan.ai",
+  "https://15minuteplan-ai.kanoonth.com",
 ];
 
 export async function middleware(req: NextRequest) {
@@ -34,34 +34,37 @@ export async function middleware(req: NextRequest) {
   // If pathname is /api/..., set allowed origin.
   const origin = req.headers.get("origin") || "";
   const res = NextResponse.next();
-  if (pathname.startsWith("/api/")) {
-    if (allowedOrigins.includes(origin)) {
-      res.headers.set("Access-Control-Allow-Origin", origin);
-    }
-    res.headers.set("Access-Control-Allow-Credentials", "true");
-    res.headers.set(
-      "Access-Control-Allow-Methods",
-      "GET, DELETE, PATCH, POST, PUT, OPTIONS"
-    );
-    res.headers.set(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization, Api-Key"
-    );
-    // Handle preflight requests
-    if (req.method === "OPTIONS") {
-      return new NextResponse(null, { status: 204, headers: res.headers });
-    }
-    return res;
-  }
+  // if (pathname.startsWith("/api/")) {
+  //   if (allowedOrigins.includes(origin)) {
+  //     res.headers.set("Access-Control-Allow-Origin", origin);
+  //   }
+  //   res.headers.set("Access-Control-Allow-Credentials", "true");
+  //   res.headers.set(
+  //     "Access-Control-Allow-Methods",
+  //     "GET, DELETE, PATCH, POST, PUT, OPTIONS"
+  //   );
+  //   res.headers.set(
+  //     "Access-Control-Allow-Headers",
+  //     "Content-Type, Authorization, Api-Key"
+  //   );
+  //   // Handle preflight requests
+  //   if (req.method === "OPTIONS") {
+  //     console.log("OPTIONS");
+  //     return new NextResponse(null, { status: 204, headers: res.headers });
+  //   }
+  //   return res;
+  // }
 
   if (
     pathname.startsWith("/_next") || // exclude Next.js internals
     pathname.startsWith("/static") || // exclude static files
     pathname.includes("/favicon") ||
+    pathname.includes("/api/") ||
     PUBLIC_FILE.test(pathname) // exclude all files in the public folder
   ) {
     return NextResponse.next();
   }
+  console.log("allowedOrigins", allowedOrigins);
 
   if (
     req.cookies.has("experiment_id") &&
