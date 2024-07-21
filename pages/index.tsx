@@ -514,49 +514,51 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
                     />
                   </div>
                 </div>
-                <div className="w-full flex flex-col items-center justify-center gap-4 mt-8 mb-12">
-                  <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-                    {reviews?.map((review) => (
-                      <div key={review.id} className="w-full">
-                        <TrustBox {...review} />
-                      </div>
-                    ))}
-                  </div>
+                {reviews.length > 0 && (
+                  <div className="w-full flex flex-col items-center justify-center gap-4 mt-8 mb-12">
+                    <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+                      {reviews?.map((review) => (
+                        <div key={review.id} className="w-full">
+                          <TrustBox {...review} />
+                        </div>
+                      ))}
+                    </div>
 
-                  <Link
-                    href="https://www.trustpilot.com/review/15minuteplan.ai"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block hover:opacity-80 transition-opacity no-underline text-inherit"
-                  >
-                    <div className="flex flex-col items-center gap-2 text-black mt-3">
-                      <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-2">
-                        <div className="flex flex-row items-center gap-2 mr-4">
-                          <span className="text-lg">Reviews From</span>
-                          <div className="flex items-center -mt-2">
-                            <Image
-                              src="https://plannit.ai/assets/trustpilot.svg"
-                              width={120}
-                              height={30}
-                              alt="Trustpilot"
-                            />
+                    <Link
+                      href="https://www.trustpilot.com/review/15minuteplan.ai"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block hover:opacity-80 transition-opacity no-underline text-inherit"
+                    >
+                      <div className="flex flex-col items-center gap-2 text-black mt-3">
+                        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-2">
+                          <div className="flex flex-row items-center gap-2 mr-4">
+                            <span className="text-lg">Reviews From</span>
+                            <div className="flex items-center -mt-2">
+                              <Image
+                                src="https://plannit.ai/assets/trustpilot.svg"
+                                width={120}
+                                height={30}
+                                alt="Trustpilot"
+                              />
+                            </div>
+                          </div>
+                          <Image
+                            src="/img/TrustStar4-5.png"
+                            width={160}
+                            height={24}
+                            alt="4.5 star rating"
+                          />
+                          <div className="text-lg text-center sm:text-left sm:ml-4">
+                            TrustScore <strong>4.7</strong> |{" "}
+                            <strong>74</strong> Reviews
                           </div>
                         </div>
-                        <Image
-                          src="/img/TrustStar4-5.png"
-                          width={160}
-                          height={24}
-                          alt="4.5 star rating"
-                        />
-                        <div className="text-lg text-center sm:text-left sm:ml-4">
-                          TrustScore <strong>4.7</strong> | <strong>74</strong>{" "}
-                          Reviews
-                        </div>
+                        <span className="text-xl mt-2">Excellent</span>
                       </div>
-                      <span className="text-xl mt-2">Excellent</span>
-                    </div>
-                  </Link>
-                </div>
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
 
