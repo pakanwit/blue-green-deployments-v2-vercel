@@ -34,26 +34,27 @@ export async function middleware(req: NextRequest) {
   // If pathname is /api/..., set allowed origin.
   const origin = req.headers.get("origin") || "";
   const res = NextResponse.next();
-  // if (pathname.startsWith("/api/")) {
-  //   if (allowedOrigins.includes(origin)) {
-  //     res.headers.set("Access-Control-Allow-Origin", origin);
-  //   }
-  //   res.headers.set("Access-Control-Allow-Credentials", "true");
-  //   res.headers.set(
-  //     "Access-Control-Allow-Methods",
-  //     "GET, DELETE, PATCH, POST, PUT, OPTIONS"
-  //   );
-  //   res.headers.set(
-  //     "Access-Control-Allow-Headers",
-  //     "Content-Type, Authorization, Api-Key"
-  //   );
-  //   // Handle preflight requests
-  //   if (req.method === "OPTIONS") {
-  //     console.log("OPTIONS");
-  //     return new NextResponse(null, { status: 204, headers: res.headers });
-  //   }
-  //   return res;
-  // }
+  if (pathname.startsWith("/api/")) {
+    console.log("pathname API >>>>", pathname);
+    if (allowedOrigins.includes(origin)) {
+      res.headers.set("Access-Control-Allow-Origin", origin);
+    }
+    res.headers.set("Access-Control-Allow-Credentials", "true");
+    res.headers.set(
+      "Access-Control-Allow-Methods",
+      "GET, DELETE, PATCH, POST, PUT, OPTIONS"
+    );
+    res.headers.set(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization, Api-Key"
+    );
+    // Handle preflight requests
+    if (req.method === "OPTIONS") {
+      console.log("OPTIONS =====");
+      return new NextResponse(null, { status: 204, headers: res.headers });
+    }
+    return res;
+  }
 
   if (
     pathname.startsWith("/_next") || // exclude Next.js internals
