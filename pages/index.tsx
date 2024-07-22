@@ -142,6 +142,8 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
   };
 
   const fetchReviews = async () => {
+    console.log("Index secretKey", secretKey);
+
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/trustpilot/reviews`,
       {
@@ -1089,6 +1091,7 @@ export async function getServerSideProps({ locale }) {
   const fbPixelId = process.env.FB_PIXEL_ID;
   const xPixelId = process.env.X_PIXEL_ID;
   const secretKey = process.env.API_KEY;
+  console.log("getServerSideProps", secretKey, process.env.API_KEY);
   return {
     props: {
       ...(await serverSideTranslations(locale, ["index"])),
