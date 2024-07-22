@@ -54,19 +54,19 @@ export async function middleware(req: NextRequest) {
       return new NextResponse(null, { status: 204, headers: res.headers });
     }
 
-    if (pathname.startsWith("/api/auth")) {
-      console.log(
-        "IF ==== NEXT_PUBLIC_BASE_URL",
-        process.env.NEXT_PUBLIC_BASE_URL,
-        process.env.NEXTAUTH_URL
-      );
-      const baseUrl =
-        process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL;
-      console.log("IF baseUrl", baseUrl);
-      return NextResponse.rewrite(
-        new URL(req.url.replace(req.headers.get("host"), new URL(baseUrl).host))
-      );
-    }
+    // if (pathname.startsWith("/api/auth")) {
+    //   console.log(
+    //     "IF ==== NEXT_PUBLIC_BASE_URL",
+    //     process.env.NEXT_PUBLIC_BASE_URL,
+    //     process.env.NEXTAUTH_URL
+    //   );
+    //   const baseUrl =
+    //     process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL;
+    //   console.log("IF baseUrl", baseUrl);
+    //   return NextResponse.rewrite(
+    //     new URL(req.url.replace(req.headers.get("host"), new URL(baseUrl).host))
+    //   );
+    // }
     return res;
   }
 
