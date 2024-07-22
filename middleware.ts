@@ -53,6 +53,20 @@ export async function middleware(req: NextRequest) {
       console.log("OPTIONS =====");
       return new NextResponse(null, { status: 204, headers: res.headers });
     }
+
+    if (pathname.startsWith("/api/auth")) {
+      console.log(
+        "IF ==== NEXT_PUBLIC_BASE_URL",
+        process.env.NEXT_PUBLIC_BASE_URL,
+        process.env.NEXTAUTH_URL
+      );
+      const baseUrl =
+        process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL;
+      console.log("IF baseUrl", baseUrl);
+      return NextResponse.rewrite(
+        new URL(req.url.replace(req.headers.get("host"), new URL(baseUrl).host))
+      );
+    }
     return res;
   }
 
@@ -60,12 +74,10 @@ export async function middleware(req: NextRequest) {
     pathname.startsWith("/_next") || // exclude Next.js internals
     pathname.startsWith("/static") || // exclude static files
     pathname.includes("/favicon") ||
-    pathname.includes("/api/") ||
     PUBLIC_FILE.test(pathname) // exclude all files in the public folder
   ) {
     return NextResponse.next();
   }
-  console.log("allowedOrigins", allowedOrigins);
 
   if (
     req.cookies.has("experiment_id") &&
