@@ -79,18 +79,6 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  cookies: {
-    sessionToken: {
-      name: `${useSecureCookies ? "__Secure-" : ""}next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        domain: "localhost",
-        secure: useSecureCookies,
-      },
-    },
-  },
   callbacks: {
     async signIn({ user, account }) {
       if (account.provider === "google") {
