@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import connectMongo from "../../../database/conn";
@@ -6,7 +7,7 @@ import { getRealUserModel } from "../../../model/Schema";
 import { compare } from "bcryptjs";
 const useSecureCookies = !!process.env.VERCEL_URL;
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
@@ -85,7 +86,7 @@ export default NextAuth({
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        domain: "15minuteplan-ai.kanoonth.com",
+        domain: "localhost",
         secure: useSecureCookies,
       },
     },
@@ -121,4 +122,6 @@ export default NextAuth({
       return true;
     },
   },
-});
+};
+
+export default NextAuth(authOptions);
