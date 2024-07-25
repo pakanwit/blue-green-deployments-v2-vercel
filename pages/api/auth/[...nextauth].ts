@@ -68,11 +68,17 @@ export const authOptions: NextAuthOptions = {
           );
         }
 
+        console.log(
+          "credentials.baseURL",
+          credentials.baseURL,
+          process.env.NEXTAUTH_URL
+        );
         return {
           id: result._id.toString(),
           email: result.email,
           name: result.firstName + " " + result.lastName,
           image: result.image,
+          baseURL: credentials.baseURL,
         };
       },
       credentials: undefined,

@@ -37,11 +37,14 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
       const data = await res.json();
       localStorage.setItem("userId", data._id);
     }
+    console.log(" process.env.NEXTAUTH_URL", process.env.NEXTAUTH_URL);
+
     const status = await signIn("credentials", {
       redirect: false,
       email: values.email,
       password: values.password,
       callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/userHomepage`,
+      baseURL: process.env.NEXTAUTH_URL,
     });
 
     console.log("status: ", status);
