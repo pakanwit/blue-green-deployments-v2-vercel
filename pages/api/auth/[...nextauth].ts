@@ -6,6 +6,7 @@ import connectMongo from "../../../database/conn";
 import { getRealUserModel } from "../../../model/Schema";
 import { compare } from "bcryptjs";
 const useSecureCookies = !!process.env.VERCEL_URL;
+console.log("useSecureCookies", useSecureCookies);
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -78,13 +79,25 @@ export const authOptions: NextAuthOptions = {
           email: result.email,
           name: result.firstName + " " + result.lastName,
           image: result.image,
-          baseURL: credentials.baseURL,
+          baseURL: "https://canary-15minuteplan-ai.kanoonth.com",
         };
       },
       credentials: undefined,
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  cookies: {
+    sessionToken: {
+      name: `${useSecureCookies ? "__Secure-" : ""}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: "15minuteplan-ai.kanoonth.com",
+        secure: useSecureCookies,
+      },
+    },
+  },
   callbacks: {
     async signIn({ user, account }) {
       if (account.provider === "google") {

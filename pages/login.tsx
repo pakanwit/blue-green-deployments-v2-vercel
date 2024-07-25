@@ -44,7 +44,6 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
       email: values.email,
       password: values.password,
       callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/userHomepage`,
-      baseURL: process.env.NEXTAUTH_URL,
     });
 
     console.log("status: ", status);
@@ -87,7 +86,7 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
       <Pixel id={fbPixelId} />
       <XPixel id={xPixelId} />
       <Head>
-        <title>{t("Login")} Canary</title>
+        <title>{t("Login")}</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
