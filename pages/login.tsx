@@ -1,21 +1,21 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useFormik } from 'formik';
-import { useState, useEffect } from 'react';
-import styles from '../styles/Wizard.module.css';
-import React from 'react';
-import { signIn, useSession } from 'next-auth/react';
-import router from 'next/router';
-import Router from 'next/router';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useRouter } from 'next/router';
-import useLocale from '../hooks/useLocale';
-import trackEvent from '../utils/trackEvent';
-import Pixel from '../components/Pixel';
-import { API_KEY_HEADER } from './api/constants';
-import XPixel from '../components/XPixel';
+import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
+import { useFormik } from "formik";
+import { useState, useEffect } from "react";
+import styles from "../styles/Wizard.module.css";
+import React from "react";
+import { signIn, useSession } from "next-auth/react";
+import router from "next/router";
+import Router from "next/router";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useRouter } from "next/router";
+import useLocale from "../hooks/useLocale";
+import trackEvent from "../utils/trackEvent";
+import Pixel from "../components/Pixel";
+import { API_KEY_HEADER } from "./api/constants";
+import XPixel from "../components/XPixel";
 
 export default function Login({ fbPixelId, secretKey, xPixelId }) {
   const [isError, setIsError] = useState(false);
@@ -32,22 +32,22 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
           headers: {
             [API_KEY_HEADER]: secretKey,
           },
-        },
+        }
       );
       const data = await res.json();
-      localStorage.setItem('userId', data._id);
+      localStorage.setItem("userId", data._id);
     }
-    const status = await signIn('credentials', {
+    const status = await signIn("credentials", {
       redirect: false,
       email: values.email,
       password: values.password,
       callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/userHomepage`,
     });
 
-    console.log('status: ', status);
+    console.log("status: ", status);
     if (status.ok) {
       await fetchUserData();
-      router.push('/userHomepage');
+      // router.push("/userHomepage");
     } else {
       setIsError(true);
     }
@@ -55,25 +55,26 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     // validate: registerFormValidate,
     onSubmit,
   });
 
   const { data: session } = useSession();
+  console.log("useSession: Login session", session);
 
   if (session) {
-    Router.push('/userHomepage');
+    Router.push("/userHomepage");
   }
 
-  const { t } = useTranslation('login');
+  const { t } = useTranslation("login");
 
   //set language
   const { push, asPath } = useRouter();
   const [country, setCountry] = useState(
-    typeof window !== 'undefined' ? localStorage.getItem('country') || '' : '',
+    typeof window !== "undefined" ? localStorage.getItem("country") || "" : ""
   );
 
   useLocale(country);
@@ -83,12 +84,12 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
       <Pixel id={fbPixelId} />
       <XPixel id={xPixelId} />
       <Head>
-        <title>{t('Login')}</title>
+        <title>{t("Login")} Canary</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
-        <meta name="description" content={t('Login Page')} />
+        <meta name="description" content={t("Login Page")} />
       </Head>
 
       <main>
@@ -107,7 +108,7 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
                     width={270}
                     height={40}
                     sizes="(max-width: 479px) 220px, (max-width: 767px) 250px, 270px"
-                    alt={t('logo')}
+                    alt={t("logo")}
                   />
                 </Link>
               </div>
@@ -117,7 +118,7 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
                   aria-current="page"
                   className="nav-button w-button w--current"
                 >
-                  {t('Home')}
+                  {t("Home")}
                 </Link>
               </div>
             </div>
@@ -128,7 +129,7 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
             <div className="section-full wf-section">
               <div className="get-started2">
                 <div className="form-bg">
-                  <h4 className="">{t('Login to your account')}</h4>
+                  <h4 className="">{t("Login to your account")}</h4>
                   <div className="form-block-started w-form">
                     <form
                       className="form-started"
@@ -136,21 +137,21 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
                     >
                       <div className="mb-6">
                         <label htmlFor="email" className={styles.label}>
-                          {t('Email')}{' '}
-                          <span className="text-sm">{t('(required)')}</span>
+                          {t("Email")}{" "}
+                          <span className="text-sm">{t("(required)")}</span>
                         </label>
                         <input
-                          {...formik.getFieldProps('email')}
+                          {...formik.getFieldProps("email")}
                           onChange={(e) => {
                             formik.setFieldValue(
-                              'email',
-                              e.target.value.toLowerCase(),
+                              "email",
+                              e.target.value.toLowerCase()
                             );
                           }}
                           type="email"
                           name="email"
                           id="email"
-                          className={`${styles.text_input} ${formik.errors.email && formik.touched.email ? 'border-rose-400' : 'border-gray-300'} `}
+                          className={`${styles.text_input} ${formik.errors.email && formik.touched.email ? "border-rose-400" : "border-gray-300"} `}
                           placeholder=""
                         />
                         {formik.errors.email && formik.touched.email ? (
@@ -164,15 +165,15 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
 
                       <div className="mb-6">
                         <label htmlFor="password" className={styles.label}>
-                          {t('Password')}{' '}
-                          <span className="text-sm">{t('(required)')}</span>
+                          {t("Password")}{" "}
+                          <span className="text-sm">{t("(required)")}</span>
                         </label>
                         <input
-                          {...formik.getFieldProps('password')}
+                          {...formik.getFieldProps("password")}
                           type="password"
                           name="password"
                           id="password"
-                          className={`${styles.text_input} ${formik.errors.password && formik.touched.password ? 'border-rose-400' : 'border-gray-300'}`}
+                          className={`${styles.text_input} ${formik.errors.password && formik.touched.password ? "border-rose-400" : "border-gray-300"}`}
                           placeholder=""
                         />
                         {formik.errors.password && formik.touched.password ? (
@@ -186,7 +187,7 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
 
                       {isError ? (
                         <div className="text-rose-400 mb-4">
-                          {t('Invalid email or password')}
+                          {t("Invalid email or password")}
                         </div>
                       ) : (
                         <></>
@@ -196,17 +197,17 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
                           href="/passwordReset/RequestPasswordReset"
                           onClick={() => {
                             trackEvent({
-                              event_name: 'forget_password_button',
+                              event_name: "forget_password_button",
                             });
                           }}
                         >
-                          {t('Forgot Password?')}
+                          {t("Forgot Password?")}
                         </Link>
                       </div>
 
                       <div className="flex gap-5 justify-center mt-5">
                         <button type="submit" className="button-2 w-button">
-                          {t('Sign in')}
+                          {t("Sign in")}
                         </button>
                       </div>
                     </form>
@@ -227,7 +228,7 @@ export async function getStaticProps({ locale }) {
   const xPixelId = process.env.X_PIXEL_ID;
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['login', 'index'])),
+      ...(await serverSideTranslations(locale, ["login", "index"])),
       fbPixelId,
       secretKey,
       xPixelId,
