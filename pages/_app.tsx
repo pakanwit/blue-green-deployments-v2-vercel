@@ -77,6 +77,8 @@ function App({ Component, pageProps }) {
     // ensureVariantIDIsSet(); // Hide chatbot for now
   }, []);
 
+  console.log("_app CANARY", process.env.NEXT_PUBLIC_BASE_URL);
+
   return (
     <>
       <Head>
