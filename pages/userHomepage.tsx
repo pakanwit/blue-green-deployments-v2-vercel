@@ -31,9 +31,12 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
   const { isCanary } = useCookies();
 
   console.log("session: UserHomepage CANARY", session, isCanary);
+  console.log("isCanary", isCanary);
   const endpoint = isCanary
-    ? `/api/canary/getAllUserDataCanary`
+    ? `/api/canary/getAllUserData`
     : `/api/getAllUserData`;
+
+  console.log("endpoint", endpoint);
   //create signout function
   const handleSignout = async () => {
     trackEvent({
