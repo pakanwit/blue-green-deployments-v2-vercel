@@ -32,6 +32,7 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
           headers: {
             [API_KEY_HEADER]: secretKey,
           },
+          credentials: "include",
         }
       );
       const data = await res.json();
