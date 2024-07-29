@@ -9,7 +9,7 @@ export default async function handler(request, response) {
 
     if (req.method === "GET") {
       try {
-        const session = await getServerSession(req, res, authOptions);
+        const session = await getServerSession(req, res, authOptions(req, res));
         console.log("getAllUserData, Session", session);
         if (!session) {
           return res.status(401).json({ message: "Not authenticated" });
