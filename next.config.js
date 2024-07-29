@@ -6,6 +6,7 @@ const nextConfig = {
   assetPrefix: process.env.BASE_URL
     ? `https://${process.env.BASE_URL}`
     : undefined,
+  basePath: process.env.BASE_PATH ? `${process.env.BASE_PATH}` : undefined,
   reactStrictMode: true,
   eslint: {
     // Warning: This allows production builds to successfully complete even if
