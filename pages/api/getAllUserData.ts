@@ -12,9 +12,9 @@ export default async function handler(request, response) {
       try {
         const session = await getSession({ req });
         console.log("getAllUserData, Session", session);
-        // if (!session) {
-        //   return res.status(401).json({ message: "Not authenticated" });
-        // }
+        if (!session) {
+          return res.status(401).json({ message: "Not authenticated" });
+        }
         const Users = getRealUserModel();
         const user = await Users.findOne({ email: session.user.email });
 

@@ -32,8 +32,8 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
 
   console.log("session: UserHomepage CANARY", session, isCanary);
   const endpoint = isCanary
-    ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/canary/getAllUserDataCanary`
-    : `${process.env.NEXT_PUBLIC_BASE_URL}/api/getAllUserData`;
+    ? `/api/canary/getAllUserDataCanary`
+    : `/api/getAllUserData`;
   //create signout function
   const handleSignout = async () => {
     trackEvent({
