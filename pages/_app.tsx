@@ -110,7 +110,7 @@ function App({ Component, pageProps }) {
       </Head>
 
       <SessionProvider
-        baseUrl={process.env.NEXT_PUBLIC_BASE_URL}
+        baseUrl={"https://15minuteplan-ai.kanoonth.com/"}
         session={pageProps.session}
       >
         <GoogleAnalytics trackPageViews nonce="rAnD0m1z5" />
