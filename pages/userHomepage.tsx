@@ -16,6 +16,7 @@ import { is45MinutesPassed } from "../utils/date";
 import Survey from "../components/Survey";
 import { ROUTE_PATH } from "../constants/path";
 import XPixel from "../components/XPixel";
+import useCookies from "../hooks/useCookies";
 
 export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
   const [userData, setuserData] = useState(null);
@@ -27,8 +28,12 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
   const [isSecondSurvey, setIsSecondSurvey] = useState(false);
 
   const { data: session } = useSession();
-  console.log("session: UserHomepage CANARY", session);
+  const { isCanary } = useCookies();
 
+  console.log("session: UserHomepage CANARY", session, isCanary);
+  const endpoint = isCanary
+    ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/canary/getAllUserDataCanary`
+    : `${process.env.NEXT_PUBLIC_BASE_URL}/api/getAllUserData`;
   //create signout function
   const handleSignout = async () => {
     trackEvent({
@@ -44,14 +49,11 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
 
     async function fetchUserData() {
       setLoading(true);
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/getAllUserData`,
-        {
-          headers: {
-            [API_KEY_HEADER]: secretKey,
-          },
-        }
-      );
+      const res = await fetch(endpoint, {
+        headers: {
+          [API_KEY_HEADER]: secretKey,
+        },
+      });
       const data = await res.json();
 
       if (data) {
