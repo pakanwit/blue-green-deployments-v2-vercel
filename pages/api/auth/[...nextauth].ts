@@ -90,10 +90,10 @@ export const authOptions: NextAuthOptions = {
       name: `__Secure-next-auth.session-token`,
       options: {
         httpOnly: true,
-        sameSite: "none",
+        sameSite: "lax",
         path: "/",
         secure: true,
-        domain: ".15minuteplan-ai.kanoonth.com",
+        domain: ".kanoonth.com",
       },
     },
   },

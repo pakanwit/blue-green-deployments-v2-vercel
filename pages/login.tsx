@@ -49,8 +49,8 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
 
     console.log("status: ", status);
     if (status.ok) {
-      await fetchUserData();
-      // router.push("/userHomepage");
+      // await fetchUserData();
+      router.push("/userHomepage");
     } else {
       setIsError(true);
     }
@@ -66,7 +66,7 @@ export default function Login({ fbPixelId, secretKey, xPixelId }) {
   });
 
   const { data: session } = useSession();
-  console.log("useSession: Login session", session);
+  console.log("useSession: Login session CANARY", session);
 
   if (session) {
     Router.push("/userHomepage");

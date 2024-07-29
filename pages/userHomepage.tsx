@@ -1,21 +1,21 @@
-import { useSession, signOut } from 'next-auth/react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import styles from '../styles/userHomepage.module.css';
-import { MoonLoader } from 'react-spinners';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import LanguageSwitcher from '../components/LanguageSwitcher';
-import useLocale from '../hooks/useLocale';
-import { API_KEY_HEADER } from './api/constants';
-import trackEvent from '../utils/trackEvent';
-import Pixel from '../components/Pixel';
-import dayjs from 'dayjs';
-import { is45MinutesPassed } from '../utils/date';
-import Survey from '../components/Survey';
-import { ROUTE_PATH } from '../constants/path';
-import XPixel from '../components/XPixel';
+import { useSession, signOut } from "next-auth/react";
+import Link from "next/link";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import styles from "../styles/userHomepage.module.css";
+import { MoonLoader } from "react-spinners";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import LanguageSwitcher from "../components/LanguageSwitcher";
+import useLocale from "../hooks/useLocale";
+import { API_KEY_HEADER } from "./api/constants";
+import trackEvent from "../utils/trackEvent";
+import Pixel from "../components/Pixel";
+import dayjs from "dayjs";
+import { is45MinutesPassed } from "../utils/date";
+import Survey from "../components/Survey";
+import { ROUTE_PATH } from "../constants/path";
+import XPixel from "../components/XPixel";
 
 export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
   const [userData, setuserData] = useState(null);
@@ -27,14 +27,15 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
   const [isSecondSurvey, setIsSecondSurvey] = useState(false);
 
   const { data: session } = useSession();
+  console.log("session: UserHomepage CANARY", session);
 
   //create signout function
   const handleSignout = async () => {
     trackEvent({
-      event_name: 'sign_out_button',
+      event_name: "sign_out_button",
     });
-    localStorage.removeItem('formData');
-    await signOut({ redirect: true, callbackUrl: '/' });
+    localStorage.removeItem("formData");
+    await signOut({ redirect: true, callbackUrl: "/" });
   };
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
           headers: {
             [API_KEY_HEADER]: secretKey,
           },
-        },
+        }
       );
       const data = await res.json();
 
@@ -59,7 +60,7 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
         setIsError(true);
       }
 
-      if (data.paymentStatus === 'paid' && data.paymentId) {
+      if (data.paymentStatus === "paid" && data.paymentId) {
         setPaid(true);
         clearInterval(interval); // Clear the interval when paymentStatus is "paid"
       }
@@ -91,16 +92,16 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
   }, [paymentError]);
 
   // if userData exist and userData.planPackage is "professional" then viewPath is "loggedInFullPlanPro"
-  const [viewPath, setViewPath] = useState('');
-  const [editPath, setEditPath] = useState('');
+  const [viewPath, setViewPath] = useState("");
+  const [editPath, setEditPath] = useState("");
 
   useEffect(() => {
-    if (userData && userData.planPackage === 'professional') {
-      setEditPath('/editPlanPro');
-      setViewPath('/loggedInFullPlanPro');
-    } else if (userData && userData.planPackage === 'starter') {
-      setEditPath('/editPlanStarter');
-      setViewPath('/loggedInFullPlan');
+    if (userData && userData.planPackage === "professional") {
+      setEditPath("/editPlanPro");
+      setViewPath("/loggedInFullPlanPro");
+    } else if (userData && userData.planPackage === "starter") {
+      setEditPath("/editPlanStarter");
+      setViewPath("/loggedInFullPlan");
     }
     const surveyResult = userData?.surveyResult;
     const surveyResult2 = userData?.surveyResult2;
@@ -121,7 +122,7 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
               clearInterval(interval); // Stop the interval
             }
           },
-          5 * 60 * 1000,
+          5 * 60 * 1000
         ); // Check every 5 minutes
 
         return () => clearInterval(interval); // Cleanup on component unmount
@@ -129,19 +130,19 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
     }
   }, [userData]);
 
-  const { t } = useTranslation('userHomepage');
+  const { t } = useTranslation("userHomepage");
 
   //set language
   const [country, setCountry] = useState(
-    typeof window !== 'undefined' ? localStorage.getItem('country') || '' : '',
+    typeof window !== "undefined" ? localStorage.getItem("country") || "" : ""
   );
 
   useLocale(country);
 
-  const [variantIDFromLocal, setVariantIDFromLocal] = useState('');
+  const [variantIDFromLocal, setVariantIDFromLocal] = useState("");
 
   useEffect(() => {
-    setVariantIDFromLocal(localStorage.getItem('variantID'));
+    setVariantIDFromLocal(localStorage.getItem("variantID"));
   }, []);
 
   return (
@@ -178,7 +179,7 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                   width={270}
                   height={40}
                   sizes="(max-width: 479px) 220px, (max-width: 767px) 250px, 270px"
-                  alt={t('logo')}
+                  alt={t("logo")}
                 />
               </Link>
             </div>
@@ -187,7 +188,7 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                 onClick={handleSignout}
                 className="nav-button-transparent w-button"
               >
-                {t('Sign Out')}
+                {t("Sign Out")}
               </button>
             </div>
           </div>
@@ -207,14 +208,14 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                           role="alert"
                         >
                           <strong className="font-bold text-red-700">
-                            {t('Failed to load business plan ')}
+                            {t("Failed to load business plan ")}
                           </strong>
                           <span className="block sm:inline">
-                            {t('Please try again')}
+                            {t("Please try again")}
                           </span>
                           <br />
                           <span>
-                            {t('Or contact us at help@15minuteplan.ai')}
+                            {t("Or contact us at help@15minuteplan.ai")}
                           </span>
                         </div>
                       )}
@@ -227,18 +228,18 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                       </div>
                       <div>
                         <p>
-                          {t('You can make ')}
+                          {t("You can make ")}
                           <strong>{userData && userData.planQuota}</strong>
-                          {t(' more plans')}
+                          {t(" more plans")}
                         </p>
                       </div>
                       <p className="text-sm">
                         {t(
-                          "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.",
+                          "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely."
                         )}
                       </p>
                     </div>
-                    <h3 className="">{t('My Plans:')}</h3>
+                    <h3 className="">{t("My Plans:")}</h3>
 
                     {userData && userData.planPackage ? (
                       userData.plans.slice(1).map((plan, index) => (
@@ -246,13 +247,13 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                           <div className={styles.inside_box}>
                             <div className="text-center">
                               <strong>
-                                {t('Plan ')}
-                                {index + 1}:{' '}
+                                {t("Plan ")}
+                                {index + 1}:{" "}
                               </strong>
                               {plan.originalVer.userInput.businessName}
                               <div className="text-xs leading-3">
                                 {plan.originalVer.refId &&
-                                  t('duplicatedPlanForm', {
+                                  t("duplicatedPlanForm", {
                                     refId: plan.originalVer.refId,
                                     businessName:
                                       userData.plans[plan.originalVer.refId]
@@ -269,12 +270,12 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                                 }}
                                 onClick={() => {
                                   trackEvent({
-                                    event_name: 'my_plan_view_button',
+                                    event_name: "my_plan_view_button",
                                     plan_id: index + 1,
                                   });
                                 }}
                               >
-                                {t('View')}
+                                {t("View")}
                               </Link>
                               <Link
                                 className="button-small-rounded"
@@ -284,12 +285,12 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                                 }}
                                 onClick={() => {
                                   trackEvent({
-                                    event_name: 'my_plan_edit_and_save_button',
+                                    event_name: "my_plan_edit_and_save_button",
                                     plan_id: index + 1,
                                   });
                                 }}
                               >
-                                {t('Edit & Save')}
+                                {t("Edit & Save")}
                               </Link>
                             </div>
                           </div>
@@ -305,8 +306,8 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                           <div className={styles.inside_box}>
                             <div className="text-center">
                               <strong>
-                                {t('Plan ')}
-                                {index + 1}:{' '}
+                                {t("Plan ")}
+                                {index + 1}:{" "}
                               </strong>
                               {plan.originalVer.userInput.businessName}
                             </div>
@@ -314,23 +315,23 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                               <Link
                                 className="transparent-button-small-rounded"
                                 href={{
-                                  pathname: '/loggedInFullPlan',
+                                  pathname: "/loggedInFullPlan",
                                   query: { planId: index },
                                 }}
                               >
-                                {t('View')}
+                                {t("View")}
                               </Link>
                               <Link
                                 className="button-small-rounded"
                                 href={{
-                                  pathname: '/editPlanStarter',
+                                  pathname: "/editPlanStarter",
                                   query: {
                                     planId: index,
                                     fromUserHomepage: true,
                                   },
                                 }}
                               >
-                                {t('Edit')}
+                                {t("Edit")}
                               </Link>
                             </div>
                           </div>
@@ -347,11 +348,11 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                           className="button w-button"
                           onClick={() => {
                             trackEvent({
-                              event_name: 'my_plan_add_plan_button',
+                              event_name: "my_plan_add_plan_button",
                             });
                           }}
                         >
-                          {t('+ Add Plan')}
+                          {t("+ Add Plan")}
                         </Link>
                       </div>
                     ) : (
@@ -365,11 +366,11 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                           className="button w-button"
                           onClick={() => {
                             trackEvent({
-                              event_name: 'my_plan_add_plan_button',
+                              event_name: "my_plan_add_plan_button",
                             });
                           }}
                         >
-                          {t('+ Add Plan')}
+                          {t("+ Add Plan")}
                         </Link>
                       </div>
                     ) : (
@@ -379,7 +380,7 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                     {userData.plans.length === 1 && userData.planPackage ? (
                       <div className="flex justify-center mt-10">
                         <Link href="/fullPlan" className="button w-button">
-                          {t('Retrieve First Plan')}
+                          {t("Retrieve First Plan")}
                         </Link>
                       </div>
                     ) : (
@@ -393,11 +394,11 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                           className="button w-button"
                           onClick={() => {
                             trackEvent({
-                              event_name: 'my_plan_add_plan_button',
+                              event_name: "my_plan_add_plan_button",
                             });
                           }}
                         >
-                          {t('+ Add Plan')}
+                          {t("+ Add Plan")}
                         </Link>
                       </div>
                     ) : (
@@ -416,15 +417,15 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                       className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-5 rounded relative"
                       role="alert"
                     >
-                      {t('There was a problem with your payment')}
+                      {t("There was a problem with your payment")}
                     </div>
                   ) : (
-                    <span>{t('Verifying Account...')}</span>
+                    <span>{t("Verifying Account...")}</span>
                   )}
                   <br />
                   <span>
                     {t(
-                      'If you have paid but are unable to Login please contact us at help@15minuteplan.ai, If you haven\'t paid please click "Sign Out" and click "Make Business Plan"',
+                      'If you have paid but are unable to Login please contact us at help@15minuteplan.ai, If you haven\'t paid please click "Sign Out" and click "Make Business Plan"'
                     )}
                   </span>
                 </div>
@@ -441,8 +442,8 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
       <div className="flex flex-col gap-2 justify-center items-center mt-8">
         {!loading ? (
           <>
-            <p>{t('You need to be logged in to view this page')}</p>
-            <Link href="/login">{t('Login')}</Link>
+            <p>{t("You need to be logged in to view this page")}</p>
+            <Link href="/login">{t("Login")}</Link>
           </>
         ) : (
           <MoonLoader size={20} />
@@ -458,7 +459,7 @@ export async function getStaticProps({ locale }) {
   const xPixelId = process.env.X_PIXEL_ID;
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['userHomepage', 'index'])),
+      ...(await serverSideTranslations(locale, ["userHomepage", "index"])),
       secretKey,
       fbPixelId,
       xPixelId,
