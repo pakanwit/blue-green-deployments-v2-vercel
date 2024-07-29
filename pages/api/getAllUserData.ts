@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import connectMongo from "../../database/conn";
 import { getRealUserModel } from "../../model/Schema";
 import { authOptions } from "./auth/[...nextauth]";
+import { getSession } from "next-auth/react";
 
 export default async function handler(request, response) {
   const getAllUserDataHandler = async (req, res) => {
@@ -9,11 +10,11 @@ export default async function handler(request, response) {
 
     if (req.method === "GET") {
       try {
-        const session = await getServerSession(req, res, authOptions(req, res));
+        const session = await getSession({ req });
         console.log("getAllUserData, Session", session);
-        if (!session) {
-          return res.status(401).json({ message: "Not authenticated" });
-        }
+        // if (!session) {
+        //   return res.status(401).json({ message: "Not authenticated" });
+        // }
         const Users = getRealUserModel();
         const user = await Users.findOne({ email: session.user.email });
 

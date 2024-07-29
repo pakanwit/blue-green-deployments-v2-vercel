@@ -93,7 +93,7 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse) => {
           sameSite: "lax",
           path: "/",
           secure: true,
-          domain: hostname,
+          domain: ".kanoonth.com",
         },
       },
       callbackUrl: {
@@ -102,7 +102,7 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse) => {
           sameSite: "lax",
           path: "/",
           secure: true,
-          domain: hostname,
+          domain: ".kanoonth.com",
         },
       },
       csrfToken: {
@@ -112,7 +112,7 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse) => {
           sameSite: "lax",
           path: "/",
           secure: true,
-          domain: hostname,
+          domain: ".kanoonth.com",
         },
       },
     },
