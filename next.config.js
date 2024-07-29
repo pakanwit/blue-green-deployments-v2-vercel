@@ -7,6 +7,16 @@ const nextConfig = {
     ? `https://${process.env.BASE_URL}`
     : undefined,
   basePath: process.env.BASE_PATH ? `${process.env.BASE_PATH}` : undefined,
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: `${process.env.BASE_PATH}`,
+        permanent: true,
+        basePath: false,
+      },
+    ];
+  },
   reactStrictMode: true,
   eslint: {
     // Warning: This allows production builds to successfully complete even if

@@ -148,7 +148,7 @@ export async function middleware(req: NextRequest) {
 }
 
 async function fetchDocument(req: NextRequest, selectedDeploymentDomain) {
-  const basePath = process.env.BASE_PATH || "";
+  const basePath = "/canary";
   const headers = new Headers(req.headers);
   headers.set("x-deployment-override", selectedDeploymentDomain);
   headers.set(
