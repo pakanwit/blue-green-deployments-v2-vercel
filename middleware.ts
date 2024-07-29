@@ -61,7 +61,7 @@ export async function middleware(req: NextRequest) {
     pathname.startsWith("/_next") || // exclude Next.js internals
     pathname.startsWith("/static") || // exclude static files
     pathname.includes("/favicon") ||
-    PUBLIC_FILE.test(pathname) || // exclude all files in the public folder
+    PUBLIC_FILE.test(pathname) // exclude all files in the public folder
   ) {
     return NextResponse.next();
   }
