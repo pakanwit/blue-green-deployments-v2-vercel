@@ -90,7 +90,7 @@ export const authOptions: NextAuthOptions = {
       name: `__Secure-next-auth.session-token`,
       options: {
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: "none",
         path: "/",
         secure: true,
         domain: ".15minuteplan-ai.kanoonth.com",
@@ -127,9 +127,14 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    session({ session, token, user }) {
-      console.log("callbacks: session", { session, token, user });
-      return session; // The return type will match the one returned in `useSession()`
+    async session({ session, token }) {
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
     },
   },
 };

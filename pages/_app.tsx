@@ -110,7 +110,8 @@ function App({ Component, pageProps }) {
       </Head>
 
       <SessionProvider
-        baseUrl={"https://15minuteplan-ai.kanoonth.com/"}
+        baseUrl={"https://15minuteplan-ai.kanoonth.com"}
+        basePath={"/api/auth"}
         session={pageProps.session}
       >
         <GoogleAnalytics trackPageViews nonce="rAnD0m1z5" />
