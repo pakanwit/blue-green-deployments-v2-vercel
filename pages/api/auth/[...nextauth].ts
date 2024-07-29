@@ -10,7 +10,10 @@ const useSecureCookies = !!process.env.VERCEL_URL;
 console.log("useSecureCookies", useSecureCookies);
 
 export const authOptions = (req: NextApiRequest, res: NextApiResponse) => {
-  console.log("authOptions: req", req.cookies);
+  console.log("authOptions: req", req.cookies["hostname"]);
+  const hostname = req.cookies["hostname"] || req.headers.host;
+  const isCanary = hostname.includes("canary");
+  console.log("isCanary", hostname, isCanary);
   return {
     providers: [
       GoogleProvider({
@@ -71,11 +74,6 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse) => {
               }
             );
           }
-          console.log(
-            "credentials.baseURL",
-            credentials.baseURL,
-            process.env.NEXTAUTH_URL
-          );
           return {
             id: result._id.toString(),
             email: result.email,
@@ -95,7 +93,26 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse) => {
           sameSite: "lax",
           path: "/",
           secure: true,
-          domain: ".kanoonth.com",
+          domain: hostname,
+        },
+      },
+      callbackUrl: {
+        name: `__Secure-next-auth.callback-url`,
+        options: {
+          sameSite: "lax",
+          path: "/",
+          secure: true,
+          domain: hostname,
+        },
+      },
+      csrfToken: {
+        name: `__Host-next-auth.csrf-token`,
+        options: {
+          httpOnly: true,
+          sameSite: "lax",
+          path: "/",
+          secure: true,
+          domain: hostname,
         },
       },
     },
