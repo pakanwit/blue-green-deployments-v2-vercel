@@ -23,6 +23,13 @@ export async function middleware(req: NextRequest) {
 
   const experiment_id = req.cookies.get("experiment_id");
   const experimentId = process.env.EXPERIMENT_ID;
+  const basePath = process.env.BASE_PATH || "";
+  if (basePath && !pathname.startsWith(basePath)) {
+    return NextResponse.next();
+  }
+
+  // ลบ basePath ออกจาก pathname เพื่อให้การตรวจสอบต่อไปทำงานได้ถูกต้อง
+  const pathWithoutBase = basePath ? pathname.slice(basePath.length) : pathname;
 
   if (
     experimentId === "NO_EXPERIMENT" ||
@@ -54,19 +61,6 @@ export async function middleware(req: NextRequest) {
       return new NextResponse(null, { status: 204, headers: res.headers });
     }
 
-    // if (pathname.startsWith("/api/auth")) {
-    //   console.log(
-    //     "IF ==== NEXT_PUBLIC_BASE_URL",
-    //     process.env.NEXT_PUBLIC_BASE_URL,
-    //     process.env.NEXTAUTH_URL
-    //   );
-    //   const baseUrl =
-    //     process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL;
-    //   console.log("IF baseUrl", baseUrl);
-    //   return NextResponse.rewrite(
-    //     new URL(req.url.replace(req.headers.get("host"), new URL(baseUrl).host))
-    //   );
-    // }
     return res;
   }
 
@@ -74,7 +68,8 @@ export async function middleware(req: NextRequest) {
     pathname.startsWith("/_next") || // exclude Next.js internals
     pathname.startsWith("/static") || // exclude static files
     pathname.includes("/favicon") ||
-    PUBLIC_FILE.test(pathname) // exclude all files in the public folder
+    PUBLIC_FILE.test(pathname) || // exclude all files in the public folder
+    PUBLIC_FILE.test(pathWithoutBase)
   ) {
     return NextResponse.next();
   }
@@ -153,6 +148,7 @@ export async function middleware(req: NextRequest) {
 }
 
 async function fetchDocument(req: NextRequest, selectedDeploymentDomain) {
+  const basePath = process.env.BASE_PATH || "";
   const headers = new Headers(req.headers);
   headers.set("x-deployment-override", selectedDeploymentDomain);
   headers.set(
@@ -161,6 +157,7 @@ async function fetchDocument(req: NextRequest, selectedDeploymentDomain) {
   );
   const url = new URL(req.url);
   url.hostname = selectedDeploymentDomain;
+  url.pathname = `${basePath}${url.pathname}`;
   console.log("url ==", url);
   return fetch(url, {
     headers,
