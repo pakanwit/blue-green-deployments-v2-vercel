@@ -1077,7 +1077,7 @@ export default function Home({ fbPixelId, secretKey, xPixelId }) {
   );
 }
 
-export async function getServerSideProps({ locale }) {
+export async function getStaticProps({ locale }) {
   const fbPixelId = process.env.FB_PIXEL_ID;
   const xPixelId = process.env.X_PIXEL_ID;
   const secretKey = process.env.API_KEY;
