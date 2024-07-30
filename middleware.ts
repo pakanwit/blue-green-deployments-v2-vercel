@@ -56,7 +56,6 @@ export async function middleware(req: NextRequest) {
       headers,
       redirect: "manual",
     });
-    return NextResponse.next();
   }
 
   // Skip if the middleware has already run.
