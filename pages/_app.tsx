@@ -1,72 +1,82 @@
-import React, { useEffect, useState } from "react";
-import { SessionProvider } from "next-auth/react";
-import Head from "next/head";
-import { GoogleAnalytics } from "nextjs-google-analytics";
-import "react-quill/dist/quill.snow.css";
-import { appWithTranslation } from "next-i18next";
-import "../styles/globals.css";
-import { AppContext } from "../context/appContext";
-import { useRouter } from "next/router";
-import { ROUTE_PATH } from "../constants/path";
-import ChatbotPopup from "../components/chatbotPopup";
+import React, { useEffect, useState } from 'react';
+import { SessionProvider } from 'next-auth/react';
+import Head from 'next/head';
+import { GoogleAnalytics } from 'nextjs-google-analytics';
+import 'react-quill/dist/quill.snow.css';
+import { appWithTranslation } from 'next-i18next';
+import '../styles/globals.css';
+import { AppContext } from '../context/appContext';
+import { useRouter } from 'next/router';
+import { ROUTE_PATH } from '../constants/path';
+import ChatbotPopup from '../components/chatbotPopup';
+import useCookies from '../hooks/useCookies';
 function App({ Component, pageProps }) {
   const router = useRouter();
-  const [generatedExec, setGeneratedExec] = useState("");
-  const [generatedSitu1, setGeneratedSitu1] = useState("");
-  const [generatedSitu2, setGeneratedSitu2] = useState("");
-  const [generatedMark1, setGeneratedMark1] = useState("");
-  const [generatedMark2, setGeneratedMark2] = useState("");
-  const [generatedMark3, setGeneratedMark3] = useState("");
-  const [generatedMark4, setGeneratedMark4] = useState("");
-  const [generatedOp1, setGeneratedOp1] = useState("");
-  const [generatedOp2, setGeneratedOp2] = useState("");
-  const [generatedMang1, setGeneratedMang1] = useState("");
-  const [generatedMang2, setGeneratedMang2] = useState("");
-  const [generatedFin1, setGeneratedFin1] = useState("");
-  const [generatedRisk1, setGeneratedRisk1] = useState("");
-  const [planPackage, setPlanPackage] = useState("");
-  const [starterPrice, setStarterPrice] = useState("");
-  const [proPrice, setProPrice] = useState("");
+  const [generatedExec, setGeneratedExec] = useState('');
+  const [generatedSitu1, setGeneratedSitu1] = useState('');
+  const [generatedSitu2, setGeneratedSitu2] = useState('');
+  const [generatedMark1, setGeneratedMark1] = useState('');
+  const [generatedMark2, setGeneratedMark2] = useState('');
+  const [generatedMark3, setGeneratedMark3] = useState('');
+  const [generatedMark4, setGeneratedMark4] = useState('');
+  const [generatedOp1, setGeneratedOp1] = useState('');
+  const [generatedOp2, setGeneratedOp2] = useState('');
+  const [generatedMang1, setGeneratedMang1] = useState('');
+  const [generatedMang2, setGeneratedMang2] = useState('');
+  const [generatedFin1, setGeneratedFin1] = useState('');
+  const [generatedRisk1, setGeneratedRisk1] = useState('');
+  const [planPackage, setPlanPackage] = useState('');
+  const [starterPrice, setStarterPrice] = useState('');
+  const [proPrice, setProPrice] = useState('');
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [productInfoPrompt, setProductInfoPrompt] = useState('');
+  const [planId, setPlanId] = useState('');
+  const [isPlanCompleted, setIsPlanCompleted] = useState(false);
+
+  const { getCookie } = useCookies();
+  const variantID = getCookie('variantID');
 
   useEffect(() => {
-    if (router.pathname.startsWith("/form")) {
+    if (
+      router.pathname.startsWith('/form') &&
+      router.pathname !== '/form/generate-result'
+    ) {
       router.push(ROUTE_PATH.objective);
     }
     const ensureVariantIDIsSet = function () {
-      if (localStorage.getItem("variantID")) {
+      if (variantID) {
         const chatbotAutoSuggestionLeft = localStorage.getItem(
-          "chatbotAutoSuggestionLeft"
+          'chatbotAutoSuggestionLeft',
         );
         const chatbotAutoSuggestionLeftInt = chatbotAutoSuggestionLeft
           ? parseInt(chatbotAutoSuggestionLeft)
           : 3;
 
         if (!chatbotAutoSuggestionLeft) {
-          localStorage.setItem("chatbotAutoSuggestionLeft", "3");
+          localStorage.setItem('chatbotAutoSuggestionLeft', '3');
         }
 
         const handleMessage = (event) => {
-          if (event.data.type === "UI.OPENED") {
+          if (event.data.type === 'UI.OPENED') {
             setIsChatOpen(false);
             clearTimeout(timer);
           }
         };
 
-        window.addEventListener("message", handleMessage);
+        window.addEventListener('message', handleMessage);
 
         const timer = setTimeout(() => {
           if (chatbotAutoSuggestionLeftInt > 0) {
             setIsChatOpen(true);
             localStorage.setItem(
-              "chatbotAutoSuggestionLeft",
-              (chatbotAutoSuggestionLeftInt - 1).toString()
+              'chatbotAutoSuggestionLeft',
+              (chatbotAutoSuggestionLeftInt - 1).toString(),
             );
           }
         }, 60000);
 
         return () => {
-          window.removeEventListener("message", handleMessage);
+          window.removeEventListener('message', handleMessage);
           clearTimeout(timer);
         };
       } else {
@@ -76,8 +86,6 @@ function App({ Component, pageProps }) {
 
     // ensureVariantIDIsSet(); // Hide chatbot for now
   }, []);
-
-  console.log("_app CANARY", process.env.NEXT_PUBLIC_BASE_URL);
 
   return (
     <>
@@ -109,11 +117,7 @@ function App({ Component, pageProps }) {
         <meta name="theme-color" content="#ffffff" />
       </Head>
 
-      <SessionProvider
-        baseUrl={"https://15minuteplan-ai.kanoonth.com"}
-        basePath={"/api/auth"}
-        session={pageProps.session}
-      >
+      <SessionProvider session={pageProps.session}>
         <GoogleAnalytics trackPageViews nonce="rAnD0m1z5" />
         <AppContext.Provider
           value={{
@@ -134,6 +138,7 @@ function App({ Component, pageProps }) {
               planPackage,
               starterPrice,
               proPrice,
+              productInfoPrompt,
             },
             set: {
               setGeneratedExec,
@@ -152,7 +157,12 @@ function App({ Component, pageProps }) {
               setPlanPackage,
               setStarterPrice,
               setProPrice,
+              setProductInfoPrompt,
             },
+            planId,
+            setPlanId,
+            isPlanCompleted,
+            setIsPlanCompleted,
           }}
         >
           <Component {...pageProps} />

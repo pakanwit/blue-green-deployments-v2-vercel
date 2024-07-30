@@ -1,5 +1,5 @@
+import { AI_MODEL } from '../../../constants/plan';
 import { OpenAIStream } from '../../../utils/OpenAIChatStream';
-import { FireworksAIStream } from '../../../utils/llama3/FireworksAIStream';
 
 interface IProductStrategy {
   businessOperationalStatus: string;
@@ -26,7 +26,9 @@ interface IProductStrategy {
   productDescription5: string;
 
   planLanguage: string;
+  AITopic: string;
   variantID: string;
+  modelName?: string;
 }
 
 // api6Mark3.ts
@@ -56,7 +58,9 @@ export const productStrategy = (request: IProductStrategy) => {
     productDescription5,
 
     planLanguage,
+    AITopic,
     variantID,
+    modelName,
   } = request;
 
   const generatePrompt = (...products) => {
@@ -287,528 +291,523 @@ export const productStrategy = (request: IProductStrategy) => {
 
   customerPrompt = `${customerGroupDescriptions[planLanguage] || customerGroupDescriptions['default']}\n${customerPrompt}`;
 
-  const mark3TopicEN = 'Product Strategy and Pricing Strategy';
-  const mark3TopicDE = 'Produktstrategie und Preisstrategie ';
-  const mark3TopicFR = 'Stratégie de produit et stratégie de prix';
-  const mark3TopicES = 'Estrategia de producto y estrategia de precios';
-  const mark3TopicIT = 'Strategia di prodotto e strategia di prezzo';
-  const mark3TopicNL = 'Productstrategie en prijsstrategie';
-  const mark3TopicJA = '製品戦略と価格戦略';
-  const mark3TopicAR = 'استراتيجية المنتج واستراتيجية التسعير';
-  const mark3TopicSV = 'Produktstrategi och prissättning';
-  const mark3TopicFI = 'Tuotestrategia ja hinnoittelustrategia';
-  const mark3TopicDA = 'Produktstrategi og prisstrategi';
-  const mark3TopicNO = 'Produktstrategi og prissettingsstrategi';
+  function generateAITopicAllProduct(data) {
+    let output = '';
+
+    if (data?.hasOwnProperty('product')) {
+      data['product'].forEach((item) => {
+        output += `Topic: ${item.topic}\n`;
+        output += `Question: ${item.question}\n`;
+        output += `Answer: ${item.answer}\n\n`;
+      });
+    }
+
+    return output;
+  }
+
+  function generateAITopicTopicProduct(data) {
+    let output = '';
+
+    if (data?.hasOwnProperty('product')) {
+      data['product'].forEach((item) => {
+        output += `${item.topic}, `;
+      });
+    }
+
+    return output;
+  }
+
+  const mark3TopicEN = 'Product and Services section';
+  const mark3TopicDE = 'Produkt- und Dienstleistungsbereich';
+  const mark3TopicFR = 'Section des produits et services';
+  const mark3TopicES = 'Sección de productos y servicios';
+  const mark3TopicIT = 'Sezione prodotti e servizi';
+  const mark3TopicNL = 'Producten- en dienstensectie';
+  const mark3TopicJA = '製品とサービスのセクション';
+  const mark3TopicAR = 'قسم المنتجات والخدمات';
+  const mark3TopicSV = 'Produkt- och tjänstesektion';
+  const mark3TopicFI = 'Tuotteet ja palvelut -osio';
+  const mark3TopicDA = 'Produkt- og servicesektion';
+  const mark3TopicNO = 'Produkt- og tjenesteseksjon';
+
+  const AITopicAllProductString = generateAITopicAllProduct(AITopic);
+  const AITopicTopicProductString = generateAITopicTopicProduct(AITopic);
 
   const promptTemplates = {
     en: `
     You are a professional consultant, and a customer approaches you to write a long and detailed ${mark3TopicEN} for a business plan.
-
+    
     business details:
     business detail 1: The client's business name is ${businessName}.
     business detail 2: The type of business is ${businessType}. 
     business detail 3: This is where the business's customers are: ${location}.
     business detail 4: The client's distribution channel is: ${salesChannel}.
     business detail 5: The client's business operational status is ${businessOperationalStatus}.
-
+    
     These are details of the client's products or services. DO NOT mention additional product or services that are not listed here:
     ${productInfoPrompt}
     These products or services details MUST be included in the ${mark3TopicEN}.
     
-    These are the topic that should be generated: ${mark3TopicEN}, don't include other topics unless specified here. Be very descriptive in generating content for each topic.
-
-    for both ${mark3TopicEN}, you MUST consider this targeting and postioning data:
+    for ${mark3TopicEN}, you MUST consider this targeting and postioning data:
     This is the targeting data: ${targeting}
     This is the positioning data: ${positioning}
-
-    For product strategy, describe the product or service in detail. This is Important: product strategy MUST align itself to the positioning data. The best product strategy aligns with positioning. Product Strategy topic should include: product description, product differentiation, product development, and product branding. These topics should be wrapped in <h6> tags. Each topic should describe each product or service in detail. For example, if there are 3 products or services, there should be 3 product descriptions, 3 product differentiations, 3 product developments, and 3 product brandings. Be insightful and descriptive. there should be only one product description, product differentiation, product development, and product branding topic each and in each topic there should be details on multiple products. 
+    Use it as data source but don't include targeting and positioning data in your response vertbatim.
     
-    ${productDescriptionPrompt}
+    For ${mark3TopicEN}, describe it in detail. This is Important: ${mark3TopicEN} MUST align itself to the positioning data. The best ${mark3TopicEN} aligns with positioning. ${mark3TopicEN} topics should include: ${AITopicTopicProductString}
+    These topic names should be in <h4> tag.
     
-    ${productDifferentiationPrompt}
-    
-    ${productDevelopmentPrompt}
-
-    ${productBrandingPrompt}
-    
-    For Pricing strategy topic, there are 3 major pricing strategies: value-based pricing, cost-based pricing,and competition-based pricing. Select one of these strategies and explain the reason behind why you selected that particular strategy and explain how you will implement that strategy and be very descriptive. This is Important: product strategy MUST align itself to the POSITIONING TOPIC from the STP topic.
+    These are more information to generate the aforementioned topics:
+    ${AITopicAllProductString}
     
     Do not repeat business details.
     Write this as if you are the owner of the business, using "we" don't use "I".
     Generate response in html surrounding ${mark3TopicEN} topics with h5 tag. 
-    Begin the completion with "<h4>4P</h4>" followed by "<h5>Product Strategy</h5>" don't repeat these topic: "<h4>4P</h4>" and "<h5>Product Strategy</h5>", again in the completion.
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
-Generate everything in English.
+    Begin the completion with "<h3>Product and Services</h3>". Don't repeat these topic: "<h3>Product and Services</h3>"
+    use only HTML tags don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <li> tag.
+    Generate everything in English.
+  This is important: Be very insightful in your response
+    Generate at least 1000 words.
     This is important: Be very insightful in your response.
     This is the long, detailed, and insightful ${mark3TopicEN} you came up with:
     `,
     'en-uk': `
     You are a professional consultant, and a customer approaches you to write a long and detailed ${mark3TopicEN} for a business plan.
-
+    
     business details:
     business detail 1: The client's business name is ${businessName}.
     business detail 2: The type of business is ${businessType}. 
     business detail 3: This is where the business's customers are: ${location}.
     business detail 4: The client's distribution channel is: ${salesChannel}.
     business detail 5: The client's business operational status is ${businessOperationalStatus}.
-
+    
     These are details of the client's products or services. DO NOT mention additional product or services that are not listed here:
     ${productInfoPrompt}
     These products or services details MUST be included in the ${mark3TopicEN}.
     
-    These are the topic that should be generated: ${mark3TopicEN}, don't include other topics unless specified here. Be very descriptive in generating content for each topic.
-
-    for both ${mark3TopicEN}, you MUST consider this targeting and postioning data:
+    for ${mark3TopicEN}, you MUST consider this targeting and postioning data:
     This is the targeting data: ${targeting}
     This is the positioning data: ${positioning}
-
-    For product strategy, describe the product or service in detail. This is Important: product strategy MUST align itself to the positioning data. The best product strategy aligns with positioning. Product Strategy topic should include: product description, product differentiation, product development, and product branding. These topics should be wrapped in <h6> tags. Each topic should describe each product or service in detail. For example, if there are 3 products or services, there should be 3 product descriptions, 3 product differentiations, 3 product developments, and 3 product brandings. Be insightful and descriptive. there should be only one product description, product differentiation, product development, and product branding topic each and in each topic there should be details on multiple products. 
+    Use it as data source but don't include targeting and positioning data in your response vertbatim.
     
-    ${productDescriptionPrompt}
+    For ${mark3TopicEN}, describe it in detail. This is Important: ${mark3TopicEN} MUST align itself to the positioning data. The best ${mark3TopicEN} aligns with positioning. ${mark3TopicEN} topics should include: ${AITopicTopicProductString}
+    These topic names should be in <h4> tag.
     
-    ${productDifferentiationPrompt}
-    
-    ${productDevelopmentPrompt}
-
-    ${productBrandingPrompt}
-    
-    For Pricing strategy topic, there are 3 major pricing strategies: value-based pricing, cost-based pricing,and competition-based pricing. Select one of these strategies and explain the reason behind why you selected that particular strategy and explain how you will implement that strategy and be very descriptive. This is Important: product strategy MUST align itself to the POSITIONING TOPIC from the STP topic.
+    These are more information to generate the aforementioned topics:
+    ${AITopicAllProductString}
     
     Do not repeat business details.
     Write this as if you are the owner of the business, using "we" don't use "I".
     Generate response in html surrounding ${mark3TopicEN} topics with h5 tag. 
-    Begin the completion with "<h4>4P</h4>" followed by "<h5>Product Strategy</h5>" don't repeat these topic: "<h4>4P</h4>" and "<h5>Product Strategy</h5>", again in the completion.
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
-Generate everything in English.
-use british english spelling and grammar
+    Begin the completion with "<h3>Product and Services</h3>". Don't repeat these topic: "<h3>Product and Services</h3>"
+    use only HTML tags don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <li> tag.
+    Generate everything in English.
+    This is important: Be very insightful in your response
+    Generate at least 1000 words.
+    use british english spelling and grammar
     This is important: Be very insightful in your response.
     This is the long, detailed, and insightful ${mark3TopicEN} you came up with:
     `,
     de: `
-            Sie sind ein professioneller Berater und ein Kunde kommt zu Ihnen, um einen langen und detaillierten ${mark3TopicDE} für einen Geschäftsplan zu schreiben.
-        
-            Geschäftsdetails:
-            Geschäftsdetail 1: Der Geschäftsname des Kunden lautet ${businessName}.
-            Geschäftsdetail 2: Die Art des Unternehmens ist ${businessType}. 
-            Geschäftsdetail 3: Dies ist der Ort, an dem sich die Kunden des Unternehmens befinden: ${location}.
-            business detail 4: Der Vertriebskanal des Kunden ist: ${salesChannel}.
-            Geschäftsdetail 5: Der Betriebsstatus des Kunden lautet: ${businessOperationalStatus}.
-        
-            Dies sind Einzelheiten zu den Produkten oder Dienstleistungen des Kunden. Nennen Sie KEINE zusätzlichen Produkte oder Dienstleistungen, die hier nicht aufgeführt sind:
-            ${productInfoPrompt}
-            Diese Produkt- oder Dienstleistungsdetails MÜSSEN in das ${mark3TopicDE} aufgenommen werden.
-            
-            Dies sind die Themen, die generiert werden sollten: ${mark3TopicDE}, fügen Sie keine anderen Themen ein, es sei denn, sie sind hier angegeben. Seien Sie sehr beschreibend bei der Erstellung von Inhalten für jedes Thema.
-        
-            ${customerPrompt}
-        
-            Für die Produktstrategie beschreiben Sie das Produkt oder die Dienstleistung im Detail. Dies ist wichtig: Die Produktstrategie MUSS sich an der Beschreibung der Kundengruppe orientieren. Die beste Produktstrategie ist auf die Beschreibung der Kundengruppe abgestimmt. Das Thema Produktstrategie sollte Folgendes umfassen: Produktbeschreibung, Produktdifferenzierung, Produktentwicklung und Produktmarkenbildung. Diese Themen sollten in <h6> Tags verpackt werden.
-            
-            ${productDescriptionPrompt}
-        
-            ${productDifferentiationPrompt}
-            
-            ${productDevelopmentPrompt}
-            
-            ${productBrandingPrompt}
-            
-            Für das Thema Preisstrategie gibt es 3 wichtige Preisstrategien: wertorientierte Preisgestaltung, kostenorientierte Preisgestaltung und wettbewerbsorientierte Preisgestaltung. Wählen Sie eine dieser Strategien aus und erläutern Sie, warum Sie diese Strategie gewählt haben und wie Sie diese Strategie umsetzen werden. Dies ist wichtig: Die Produktstrategie MUSS mit dem POSITIONIERUNGSTHEMA aus dem STP-Thema übereinstimmen.
-            
-            Wiederholen Sie keine geschäftlichen Details.
-            Schreiben Sie so, als ob Sie der Eigentümer des Unternehmens wären, verwenden Sie "wir" und nicht "ich".
-            Erzeugen Sie eine Antwort in html, die die ${mark3TopicDE}-Themen mit dem h5-Tag umgibt. 
-            Beginnen Sie die Ergänzung mit "<h4>4P</h4>" gefolgt von "<h5>Produktstrategie</h5>"
-            Fertigstellung auf Deutsch generieren. 
-            
-            Dies ist das lange, ausführliche und langatmige ${mark3TopicDE}, das Sie sich ausgedacht haben:
-            `,
+    Sie sind ein professioneller Berater, und ein Kunde wendet sich an Sie, um einen langen und detaillierten ${mark3TopicDE} für einen Geschäftsplan zu schreiben.
+    
+    Geschäftsdaten:
+    Geschäftsdaten 1: Der Name des Unternehmens des Kunden ist ${businessName}.
+    Geschäftsdaten 2: Die Art des Unternehmens ist ${businessType}. 
+    Geschäftsdaten 3: Hier befinden sich die Kunden des Unternehmens: ${location}.
+    Geschäftsdaten 4: Der Vertriebskanal des Kunden ist: ${salesChannel}.
+    Geschäftsdaten 5: Der betriebliche Status des Unternehmens des Kunden ist ${businessOperationalStatus}.
+    
+    Dies sind Details zu den Produkten oder Dienstleistungen des Kunden. Nennen Sie KEINE zusätzlichen Produkte oder Dienstleistungen, die hier nicht aufgeführt sind:
+    ${productInfoPrompt}
+    Diese Produkt- oder Dienstleistungsdetails MÜSSEN im ${mark3TopicDE} enthalten sein.
+    
+    Für ${mark3TopicDE} MÜSSEN Sie diese Ziel- und Positionierungsdaten berücksichtigen:
+    Dies sind die Zieldaten: ${targeting}
+    Dies sind die Positionierungsdaten: ${positioning}
+    Verwenden Sie es als Datenquelle, aber fügen Sie die Ziel- und Positionierungsdaten nicht wörtlich in Ihre Antwort ein.
+    
+    Für ${mark3TopicDE} beschreiben Sie es im Detail. Dies ist wichtig: ${mark3TopicDE} MUSS sich an den Positionierungsdaten ausrichten. Das beste ${mark3TopicDE} stimmt mit der Positionierung überein. ${mark3TopicDE} Themen sollten enthalten: ${AITopicTopicProductString}
+    Diese Themennamen sollten im <h4>-Tag stehen.
+    
+    Dies sind weitere Informationen zur Erstellung der oben genannten Themen:
+    ${AITopicAllProductString}
+    
+    Wiederholen Sie keine Geschäftsdaten.
+    Schreiben Sie dies, als wären Sie der Eigentümer des Unternehmens, verwenden Sie "wir", nicht "ich".
+    Erstellen Sie die Antwort in HTML und umgeben Sie ${mark3TopicDE} Themen mit dem <h5>-Tag. 
+    Beginnen Sie die Ausführung mit "<h3>Produkt- und Dienstleistungsbereich</h3>". Wiederholen Sie dieses Thema nicht: "<h3>Produkt- und Dienstleistungsbereich</h3>"
+    Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie das <strong>-Tag für fett. Verwenden Sie nicht * *, sondern verwenden Sie das <em>-Tag für kursiv. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie das <li>-Tag.
+    Erstellen Sie alles auf Deutsch.
+  Das ist wichtig: Seien Sie sehr aufschlussreich in Ihrer Antwort
+    Erstellen Sie mindestens 1000 Wörter.
+    Dies ist wichtig: Seien Sie sehr aufschlussreich in Ihrer Antwort.
+    Dies ist der lange, detaillierte und aufschlussreiche ${mark3TopicDE}, den Sie sich ausgedacht haben:
+    `,
     fr: `
-            Vous êtes un consultant professionnel et un client vous approche pour rédiger un ${mark3TopicFR} long et détaillé pour un plan d'affaires.
-        
-            Détails de l'entreprise :
-            Détail de l'entreprise 1 : Le nom de l'entreprise du client est ${businessName}.
-            Détail de l'entreprise 2 : Le type d'entreprise est ${businessType}. 
-            Détail de l'entreprise 3 : Voici où se trouvent les clients de l'entreprise : ${location}.
-            Détail de l'entreprise 4 : Le canal de distribution du client est : ${salesChannel}.
-            Détail de l'entreprise 5 : Le statut opérationnel de l'entreprise du client est ${businessOperationalStatus}.
-        
-            Voici les détails des produits ou services du client. NE mentionnez PAS de produits ou services supplémentaires qui ne sont pas listés ici :
-            ${productInfoPrompt}
-            Ces détails sur les produits ou services DOIVENT être inclus dans le ${mark3TopicFR}.
-            
-            Voici le sujet qui devrait être généré : ${mark3TopicFR}, n'incluez pas d'autres sujets à moins qu'ils ne soient spécifiés ici. Soyez très descriptif en générant du contenu pour chaque sujet.
-        
-            ${customerPrompt}
-        
-            Pour la stratégie produit, décrivez le produit ou le service en détail. Ce point est important : la stratégie produit DOIT être basée sur la description du groupe de clients. La meilleure stratégie de produit est alignée sur la description du groupe de clients. Le thème de la stratégie produit doit comprendre les éléments suivants : Description du produit, Différenciation du produit, Développement du produit et Marque du produit. Ces thèmes doivent être regroupés dans des balises <h6>.
-            
-            ${productDescriptionPrompt}
-            
-            ${productDifferentiationPrompt}
-            
-            ${productDevelopmentPrompt}
-        
-            ${productBrandingPrompt}
-            
-            Pour le sujet de la stratégie de prix, il y a 3 principales stratégies de prix : la tarification basée sur la valeur, la tarification basée sur les coûts et la tarification basée sur la concurrence. Sélectionnez l'une de ces stratégies et expliquez la raison pour laquelle vous avez choisi cette stratégie particulière et expliquez comment vous allez mettre en œuvre cette stratégie et soyez très descriptif. C'est important : la stratégie de produit DOIT s'aligner sur le SUJET DE POSITIONNEMENT du sujet STP.
-            
-            Ne répétez pas les détails de l'entreprise.
-            Rédigez cela comme si vous étiez le propriétaire de l'entreprise, en utilisant "nous" et non "je".
-            Générez une réponse en html entourant les sujets ${mark3TopicFR} avec la balise h5. 
-            Commencez la complétion par "<h4>4P</h4>" suivi de "<h5>Stratégie de produit</h5>" ne répétez pas ces sujets : "<h4>4P</h4>" et "<h5>Stratégie de produit</h5>", à nouveau dans la complétion.
-            génère tout en français
-            Voici le ${mark3TopicFR} long, détaillé et laborieux que vous avez élaboré :`,
-    es: `Usted es un consultor profesional y un cliente se acerca a usted para escribir una ${mark3TopicES} larga y detallada para un plan de negocios.
-
-            Detalles del negocio:
-            Detalle del negocio 1: El nombre del negocio del cliente es ${businessName}.
-            Detalle del negocio 2: El tipo de negocio es ${businessType}. 
-            Detalle del negocio 3: Aquí es donde se encuentran los clientes del negocio: ${location}.
-            Detalle del negocio 4: El canal de distribución del cliente es: ${salesChannel}.
-            Detalle del negocio 5: El estado operativo del negocio del cliente es ${businessOperationalStatus}.
-        
-            Estos son detalles de los productos o servicios del cliente. NO mencione productos o servicios adicionales que no estén listados aquí:
-            ${productInfoPrompt}
-            Estos detalles de productos o servicios DEBEN ser incluidos en la ${mark3TopicES}.
-            
-            Estos son los temas que deben generarse: ${mark3TopicES}, no incluya otros temas a menos que se especifique aquí. Sea muy descriptivo al generar contenido para cada tema.
-        
-            ${customerPrompt}
-        
-            Para la estrategia de producto, describa el producto o servicio en detalle. Esto es importante: la estrategia de producto DEBE basarse en la descripción del grupo de clientes. La mejor estrategia de producto está alineada con la descripción del grupo de clientes. El tema de la estrategia de producto debe incluir lo siguiente Descripción del producto, Diferenciación del producto, Desarrollo del producto y Marca del producto. Estos temas deben empaquetarse en etiquetas <h6>.
-            
-            ${productDescriptionPrompt}
-            
-            ${productDifferentiationPrompt}
-            
-            ${productDevelopmentPrompt}
-        
-            ${productBrandingPrompt}
-            
-            Para el tema de la estrategia de precios, hay 3 estrategias de precios principales: precios basados en el valor, precios basados en los costos y precios basados en la competencia. Seleccione una de estas estrategias y explique la razón por la que seleccionó esa estrategia en particular y explique cómo implementará esa estrategia y sea muy descriptivo. Esto es importante: la estrategia de producto DEBE alinearse con el TEMA DE POSICIONAMIENTO del tema STP.
-            
-            No repita los detalles del negocio.
-            Escriba esto como si fuera el dueño del negocio, usando "nosotros" no use "yo".
-            Genere una respuesta en html rodeando los temas ${mark3TopicES} con la etiqueta h5. 
-            Comience la finalización con "<h4>4P</h4>" seguido de "<h5>Estrategia de producto</h5>" no repita estos temas: "<h4>4P</h4>" y "<h5>Estrategia de producto</h5>", de nuevo en la finalización.
-            genera todo en español
-            Esta es la ${mark3TopicES} larga, detallada y extensa que elaboró:`,
-    it: `Sei un consulente professionista e un cliente si avvicina a te per scrivere una lunga e dettagliata ${mark3TopicIT} per un piano aziendale.
-
-            dettagli aziendali:
-            dettaglio aziendale 1: Il nome dell'azienda del cliente è ${businessName}.
-            dettaglio aziendale 2: Il tipo di attività è ${businessType}. 
-            dettaglio aziendale 3: Questo è dove si trovano i clienti dell'azienda: ${location}.
-            dettaglio aziendale 4: Il canale di distribuzione del cliente è: ${salesChannel}.
-            dettaglio aziendale 5: Lo stato operativo dell'azienda del cliente è ${businessOperationalStatus}.
-        
-            Questi sono i dettagli dei prodotti o servizi del cliente. NON menzionare prodotti o servizi aggiuntivi che non sono elencati qui:
-            ${productInfoPrompt}
-            Questi dettagli sui prodotti o servizi DEVONO essere inclusi nella ${mark3TopicIT}.
-            
-            Questi sono gli argomenti che dovrebbero essere generati: ${mark3TopicIT}, non includere altri argomenti a meno che non siano specificati qui. Sii molto descrittivo nel generare contenuti per ogni argomento.
-        
-            ${customerPrompt}
-        
-            Per la strategia di prodotto, descrivere dettagliatamente il prodotto o il servizio. È importante: la strategia di prodotto DEVE basarsi sulla descrizione del gruppo di clienti. La migliore strategia di prodotto è allineata alla descrizione del gruppo di clienti. Il tema della strategia di prodotto deve includere i seguenti argomenti Descrizione del prodotto, Differenziazione del prodotto, Sviluppo del prodotto e Branding del prodotto. Questi argomenti devono essere racchiusi in tag <h6>.
-            
-            ${productDescriptionPrompt}
-            
-            ${productDifferentiationPrompt}
-            
-            ${productDevelopmentPrompt}
-        
-            ${productBrandingPrompt}
-            
-            Per l'argomento della strategia di prezzo, ci sono 3 principali strategie di prezzo: prezzo basato sul valore, prezzo basato sui costi e prezzo basato sulla concorrenza. Seleziona una di queste strategie e spiega il motivo per cui hai scelto quella particolare strategia e spiega come implementerai quella strategia e sii molto descrittivo. Questo è importante: la strategia del prodotto DEVE allinearsi all'ARGOMENTO DI POSIZIONAMENTO dell'argomento STP.
-            
-            Non ripetere i dettagli aziendali.
-            Scrivi questo come se fossi il proprietario dell'azienda, usando "noi" non usare "io".
-            Genera una risposta in html circondando gli argomenti ${mark3TopicIT} con il tag h5. 
-            Inizia il completamento con "<h4>4P</h4>" seguito da "<h5>Strategia di prodotto</h5>" non ripetere questi argomenti: "<h4>4P</h4>" e "<h5>Strategia di prodotto</h5>", di nuovo nel completamento.
-            genera tutto in italiano
-            Questa è la lunga, dettagliata e laboriosa ${mark3TopicIT} che hai elaborato:`,
+    Vous êtes un consultant professionnel, et un client vous demande d'écrire une ${mark3TopicFR} longue et détaillée pour un plan d'affaires.
+    
+    détails de l'entreprise:
+    détail de l'entreprise 1: Le nom de l'entreprise du client est ${businessName}.
+    détail de l'entreprise 2: Le type d'entreprise est ${businessType}. 
+    détail de l'entreprise 3: Voici où se trouvent les clients de l'entreprise: ${location}.
+    détail de l'entreprise 4: Le canal de distribution du client est: ${salesChannel}.
+    détail de l'entreprise 5: Le statut opérationnel de l'entreprise du client est ${businessOperationalStatus}.
+    
+    Voici les détails des produits ou services du client. NE mentionnez PAS de produits ou services supplémentaires qui ne sont pas listés ici:
+    ${productInfoPrompt}
+    Ces détails de produits ou services DOIVENT être inclus dans la ${mark3TopicFR}.
+    
+    pour la ${mark3TopicFR}, vous DEVEZ considérer ces données de ciblage et de positionnement:
+    Voici les données de ciblage: ${targeting}
+    Voici les données de positionnement: ${positioning}
+    Utilisez-les comme source de données mais n'incluez pas les données de ciblage et de positionnement dans votre réponse mot pour mot.
+    
+    Pour la ${mark3TopicFR}, décrivez-la en détail. C'est important: la ${mark3TopicFR} DOIT s'aligner sur les données de positionnement. La meilleure ${mark3TopicFR} s'aligne avec le positionnement. Les sujets de la ${mark3TopicFR} devraient inclure: ${AITopicTopicProductString}
+    Ces noms de sujets doivent être dans la balise <h4>.
+    
+    Voici plus d'informations pour générer les sujets susmentionnés:
+    ${AITopicAllProductString}
+    
+    Ne répétez pas les détails de l'entreprise.
+    Écrivez ceci comme si vous étiez le propriétaire de l'entreprise, en utilisant "nous" et non "je".
+    Générez la réponse en HTML en entourant les sujets de la ${mark3TopicFR} avec la balise <h5>. 
+    Commencez la complétion par "<h3>Section des produits et services</h3>". Ne répétez pas ce sujet: "<h3>Section des produits et services</h3>"
+    Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de puce, utilisez plutôt la balise <li>.
+    Générez tout en français.
+    Générez au moins 1000 mots.
+    C'est important: Soyez très perspicace dans votre réponse.
+    Voici la ${mark3TopicFR} longue, détaillée et perspicace que vous avez imaginée:
+    `,
+    es: `
+    Usted es un consultor profesional, y un cliente se le acerca para escribir una ${mark3TopicES} larga y detallada para un plan de negocios.
+    
+    detalles del negocio:
+    detalle del negocio 1: El nombre del negocio del cliente es ${businessName}.
+    detalle del negocio 2: El tipo de negocio es ${businessType}. 
+    detalle del negocio 3: Aquí es donde están los clientes del negocio: ${location}.
+    detalle del negocio 4: El canal de distribución del cliente es: ${salesChannel}.
+    detalle del negocio 5: El estado operativo del negocio del cliente es ${businessOperationalStatus}.
+    
+    Estos son los detalles de los productos o servicios del cliente. NO mencione productos o servicios adicionales que no estén listados aquí:
+    ${productInfoPrompt}
+    Estos detalles de productos o servicios DEBEN ser incluidos en la ${mark3TopicES}.
+    
+    para la ${mark3TopicES}, DEBE considerar estos datos de segmentación y posicionamiento:
+    Estos son los datos de segmentación: ${targeting}
+    Estos son los datos de posicionamiento: ${positioning}
+    Úselos como fuente de datos pero no incluya los datos de segmentación y posicionamiento en su respuesta textualmente.
+    
+    Para la ${mark3TopicES}, descríbala en detalle. Esto es importante: la ${mark3TopicES} DEBE alinearse con los datos de posicionamiento. La mejor ${mark3TopicES} se alinea con el posicionamiento. Los temas de la ${mark3TopicES} deben incluir: ${AITopicTopicProductString}
+    Estos nombres de temas deben estar en la etiqueta <h4>.
+    
+    Aquí hay más información para generar los temas mencionados anteriormente:
+    ${AITopicAllProductString}
+    
+    No repita los detalles del negocio.
+    Escriba esto como si fuera el propietario del negocio, usando "nosotros" no "yo".
+    Genere la respuesta en HTML rodeando los temas de la ${mark3TopicES} con la etiqueta <h5>. 
+    Comience la finalización con "<h3>Sección de productos y servicios</h3>". No repita este tema: "<h3>Sección de productos y servicios</h3>"
+    Use solo etiquetas HTML, no use markdown. No use ** **, en su lugar use la etiqueta <strong> para negrita. No use * *, en su lugar use la etiqueta <em> para cursiva. No use * para puntos de viñeta, en su lugar use la etiqueta <li>.
+    Genere todo en español.
+    Genere al menos 1000 palabras.
+    Esto es importante: Sea muy perspicaz en su respuesta.
+    Esta es la ${mark3TopicES} larga, detallada y perspicaz que se le ocurrió:
+    `,
+    it: `
+    Sei un consulente professionista e un cliente si rivolge a te per scrivere una ${mark3TopicIT} lunga e dettagliata per un piano aziendale.
+    
+    dettagli aziendali:
+    dettaglio aziendale 1: Il nome dell'azienda del cliente è ${businessName}.
+    dettaglio aziendale 2: Il tipo di azienda è ${businessType}. 
+    dettaglio aziendale 3: Ecco dove si trovano i clienti dell'azienda: ${location}.
+    dettaglio aziendale 4: Il canale di distribuzione del cliente è: ${salesChannel}.
+    dettaglio aziendale 5: Lo stato operativo dell'azienda del cliente è ${businessOperationalStatus}.
+    
+    Questi sono i dettagli dei prodotti o servizi del cliente. NON menzionare prodotti o servizi aggiuntivi che non sono elencati qui:
+    ${productInfoPrompt}
+    Questi dettagli di prodotti o servizi DEVONO essere inclusi nella ${mark3TopicIT}.
+    
+    per la ${mark3TopicIT}, DEVI considerare questi dati di targeting e posizionamento:
+    Questi sono i dati di targeting: ${targeting}
+    Questi sono i dati di posizionamento: ${positioning}
+    Usali come fonte di dati ma non includere i dati di targeting e posizionamento nella tua risposta alla lettera.
+    
+    Per la ${mark3TopicIT}, descrivila in dettaglio. Questo è importante: la ${mark3TopicIT} DEVE allinearsi ai dati di posizionamento. La migliore ${mark3TopicIT} si allinea con il posizionamento. Gli argomenti della ${mark3TopicIT} dovrebbero includere: ${AITopicTopicProductString}
+    Questi nomi di argomenti dovrebbero essere nel tag <h4>.
+    
+    Queste sono ulteriori informazioni per generare gli argomenti sopra menzionati:
+    ${AITopicAllProductString}
+    
+    Non ripetere i dettagli aziendali.
+    Scrivi questo come se fossi il proprietario dell'azienda, usando "noi" non "io".
+    Genera la risposta in HTML circondando gli argomenti della ${mark3TopicIT} con il tag <h5>. 
+    Inizia il completamento con "<h3>Sezione prodotti e servizi</h3>". Non ripetere questo argomento: "<h3>Sezione prodotti e servizi</h3>"
+    Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece il tag <li>.
+    genera tutto in italiano
+    Genera almeno 1000 parole.
+    Questo è importante: Sii molto perspicace nella tua risposta.
+    Questa è la ${mark3TopicIT} lunga, dettagliata e perspicace che hai ideato:
+    `,
     nl: `
-            U bent een professionele consultant en een klant benadert u om een lange en gedetailleerde ${mark3TopicNL} te schrijven voor een bedrijfsplan.
-        
-            bedrijfsdetails:
-            bedrijfsdetail 1: De bedrijfsnaam van de klant is ${businessName}.
-            bedrijfsdetail 2: Het type bedrijf is ${businessType}. 
-            bedrijfsdetail 3: Dit is waar de klanten van het bedrijf zich bevinden: ${location}.
-            bedrijfsdetail 4: Het distributiekanaal van de klant is: ${salesChannel}.
-            bedrijfsdetail 5: De operationele status van het bedrijf van de klant is ${businessOperationalStatus}.
-        
-            Dit zijn details van de producten of diensten van de klant. VERMELD GEEN extra producten of diensten die hier niet worden vermeld:
-            ${productInfoPrompt}
-            Deze product- of dienstdetails MOETEN worden opgenomen in de ${mark3TopicNL}.
-            
-            Dit zijn de onderwerpen die gegenereerd moeten worden: ${mark3TopicNL}, voeg geen andere onderwerpen toe tenzij hier gespecificeerd. Wees zeer beschrijvend bij het genereren van inhoud voor elk onderwerp.
-        
-            ${customerPrompt}
-        
-            Voor de productstrategie, beschrijf het product of de dienst in detail. Het is belangrijk: de productstrategie MOET gebaseerd zijn op de beschrijving van de klantengroep. De beste productstrategie is afgestemd op de beschrijving van de klantengroep. Het thema van de productstrategie moet de volgende onderwerpen bevatten Productbeschrijving, Productdifferentiatie, Productontwikkeling en Productbranding. Deze onderwerpen moeten worden ingesloten in <h6> tags.
-            
-            ${productDescriptionPrompt}
-            
-            ${productDifferentiationPrompt}
-            
-            ${productDevelopmentPrompt}
-        
-            ${productBrandingPrompt}
-            
-            Voor het onderwerp Prijsstrategie zijn er 3 belangrijke prijsstrategieën: waardegebaseerde prijsstelling, kostengebaseerde prijsstelling en concurrentiegebaseerde prijsstelling. Selecteer een van deze strategieën en leg uit waarom u die specifieke strategie heeft gekozen en leg uit hoe u die strategie zult implementeren en wees zeer beschrijvend. Dit is belangrijk: de productstrategie MOET zich afstemmen op het POSITIONERINGSONDERWERP van het STP-onderwerp.
-            
-            Herhaal geen bedrijfsdetails.
-            Schrijf dit alsof u de eigenaar van het bedrijf bent, gebruik "wij" en niet "ik".
-            Genereer een reactie in html rond de onderwerpen ${mark3TopicNL} met de h5-tag. 
-            Begin de voltooiing met "<h4>4P</h4>" gevolgd door "<h5>Productstrategie</h5>" herhaal deze onderwerpen niet: "<h4>4P</h4>" en "<h5>Productstrategie</h5>", opnieuw in de voltooiing.
-            Genereer alles in het Nederlands.
-            Dit is de lange, gedetailleerde en uitgebreide ${mark3TopicNL} die u heeft opgesteld:
-            `,
+    U bent een professionele consultant en een klant benadert u om een lange en gedetailleerde ${mark3TopicNL} voor een bedrijfsplan te schrijven.
+    
+    bedrijfsgegevens:
+    bedrijfsgegeven 1: De naam van het bedrijf van de klant is ${businessName}.
+    bedrijfsgegeven 2: Het type bedrijf is ${businessType}. 
+    bedrijfsgegeven 3: Hier bevinden zich de klanten van het bedrijf: ${location}.
+    bedrijfsgegeven 4: Het distributiekanaal van de klant is: ${salesChannel}.
+    bedrijfsgegeven 5: De operationele status van het bedrijf van de klant is ${businessOperationalStatus}.
+    
+    Dit zijn de details van de producten of diensten van de klant. NOEM GEEN extra producten of diensten die hier niet worden vermeld:
+    ${productInfoPrompt}
+    Deze product- of dienstgegevens MOETEN worden opgenomen in de ${mark3TopicNL}.
+    
+    voor de ${mark3TopicNL} MOET u deze targeting- en positioneringsgegevens overwegen:
+    Dit zijn de targetinggegevens: ${targeting}
+    Dit zijn de positioneringsgegevens: ${positioning}
+    Gebruik het als gegevensbron, maar neem de targeting- en positioneringsgegevens niet letterlijk op in uw antwoord.
+    
+    Voor de ${mark3TopicNL} beschrijft u deze in detail. Dit is belangrijk: de ${mark3TopicNL} MOET zich afstemmen op de positioneringsgegevens. De beste ${mark3TopicNL} stemt overeen met de positionering. ${mark3TopicNL} onderwerpen moeten bevatten: ${AITopicTopicProductString}
+    Deze onderwerpnamen moeten in de <h4>-tag staan.
+    
+    Dit zijn meer informatie om de bovengenoemde onderwerpen te genereren:
+    ${AITopicAllProductString}
+    
+    Herhaal geen bedrijfsgegevens.
+    Schrijf dit alsof u de eigenaar van het bedrijf bent, gebruik "wij" en niet "ik".
+    Genereer de reactie in HTML en omring de ${mark3TopicNL} onderwerpen met de <h5>-tag. 
+    Begin de voltooiing met "<h3>Producten- en dienstensectie</h3>". Herhaal dit onderwerp niet: "<h3>Producten- en dienstensectie</h3>"
+    Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik geen ** **, gebruik in plaats daarvan de <strong>-tag voor vetgedrukt. Gebruik geen * *, gebruik in plaats daarvan de <em>-tag voor cursief. Gebruik geen * voor opsommingstekens, gebruik in plaats daarvan de <li>-tag.
+    genereer alles in het Nederlands
+    Genereer minimaal 1000 woorden.
+    Dit is belangrijk: Wees zeer inzichtelijk in uw antwoord.
+    Dit is de lange, gedetailleerde en inzichtelijke ${mark3TopicNL} die u hebt bedacht:
+    `,
     ja: `
-            あなたはプロのコンサルタントで、顧客がビジネスプランのための長く詳細な${mark3TopicJA}を書くように依頼してきました。
-        
-            ビジネスの詳細:
-            ビジネス詳細1: クライアントのビジネス名は${businessName}です。
-            ビジネス詳細2: ビジネスのタイプは${businessType}です。
-            ビジネス詳細3: これがビジネスの顧客がいる場所です: ${location}。
-            ビジネス詳細4: クライアントの配布チャネルは: ${salesChannel}。
-            ビジネス詳細5: クライアントのビジネス運営状況は${businessOperationalStatus}です。
-        
-            これらはクライアントの製品またはサービスの詳細です。ここに記載されていない追加の製品やサービスは言及しないでください:
-            ${productInfoPrompt}
-            これらの製品またはサービスの詳細は${mark3TopicJA}に必ず含める必要があります。
-            
-            ${customerPrompt}
-        
-            価格戦略のトピックには、価値ベースの価格設定、コストベースの価格設定、競争ベースの価格設定の3つの主要な価格戦略があります。これらの戦略のいずれかを選択し、その特定の戦略を選んだ理由と、その戦略をどのように実装するかを説明し、非常に詳細に説明してください。これは重要です: 製品戦略はSTPトピックのPOSITIONING TOPICに必ず合わせる必要があります。
-            
-            ${productDescriptionPrompt}
-            
-            ${productDifferentiationPrompt}
-            
-            ${productDevelopmentPrompt}
-        
-            ${productBrandingPrompt}
-            
-            価格戦略のトピックには、価値ベースの価格設定、コストベースの価格設定、競争ベースの価格設定の3つの主要な価格戦略があります。これらの戦略のいずれかを選択し、その特定の戦略を選んだ理由と、その戦略をどのように実装するかを説明し、非常に詳細に説明してください。これは重要です: 製品戦略はSTPトピックのPOSITIONING TOPICに必ず合わせる必要があります。
-            
-            ビジネスの詳細を繰り返さないでください。
-            あなたがビジネスのオーナーであるかのように書き、"私たちは"を使い、"私は"を使わないでください。
-            ${mark3TopicJA}のトピックをh5タグで囲んでHTMLのレスポンスを生成します。
-            完成を"<h4>4P</h4>"で始め、次に"<h5>製品戦略</h5>"を続けます。これらのトピックを再度繰り返さないでください: "<h4>4P</h4>"と"<h5>製品戦略</h5>"。
-            すべてを日本語で生成します。
-            これがあなたが考え出した長く、詳細で、長い${mark3TopicJA}です:
-            `,
+    あなたはプロのコンサルタントであり、顧客がビジネスプランのために長く詳細な${mark3TopicJA}を書くように依頼してきます。
+    
+    ビジネスの詳細:
+    ビジネスの詳細 1: クライアントのビジネス名は${businessName}です。
+    ビジネスの詳細 2: ビジネスの種類は${businessType}です。
+    ビジネスの詳細 3: これはビジネスの顧客がいる場所です: ${location}。
+    ビジネスの詳細 4: クライアントの流通チャネルは: ${salesChannel}です。
+    ビジネスの詳細 5: クライアントのビジネスの運営状況は${businessOperationalStatus}です。
+    
+    これらはクライアントの製品またはサービスの詳細です。ここに記載されていない追加の製品やサービスには言及しないでください:
+    ${productInfoPrompt}
+    これらの製品またはサービスの詳細は${mark3TopicJA}に含める必要があります。
+    
+    ${mark3TopicJA}のために、次のターゲティングおよびポジショニングデータを考慮する必要があります:
+    これはターゲティングデータです: ${targeting}
+    これはポジショニングデータです: ${positioning}
+    データソースとして使用しますが、ターゲティングおよびポジショニングデータをそのまま回答に含めないでください。
+    
+    ${mark3TopicJA}のために、詳細に説明してください。これは重要です: ${mark3TopicJA}はポジショニングデータに合わせる必要があります。最良の${mark3TopicJA}はポジショニングと一致します。${mark3TopicJA}のトピックには次のものを含める必要があります: ${AITopicTopicProductString}
+    これらのトピック名は<h4>タグにする必要があります。
+    
+    上記のトピックを生成するための追加情報は次のとおりです:
+    ${AITopicAllProductString}
+    
+    ビジネスの詳細を繰り返さないでください。
+    ビジネスの所有者であるかのように、「私」ではなく「私たち」を使用してこれを書いてください。
+    ${mark3TopicJA}のトピックを<h5>タグで囲んでHTMLで応答を生成します。
+    "<h3>製品とサービス</h3>"で完了を開始します。このトピックを繰り返さないでください: "<h3>製品とサービス</h3>"
+    HTMLタグのみを使用し、マークダウンを使用しないでください。** **を使用せず、代わりに<strong>タグを使用して太字にします。* *を使用せず、代わりに<em>タグを使用して斜体にします。箇条書きには*を使用せず、代わりに<li>タグを使用します。
+    すべて日本語で生成します。
+    少なくとも1000語を生成します。
+    これは重要です: 回答に非常に洞察力を持たせてください。
+    これはあなたが考えた長く、詳細で、洞察力のある${mark3TopicJA}です:
+    `,
     ar: `
-            أنت مستشار محترف، ويقترب منك العميل لكتابة ${mark3TopicAR} طويلة ومفصلة لخطة العمل.
-        
-            تفاصيل العمل:
-            تفاصيل العمل 1: اسم العمل للعميل هو ${businessName}.
-            تفاصيل العمل 2: نوع العمل هو ${businessType}.
-            تفاصيل العمل 3: هذا هو المكان الذي يتواجد فيه عملاء العمل: ${location}.
-            تفاصيل العمل 4: قناة التوزيع للعميل هي: ${salesChannel}.
-            تفاصيل العمل 5: حالة تشغيل العمل للعميل هي ${businessOperationalStatus}.
-        
-            هذه تفاصيل منتجات العميل أو الخدمات. لا تذكر منتجات أو خدمات إضافية غير مدرجة هنا:
-            ${productInfoPrompt}
-            يجب تضمين تفاصيل هذه المنتجات أو الخدمات في ${mark3TopicAR}.
-            
-            ${customerPrompt}
-        
-            بالنسبة لموضوع استراتيجية التسعير، هناك ثلاث استراتيجيات تسعير رئيسية: التسعير بناءً على القيمة، التسعير بناءً على التكلفة، والتسعير بناءً على المنافسة. اختر واحدة من هذه الاستراتيجيات واشرح السبب وراء اختيارك لهذه الاستراتيجية بالذات واشرح كيف ستطبق هذه الاستراتيجية وكن واضحًا جدًا. هذا مهم: يجب أن تتوافق استراتيجية المنتج مع موضوع POSITIONING من موضوع STP.
-            
-            ${productDescriptionPrompt}
-            
-            ${productDifferentiationPrompt}
-            
-            ${productDevelopmentPrompt}
-        
-            ${productBrandingPrompt}
-            
-            بالنسبة لموضوع استراتيجية التسعير، هناك ثلاث استراتيجيات تسعير رئيسية: التسعير بناءً على القيمة، التسعير بناءً على التكلفة، والتسعير بناءً على المنافسة. اختر واحدة من هذه الاستراتيجيات واشرح السبب وراء اختيارك لهذه الاستراتيجية بالذات واشرح كيف ستطبق هذه الاستراتيجية وكن واضحًا جدًا. هذا مهم: يجب أن تتوافق استراتيجية المنتج مع موضوع POSITIONING من موضوع STP.
-            
-            لا تكرر تفاصيل العمل.
-            اكتب هذا كما لو كنت صاحب العمل، باستخدام "نحن" وليس "أنا".
-            قم بإنشاء الرد في html محيطًا بمواضيع ${mark3TopicAR} بوسم h5.
-            ابدأ الاكتمال بـ "<h4>4P</h4>" تليها "<h5>استراتيجية المنتج</h5>" لا تكرر هذا الموضوع: "<h4>4P</h4>" و "<h5>استراتيجية المنتج</h5>"، مرة أخرى في الاكتمال.
-            أنشئ كل شيء باللغة العربية.
-            هذا هو ${mark3TopicAR} الطويل والمفصل الذي أعددته:
-            `,
+    أنت مستشار محترف، ويقترب منك عميل لكتابة ${mark3TopicAR} طويل ومفصل لخطة عمل.
+    
+    تفاصيل العمل:
+    تفاصيل العمل 1: اسم عمل العميل هو ${businessName}.
+    تفاصيل العمل 2: نوع العمل هو ${businessType}.
+    تفاصيل العمل 3: هذا هو المكان الذي يتواجد فيه عملاء العمل: ${location}.
+    تفاصيل العمل 4: قناة توزيع العميل هي: ${salesChannel}.
+    تفاصيل العمل 5: حالة التشغيل لعمل العميل هي ${businessOperationalStatus}.
+    
+    هذه هي تفاصيل منتجات أو خدمات العميل. لا تذكر منتجات أو خدمات إضافية غير مذكورة هنا:
+    ${productInfoPrompt}
+    يجب تضمين تفاصيل هذه المنتجات أو الخدمات في ${mark3TopicAR}.
+    
+    بالنسبة لـ ${mark3TopicAR}، يجب أن تأخذ في الاعتبار بيانات الاستهداف والتموضع التالية:
+    هذه هي بيانات الاستهداف: ${targeting}
+    هذه هي بيانات التموضع: ${positioning}
+    استخدمها كمصدر للبيانات ولكن لا تتضمن بيانات الاستهداف والتموضع حرفياً في ردك.
+    
+    بالنسبة لـ ${mark3TopicAR}، قم بوصفها بالتفصيل. هذا مهم: يجب أن يتماشى ${mark3TopicAR} مع بيانات التموضع. أفضل ${mark3TopicAR} يتماشى مع التموضع. يجب أن تتضمن مواضيع ${mark3TopicAR} ما يلي: ${AITopicTopicProductString}
+    يجب أن تكون أسماء هذه المواضيع في علامة <h4>.
+    
+    هذه هي المزيد من المعلومات لتوليد المواضيع المذكورة أعلاه:
+    ${AITopicAllProductString}
+    
+    لا تكرر تفاصيل العمل.
+    اكتب هذا كما لو كنت مالك العمل، باستخدام "نحن" ولا تستخدم "أنا".
+    قم بإنشاء الرد في HTML محاطًا بمواضيع ${mark3TopicAR} بعلامة h5.
+    ابدأ الإكمال بـ "<h3>المنتجات والخدمات</h3>". لا تكرر هذا الموضوع: "<h3>المنتجات والخدمات</h3>"
+    استخدم فقط علامات HTML ولا تستخدم الماركدوان. لا تستخدم ** **، بدلاً من ذلك استخدم علامة <strong> للتغميق. لا تستخدم * *، بدلاً من ذلك استخدم علامة <em> للمائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامة <li>.
+    قم بإنشاء كل شيء باللغة العربية.
+    قم بإنشاء ما لا يقل عن 1000 كلمة.
+    هذا مهم: كن بليغًا جدًا في ردك.
+    هذا هو ${mark3TopicAR} الطويل والمفصل والبليغ الذي توصلت إليه:
+    `,
     sv: `
-            Du är en professionell konsult och en kund närmar sig dig för att skriva en lång och detaljerad ${mark3TopicSV} för en affärsplan.
-        
-            Affärsdetaljer:
-            Affärsdetalj 1: Kundens företagsnamn är ${businessName}.
-            Affärsdetalj 2: Typen av verksamhet är ${businessType}.
-            Affärsdetalj 3: Detta är var företagets kunder finns: ${location}.
-            Affärsdetalj 4: Kundens distributionskanal är: ${salesChannel}.
-            Affärsdetalj 5: Kundens företags operativa status är ${businessOperationalStatus}.
-        
-            Detta är detaljer om kundens produkter eller tjänster. NÄMN INTE ytterligare produkter eller tjänster som inte listas här:
-            ${productInfoPrompt}
-            Dessa produkter eller tjänster detaljer MÅSTE inkluderas i ${mark3TopicSV}.
-            
-            Dessa är ämnet som ska genereras: ${mark3TopicSV}, inkludera inte andra ämnen om inte specificerat här. Var mycket beskrivande när du genererar innehåll för varje ämne.
-        
-              ${customerPrompt}
-        
-            För produktstrategin, beskriv produkten eller tjänsten i detalj. Det är viktigt: produktstrategin MÅSTE baseras på beskrivningen av kundgruppen. Den bästa produktstrategin är i linje med beskrivningen av kundgruppen. Temat för produktstrategin måste inkludera följande ämnen Produktbeskrivning, Produktdifferentiering, Produktutveckling och Produktvarumärkning. Dessa ämnen måste vara inneslutna i <h6> taggar.
-            
-            ${productDescriptionPrompt}
-            
-            ${productDifferentiationPrompt}
-            
-            ${productDevelopmentPrompt}
-        
-            ${productBrandingPrompt}
-            
-            För prissättningsstrategiämnet finns det 3 stora prissättningsstrategier: värdebaserad prissättning, kostnadsbaserad prissättning och konkurrensbaserad prissättning. Välj en av dessa strategier och förklara anledningen till varför du valde den specifika strategin och förklara hur du kommer att implementera den strategin och var mycket beskrivande. Detta är viktigt: produktstrategin MÅSTE anpassa sig till POSITIONERINGSTEMAT från STP-ämnet.
-            
-            Upprepa inte affärsdetaljer.
-            Skriv detta som om du är ägaren till företaget, använd "vi" använd inte "jag".
-            Generera svar i html omger ${mark3TopicSV} ämnen med h5 tagg. 
-            Börja slutförandet med "<h4>4P</h4>" följt av "<h5>Produktstrategi</h5>" upprepa inte dessa ämnen: "<h4>4P</h4>" och "<h5>Produktstrategi</h5>", igen i slutförandet.
-            Generera allt på svenska.
-            Detta är den långa, detaljerade och långa ${mark3TopicSV} du kom upp med:
-            `,
+    Du är en professionell konsult, och en kund närmar sig dig för att skriva en lång och detaljerad ${mark3TopicSV} för en affärsplan.
+    
+    affärsdetaljer:
+    affärsdetalj 1: Kundens företagsnamn är ${businessName}.
+    affärsdetalj 2: Typen av företag är ${businessType}.
+    affärsdetalj 3: Detta är var företagets kunder finns: ${location}.
+    affärsdetalj 4: Kundens distributionskanal är: ${salesChannel}.
+    affärsdetalj 5: Kundens företags operativa status är ${businessOperationalStatus}.
+    
+    Detta är detaljer om kundens produkter eller tjänster. Nämn INTE ytterligare produkter eller tjänster som inte listas här:
+    ${productInfoPrompt}
+    Dessa produkt- eller tjänstedetaljer MÅSTE inkluderas i ${mark3TopicSV}.
+    
+    för ${mark3TopicSV}, MÅSTE du överväga dessa mål- och positioneringsdata:
+    Detta är målgruppsdata: ${targeting}
+    Detta är positioneringsdata: ${positioning}
+    Använd det som datakälla men inkludera inte mål- och positioneringsdata ordagrant i ditt svar.
+    
+    För ${mark3TopicSV}, beskriv det i detalj. Detta är viktigt: ${mark3TopicSV} MÅSTE anpassa sig till positioneringsdata. Den bästa ${mark3TopicSV} anpassar sig till positioneringen. ${mark3TopicSV} ämnen bör inkludera: ${AITopicTopicProductString}
+    Dessa ämnesnamn bör vara i <h4>-taggen.
+    
+    Detta är mer information för att generera de ovan nämnda ämnena:
+    ${AITopicAllProductString}
+    
+    Upprepa inte affärsdetaljer.
+    Skriv detta som om du är ägaren av företaget, använd "vi" och inte "jag".
+    Generera svar i HTML som omger ${mark3TopicSV} ämnen med h5-taggen.
+    Börja avslutningen med "<h3>Produkt- och tjänstesektion</h3>". Upprepa inte detta ämne: "<h3>Produkt- och tjänstesektion</h3>"
+    använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv stil. Använd inte * för punktlistor, använd istället <li>-taggen.
+    generera allt på svenska
+    Generera minst 1000 ord.
+    Detta är viktigt: Var mycket insiktsfull i ditt svar.
+    Detta är den långa, detaljerade och insiktsfulla ${mark3TopicSV} du kom på:
+    `,
     fi: `
-            Olet ammattimainen konsultti, ja asiakas lähestyy sinua kirjoittamaan pitkän ja yksityiskohtaisen ${mark3TopicFI} liiketoimintasuunnitelmaan.
-        
-            liiketoiminnan tiedot:
-            liiketoiminnan yksityiskohta 1: Asiakkaan yrityksen nimi on ${businessName}.
-            liiketoiminnan yksityiskohta 2: Liiketoiminnan tyyppi on ${businessType}. 
-            liiketoiminnan yksityiskohta 3: Tässä ovat yrityksen asiakkaat: ${location}.
-            liiketoiminnan yksityiskohta 4: Asiakkaan jakelukanava on: ${salesChannel}.
-            liiketoiminnan yksityiskohta 5: Asiakkaan yrityksen toiminnallinen tila on ${businessOperationalStatus}.
-        
-            Nämä ovat asiakkaan tuotteiden tai palveluiden tiedot. ÄLÄ mainitse muita tuotteita tai palveluita, jotka eivät ole lueteltu tässä:
-            ${productInfoPrompt}
-            Nämä tuotteiden tai palveluiden tiedot ON sisällytettävä ${mark3TopicFI}.
-            
-            Nämä ovat aihe, joka pitäisi generoida: ${mark3TopicFI}, älä sisällytä muita aiheita, ellei tässä ole määritetty. Ole erittäin kuvaileva generoidessasi sisältöä jokaiselle aiheelle.
-        
-              ${customerPrompt}
-        
-              Tuotestrategian osalta kuvaile tuotetta tai palvelua yksityiskohtaisesti. On tärkeää: tuotestrategian ON perustuttava asiakasryhmän kuvaamiseen. Paras tuotestrategia on linjassa asiakasryhmän kuvauksen kanssa. Tuotestrategian teeman on sisällettävä seuraavat aiheet Tuotteen kuvaus, Tuotteen erottaminen, Tuotekehitys ja Tuotemerkintä. Nämä aiheet on suljettava <h6> -tageihin.
-            
-            ${productDescriptionPrompt}
-            
-            ${productDifferentiationPrompt}
-            
-            ${productDevelopmentPrompt}
-        
-            ${productBrandingPrompt}
-            
-            Hinnoittelustrategia-aiheessa on 3 suurta hinnoittelustrategiaa: arvopohjainen hinnoittelu, kustannuspohjainen hinnoittelu ja kilpailupohjainen hinnoittelu. Valitse yksi näistä strategioista ja selitä, miksi valitsit juuri kyseisen strategian, ja selitä, miten toteutat kyseisen strategian, ja ole erittäin kuvaileva. Tämä on tärkeää: tuotestrategian ON sopeuduttava STP-aiheen POSITIONOINTI-AIHEESEEN.
-            
-            Älä toista liiketoiminnan yksityiskohtia.
-            Kirjoita tämä ikään kuin olisit yrityksen omistaja, käytä "me", älä käytä "minä".
-            Generoi vastaus html:ssä ympäröimällä ${mark3TopicFI} aiheet h5-tagilla. 
-            Aloita täydennys "<h4>4P</h4>" seurattuna "<h5>Tuotestrategia</h5>", älä toista näitä aiheita: "<h4>4P</h4>" ja "<h5>Tuotestrategia</h5>", uudelleen täydennyksessä.
-            Generoi kaikki suomeksi.
-            Tämä on pitkä, yksityiskohtainen ja laaja ${mark3TopicFI}, jonka keksit:
-            `,
+    Olet ammattimainen konsultti, ja asiakas lähestyy sinua kirjoittamaan pitkän ja yksityiskohtaisen ${mark3TopicFI} liiketoimintasuunnitelmaa varten.
+    
+    liiketoiminnan tiedot:
+    liiketoiminnan tieto 1: Asiakkaan yrityksen nimi on ${businessName}.
+    liiketoiminnan tieto 2: Yrityksen tyyppi on ${businessType}.
+    liiketoiminnan tieto 3: Tässä ovat yrityksen asiakkaat: ${location}.
+    liiketoiminnan tieto 4: Asiakkaan jakelukanava on: ${salesChannel}.
+    liiketoiminnan tieto 5: Asiakkaan yrityksen toiminnallinen tila on ${businessOperationalStatus}.
+    
+    Nämä ovat asiakkaan tuotteiden tai palveluiden tiedot. ÄLÄ mainitse lisätuotteita tai -palveluita, joita ei ole lueteltu tässä:
+    ${productInfoPrompt}
+    Nämä tuotteiden tai palveluiden tiedot on SISÄLLYTETTÄVÄ ${mark3TopicFI}.
+    
+    ${mark3TopicFI} varten sinun on otettava huomioon nämä kohdistus- ja asemointitiedot:
+    Nämä ovat kohdistustiedot: ${targeting}
+    Nämä ovat asemointitiedot: ${positioning}
+    Käytä niitä tietolähteenä, mutta älä sisällytä kohdistus- ja asemointitietoja vastaukseesi sanasta sanaan.
+    
+    ${mark3TopicFI} varten kuvaile se yksityiskohtaisesti. Tämä on tärkeää: ${mark3TopicFI} on sovitettava asemointitietoihin. Paras ${mark3TopicFI} soveltuu asemointiin. ${mark3TopicFI} aiheet tulisi sisältää: ${AITopicTopicProductString}
+    Näiden aiheiden nimet tulisi olla <h4>-tagissa.
+    
+    Tässä on lisää tietoa edellä mainittujen aiheiden tuottamiseksi:
+    ${AITopicAllProductString}
+    
+    Älä toista liiketoiminnan tietoja.
+    Kirjoita tämä ikään kuin olisit yrityksen omistaja, käytä "me" äläkä "minä".
+    Luo vastaus HTML-muodossa ympäröimällä ${mark3TopicFI} aiheet h5-tagilla.
+    Aloita täydennys "<h3>Tuotteet ja palvelut</h3>". Älä toista tätä aihetta: "<h3>Tuotteet ja palvelut</h3>"
+    käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, käytä sen sijaan <strong>-tagia lihavointiin. Älä käytä * *, käytä sen sijaan <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, käytä sen sijaan <li>-tagia.
+    luo kaikki suomeksi
+    Luo vähintään 1000 sanaa.
+    Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
+    Tämä on pitkä, yksityiskohtainen ja oivaltava ${mark3TopicFI}, jonka keksit:
+    `,
     da: `
-            Du er en professionel konsulent, og en kunde henvender sig til dig for at skrive en lang og detaljeret ${mark3TopicDA} til en forretningsplan.
-        
-            forretningsdetaljer:
-            forretningsdetalje 1: Kundens virksomhedsnavn er ${businessName}.
-            forretningsdetalje 2: Virksomhedens type er ${businessType}. 
-            forretningsdetalje 3: Dette er hvor virksomhedens kunder er: ${location}.
-            forretningsdetalje 4: Kundens distributionskanal er: ${salesChannel}.
-            forretningsdetalje 5: Kundens virksomheds operationelle status er ${businessOperationalStatus}.
-        
-            Dette er detaljer om kundens produkter eller tjenester. NÆVN IKKE yderligere produkt eller tjenester, der ikke er opført her:
-            ${productInfoPrompt}
-            Disse produkter eller tjenester detaljer SKAL inkluderes i ${mark3TopicDA}.
-            
-            Dette er emnet, der skal genereres: ${mark3TopicDA}, inkluder ikke andre emner, medmindre det er specificeret her. Vær meget beskrivende i generering af indhold for hvert emne.
-        
-              ${customerPrompt}
-        
-              For produktstrategien, beskriv produktet eller tjenesten i detaljer. Det er vigtigt: produktstrategien SKAL være baseret på beskrivelsen af kundegruppen. Den bedste produktstrategi er i overensstemmelse med beskrivelsen af kundegruppen. Temaet for produktstrategien skal inkludere følgende emner Produktbeskrivelse, Produkt Differentiering, Produktudvikling og Produkt Branding. Disse emner skal være indkapslet i <h6> tags.
-            
-            ${productDescriptionPrompt}
-            
-            ${productDifferentiationPrompt}
-            
-            ${productDevelopmentPrompt}
-        
-            ${productBrandingPrompt}
-            
-            For prisstrategi emnet, er der 3 store prisstrategier: værdibaseret prissætning, omkostningsbaseret prissætning og konkurrencebaseret prissætning. Vælg en af disse strategier og forklar årsagen til, hvorfor du valgte netop den strategi, og forklar, hvordan du vil implementere den strategi, og vær meget beskrivende. Dette er vigtigt: produktstrategien SKAL tilpasse sig POSITIONERINGSEMNET fra STP-emnet.
-            
-            Gentag ikke forretningsdetaljer.
-            Skriv dette som om du er ejeren af virksomheden, brug "vi", brug ikke "jeg".
-            Generer svar i html omgivet ${mark3TopicDA} emner med h5 tag. 
-            Begynd udfyldelsen med "<h4>4P</h4>" efterfulgt af "<h5>Produktstrategi</h5>" gentag ikke disse emner: "<h4>4P</h4>" og "<h5>Produktstrategi</h5>", igen i udfyldelsen.
-            Generer alt på dansk.
-            Dette er den lange, detaljerede og omfattende ${mark3TopicDA} du kom op med:
-            `,
+    Du er en professionel konsulent, og en kunde henvender sig til dig for at skrive en lang og detaljeret ${mark3TopicDA} til en forretningsplan.
+    
+    forretningsdetaljer:
+    forretningsdetalje 1: Kundens virksomhedsnavn er ${businessName}.
+    forretningsdetalje 2: Virksomhedens type er ${businessType}.
+    forretningsdetalje 3: Dette er, hvor virksomhedens kunder er: ${location}.
+    forretningsdetalje 4: Kundens distributionskanal er: ${salesChannel}.
+    forretningsdetalje 5: Kundens virksomheds operationelle status er ${businessOperationalStatus}.
+    
+    Dette er detaljer om kundens produkter eller tjenester. Nævn IKKE yderligere produkter eller tjenester, der ikke er nævnt her:
+    ${productInfoPrompt}
+    Disse produkt- eller tjenestedetaljer SKAL inkluderes i ${mark3TopicDA}.
+    
+    for ${mark3TopicDA}, SKAL du overveje disse mål- og positioneringsdata:
+    Dette er måldataene: ${targeting}
+    Dette er positioneringsdataene: ${positioning}
+    Brug det som datakilde, men inkluder ikke mål- og positioneringsdataene ordret i dit svar.
+    
+    For ${mark3TopicDA}, beskriv det i detaljer. Dette er vigtigt: ${mark3TopicDA} SKAL tilpasse sig positioneringsdataene. Den bedste ${mark3TopicDA} tilpasser sig positioneringen. ${mark3TopicDA} emner bør inkludere: ${AITopicTopicProductString}
+    Disse emnenavne skal være i <h4>-taggen.
+    
+    Dette er mere information til at generere de førnævnte emner:
+    ${AITopicAllProductString}
+    
+    Gentag ikke forretningsdetaljer.
+    Skriv dette, som om du er ejer af virksomheden, brug "vi" og ikke "jeg".
+    Generer svar i HTML, der omgiver ${mark3TopicDA} emner med h5-taggen.
+    Begynd afslutningen med "<h3>Produkt- og servicesektion</h3>". Gentag ikke dette emne: "<h3>Produkt- og servicesektion</h3>"
+    brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-taggen til fed skrift. Brug ikke * *, brug i stedet <em>-taggen til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <li>-taggen.
+    generer alt på dansk
+    Generer mindst 1000 ord.
+    Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
+    Dette er den lange, detaljerede og indsigtsfulde ${mark3TopicDA}, du kom op med:
+    `,
     no: `
-            Du er en profesjonell konsulent, og en kunde nærmer seg deg for å skrive en lang og detaljert ${mark3TopicNO} for en forretningsplan.
-        
-            forretningsdetaljer:
-            forretningsdetalj 1: Kundens firmanavn er ${businessName}.
-            forretningsdetalj 2: Typen virksomhet er ${businessType}. 
-            forretningsdetalj 3: Dette er hvor virksomhetens kunder er: ${location}.
-            forretningsdetalj 4: Kundens distribusjonskanal er: ${salesChannel}.
-            forretningsdetalj 5: Kundens virksomhets operasjonelle status er ${businessOperationalStatus}.
-        
-            Dette er detaljer om kundens produkter eller tjenester. NEVN IKKE ytterligere produkt eller tjenester som ikke er oppført her:
-            ${productInfoPrompt}
-            Disse produktene eller tjenestene detaljer MÅ inkluderes i ${mark3TopicNO}.
-            
-            Dette er emnet som skal genereres: ${mark3TopicNO}, inkluder ikke andre emner, med mindre det er spesifisert her. Vær veldig beskrivende i generering av innhold for hvert emne.
-        
-              ${customerPrompt}
-        
-            For produktstrategien, beskriv produktet eller tjenesten i detalj. Det er viktig: produktstrategien MÅ være basert på beskrivelsen av kundegruppen. Den beste produktstrategien er i samsvar med beskrivelsen av kundegruppen. Temaet for produktstrategien skal inkludere følgende emner Produktbeskrivelse, Produkt Differensiering, Produktutvikling og Produkt Branding. Disse emnene skal være innkapslet i <h6> tags.
-            
-            ${productDescriptionPrompt}
-            
-            ${productDifferentiationPrompt}
-            
-            ${productDevelopmentPrompt}
-        
-            ${productBrandingPrompt}
-            
-            For prissettingsstrategi emnet, er det 3 store prissettingsstrategier: verdi-basert prissetting, kostnadsbasert prissetting og konkurransebasert prissetting. Velg en av disse strategiene og forklar grunnen til at du valgte nettopp den strategien, og forklar hvordan du vil implementere den strategien, og vær veldig beskrivende. Dette er viktig: produktstrategien MÅ tilpasse seg POSISJONERINGSEMNET fra STP-emnet.
-            
-            Gjenta ikke forretningsdetaljer.
-            Skriv dette som om du er eieren av virksomheten, bruk "vi", bruk ikke "jeg".
-            Generer svar i html omgir ${mark3TopicNO} emner med h5 tag. 
-            Begynn utfyllingen med "<h4>4P</h4>" etterfulgt av "<h5>Produktstrategi</h5>" gjenta ikke disse emnene: "<h4>4P</h4>" og "<h5>Produktstrategi</h5>", igjen i utfyllingen.
-            Generer alt på norsk.
-            Dette er den lange, detaljerte og omfattende ${mark3TopicNO} du kom opp med:
-            `,
+    Du er en profesjonell konsulent, og en kunde henvender seg til deg for å skrive en lang og detaljert ${mark3TopicNO} for en forretningsplan.
+    
+    forretningsdetaljer:
+    forretningsdetalj 1: Kundens virksomhetsnavn er ${businessName}.
+    forretningsdetalj 2: Virksomhetens type er ${businessType}. 
+    forretningsdetalj 3: Dette er hvor virksomhetens kunder er: ${location}.
+    forretningsdetalj 4: Kundens distribusjonskanal er: ${salesChannel}.
+    forretningsdetalj 5: Kundens virksomhets operasjonelle status er ${businessOperationalStatus}.
+    
+    Dette er detaljer om kundens produkter eller tjenester. IKKE nevn tilleggstjenester eller produkter som ikke er oppført her:
+    ${productInfoPrompt}
+    Disse produktene eller tjenestedetaljene MÅ inkluderes i ${mark3TopicNO}.
+    
+    for ${mark3TopicNO}, MÅ du vurdere disse mål- og posisjoneringsdataene:
+    Dette er måldataene: ${targeting}
+    Dette er posisjoneringsdataene: ${positioning}
+    Bruk det som datakilde, men ikke inkluder mål- og posisjoneringsdataene ordrett i svaret ditt.
+    
+    For ${mark3TopicNO}, beskriv det i detalj. Dette er viktig: ${mark3TopicNO} MÅ tilpasse seg posisjoneringsdataene. Den beste ${mark3TopicNO} tilpasser seg posisjoneringen. ${mark3TopicNO} emner bør inkludere: ${AITopicTopicProductString}
+    Disse emnenavnene skal være i <h4>-taggen.
+    
+    Dette er mer informasjon for å generere de nevnte emnene:
+    ${AITopicAllProductString}
+    
+    Ikke gjenta forretningsdetaljer.
+    Skriv dette som om du er eieren av virksomheten, bruk "vi" og ikke "jeg".
+    Generer svar i HTML som omgir ${mark3TopicNO} emner med h5-taggen. 
+    Begynn avslutningen med "<h3>Produkt- og tjenesteseksjon</h3>". Ikke gjenta dette emnet: "<h3>Produkt- og tjenesteseksjon</h3>"
+    bruk kun HTML-tags, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-taggen for fet skrift. Ikke bruk * *, bruk i stedet <em>-taggen for kursiv skrift. Ikke bruk * for punkttegn, bruk i stedet <li>-taggen.
+    generer alt på norsk
+    Generer minst 1000 ord.
+    Dette er viktig: Vær veldig innsiktsfull i svaret ditt.
+    Dette er den lange, detaljerte og innsiktsfulle ${mark3TopicNO} du kom opp med:
+    `,
   };
 
-  if (variantID === '2') {
-    const payload = {
-      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-      temperature: 0.5,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      max_tokens: 1500,
-      stream: true,
-      n: 1,
-    };
-    return FireworksAIStream(payload);
-  } else {
-    const payload = {
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-      temperature: 0.5,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      max_tokens: 1500,
-      stream: true,
-      n: 1,
-    };
-    return OpenAIStream(payload);
-  }
+  const model =
+    variantID === '2' ? AI_MODEL.GPT_4O_MINI : AI_MODEL.GPT_3_5_TURBO;
+  console.log('model:', model);
+  const payload = {
+    model: modelName ? modelName : model,
+    messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+    temperature: 0.5,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+    max_tokens: 2000,
+    stream: true,
+    n: 1,
+  };
+  return OpenAIStream(payload);
 };

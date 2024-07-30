@@ -31,17 +31,14 @@ export default function ResetPassword({ secretKey }: ResetPasswordProps) {
     setError('');
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/passwordReset2`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            [API_KEY_HEADER]: secretKey,
-          },
-          body: JSON.stringify({ token, newPassword: values.newPassword }),
+      const response = await fetch('/api/auth/passwordReset2', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          [API_KEY_HEADER]: secretKey,
         },
-      );
+        body: JSON.stringify({ token, newPassword: values.newPassword }),
+      });
 
       if (!response.ok) {
         const data = await response.json();

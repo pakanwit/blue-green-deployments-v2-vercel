@@ -14,6 +14,7 @@ import trackEvent from '../utils/trackEvent';
 import Input from './input';
 import { API_KEY_HEADER } from '../pages/api/constants';
 import { formDataTitle } from '../constants/formTitle';
+import useCookies from '../hooks/useCookies';
 
 //****successFactors1 has s but setSuccessFactor1 does not have s****
 export default function Step4KeySuccess({
@@ -232,6 +233,9 @@ export default function Step4KeySuccess({
   const locale = i18n.language;
 
   async function getSuggestionSuccessFactors(id, retryCount = 0) {
+    const { getCookie } = useCookies();
+    const variantID = getCookie('variantID');
+
     callCounterSuccess.current += 1;
 
     if (callCounterSuccess.current >= 2) {
@@ -318,6 +322,7 @@ export default function Step4KeySuccess({
               successFactors3,
 
               locale,
+              variantID,
             }),
           },
         );
@@ -514,6 +519,7 @@ export default function Step4KeySuccess({
               weakness3,
 
               locale,
+              variantID,
             }),
           },
         );

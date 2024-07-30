@@ -16,5 +16,3 @@ export default ({ id }: { id: string }) => {
     </Head>
   );
 };
-
-

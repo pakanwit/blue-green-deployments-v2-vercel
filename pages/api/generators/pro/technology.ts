@@ -201,7 +201,7 @@ export const technologyPro = async (req: ITechnologyPro) => {
     Do not repeat business details.
     Write this as if you are the owner of the business, using "we" don't use "I".
     Begin the completion with "<h3>Technology Strategy</h3>" followed by "<h4>Technology Selection</h4>"
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
     Generate everything in English.
     use british english spelling and grammar
     This is important: Be very insightful in your response.
@@ -233,7 +233,7 @@ export const technologyPro = async (req: ITechnologyPro) => {
     Do not repeat business details.
     Write this as if you are the owner of the business, using "we" don't use "I".
     Begin the completion with "<h3>Technology Strategy</h3>" followed by "<h4>Technology Selection</h4>"
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
     Generate everything in English.
     This is important: Be very insightful in your response.
     This is the long, detailed, and insightful ${promptTopic.en} you came up with:
@@ -265,7 +265,7 @@ export const technologyPro = async (req: ITechnologyPro) => {
     Wiederholen Sie keine Geschäftsdetails.
     Schreiben Sie dies so, als ob Sie der Eigentümer des Unternehmens wären. Verwenden Sie „wir“ und nicht „ich“.
     Beginnen Sie den Abschluss mit „<h3>Technologiestrategie</h3>“, gefolgt von „<h4>Technologieauswahl</h4>“.
-    Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie das -Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie das -Tag für Kursivschrift. Verwenden Sie nicht *, sondern verwenden Sie das -Tag für Aufzählungspunkte.
+Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie den <strong>-Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie den <em>-Tag für Kursivschrift. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie die <ul>- und <li>-Tags.
     Generiere alles auf Deutsch.
     Dies ist wichtig: Seien Sie in Ihrer Antwort sehr einsichtig.
     Dies ist das lange, detaillierte und aufschlussreiche ${promptTopic.de}, das Sie sich ausgedacht haben:
@@ -298,7 +298,7 @@ export const technologyPro = async (req: ITechnologyPro) => {
   Ne répétez pas les détails de l'entreprise.
   Rédigez ceci comme si vous étiez le propriétaire de l'entreprise, en utilisant "nous" et non "je".
   Commencez la rédaction avec "<h3>Stratégie Technologique</h3>" suivi de "<h4>Sélection Technologique</h4>"
-  Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
   Générez tout en français.
   C’est important : Soyez très perspicace dans votre réponse.
   Voici le long, détaillé et perspicace ${promptTopic.fr} que vous avez trouvé :
@@ -331,7 +331,7 @@ export const technologyPro = async (req: ITechnologyPro) => {
   No repita los detalles del negocio.
   Escriba esto como si fuera el dueño del negocio, utilizando "nosotros" y no "yo".
   Comience la redacción con "<h3>Estrategia Tecnológica</h3>" seguido por "<h4>Selección de Tecnología</h4>"
-  Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
   Générez tout en français.
   C’est important : Soyez très perspicace dans votre réponse.
   Voici le long, détaillé et perspicace ${promptTopic.es} que vous avez trouvé :
@@ -364,7 +364,7 @@ export const technologyPro = async (req: ITechnologyPro) => {
     Non ripetere i dettagli aziendali.
     Scriva questo come se fosse il proprietario dell'azienda, usando "noi" e non "io".
     Iniziare la redazione con "<h3>Strategia Tecnologica</h3>" seguito da "<h4>Selezione della Tecnologia</h4>"
-    Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
+  Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
 Générez tout en français.
 C’est important : Soyez très perspicace dans votre réponse.
 Voici le long, détaillé et perspicace ${promptTopic.it} que vous avez trouvé :
@@ -397,7 +397,7 @@ Voici le long, détaillé et perspicace ${promptTopic.it} que vous avez trouvé 
     Herhaal de bedrijfsdetails niet.
     Schrijf dit alsof u de eigenaar van het bedrijf bent, gebruik "wij" en niet "ik".
     Begin de voltooiing met "<h3>Technologie Strategie</h3>" gevolgd door "<h4>Technologie Selectie</h4>"
-    Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik niet ** **, gebruik in plaats daarvan de -tag voor vetgedrukte tekst. Gebruik niet * *, gebruik in plaats daarvan de -tag voor cursieve tekst. Gebruik geen *, gebruik in plaats daarvan de -tag voor opsommingstekens.
+Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik geen ** **, gebruik in plaats daarvan de <strong>-tag voor vetgedrukte tekst. Gebruik geen * *, gebruik in plaats daarvan de <em>-tag voor cursieve tekst. Gebruik geen * voor opsommingstekens, gebruik in plaats daarvan de <ul>- en <li>-tags.
     Genereer alles in het Nederlands.
     Dit is belangrijk: Wees zeer inzichtelijk in uw antwoord.
     Dit is de lange, gedetailleerde en inzichtelijke ${promptTopic.nl} die u bedacht hebt:
@@ -430,6 +430,7 @@ Voici le long, détaillé et perspicace ${promptTopic.it} que vous avez trouvé 
     ビジネスの詳細を繰り返さないでください。
     これをビジネスのオーナーであるかのように書き、"私たちは"を使用し、"私は"を使用しないでください。
     完成を"<h3>技術戦略</h3>"で始め、その後に"<h4>技術選択</h4>"を続けます。
+    HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、代わりに太字には<strong>タグを使用してください。 * *を使用せず、代わりに斜体には<em>タグを使用してください。箇条書きには*を使用せず、代わりに<ul>と<li>タグを使用してください。
     すべてを日本語で生成します。
     これは重要です: 回答には非常に洞察力を持ってください。
     これがあなたが考えた長くて詳細で洞察に満ちた${promptTopic.ja}です:
@@ -462,7 +463,7 @@ Voici le long, détaillé et perspicace ${promptTopic.it} que vous avez trouvé 
     لا تكرر تفاصيل الأعمال.
     اكتب هذا كما لو كنت صاحب العمل، باستخدام "نحن" لا تستخدم "أنا".
     ابدأ الإكمال بـ "<h3>استراتيجية التكنولوجيا</h3>" تليها "<h4>اختيار التكنولوجيا</h4>"
-    استخدم فقط علامات HTML، ولا تستخدم ماركداون. لا تستخدم ** **، بدلاً من ذلك استخدم علامة  للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة  للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامة  للنقاط.
+    استخدم فقط علامات HTML، ولا تستخدم markdown. لا تستخدم ** **، بدلاً من ذلك استخدم علامة <strong> للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة <em> للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامتي <ul> و <li>.
     أنشئ كل شيء باللغة العربية.
     هذا مهم: كن بليغًا جدًا في ردك.
     هذا هو الـ${promptTopic.ar} الطويل والمفصل والعميق الذي توصلت إليه:
@@ -495,7 +496,7 @@ Voici le long, détaillé et perspicace ${promptTopic.it} que vous avez trouvé 
     Upprepa inte affärsdetaljer.
     Skriv detta som om du är ägaren till verksamheten, använd "vi" använd inte "jag".
     Börja slutförandet med "<h3>Teknikstrategi</h3>" följt av "<h4>Teknikval</h4>"
-    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället -taggen för fetstil. Använd inte * *, använd istället -taggen för kursiv. Använd inte *, använd istället -taggen för punktlistor.
+    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv. Använd inte * för punktlistor, använd istället <ul>- och <li>-taggarna.
     Generera allt på svenska.
     Detta är viktigt: Var mycket insiktsfull i ditt svar.
     Detta är den långa, detaljerade och insiktsfulla ${promptTopic.sv} du kom på:
@@ -528,7 +529,7 @@ Voici le long, détaillé et perspicace ${promptTopic.it} que vous avez trouvé 
     Älä toista liiketoiminnan yksityiskohtia.
     Kirjoita tämä kuin olisit yrityksen omistaja, käyttäen "me" älä käytä "minä".
     Aloita täydennys "<h3>Teknologiastrategia</h3>" seuraa "<h4>Teknologian valinta</h4>"
-    Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä vahvennukseen -tagia. Älä käytä * *, vaan käytä kursivointiin -tagia. Älä käytä *, vaan käytä luettelomerkeille -tagia.
+Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä <strong>-tagia lihavointiin. Älä käytä * *, vaan käytä <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, vaan käytä <ul>- ja <li>-tageja.
     Luo kaikki suomeksi.
     Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
     Tämä on pitkä, yksityiskohtainen ja oivaltava ${promptTopic.fi}, jonka keksit:
@@ -561,7 +562,7 @@ Voici le long, détaillé et perspicace ${promptTopic.it} que vous avez trouvé 
     Gentag ikke forretningsdetaljer.
     Skriv dette som om du er ejeren af virksomheden, brug "vi" brug ikke "jeg".
     Begynd udfyldelsen med "<h3>Teknologistrategi</h3>" efterfulgt af "<h4>Teknologivalg</h4>"
-    Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet -tagget til fed skrift. Brug ikke * *, brug i stedet -tagget til kursiv skrift. Brug ikke *, brug i stedet -tagget til punkttegn.
+Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
     Generer alt på dansk.
     Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
     Dette er den lange, detaljerede og indsigtsfulde ${promptTopic.da}, du kom op med:
@@ -594,33 +595,36 @@ Voici le long, détaillé et perspicace ${promptTopic.it} que vous avez trouvé 
     Gjenta ikke forretningsdetaljer.
     Skriv dette som om du er eieren av virksomheten, bruk "vi" bruk ikke "jeg".
     Begynn utfyllingen med "<h3>Teknologistrategi</h3>" etterfulgt av "<h4>Teknologivalg</h4>"
-    ruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet -taggen for fet skrift. Ikke bruk * *, bruk i stedet -taggen for kursiv skrift. Ikke bruk *, bruk i stedet -taggen for punktlister.
+Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-taggen for fet skrift. Ikke bruk * *, bruk i stedet <em>-taggen for kursiv skrift. Ikke bruk * for punktlister, bruk i stedet <ul>- og <li>-taggene.
     Generer alt på norsk.
     Dette er viktig: Vær veldig innsiktsfull i ditt svar.
     Dette er den lange, detaljerte og innsiktsfulle ${promptTopic.no} du kom opp med:
     `,
   };
 
-  let modelPlanQuota = 'gpt-3.5-turbo';
-  if (planQuota <= 8) {
-    modelPlanQuota = 'gpt-3.5-turbo';
-    console.log('using gpt-3.5-turbo');
-  } else {
-    modelPlanQuota = 'gpt-4';
-    console.log('using gpt-4');
-  }
+let modelPlanQuota = 'gpt-3.5-turbo';
+if (planQuota <= 8) {
+  modelPlanQuota = 'gpt-3.5-turbo';
+  console.log('using gpt-3.5-turbo');
+} else {
+  modelPlanQuota = 'gpt-4';
+  console.log('using gpt-4');
+}
 
-  const payload = {
-    model: variantID === '2' ? 'gpt-4o' : modelPlanQuota,
-    messages: [{ role: 'user', content: prompt[planLanguage] ?? prompt.en }],
-    temperature: 0.5,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 1200,
-    stream: true,
-    n: 1,
-  };
+const model = variantID === '2' ? 'gpt-4o' : modelPlanQuota;
+console.log('final model:', model);
 
-  return OpenAIStream(payload);
+const payload = {
+  model: model,
+  messages: [{ role: 'user', content: prompt[planLanguage] ?? prompt.en }],
+  temperature: 0.5,
+  top_p: 1,
+  frequency_penalty: 0,
+  presence_penalty: 0,
+  max_tokens: 1200,
+  stream: true,
+  n: 1,
+};
+
+return OpenAIStream(payload);
 };

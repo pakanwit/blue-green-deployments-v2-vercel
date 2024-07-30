@@ -76,7 +76,7 @@ export default async function api11Risk1(request, response) {
     Do not repeat business details.
     Begin the completion with "<h3>Risk and Mitigation</h3>"
     Write this as if you are the owner of the business, using "we" don't use "I".
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
 Generate everything in English.
 ${UKEngPrompt}
 This is important: Be very insightful in your response.
@@ -104,7 +104,7 @@ This is the long, detailed, and insightful ${risk1TopicEN} you came up with:
     Wiederholen Sie keine Geschäftsdetails.
     Beginnen Sie den Abschluss mit „<h3>Risiko und Schadensbegrenzung</h3>“
     Schreiben Sie dies so, als ob Sie der Eigentümer des Unternehmens wären. Verwenden Sie „wir“ und nicht „ich“.
-    Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie das -Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie das -Tag für Kursivschrift. Verwenden Sie nicht *, sondern verwenden Sie das -Tag für Aufzählungspunkte.
+Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie den <strong>-Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie den <em>-Tag für Kursivschrift. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie die <ul>- und <li>-Tags.
 Generiere alles auf Deutsch.
 Dies ist wichtig: Seien Sie in Ihrer Antwort sehr einsichtig.
 Dies ist das lange, detaillierte und aufschlussreiche ${risk1TopicDE}, das Sie sich ausgedacht haben:
@@ -130,8 +130,8 @@ Dies ist das lange, detaillierte und aufschlussreiche ${risk1TopicDE}, das Sie s
     Ne répétez pas les détails de l'entreprise.
     Commencez la réalisation avec "<h3>Risque et Atténuation</h3>"
     Rédigez ceci comme si vous étiez le propriétaire de l'entreprise, en utilisant "nous" et non "je".
-    Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
-    Générez tout en français.
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
+générez tout en français.
     C’est important : Soyez très perspicace dans votre réponse.
     Voici le long, détaillé et perspicace ${risk1TopicFR} que vous avez trouvé :
     `;
@@ -156,8 +156,8 @@ Dies ist das lange, detaillierte und aufschlussreiche ${risk1TopicDE}, das Sie s
     No repitas los detalles del negocio.
     Comienza la realización con "<h3>Riesgo y Mitigación</h3>"
     Escribe esto como si fueras el dueño del negocio, usando "nosotros" no uses "yo".
-    Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
-    Générez tout en français.
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
+générez tout en français.
     C’est important : Soyez très perspicace dans votre réponse.
     Voici le long, détaillé et perspicace ${risk1TopicFR} que vous avez trouvé :
     `;
@@ -182,7 +182,7 @@ Dies ist das lange, detaillierte und aufschlussreiche ${risk1TopicDE}, das Sie s
     Non ripetere i dettagli dell'azienda.
     Inizia la realizzazione con "<h3>Rischio e Mitigazione</h3>"
     Scrivi questo come se fossi il proprietario dell'azienda, usando "noi" non usare "io".
-    Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag  per il grassetto. Non usare * *, usa invece il tag  per il corsivo. Non usare *, usa invece il tag  per i punti elenco.
+Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
     Genera tutto in italiano.
     Questo è importante: Sii molto perspicace nella tua risposta.
     Questo è il lungo, dettagliato e perspicace ${risk1TopicIT} che hai ideato:
@@ -209,7 +209,7 @@ Dies ist das lange, detaillierte und aufschlussreiche ${risk1TopicDE}, das Sie s
     Herhaal de bedrijfsdetails niet.
     Begin de voltooiing met "<h3>Risico en Mitigatie</h3>"
     Schrijf dit alsof je de eigenaar van het bedrijf bent, gebruik "we" niet "ik".
-    Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik niet ** **, gebruik in plaats daarvan de -tag voor vetgedrukte tekst. Gebruik niet * *, gebruik in plaats daarvan de -tag voor cursieve tekst. Gebruik geen *, gebruik in plaats daarvan de -tag voor opsommingstekens.
+Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik geen ** **, gebruik in plaats daarvan de <strong>-tag voor vetgedrukte tekst. Gebruik geen * *, gebruik in plaats daarvan de <em>-tag voor cursieve tekst. Gebruik geen * voor opsommingstekens, gebruik in plaats daarvan de <ul>- en <li>-tags.
     Genereer alles in het Nederlands.
     Dit is belangrijk: Wees zeer inzichtelijk in uw antwoord.
     Dit is de lange, gedetailleerde en inzichtelijke ${risk1TopicNL} die u bedacht hebt:
@@ -236,7 +236,7 @@ Dies ist das lange, detaillierte und aufschlussreiche ${risk1TopicDE}, das Sie s
     ビジネスの詳細を繰り返さないでください。
     完成を"<h3>リスクと緩和</h3>"で始めてください。
     これをビジネスのオーナーであるかのように書き、"we"を使用し、"I"を使用しないでください。
-    HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、太字にはタグを使用してください。 * *を使用せず、斜体にはタグを使用してください。 *を使用せず、箇条書きにはタグを使用してください。
+HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、代わりに太字には<strong>タグを使用してください。 * *を使用せず、代わりに斜体には<em>タグを使用してください。箇条書きには*を使用せず、代わりに<ul>と<li>タグを使用してください。
     すべてを日本語で生成します。
     これは重要です: 回答には非常に洞察力を持ってください。
     これがあなたが考えた長くて詳細で洞察に満ちた${risk1TopicJA}です:
@@ -263,7 +263,7 @@ Dies ist das lange, detaillierte und aufschlussreiche ${risk1TopicDE}, das Sie s
     لا تكرر تفاصيل العمل.
     ابدأ الإكمال بـ "<h3>المخاطر والتخفيف</h3>"
     اكتب هذا كما لو كنت صاحب العمل، باستخدام "نحن" وليس "أنا".
-    استخدم فقط علامات HTML، ولا تستخدم ماركداون. لا تستخدم ** **، بدلاً من ذلك استخدم علامة  للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة  للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامة  للنقاط.
+    استخدم فقط علامات HTML، ولا تستخدم markdown. لا تستخدم ** **، بدلاً من ذلك استخدم علامة <strong> للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة <em> للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامتي <ul> و <li>.
     أنشئ كل شيء باللغة العربية.
     هذا مهم: كن بليغًا جدًا في ردك.
     هذا هو الـ${risk1TopicAR} الطويل والمفصل والعميق الذي توصلت إليه:
@@ -290,7 +290,7 @@ Dies ist das lange, detaillierte und aufschlussreiche ${risk1TopicDE}, das Sie s
     Upprepa inte affärsdetaljer.
     Börja utfyllnaden med "<h3>Risk och Mildring</h3>"
     Skriv detta som om du är ägaren till företaget, använd "vi" inte "jag".
-    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället -taggen för fetstil. Använd inte * *, använd istället -taggen för kursiv. Använd inte *, använd istället -taggen för punktlistor.
+    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv. Använd inte * för punktlistor, använd istället <ul>- och <li>-taggarna.
     Generera allt på svenska.
     Detta är viktigt: Var mycket insiktsfull i ditt svar.
     Detta är den långa, detaljerade och insiktsfulla ${risk1TopicSV} du kom på:
@@ -317,7 +317,7 @@ Dies ist das lange, detaillierte und aufschlussreiche ${risk1TopicDE}, das Sie s
     Älä toista liiketoiminnan tietoja.
     Aloita täydennys "<h3>Riski ja lievennys</h3>"
     Kirjoita tämä kuin olisit yrityksen omistaja, käytä "me" älä käytä "minä".
-    Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä vahvennukseen -tagia. Älä käytä * *, vaan käytä kursivointiin -tagia. Älä käytä *, vaan käytä luettelomerkeille -tagia.
+Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä <strong>-tagia lihavointiin. Älä käytä * *, vaan käytä <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, vaan käytä <ul>- ja <li>-tageja.
     Luo kaikki suomeksi.
     Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
     Tämä on pitkä, yksityiskohtainen ja oivaltava ${risk1TopicFI}, jonka keksit:
@@ -344,7 +344,7 @@ Dies ist das lange, detaillierte und aufschlussreiche ${risk1TopicDE}, das Sie s
     Gentag ikke forretningsdetaljer.
     Begynd udfyldningen med "<h3>Risiko og Afbødning</h3>"
     Skriv dette som om du er ejeren af virksomheden, brug "vi" ikke brug "jeg".
-    Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet -tagget til fed skrift. Brug ikke * *, brug i stedet -tagget til kursiv skrift. Brug ikke *, brug i stedet -tagget til punkttegn.
+Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
     Generer alt på dansk.
     Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
     Dette er den lange, detaljerede og indsigtsfulde ${risk1TopicDA}, du kom op med:
@@ -371,7 +371,7 @@ Dies ist das lange, detaillierte und aufschlussreiche ${risk1TopicDE}, das Sie s
     Ikke gjenta forretningsdetaljer.
     Begynn utfyllingen med "<h3>Risiko og reduksjon</h3>"
     Skriv dette som om du er eieren av virksomheten, bruk "vi" ikke bruk "jeg".
-    Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet -taggen for fet skrift. Ikke bruk * *, bruk i stedet -taggen for kursiv skrift. Ikke bruk *, bruk i stedet -taggen for punktlister.
+Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-taggen for fet skrift. Ikke bruk * *, bruk i stedet <em>-taggen for kursiv skrift. Ikke bruk * for punktlister, bruk i stedet <ul>- og <li>-taggene.
     Generer alt på norsk.
     Dette er viktig: Vær veldig innsiktsfull i ditt svar.
     Dette er den lange, detaljerte og innsiktsfulle ${risk1TopicNO} du kom opp med:

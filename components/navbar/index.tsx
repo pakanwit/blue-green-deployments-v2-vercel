@@ -4,17 +4,19 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ConfirmLink from '../ConfirmLink';
 import Pixel from '../Pixel';
+import XPixel from '../XPixel';
 
-const Navbar = ({ fbPixelId }: { fbPixelId: string }) => {
+const Navbar = ({ fbPixelId, xPixelId }: { fbPixelId: string, xPixelId: string }) => {
   const { t } = useTranslation('common');
   const router = useRouter();
   const handleBack = () => {
     router.back();
   };
-  
+
   return (
     <>
       <Pixel id={fbPixelId} />
+      <XPixel id={xPixelId} />
       <Head>
         <title>{t('Plan Generator')}</title>
         <meta

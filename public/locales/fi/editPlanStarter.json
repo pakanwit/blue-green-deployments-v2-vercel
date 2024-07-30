@@ -24,6 +24,7 @@
   "Your edits will be automatically saved": "Muutokset tallennetaan automaattisesti",
   "above\" try to input": "edellä\" yrittää syöttää",
   "copyFeatureButton": "Palaa takaisin ja muuta syötteitä",
+  "financeIncomplete": "Sinun on täytettävä rahoitusosio ennen kuin voit ladata suunnitelman.",
   "help@15minuteplan.ai": "help@15minuteplan.ai",
   "warningCopyPlanMessage": "Voit tällä hetkellä luoda {{planQuota}} lisää suunnitelmaa. Jos palaat takaisin ja muokkaat syöttötietojasi, menetät 1 suunnitelmakiintiön."
 }

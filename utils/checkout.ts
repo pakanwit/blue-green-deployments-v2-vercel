@@ -25,6 +25,7 @@ export async function checkout({ lineitems, userEmail, secretKey }) {
 
   const session = await response.json();
   localStorage.removeItem('formData');
+  localStorage.removeItem('hasGenDynamicQuestion');
 
   await stripe.redirectToCheckout({
     sessionId: session.id,

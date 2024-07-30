@@ -19,5 +19,6 @@
   "You need to be logged in to view this page": "Sie müssen angemeldet sein, um diese Seite zu sehen",
   "You're logged in as: ": "Sie sind angemeldet als: ",
   "duplicatedPlanForm": "Dieser Plan wurde durch Änderung der Eingabe von \"Plan {{refId}}: {{businessName}}\" erstellt.",
+  "financeIncomplete": "Finanzteil unvollständig Klicken Sie zum Abschluss auf \"Bearbeiten &amp; Speichern\".",
   "logo": "Logo"
 }

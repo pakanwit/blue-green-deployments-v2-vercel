@@ -244,7 +244,7 @@ export const marketingBusinessObjectivesPro = (
     Write this as if you are the owner of the business, using "we" don't use "I".
     Generate response in html.
     Begin the completion with "<h3>Marketing</h3>" followed by "<h4>${promptTopic.en}</h4>". There should only be one <h3> tag which is <h3>Marketing</h3> and one <h4> tag which is <h4>${promptTopic.en}</h4>. There must be 3 <h5> tags which are <h5>Short-term Objectives<h5>, <h5>Medium-term Objectives<h5> and <h5>Long-term Objectives<h5>. 
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
     Generate everything in English.
     This is important: Be very insightful in your response.
     use british english spelling and grammar
@@ -287,7 +287,7 @@ export const marketingBusinessObjectivesPro = (
     Write this as if you are the owner of the business, using "we" don't use "I".
     Generate response in html.
     Begin the completion with "<h3>Marketing</h3>" followed by "<h4>${promptTopic.en}</h4>". There should only be one <h3> tag which is <h3>Marketing</h3> and one <h4> tag which is <h4>${promptTopic.en}</h4>. There must be 3 <h5> tags which are <h5>Short-term Objectives<h5>, <h5>Medium-term Objectives<h5> and <h5>Long-term Objectives<h5>. 
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
     Generate everything in English.
     This is important: Be very insightful in your response.
     This is the long, detailed, and insightful ${promptTopic.en} you came up with:
@@ -330,7 +330,7 @@ export const marketingBusinessObjectivesPro = (
   Schreiben Sie dies so, als ob Sie der Eigentümer des Unternehmens wären. Verwenden Sie „wir“ und nicht „ich“.
   Antwort im HTML generieren.
   Beginnen Sie die Vervollständigung mit „<h3>Marketing</h3>“, gefolgt von „<h4>${promptTopic.de}</h4>“. Es sollte nur ein <h3>-Tag für <h3>Marketing</h3> und ein <h4>-Tag für <h4>${promptTopic.de}</h4> vorhanden sein. Es müssen 3 <h5>-Tags vorhanden sein, nämlich <h5>Kurzfristige Ziele<h5>, <h5>Mittelfristige Ziele<h5> und <h5>Langfristige Ziele<h5>.
-  Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie das -Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie das -Tag für Kursivschrift. Verwenden Sie nicht *, sondern verwenden Sie das -Tag für Aufzählungspunkte.
+  Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie den <strong>-Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie den <em>-Tag für Kursivschrift. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie die <ul>- und <li>-Tags.
   Generiere alles auf Deutsch.
   Dies ist wichtig: Seien Sie in Ihrer Antwort sehr einsichtig.
   Dies ist das lange, detaillierte und aufschlussreiche ${promptTopic.de}, das Sie sich ausgedacht haben:
@@ -374,7 +374,7 @@ export const marketingBusinessObjectivesPro = (
   Écrivez comme si vous étiez le propriétaire de l'entreprise, en utilisant "nous" et non "je".
   Générez une réponse en HTML.
   Commencez par "<h3>Marketing</h3>" suivi de "<h4>${promptTopic.fr}</h4>". Il ne doit y avoir qu'une seule balise <h3> qui est <h3>Marketing</h3> et une seule balise <h4> qui est <h4>${promptTopic.fr}</h4>. Il doit y avoir 3 balises <h5> qui sont <h5>Objectifs à court terme<h5>, <h5>Objectifs à moyen terme<h5> et <h5>Objectifs à long terme<h5>.
-  Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
   Générez tout en français.
   C’est important : Soyez très perspicace dans votre réponse.
   Voici le long, détaillé et perspicace ${promptTopic.fr} que vous avez trouvé :
@@ -418,7 +418,7 @@ export const marketingBusinessObjectivesPro = (
   Escriba como si fuera el propietario del negocio, utilizando "nosotros" en lugar de "yo".
   Genere la respuesta en HTML.
   Comience con "<h3>Marketing</h3>" seguido de "<h4>${promptTopic.es}</h4>". Solo debe haber una etiqueta <h3> que es <h3>Marketing</h3> y una etiqueta <h4> que es <h4>${promptTopic.es}</h4>. Debe haber 3 etiquetas <h5> que son <h5>Objetivos a Corto Plazo<h5>, <h5>Objetivos a Medio Plazo<h5> y <h5>Objetivos a Largo Plazo<h5>.
-  Use solo etiquetas HTML, no use markdown. No use ** **, use la etiqueta  para negrita. No use * *, use la etiqueta  para cursiva. No use *, use la etiqueta  para viñetas.
+Use solo etiquetas HTML, no use markdown. No use ** **, use en su lugar la etiqueta <strong> para negrita. No use * *, use en su lugar la etiqueta <em> para cursiva. No use * para viñetas, use en su lugar las etiquetas <ul> y <li>.
   Genere todo en español.
   Esto es importante: Sea muy perspicaz en su respuesta.
   Este es el largo, detallado y perspicaz ${promptTopic.es} que se le ocurrió:
@@ -462,7 +462,7 @@ export const marketingBusinessObjectivesPro = (
   Scrivi come se fossi il proprietario dell'azienda, usando "noi" non "io".
   Genera la risposta in HTML.
   Inizia con "<h3>Marketing</h3>" seguito da "<h4>${promptTopic.it}</h4>". Dovrebbe esserci un solo tag <h3> che è <h3>Marketing</h3> e un tag <h4> che è <h4>${promptTopic.it}</h4>. Ci devono essere 3 tag <h5> che sono <h5>Obiettivi a Breve Termine<h5>, <h5>Obiettivi a Medio Termine<h5> e <h5>Obiettivi a Lungo Termine<h5>.
-  Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag  per il grassetto. Non usare * *, usa invece il tag  per il corsivo. Non usare *, usa invece il tag  per i punti elenco.
+Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
   Genera tutto in italiano.
   Questo è importante: Sii molto perspicace nella tua risposta.
   Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai ideato:
@@ -506,7 +506,7 @@ export const marketingBusinessObjectivesPro = (
     Schrijf dit alsof u de eigenaar van het bedrijf bent, gebruik "wij" niet "ik".
     Genereer reactie in html.
     Begin de voltooiing met "<h3>Marketing</h3>" gevolgd door "<h4>${promptTopic.nl}</h4>". Er mag maar één <h3> tag zijn, namelijk <h3>Marketing</h3> en één <h4> tag, namelijk <h4>${promptTopic.nl}</h4>. Er moeten 3 <h5> tags zijn, namelijk <h5>Korte termijn doelstellingen<h5>, <h5>Middellange termijn doelstellingen<h5> en <h5>Lange termijn doelstellingen<h5>.
-    Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik niet ** **, gebruik in plaats daarvan de -tag voor vetgedrukte tekst. Gebruik niet * *, gebruik in plaats daarvan de -tag voor cursieve tekst. Gebruik geen *, gebruik in plaats daarvan de -tag voor opsommingstekens.
+Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik geen ** **, gebruik in plaats daarvan de <strong>-tag voor vetgedrukte tekst. Gebruik geen * *, gebruik in plaats daarvan de <em>-tag voor cursieve tekst. Gebruik geen * voor opsommingstekens, gebruik in plaats daarvan de <ul>- en <li>-tags.
     Genereer alles in het Nederlands.
     Dit is belangrijk: Wees zeer inzichtelijk in uw antwoord.
     Dit is de lange, gedetailleerde en inzichtelijke ${promptTopic.nl} die u bedacht hebt:
@@ -550,7 +550,7 @@ export const marketingBusinessObjectivesPro = (
     あなたがビジネスのオーナーであるかのようにこれを書き、"we"を使用し、"I"を使用しないでください。
     応答をhtmlで生成します。
     完成を"<h3>マーケティング</h3>"で始め、その後に"<h4>${promptTopic.ja}</h4>"を続けます。"<h3>マーケティング</h3>"という1つの<h3>タグだけがあり、"<h4>${promptTopic.ja}</h4>"という1つの<h4>タグだけがあるべきです。"<h5>短期目標<h5>"、"<h5>中期目標<h5>"、"<h5>長期目標<h5>"という3つの<h5>タグがあるべきです。
-    HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、太字にはタグを使用してください。 * *を使用せず、斜体にはタグを使用してください。 *を使用せず、箇条書きにはタグを使用してください。
+HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、代わりに太字には<strong>タグを使用してください。 * *を使用せず、代わりに斜体には<em>タグを使用してください。箇条書きには*を使用せず、代わりに<ul>と<li>タグを使用してください。
     すべてを日本語で生成します。
     これは重要です: 回答には非常に洞察力を持ってください。
     これがあなたが考えた長くて詳細で洞察に満ちた${promptTopic.ja}です:
@@ -638,7 +638,7 @@ export const marketingBusinessObjectivesPro = (
     Skriv detta som om du är ägaren till företaget, använd "vi" använd inte "jag".
     Generera svar i html.
     Börja slutförandet med "<h3>Marknadsföring</h3>" följt av "<h4>${promptTopic.sv}</h4>". Det bör bara finnas en <h3> tagg som är <h3>Marknadsföring</h3> och en <h4> tagg som är <h4>${promptTopic.sv}</h4>. Det måste finnas 3 <h5> taggar som är <h5>Kortsiktiga mål<h5>, <h5>Medellånga mål<h5> och <h5>Långsiktiga mål<h5>.
-    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället -taggen för fetstil. Använd inte * *, använd istället -taggen för kursiv. Använd inte *, använd istället -taggen för punktlistor.
+    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv. Använd inte * för punktlistor, använd istället <ul>- och <li>-taggarna.
     Generera allt på svenska.
     Detta är viktigt: Var mycket insiktsfull i ditt svar.
     Detta är den långa, detaljerade och insiktsfulla ${promptTopic.sv} du kom på:
@@ -682,7 +682,7 @@ export const marketingBusinessObjectivesPro = (
   Kirjoita tämä kuin olisit yrityksen omistaja, käytä "me", älä käytä "minä".
   Generoi vastaus html-muodossa.
   Aloita täydennys "<h3>Markkinointi</h3>" seurattuna "<h4>${promptTopic.fi}</h4>". Pitäisi olla vain yksi <h3> -tagi, joka on <h3>Markkinointi</h3> ja yksi <h4> -tagi, joka on <h4>${promptTopic.fi}</h4>. On oltava 3 <h5> -tagia, jotka ovat <h5>Lyhyen aikavälin tavoitteet<h5>, <h5>Keskipitkän aikavälin tavoitteet<h5> ja <h5>Pitkän aikavälin tavoitteet<h5>. 
-  Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä vahvennukseen -tagia. Älä käytä * *, vaan käytä kursivointiin -tagia. Älä käytä *, vaan käytä luettelomerkeille -tagia.
+Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä <strong>-tagia lihavointiin. Älä käytä * *, vaan käytä <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, vaan käytä <ul>- ja <li>-tageja.
   Luo kaikki suomeksi.
   Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
   Tämä on pitkä, yksityiskohtainen ja oivaltava ${promptTopic.fi}, jonka keksit:
@@ -726,7 +726,7 @@ export const marketingBusinessObjectivesPro = (
   Skriv dette som om du er ejeren af virksomheden, brug "vi" brug ikke "jeg".
   Generer svar i html.
   Begynd udfyldelsen med "<h3>Marketing</h3>" efterfulgt af "<h4>${promptTopic.da}</h4>". Der skal kun være en <h3> tag som er <h3>Marketing</h3> og en <h4> tag som er <h4>${promptTopic.da}</h4>. Der skal være 3 <h5> tags som er <h5>Kortfristede Mål<h5>, <h5>Mellemlange Mål<h5> og <h5>Lange Mål<h5>. 
-  Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet -tagget til fed skrift. Brug ikke * *, brug i stedet -tagget til kursiv skrift. Brug ikke *, brug i stedet -tagget til punkttegn.
+Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
   Generer alt på dansk.
   Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
   Dette er den lange, detaljerede og indsigtsfulde ${promptTopic.da}, du kom op med:
@@ -770,33 +770,36 @@ export const marketingBusinessObjectivesPro = (
   Skriv dette som om du er eieren av virksomheten, bruk "vi" ikke bruk "jeg".
   Generer respons i html.
   Begynn utfyllingen med "<h3>Markedsføring</h3>" etterfulgt av "<h4>${promptTopic.no}</h4>". Det skal bare være en <h3> tag som er <h3>Markedsføring</h3> og en <h4> tag som er <h4>${promptTopic.no}</h4>. Det må være 3 <h5> tags som er <h5>Kortsiktige Mål<h5>, <h5>Mellomlangsiktige Mål<h5> og <h5>Lange Mål<h5>. 
-  Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet -taggen for fet skrift. Ikke bruk * *, bruk i stedet -taggen for kursiv skrift. Ikke bruk *, bruk i stedet -taggen for punktlister.
+Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-taggen for fet skrift. Ikke bruk * *, bruk i stedet <em>-taggen for kursiv skrift. Ikke bruk * for punktlister, bruk i stedet <ul>- og <li>-taggene.
   Generer alt på norsk.
   Dette er viktig: Vær veldig innsiktsfull i ditt svar.
   Dette er den lange, detaljerte og innsiktsfulle ${promptTopic.no} du kom opp med:
     `,
   };
 
-  let modelPlanQuota = 'gpt-3.5-turbo';
-  if (planQuota <= 8) {
-    modelPlanQuota = 'gpt-3.5-turbo';
-    console.log('using gpt-3.5-turbo');
-  } else {
-    modelPlanQuota = 'gpt-4';
-    console.log('using gpt-4');
-  }
+let modelPlanQuota = 'gpt-3.5-turbo';
+if (planQuota <= 8) {
+  modelPlanQuota = 'gpt-3.5-turbo';
+  console.log('using gpt-3.5-turbo');
+} else {
+  modelPlanQuota = 'gpt-4';
+  console.log('using gpt-4');
+}
 
-  const payload = {
-    model: variantID === '2' ? 'gpt-4o' : modelPlanQuota,
-    messages: [{ role: 'user', content: prompt[planLanguage] ?? prompt.en }],
-    temperature: 0.5,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 1200,
-    stream: true,
-    n: 1,
-  };
+const model = variantID === '2' ? 'gpt-4o' : modelPlanQuota;
+console.log('final model:', model);
 
-  return OpenAIStream(payload);
+const payload = {
+  model: model,
+  messages: [{ role: 'user', content: prompt[planLanguage] ?? prompt.en }],
+  temperature: 0.5,
+  top_p: 1,
+  frequency_penalty: 0,
+  presence_penalty: 0,
+  max_tokens: 1200,
+  stream: true,
+  n: 1,
+};
+
+return OpenAIStream(payload);
 };

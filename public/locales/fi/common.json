@@ -14,5 +14,8 @@
       "reviewUsOnTrustpilot": "Arvostele meitä Trustpilot-sivustolla",
       "title": "Tiedämme, että olet todella kiireinen,"
     }
-  }
+  },
+  "of": "OF",
+  "optional": "(optional)",
+  "step": "STEP"
 }

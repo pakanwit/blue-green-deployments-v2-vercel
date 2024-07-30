@@ -19,5 +19,6 @@
   "You need to be logged in to view this page": "You need to be logged in to view this page",
   "Login": "Login",
   "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.": "Note: Once you've paid, there will be no additional charges, and you'll have access to your account indefinitely.",
-  "duplicatedPlanForm": "This plan was made from changing the input of “Plan {{refId}}: {{businessName}}”"
+  "duplicatedPlanForm": "This plan was made from changing the input of “Plan {{refId}}: {{businessName}}”",
+  "financeIncomplete": "Financial Section Incomplete Click “Edit & Save” to Finish"
 }

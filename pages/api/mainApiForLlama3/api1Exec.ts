@@ -116,7 +116,7 @@ export default async function api1Exec(request, response) {
   Die Zusammenfassung sollte diese Themen enthalten: Geschäftsübersicht, Geschäftsanfänge, Wettbewerbsvorteil, Finanzübersicht. Fügen Sie keine anderen Themen hinzu, es sei denn, sie sind hier angegeben. Seien Sie sehr beschreibend, wenn Sie jedes Thema generieren.
   Generieren Sie die Antwort in HTML und umgeben Sie die Schlüsseltopics mit dem h4-Tag. 
   Beginnen Sie die Zusammenfassung mit "<h3>Zusammenfassung</h3>"
-  Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie das -Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie das -Tag für Kursivschrift. Verwenden Sie nicht *, sondern verwenden Sie das -Tag für Aufzählungspunkte.
+  Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie den <strong>-Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie den <em>-Tag für Kursivschrift. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie die <ul>- und <li>-Tags.
 Generiere alles auf Deutsch.
 Dies ist wichtig: Seien Sie in Ihrer Antwort sehr einsichtig.
 Dies ist das lange, detaillierte und aufschlussreiche Zusammenfassung, das Sie sich ausgedacht haben:
@@ -150,7 +150,7 @@ Dies ist das lange, detaillierte und aufschlussreiche Zusammenfassung, das Sie s
   Le résumé exécutif doit inclure ces sujets: Aperçu de l'entreprise, Origines de l'entreprise, Avantage concurrentiel, Résumé financier. N'incluez pas d'autres sujets sauf s'ils sont spécifiés ici. Soyez très descriptif lors de la génération de chaque sujet.
   Générez la réponse en HTML en entourant les sujets clés avec la balise h4. 
   Commencez la complétion par "<h3>Résumé exécutif</h3>"
-  Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
 Générez tout en français.
 C’est important : Soyez très perspicace dans votre réponse.
 Voici le long, détaillé et perspicace Résumé Exécutif que vous avez trouvé :
@@ -184,7 +184,7 @@ Voici le long, détaillé et perspicace Résumé Exécutif que vous avez trouvé
   El resumen ejecutivo debe incluir estos temas: Descripción general del negocio, Orígenes del negocio, Ventaja competitiva, Resumen financiero. No incluya otros temas a menos que se especifiquen aquí. Sea muy descriptivo al generar cada tema.
   Genere la respuesta en HTML rodeando los temas clave con la etiqueta h4. 
   Comience la finalización con "<h3>Resumen Ejecutivo</h3>"
-  Use solo etiquetas HTML, no use markdown. No use ** **, use la etiqueta  para negrita. No use * *, use la etiqueta  para cursiva. No use *, use la etiqueta  para viñetas.
+Use solo etiquetas HTML, no use markdown. No use ** **, use en su lugar la etiqueta <strong> para negrita. No use * *, use en su lugar la etiqueta <em> para cursiva. No use * para viñetas, use en su lugar las etiquetas <ul> y <li>.
 Genere todo en español.
 Esto es importante: Sea muy perspicaz en su respuesta.
 Este es el largo, detallado y perspicaz Resumen Ejecutivo que se le ocurrió:
@@ -218,7 +218,7 @@ Este es el largo, detallado y perspicaz Resumen Ejecutivo que se le ocurrió:
   Il riassunto esecutivo dovrebbe includere questi argomenti: Panoramica aziendale, Origini aziendali, Vantaggio competitivo, Sommario finanziario. Non includere altri argomenti a meno che non siano specificati qui. Sii molto descrittivo quando generi ogni argomento.
   Genera la risposta in HTML circondando gli argomenti chiave con il tag h4. 
   Inizia il completamento con "<h3>Riassunto Esecutivo</h3>"
-  Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag  per il grassetto. Non usare * *, usa invece il tag  per il corsivo. Non usare *, usa invece il tag  per i punti elenco.
+Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
 Genera tutto in italiano.
 Questo è importante: Sii molto perspicace nella tua risposta.
 Questo è il lungo, dettagliato e perspicace Riassunto Esecutivo che hai ideato:
@@ -320,7 +320,7 @@ Dit is de lange, gedetailleerde en inzichtelijke Uitvoerend Overzicht die u beda
   يجب أن يتضمن الملخص التنفيذي هذه الموضوعات: نظرة عامة على الأعمال، أصول الأعمال، الميزة التنافسية، الملخص المالي. لا تتضمن مواضيع أخرى ما لم يتم تحديدها هنا. كن وصفيًا جدًا عند إنشاء كل موضوع.
   قم بإنشاء الرد في HTML محاطًا بالمواضيع الرئيسية بعلامة h4. 
   ابدأ الإكمال بـ "<h3>الملخص التنفيذي</h3>"
-  استخدم فقط علامات HTML، ولا تستخدم ماركداون. لا تستخدم ** **، بدلاً من ذلك استخدم علامة  للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة  للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامة  للنقاط.
+  استخدم فقط علامات HTML، ولا تستخدم markdown. لا تستخدم ** **، بدلاً من ذلك استخدم علامة <strong> للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة <em> للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامتي <ul> و <li>.
   أنشئ كل شيء باللغة العربية.
   هذا مهم: كن بليغًا جدًا في ردك.
   هذا هو الملخص التنفيذي الطويل والمفصل والعميق الذي توصلت إليه:
@@ -354,7 +354,7 @@ Dit is de lange, gedetailleerde en inzichtelijke Uitvoerend Overzicht die u beda
   Sammanfattningen bör innehålla dessa ämnen: Företagsöversikt, Företagets ursprung, Konkurrensfördel, Finansiell sammanfattning. Inkludera inte andra ämnen om de inte specificeras här. Var mycket beskrivande när du genererar varje ämne.
   Generera svar i HTML och omge nyckelämnen med h4-taggen. 
   Börja avslutningen med "<h3>Sammanfattning</h3>"
-  Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället -taggen för fetstil. Använd inte * *, använd istället -taggen för kursiv. Använd inte *, använd istället -taggen för punktlistor.
+  Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv. Använd inte * för punktlistor, använd istället <ul>- och <li>-taggarna.
 Generera allt på svenska.
 Detta är viktigt: Var mycket insiktsfull i ditt svar.
 Detta är den långa, detaljerade och insiktsfulla Sammanfattning du kom på:
@@ -388,7 +388,7 @@ Detta är den långa, detaljerade och insiktsfulla Sammanfattning du kom på:
   Johtotiivistelmän tulisi sisältää nämä aiheet: Liiketoiminnan yleiskatsaus, Liiketoiminnan alkuperä, Kilpailuetu, Taloudellinen yhteenveto. Älä sisällytä muita aiheita, ellei niitä ole erikseen mainittu tässä. Ole erittäin kuvaileva, kun luot jokaisen aiheen.
   Luo vastaus HTML-muodossa ympäröimällä keskeiset aiheet h4-tunnisteella. 
   Aloita täydennys "<h3>Johtotiivistelmä</h3>"
-  Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä vahvennukseen -tagia. Älä käytä * *, vaan käytä kursivointiin -tagia. Älä käytä *, vaan käytä luettelomerkeille -tagia.
+Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä <strong>-tagia lihavointiin. Älä käytä * *, vaan käytä <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, vaan käytä <ul>- ja <li>-tageja.
 Luo kaikki suomeksi.
 Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
 Tämä on pitkä, yksityiskohtainen ja oivaltava Johtotiivistelmä, jonka keksit:
@@ -422,7 +422,7 @@ Tämä on pitkä, yksityiskohtainen ja oivaltava Johtotiivistelmä, jonka keksit
   Ledelsesresuméet skal indeholde disse emner: Virksomhedsoverblik, Virksomhedens oprindelse, Konkurrencefordel, Finansielt resumé. Inkluder ikke andre emner, medmindre de er specificeret her. Vær meget beskrivende, når du genererer hvert emne.
   Generer svar i HTML, der omgiver nøgleemner med h4-tag. 
   Begynd afslutningen med "<h3>Ledelsesresumé</h3>"
-  Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet -tagget til fed skrift. Brug ikke * *, brug i stedet -tagget til kursiv skrift. Brug ikke *, brug i stedet -tagget til punkttegn.
+Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
 Generer alt på dansk.
 Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
 Dette er den lange, detaljerede og indsigtsfulde Ledelsesresumé, du kom op med:
@@ -462,7 +462,7 @@ Dette er den lange, detaljerede og indsigtsfulde Ledelsesresumé, du kom op med:
   The Lederoppsummering should include these topics: Business Overview, Business Origins,Competitive Advantage,Financial Summary. Don't include other topics unless specified here. be very descriptive when generating each topic.
   Generate response in html surrounding key topics with h4 tag. 
   Begin the completion with "<h3>Lederoppsummering</h3>"
-  Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet -taggen for fet skrift. Ikke bruk * *, bruk i stedet -taggen for kursiv skrift. Ikke bruk *, bruk i stedet -taggen for punktlister.
+Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-taggen for fet skrift. Ikke bruk * *, bruk i stedet <em>-taggen for kursiv skrift. Ikke bruk * for punktlister, bruk i stedet <ul>- og <li>-taggene.
 Generer alt på norsk.
 Dette er viktig: Vær veldig innsiktsfull i ditt svar.
 Dette er den lange, detaljerte og innsiktsfulle Lederoppsummering du kom opp med:

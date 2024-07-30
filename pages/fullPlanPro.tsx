@@ -3,19 +3,25 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Head from 'next/head';
 import React from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { MoonLoader } from 'react-spinners';
+import Router from 'next/router';
 import Confetti from 'react-confetti';
+import { event } from 'nextjs-google-analytics';
 import DOMPurify from 'dompurify';
 import FinTable from '../components/FinTable';
 import stylesW from '../styles/Wizard.module.css';
+import { set } from 'mongoose';
 import { useTranslation } from 'next-i18next';
 import us2gb from '../utils/us2gb';
+import useLocale from '../hooks/useLocale';
 import { API_KEY_HEADER } from './api/constants';
 import trackEvent from '../utils/trackEvent';
 import Pixel from '../components/Pixel';
+import { ROUTE_PATH } from '../constants/path';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import XPixel from '../components/XPixel';
+import useCookies from '../hooks/useCookies';
 
 declare let gtag: (...args: any[]) => void;
 
@@ -29,6 +35,9 @@ export default function fullPlanPro({
   const { t } = useTranslation('fullPlanPro');
 
   const { data: session } = useSession();
+  
+  const { getCookie } = useCookies();
+  const variantID = getCookie("variantID")
 
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -269,9 +278,6 @@ export default function fullPlanPro({
   const [showDownload, setShowDownload] = useState(false);
   const [readyToGeneratePlan, setReadyToGeneratePlan] = useState(false);
   const [isGenerateMark1, setIsGenerateMark1] = useState(false);
-
-  const variantID =
-    typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
 
   useEffect(() => {
     if (userData && userData.paymentStatus === 'paid' && userData.paymentId)
@@ -527,7 +533,6 @@ export default function fullPlanPro({
 
   // enhanced conversion
   const handleConversion = () => {
-    const experimentIDFromLocal = localStorage.getItem('experimentID');
     let price;
     if (
       userData.country === 'IN' ||
@@ -639,55 +644,52 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark1.current = currentExecutionId;
-    const mark1 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api4Mark1ObjPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessOperationalStatus,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          situ1Ref,
-          productInfoPrompt,
-        }),
+    const mark1 = await fetch('/api/mainApiPro/api4Mark1ObjPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessOperationalStatus,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        situ1Ref,
+        productInfoPrompt,
+      }),
+    });
 
     console.log('Edge function returned.');
 
@@ -735,63 +737,60 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark3.current = currentExecutionId;
-    const mark3 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api6Mark3DecisionPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          mark2Ref,
-          productInfoPrompt,
-        }),
+    const mark3 = await fetch('/api/mainApiPro/api6Mark3DecisionPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        mark2Ref,
+        productInfoPrompt,
+      }),
+    });
 
     console.log('Edge function returned.');
 
@@ -841,64 +840,61 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark4.current = currentExecutionId;
-    const mark4 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api7Mark4ProductPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-          productOrService,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          mark2Ref,
-          productInfoPrompt,
-        }),
+    const mark4 = await fetch('/api/mainApiPro/api7Mark4ProductPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+        productOrService,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        mark2Ref,
+        productInfoPrompt,
+      }),
+    });
 
     console.log('Edge function returned.');
 
@@ -947,64 +943,61 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark5.current = currentExecutionId;
-    const mark5 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api8Mark5PriceDistPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-          productOrService,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          mark2Ref,
-          productInfoPrompt,
-        }),
+    const mark5 = await fetch('/api/mainApiPro/api8Mark5PriceDistPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+        productOrService,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        mark2Ref,
+        productInfoPrompt,
+      }),
+    });
 
     console.log('Edge function returned.');
 
@@ -1053,64 +1046,61 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark6.current = currentExecutionId;
-    const mark6 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api9Mark6AdPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-          productOrService,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          mark2Ref,
-          productInfoPrompt,
-        }),
+    const mark6 = await fetch('/api/mainApiPro/api9Mark6AdPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+        productOrService,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        mark2Ref,
+        productInfoPrompt,
+      }),
+    });
 
     console.log('Edge function returned.');
 
@@ -1161,59 +1151,56 @@ export default function fullPlanPro({
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefExec.current = currentExecutionId;
 
-    const exec = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api1ExecPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerDescription1,
-
-          customerIncome2,
-          customerDescription2,
-
-          customerIncome3,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const exec = await fetch('/api/mainApiPro/api1ExecPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerDescription1,
+
+        customerIncome2,
+        customerDescription2,
+
+        customerIncome3,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
 
     console.log('Edge function returned.');
 
@@ -1269,54 +1256,51 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu1.current = currentExecutionId;
-    const situ1 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api2Situ1IndKeyPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const situ1 = await fetch('/api/mainApiPro/api2Situ1IndKeyPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!situ1.ok) {
@@ -1367,54 +1351,51 @@ export default function fullPlanPro({
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu2.current = currentExecutionId;
 
-    const situ2 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api3Situ2SWOTPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const situ2 = await fetch('/api/mainApiPro/api3Situ2SWOTPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
 
     console.log('Edge function returned.');
 
@@ -1468,62 +1449,59 @@ export default function fullPlanPro({
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark2.current = currentExecutionId;
 
-    const mark2 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api5Mark2STPPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const mark2 = await fetch('/api/mainApiPro/api5Mark2STPPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!mark2.ok) {
@@ -1572,81 +1550,78 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefOp1.current = currentExecutionId;
-    const op1 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api10Op1ActKPIsPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          investmentItem4,
-          investmentItem5,
-          investmentItem6,
-          investmentItem7,
-          investmentItem8,
-          investmentItem9,
-          investmentItem10,
-
-          investmentAmountItem1,
-          investmentAmountItem2,
-          investmentAmountItem3,
-          investmentAmountItem4,
-          investmentAmountItem5,
-          investmentAmountItem6,
-          investmentAmountItem7,
-          investmentAmountItem8,
-          investmentAmountItem9,
-          investmentAmountItem10,
-
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const op1 = await fetch('/api/mainApiPro/api10Op1ActKPIsPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        investmentItem4,
+        investmentItem5,
+        investmentItem6,
+        investmentItem7,
+        investmentItem8,
+        investmentItem9,
+        investmentItem10,
+
+        investmentAmountItem1,
+        investmentAmountItem2,
+        investmentAmountItem3,
+        investmentAmountItem4,
+        investmentAmountItem5,
+        investmentAmountItem6,
+        investmentAmountItem7,
+        investmentAmountItem8,
+        investmentAmountItem9,
+        investmentAmountItem10,
+
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!op1.ok) {
@@ -1694,81 +1669,78 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefOp2.current = currentExecutionId;
-    const op2 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api11Op2QCImpPlanPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          investmentItem4,
-          investmentItem5,
-          investmentItem6,
-          investmentItem7,
-          investmentItem8,
-          investmentItem9,
-          investmentItem10,
-
-          investmentAmountItem1,
-          investmentAmountItem2,
-          investmentAmountItem3,
-          investmentAmountItem4,
-          investmentAmountItem5,
-          investmentAmountItem6,
-          investmentAmountItem7,
-          investmentAmountItem8,
-          investmentAmountItem9,
-          investmentAmountItem10,
-
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const op2 = await fetch('/api/mainApiPro/api11Op2QCImpPlanPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        investmentItem4,
+        investmentItem5,
+        investmentItem6,
+        investmentItem7,
+        investmentItem8,
+        investmentItem9,
+        investmentItem10,
+
+        investmentAmountItem1,
+        investmentAmountItem2,
+        investmentAmountItem3,
+        investmentAmountItem4,
+        investmentAmountItem5,
+        investmentAmountItem6,
+        investmentAmountItem7,
+        investmentAmountItem8,
+        investmentAmountItem9,
+        investmentAmountItem10,
+
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!op2.ok) {
@@ -1816,81 +1788,78 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefTech1.current = currentExecutionId;
-    const Tech1 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api12Tech1AllPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          investmentItem4,
-          investmentItem5,
-          investmentItem6,
-          investmentItem7,
-          investmentItem8,
-          investmentItem9,
-          investmentItem10,
-
-          investmentAmountItem1,
-          investmentAmountItem2,
-          investmentAmountItem3,
-          investmentAmountItem4,
-          investmentAmountItem5,
-          investmentAmountItem6,
-          investmentAmountItem7,
-          investmentAmountItem8,
-          investmentAmountItem9,
-          investmentAmountItem10,
-
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const Tech1 = await fetch('/api/mainApiPro/api12Tech1AllPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        investmentItem4,
+        investmentItem5,
+        investmentItem6,
+        investmentItem7,
+        investmentItem8,
+        investmentItem9,
+        investmentItem10,
+
+        investmentAmountItem1,
+        investmentAmountItem2,
+        investmentAmountItem3,
+        investmentAmountItem4,
+        investmentAmountItem5,
+        investmentAmountItem6,
+        investmentAmountItem7,
+        investmentAmountItem8,
+        investmentAmountItem9,
+        investmentAmountItem10,
+
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!Tech1.ok) {
@@ -1938,81 +1907,78 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefTech2.current = currentExecutionId;
-    const Tech2 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api13Tech2DigiPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          investmentItem4,
-          investmentItem5,
-          investmentItem6,
-          investmentItem7,
-          investmentItem8,
-          investmentItem9,
-          investmentItem10,
-
-          investmentAmountItem1,
-          investmentAmountItem2,
-          investmentAmountItem3,
-          investmentAmountItem4,
-          investmentAmountItem5,
-          investmentAmountItem6,
-          investmentAmountItem7,
-          investmentAmountItem8,
-          investmentAmountItem9,
-          investmentAmountItem10,
-
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const Tech2 = await fetch('/api/mainApiPro/api13Tech2DigiPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        investmentItem4,
+        investmentItem5,
+        investmentItem6,
+        investmentItem7,
+        investmentItem8,
+        investmentItem9,
+        investmentItem10,
+
+        investmentAmountItem1,
+        investmentAmountItem2,
+        investmentAmountItem3,
+        investmentAmountItem4,
+        investmentAmountItem5,
+        investmentAmountItem6,
+        investmentAmountItem7,
+        investmentAmountItem8,
+        investmentAmountItem9,
+        investmentAmountItem10,
+
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!Tech2.ok) {
@@ -2065,81 +2031,78 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMang1.current = currentExecutionId;
-    const Mang1 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api14Mang1StrucRolePro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          investmentItem4,
-          investmentItem5,
-          investmentItem6,
-          investmentItem7,
-          investmentItem8,
-          investmentItem9,
-          investmentItem10,
-
-          investmentAmountItem1,
-          investmentAmountItem2,
-          investmentAmountItem3,
-          investmentAmountItem4,
-          investmentAmountItem5,
-          investmentAmountItem6,
-          investmentAmountItem7,
-          investmentAmountItem8,
-          investmentAmountItem9,
-          investmentAmountItem10,
-
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const Mang1 = await fetch('/api/mainApiPro/api14Mang1StrucRolePro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        investmentItem4,
+        investmentItem5,
+        investmentItem6,
+        investmentItem7,
+        investmentItem8,
+        investmentItem9,
+        investmentItem10,
+
+        investmentAmountItem1,
+        investmentAmountItem2,
+        investmentAmountItem3,
+        investmentAmountItem4,
+        investmentAmountItem5,
+        investmentAmountItem6,
+        investmentAmountItem7,
+        investmentAmountItem8,
+        investmentAmountItem9,
+        investmentAmountItem10,
+
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!Mang1.ok) {
@@ -2188,82 +2151,79 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMang2.current = currentExecutionId;
-    const Mang2 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api15Mang2RecTrainCSRPro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          investmentItem4,
-          investmentItem5,
-          investmentItem6,
-          investmentItem7,
-          investmentItem8,
-          investmentItem9,
-          investmentItem10,
-
-          investmentAmountItem1,
-          investmentAmountItem2,
-          investmentAmountItem3,
-          investmentAmountItem4,
-          investmentAmountItem5,
-          investmentAmountItem6,
-          investmentAmountItem7,
-          investmentAmountItem8,
-          investmentAmountItem9,
-          investmentAmountItem10,
-
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-          mang1Ref,
-        }),
+    const Mang2 = await fetch('/api/mainApiPro/api15Mang2RecTrainCSRPro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        investmentItem4,
+        investmentItem5,
+        investmentItem6,
+        investmentItem7,
+        investmentItem8,
+        investmentItem9,
+        investmentItem10,
+
+        investmentAmountItem1,
+        investmentAmountItem2,
+        investmentAmountItem3,
+        investmentAmountItem4,
+        investmentAmountItem5,
+        investmentAmountItem6,
+        investmentAmountItem7,
+        investmentAmountItem8,
+        investmentAmountItem9,
+        investmentAmountItem10,
+
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+        mang1Ref,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!Mang2.ok) {
@@ -2311,81 +2271,78 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefGrowth.current = currentExecutionId;
-    const Growth = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api16Growth1Pro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          investmentItem4,
-          investmentItem5,
-          investmentItem6,
-          investmentItem7,
-          investmentItem8,
-          investmentItem9,
-          investmentItem10,
-
-          investmentAmountItem1,
-          investmentAmountItem2,
-          investmentAmountItem3,
-          investmentAmountItem4,
-          investmentAmountItem5,
-          investmentAmountItem6,
-          investmentAmountItem7,
-          investmentAmountItem8,
-          investmentAmountItem9,
-          investmentAmountItem10,
-
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const Growth = await fetch('/api/mainApiPro/api16Growth1Pro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        investmentItem4,
+        investmentItem5,
+        investmentItem6,
+        investmentItem7,
+        investmentItem8,
+        investmentItem9,
+        investmentItem10,
+
+        investmentAmountItem1,
+        investmentAmountItem2,
+        investmentAmountItem3,
+        investmentAmountItem4,
+        investmentAmountItem5,
+        investmentAmountItem6,
+        investmentAmountItem7,
+        investmentAmountItem8,
+        investmentAmountItem9,
+        investmentAmountItem10,
+
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!Growth.ok) {
@@ -2433,62 +2390,59 @@ export default function fullPlanPro({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefRisk1.current = currentExecutionId;
-    const Risk1 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApiPro/api17Risk1Pro`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          planQuota: userData.planQuota,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const Risk1 = await fetch('/api/mainApiPro/api17Risk1Pro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        planQuota: userData.planQuota,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!Risk1.ok) {
@@ -2604,23 +2558,23 @@ export default function fullPlanPro({
     };
 
     const planContent = {
-      generatedExecPro,
-      generatedSitu1IndKeyPro,
-      generatedSitu2SWOTPro,
-      generatedMark1ObjPro,
-      generatedMark2STPPro,
-      generatedMark3DecisionPro,
-      generatedMark4ProductPro,
-      generatedMark5PriceDistPro,
-      generatedMark6AdPro,
-      generatedOp1ActKPIsPro,
-      generatedOp2QCImpPlanPro,
-      generatedTech1AllPro,
-      generatedTech2DigiPro,
-      generatedMang1StrucRolePro,
-      generatedMang2RecTrainCSRPro,
-      generatedGrowthPro,
-      generatedRiskPro,
+      generatedExecPro: convertMarkdownBoldToHtml(generatedExecPro),
+      generatedSitu1IndKeyPro: convertMarkdownBoldToHtml(generatedSitu1IndKeyPro),
+      generatedSitu2SWOTPro: convertMarkdownBoldToHtml(generatedSitu2SWOTPro),
+      generatedMark1ObjPro: convertMarkdownBoldToHtml(generatedMark1ObjPro),
+      generatedMark2STPPro: convertMarkdownBoldToHtml(generatedMark2STPPro),
+      generatedMark3DecisionPro: convertMarkdownBoldToHtml(generatedMark3DecisionPro),
+      generatedMark4ProductPro: convertMarkdownBoldToHtml(generatedMark4ProductPro),
+      generatedMark5PriceDistPro: convertMarkdownBoldToHtml(generatedMark5PriceDistPro),
+      generatedMark6AdPro: convertMarkdownBoldToHtml(generatedMark6AdPro),
+      generatedOp1ActKPIsPro: convertMarkdownBoldToHtml(generatedOp1ActKPIsPro),
+      generatedOp2QCImpPlanPro: convertMarkdownBoldToHtml(generatedOp2QCImpPlanPro),
+      generatedTech1AllPro: convertMarkdownBoldToHtml(generatedTech1AllPro),
+      generatedTech2DigiPro: convertMarkdownBoldToHtml(generatedTech2DigiPro),
+      generatedMang1StrucRolePro: convertMarkdownBoldToHtml(generatedMang1StrucRolePro),
+      generatedMang2RecTrainCSRPro: convertMarkdownBoldToHtml(generatedMang2RecTrainCSRPro),
+      generatedGrowthPro: convertMarkdownBoldToHtml(generatedGrowthPro),
+      generatedRiskPro: convertMarkdownBoldToHtml(generatedRiskPro),
     };
 
     const newPlan = {
@@ -2697,6 +2651,30 @@ export default function fullPlanPro({
     }
   }, [latestPlanIDPro]);
 
+  function convertMarkdownBoldToHtml(text: string): string {
+    return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  }
+
+  function turnAllgeneratedBoldToHtml() {
+    setGeneratedExecPro(convertMarkdownBoldToHtml(generatedExecPro));
+    setGeneratedSitu1IndKeyPro(convertMarkdownBoldToHtml(generatedSitu1IndKeyPro));
+    setGeneratedSitu2SWOTPro(convertMarkdownBoldToHtml(generatedSitu2SWOTPro));
+    setGeneratedMark1ObjPro(convertMarkdownBoldToHtml(generatedMark1ObjPro));
+    setGeneratedMark2STPPro(convertMarkdownBoldToHtml(generatedMark2STPPro));
+    setGeneratedMark3DecisionPro(convertMarkdownBoldToHtml(generatedMark3DecisionPro));
+    setGeneratedMark4ProductPro(convertMarkdownBoldToHtml(generatedMark4ProductPro));
+    setGeneratedMark5PriceDistPro(convertMarkdownBoldToHtml(generatedMark5PriceDistPro));
+    setGeneratedMark6AdPro(convertMarkdownBoldToHtml(generatedMark6AdPro));
+    setGeneratedOp1ActKPIsPro(convertMarkdownBoldToHtml(generatedOp1ActKPIsPro));
+    setGeneratedOp2QCImpPlanPro(convertMarkdownBoldToHtml(generatedOp2QCImpPlanPro));
+    setGeneratedTech1AllPro(convertMarkdownBoldToHtml(generatedTech1AllPro));
+    setGeneratedTech2DigiPro(convertMarkdownBoldToHtml(generatedTech2DigiPro));
+    setGeneratedMang1StrucRolePro(convertMarkdownBoldToHtml(generatedMang1StrucRolePro));
+    setGeneratedMang2RecTrainCSRPro(convertMarkdownBoldToHtml(generatedMang2RecTrainCSRPro));
+    setGeneratedGrowthPro(convertMarkdownBoldToHtml(generatedGrowthPro));
+    setGeneratedRiskPro(convertMarkdownBoldToHtml(generatedRiskPro));
+  }
+
   useEffect(() => {
     if (
       doneAndFullContentExec &&
@@ -2718,6 +2696,7 @@ export default function fullPlanPro({
       doneAndFullContentRisk &&
       !hasAddedNewPlanPro
     ) {
+      turnAllgeneratedBoldToHtml()
       console.log('addNewPlanPro running');
       addNewPlan();
       if (session) {
@@ -3646,27 +3625,46 @@ export default function fullPlanPro({
                         <div className="flex flex-col justify-center items-center gap-5">
                           {!loading && !isError ? (
                             <div className="flex flex-col justify-center items-center gap-4">
-                              <p>
-                                <strong>
-                                  {t(
-                                    'Congratulations On Making Your First Plan!',
-                                  )}
-                                </strong>
-                              </p>
-                              <Link
-                                href={{
-                                  pathname: '/editPlanPro',
-                                  query: { planId: 1 },
-                                }}
-                                className="button"
-                                onClick={() => {
-                                  trackEvent({
-                                    event_name: 'edit_and_save_button',
-                                  });
-                                }}
-                              >
-                                {t('Edit & Save')}
-                              </Link>
+                              {
+                                variantID === '2' ?
+                                <Link
+                                  href={{
+                                    pathname: ROUTE_PATH.investmentItems,
+                                  }}
+                                  className="button"
+                                  onClick={() => {
+                                    trackEvent({
+                                      event_name: 'complete_finance_button',
+                                    });
+                                  }}
+                                >
+                                  {t('goToFinanceSection')}
+                                </Link>
+                                : <>
+                                <p>
+                                  <strong>
+                                    {t(
+                                      'Congratulations On Making Your First Plan!',
+                                    )}
+                                  </strong>
+                                </p>
+                                <Link
+                                  href={{
+                                    pathname: '/editPlanPro',
+                                    query: { planId: 1 },
+                                  }}
+                                  className="button"
+                                  onClick={() => {
+                                    trackEvent({
+                                      event_name: 'edit_and_save_button',
+                                    });
+                                  }}
+                                >
+                                  {t('Edit & Save')}
+                                </Link>
+                              </>
+                              }
+                              
                             </div>
                           ) : (
                             <></>

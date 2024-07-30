@@ -1,5 +1,5 @@
+import { AI_MODEL } from '../../../constants/plan';
 import { OpenAIStream } from '../../../utils/OpenAIChatStream';
-import { FireworksAIStream } from '../../../utils/llama3/FireworksAIStream';
 
 interface IRiskAndMitigationPlan {
   businessOperationalStatus: string;
@@ -12,6 +12,7 @@ interface IRiskAndMitigationPlan {
   productInfoPrompt: string;
   planLanguage: string;
   variantID: string;
+  modelName?: string;
 }
 
 // api11Risk1.ts
@@ -27,6 +28,7 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
     productInfoPrompt,
     planLanguage,
     variantID,
+    modelName,
   } = request;
 
   const risk1TopicEN = 'Risk and Mitigation Plan';
@@ -42,8 +44,8 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
   const risk1TopicDA = 'Risiko- og lindringplan';
   const risk1TopicNO = 'Risiko- og lindringsplan';
 
-    const promptTemplates = {
-        en: `
+  const promptTemplates = {
+    en: `
         You are a professional consultant, and a customer approaches you to write a long and detailed ${risk1TopicEN} for a business plan.
 
         business details:
@@ -62,12 +64,12 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
         Do not repeat business details.
         Begin the completion with "<h3>Risk and Mitigation</h3>"
         Write this as if you are the owner of the business, using "we" don't use "I".
-        Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+    Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
         Generate everything in English.
         This is important: Be very insightful in your response.
         This is the long, detailed, and insightful ${risk1TopicEN} you came up with:
         `,
-        'en-uk': `
+    'en-uk': `
         You are a professional consultant, and a customer approaches you to write a long and detailed ${risk1TopicEN} for a business plan.
 
         business details:
@@ -86,13 +88,13 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
         Do not repeat business details.
         Begin the completion with "<h3>Risk and Mitigation</h3>"
         Write this as if you are the owner of the business, using "we" don't use "I".
-        Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+    Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
         Generate everything in English.
         use british english spelling and grammar
         This is important: Be very insightful in your response.
         This is the long, detailed, and insightful ${risk1TopicEN} you came up with:
         `,
-        de: `Sie sind ein professioneller Berater und ein Kunde kommt auf Sie zu, um einen langen und detaillierten ${risk1TopicDE} für einen Geschäftsplan zu verfassen.
+    de: `Sie sind ein professioneller Berater und ein Kunde kommt auf Sie zu, um einen langen und detaillierten ${risk1TopicDE} für einen Geschäftsplan zu verfassen.
 
                 Geschäftsdaten:
                 Geschäftsdetail 1: Der Firmenname des Kunden ist ${businessName}.
@@ -110,10 +112,11 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
                 Wiederholen Sie keine Geschäftsdetails.
                 Beginnen Sie den Abschluss mit „<h3>Risiko und Schadensbegrenzung</h3>“
                 Schreiben Sie dies so, als ob Sie der Eigentümer des Unternehmens wären. Verwenden Sie „wir“ und nicht „ich“.
-                Fertigstellung auf Deutsch generieren.
+                Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie den <strong>-Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie den <em>-Tag für Kursivschrift. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie die <ul>- und <li>-Tags.
+Fertigstellung auf Deutsch generieren.
             
                 Dies ist das lange, detaillierte ${risk1TopicDE}, das Sie erstellt haben:`,
-        fr: `Vous êtes un consultant professionnel et un client vous approche pour rédiger un ${risk1TopicFR} long et détaillé pour un plan d'affaires.
+    fr: `Vous êtes un consultant professionnel et un client vous approche pour rédiger un ${risk1TopicFR} long et détaillé pour un plan d'affaires.
 
                 Détails de l'entreprise :
                 Détail de l'entreprise 1 : Le nom de l'entreprise du client est ${businessName}.
@@ -131,9 +134,10 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
                 Ne répétez pas les détails de l'entreprise.
                 Commencez la réalisation avec "<h3>Risque et Atténuation</h3>"
                 Rédigez ceci comme si vous étiez le propriétaire de l'entreprise, en utilisant "nous" et non "je".
-                génère tout en français
+                Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
+génère tout en français
                 Voici le ${risk1TopicFR} long et détaillé que vous avez élaboré :`,
-        es: `Eres un consultor profesional y un cliente se acerca a ti para escribir un ${risk1TopicES} largo y detallado para un plan de negocios.
+    es: `Eres un consultor profesional y un cliente se acerca a ti para escribir un ${risk1TopicES} largo y detallado para un plan de negocios.
 
                 Detalles del negocio:
                 Detalle del negocio 1: El nombre del negocio del cliente es ${businessName}.
@@ -151,9 +155,10 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
                 No repitas los detalles del negocio.
                 Comienza la realización con "<h3>Riesgo y Mitigación</h3>"
                 Escribe esto como si fueras el dueño del negocio, usando "nosotros" no uses "yo".
-                genera todo en español
+                Use solo etiquetas HTML, no use markdown. No use ** **, use en su lugar la etiqueta <strong> para negrita. No use * *, use en su lugar la etiqueta <em> para cursiva. No use * para viñetas, use en su lugar las etiquetas <ul> y <li>.
+genera todo en español
                 Este es el ${risk1TopicES} largo y detallado que has elaborado:`,
-        it: `Sei un consulente professionista e un cliente si avvicina a te per scrivere un ${risk1TopicIT} lungo e dettagliato per un piano aziendale.
+    it: `Sei un consulente professionista e un cliente si avvicina a te per scrivere un ${risk1TopicIT} lungo e dettagliato per un piano aziendale.
 
                 dettagli dell'azienda:
                 dettaglio dell'azienda 1: Il nome dell'azienda del cliente è ${businessName}.
@@ -171,9 +176,10 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
                 Non ripetere i dettagli dell'azienda.
                 Inizia la realizzazione con "<h3>Rischio e Mitigazione</h3>"
                 Scrivi questo come se fossi il proprietario dell'azienda, usando "noi" non usare "io".
-                genera tutto in italiano
+                Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
+genera tutto in italiano
                 Questo è il ${risk1TopicIT} lungo e dettagliato che hai elaborato:`,
-        nl: `
+    nl: `
                 Je bent een professionele consultant en een klant benadert je om een lang en gedetailleerd ${risk1TopicNL} te schrijven voor een bedrijfsplan.
             
                 bedrijfsdetails:
@@ -192,10 +198,11 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
                 Herhaal de bedrijfsdetails niet.
                 Begin de voltooiing met "<h3>Risico en Mitigatie</h3>"
                 Schrijf dit alsof je de eigenaar van het bedrijf bent, gebruik "we" niet "ik".
+                Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik geen ** **, gebruik in plaats daarvan de <strong>-tag voor vetgedrukte tekst. Gebruik geen * *, gebruik in plaats daarvan de <em>-tag voor cursieve tekst. Gebruik geen * voor opsommingstekens, gebruik in plaats daarvan de <ul>- en <li>-tags.
                 Genereer alles in het Nederlands.
                 Dit is het lange, gedetailleerde ${risk1TopicNL} dat je hebt bedacht:
                 `,
-        ja: `
+    ja: `
                 あなたはプロのコンサルタントで、顧客がビジネスプランのための詳細で長い${risk1TopicJA}を書くようにあなたに依頼してきました。
             
                 ビジネスの詳細:
@@ -214,10 +221,11 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
                 ビジネスの詳細を繰り返さないでください。
                 完成を"<h3>リスクと緩和</h3>"で始めてください。
                 これをビジネスのオーナーであるかのように書き、"we"を使用し、"I"を使用しないでください。
-                すべてを日本語で生成します。
+                HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、代わりに太字には<strong>タグを使用してください。 * *を使用せず、代わりに斜体には<em>タグを使用してください。箇条書きには*を使用せず、代わりに<ul>と<li>タグを使用してください。
+すべてを日本語で生成します。
                 これがあなたが考え出した長く、詳細な${risk1TopicJA}です:
                 `,
-        ar: `
+    ar: `
                 أنت مستشار محترف، ويقترب منك عميل لكتابة ${risk1TopicAR} طويلة ومفصلة لخطة عمل.
             
                 تفاصيل العمل:
@@ -236,10 +244,11 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
                 لا تكرر تفاصيل العمل.
                 ابدأ الإكمال بـ "<h3>المخاطر والتخفيف</h3>"
                 اكتب هذا كما لو كنت صاحب العمل، باستخدام "نحن" وليس "أنا".
-                أنشئ كل شيء باللغة العربية
+                استخدم فقط علامات HTML، ولا تستخدم markdown. لا تستخدم ** **، بدلاً من ذلك استخدم علامة <strong> للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة <em> للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامتي <ul> و <li>.
+أنشئ كل شيء باللغة العربية
                 هذا هو ${risk1TopicAR} الطويل والمفصل الذي ابتكرته:
                 `,
-        sv: `
+    sv: `
                 Du är en professionell konsult och en kund närmar sig dig för att skriva en lång och detaljerad ${risk1TopicSV} för en affärsplan.
             
                 Affärsdetaljer:
@@ -258,10 +267,11 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
                 Upprepa inte affärsdetaljer.
                 Börja utfyllnaden med "<h3>Risk och Mildring</h3>"
                 Skriv detta som om du är ägaren till företaget, använd "vi" inte "jag".
-                Generera allt på svenska.
+                Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv. Använd inte * för punktlistor, använd istället <ul>- och <li>-taggarna.
+Generera allt på svenska.
                 Detta är den långa, detaljerade ${risk1TopicSV} du kom upp med:
                 `,
-        fi: `
+    fi: `
                 Olet ammattikonsultti, ja asiakas lähestyy sinua kirjoittamaan pitkän ja yksityiskohtaisen ${risk1TopicFI} liiketoimintasuunnitelmaan.
             
                 liiketoiminnan tiedot:
@@ -280,10 +290,11 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
                 Älä toista liiketoiminnan tietoja.
                 Aloita täydennys "<h3>Riski ja lievennys</h3>"
                 Kirjoita tämä kuin olisit yrityksen omistaja, käytä "me" älä käytä "minä".
-                Generoi kaikki suomeksi.
+                Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä <strong>-tagia lihavointiin. Älä käytä * *, vaan käytä <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, vaan käytä <ul>- ja <li>-tageja.
+Generoi kaikki suomeksi.
                 Tämä on pitkä, yksityiskohtainen ${risk1TopicFI}, jonka keksit:
                 `,
-        da: `
+    da: `
                 Du er en professionel konsulent, og en kunde nærmer dig for at skrive en lang og detaljeret ${risk1TopicDA} til en forretningsplan.
             
                 forretningsdetaljer:
@@ -302,10 +313,11 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
                 Gentag ikke forretningsdetaljer.
                 Begynd udfyldningen med "<h3>Risiko og Afbødning</h3>"
                 Skriv dette som om du er ejeren af virksomheden, brug "vi" ikke brug "jeg".
-                Generer alt på dansk.
+                Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
+Generer alt på dansk.
                 Dette er den lange, detaljerede ${risk1TopicDA} du kom op med:
                 `,
-        no: `
+    no: `
                 Du er en profesjonell konsulent, og en kunde nærmer deg for å skrive en lang og detaljert ${risk1TopicNO} for en forretningsplan.
             
                 forretningsdetaljer:
@@ -324,36 +336,25 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
                 Ikke gjenta forretningsdetaljer.
                 Begynn utfyllingen med "<h3>Risiko og reduksjon</h3>"
                 Skriv dette som om du er eieren av virksomheten, bruk "vi" ikke bruk "jeg".
-                Generer alt på norsk.
+                Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-taggen for fet skrift. Ikke bruk * *, bruk i stedet <em>-taggen for kursiv skrift. Ikke bruk * for punktlister, bruk i stedet <ul>- og <li>-taggene.
+Generer alt på norsk.
                 Dette er den lange, detaljerte ${risk1TopicNO} du kom opp med:
                 `,
-    };
+  };
 
-    if (variantID === '2') {
-        const payload = {
-            model: 'gpt-3.5-turbo',
-            messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-            temperature: 0.5,
-            top_p: 1,
-            frequency_penalty: 0,
-            presence_penalty: 0,
-            max_tokens: 1500,
-            stream: true,
-      n: 1,
-    };
-    return FireworksAIStream(payload);
-  } else {
-    const payload = {
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
-      temperature: 0.5,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      max_tokens: 1500,
-      stream: true,
-      n: 1,
-    };
-    return OpenAIStream(payload);
-}
+  const model =
+    variantID === '2' ? AI_MODEL.GPT_4O_MINI : AI_MODEL.GPT_3_5_TURBO;
+  console.log('model:', model);
+  const payload = {
+    model: modelName ? modelName : model,
+    messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
+    temperature: 0.5,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+    max_tokens: 2000,
+    stream: true,
+    n: 1,
+  };
+  return OpenAIStream(payload);
 };

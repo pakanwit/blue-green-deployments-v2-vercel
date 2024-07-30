@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { API_KEY_HEADER } from '../pages/api/constants';
 import Input from './input';
 import trackEvent from '../utils/trackEvent';
+import useCookies from '../hooks/useCookies';
 
 // create interface for props passing from mainWizard.tsx
 
@@ -129,6 +130,10 @@ export default function Register1({
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const { getCookie } = useCookies();
+  const variantID = getCookie('variantID');
+  const experimentID = getCookie('experimentID')
+
   const { data: session } = useSession();
   const [userEmail, setUserEmail] = useState('');
 
@@ -152,6 +157,10 @@ export default function Register1({
     CPassword: string;
   }
 
+  function convertMarkdownBoldToHtml(text: string): string {
+    return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  }
+
   async function onSubmit(
     values: FormValues,
     { setErrors, setSubmitting }: FormikHelpers<FormValues>,
@@ -160,11 +169,9 @@ export default function Register1({
     setSubmitting(true);
     setIsSubmitting(true);
     setEnableAlertOnLeave(false);
+  
 
-    const variantIDFromLocal = localStorage.getItem('variantID');
-    const experimentIDFromLocal = localStorage.getItem('experimentID');
-
-    console.log('experimentID from register1: ', experimentIDFromLocal);
+    console.log('experimentID from register1: ', experimentID);
 
     const userInput = {
       businessOperationalStatus: businessOperationalStatus ?? 0,
@@ -240,11 +247,11 @@ export default function Register1({
     };
 
     const planContent = {
-      generatedExecPro: generatedExec ?? 0,
-      generatedSitu1IndKeyPro: generatedSitu1 ?? 0,
-      generatedSitu2SWOTPro: generatedSitu2 ?? 0,
-      generatedMark1ObjPro: generatedMark1 ?? 0,
-      generatedMark2STPPro: generatedMark2 ?? 0,
+      generatedExecPro: convertMarkdownBoldToHtml(generatedExec ?? 0),
+      generatedSitu1IndKeyPro: convertMarkdownBoldToHtml(generatedSitu1 ?? 0),
+      generatedSitu2SWOTPro: convertMarkdownBoldToHtml(generatedSitu2 ?? 0),
+      generatedMark1ObjPro: convertMarkdownBoldToHtml(generatedMark1 ?? 0),
+      generatedMark2STPPro: convertMarkdownBoldToHtml(generatedMark2 ?? 0),
     };
 
     const originalVer = {
@@ -255,8 +262,8 @@ export default function Register1({
     const dataToSend = {
       email: values.email,
       password: values.password,
-      experimentID: experimentIDFromLocal ?? 0,
-      variantID: variantIDFromLocal ?? 0,
+      experimentID: experimentID ?? 0,
+      variantID: variantID ?? 0,
       planPackage: planPackage ?? 0,
       Ido: uuid,
       country: country ?? 0,
@@ -354,403 +361,382 @@ export default function Register1({
 
   const locale = i18n.language;
 
-  const variantIDFromLocal = localStorage.getItem('variantID');
-
   console.log('country: ', country);
 
   useEffect(() => {
     let priceId = '';
 
-    const starterTestPlanPriceId = 'price_1OzIhaHawG1pyJK2fK0esDAj';
-    const professionalTestPlanPriceId = 'price_1OzIhsHawG1pyJK29nl3qO1h';
+    const starterTestPlanPriceId = 'price_1PfOm6RtHCo42L9xyDeD1Kky';
+    const professionalTestPlanPriceId = 'price_1PfOudRtHCo42L9xWdJ6euMo';
 
-    const starterTestPlanPriceIdVariant2 = 'price_1PBJjSHawG1pyJK2fA0XH2je';
-    const professionalTestPlanPriceIdVariant2 =
-      'price_1PBJJCHawG1pyJK2ZWC8pUDA';
+    if (planPackage === 'starter') {
+      priceId = 'price_1PfOm6RtHCo42L9xyDeD1Kky';
+    } else if (planPackage === 'professional') {
+      priceId = 'price_1PfOudRtHCo42L9xWdJ6euMo';
+    } else {
+      console.log('no planPackage');
+    }
 
-    const starterTestPlanPriceVariant2 = starterTestPlanPriceIdVariant2;
-    const proTestPlanPriceVariant2 = professionalTestPlanPriceIdVariant2;
+    // Incase of testing on localhost or vercel development.
+    if (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '15minuteplan-ai.vercel.app'
+    ) {
+      priceId =
+        planPackage === 'starter'
+          ? starterTestPlanPriceId
+          : professionalTestPlanPriceId;
+    }
 
-    if (planPackage) {
-      if (country === 'TH') {
-        console.log('is inside TH');
-        priceId =
-          planPackage === 'starter'
-            ? 'price_1Oawc8HawG1pyJK2wJdOtgqV'
-            : 'price_1OawbXHawG1pyJK24TeH7gZc';
+    if (country !== 'TH') {
+      const currencyMappingsVAR1 = {
+        AE: {
+          currency: 'AED',
+          starterPrice: 'د.إ365',
+          proPrice: 'د.إ499',
+          starterPriceVariant2: 'د.249',
+          proPriceVariant2: 'د.365',
+          discountedStarterPrice: 'د.إ255',
+          discountedProPrice: 'د.إ349',
+        },
+        AU: {
+          currency: 'AUD',
+          starterPrice: 'A$ 155',
+          proPrice: 'A$ 219',
+          starterPriceVariant2: 'A$ 109',
+          proPriceVariant2: 'A$ 155',
+          discountedStarterPrice: 'A$ 108',
+          discountedProPrice: 'A$ 153',
+        },
+        CA: {
+          currency: 'CAD',
+          starterPrice: 'CA$ 135',
+          proPrice: 'CA$ 189',
+          starterPriceVariant2: 'CA$ 95',
+          proPriceVariant2: 'CA$ 135',
+          discountedStarterPrice: 'CA$ 94',
+          discountedProPrice: 'CA$ 132',
+        },
+        CH: {
+          currency: 'CHF',
+          starterPrice: 'CHF 89',
+          proPrice: 'CHF 125',
+          starterPriceVariant2: 'CHF 65',
+          proPriceVariant2: 'CHF 89',
+          discountedStarterPrice: 'CHF 62',
+          discountedProPrice: 'CHF 88',
+        },
+        EU: {
+          currency: 'EUR',
+          starterPrice: '€95',
+          proPrice: '€129',
+          starterPriceVariant2: '€65',
+          proPriceVariant2: '€95',
+          discountedStarterPrice: '€66',
+          discountedProPrice: '€90',
+        },
+        GB: {
+          currency: 'GBP',
+          starterPrice: '£79',
+          proPrice: '£109',
+          starterPriceVariant2: '£55',
+          proPriceVariant2: '£79',
+          discountedStarterPrice: '£55',
+          discountedProPrice: '£76',
+        },
+        NZ: {
+          currency: 'NZD',
+          starterPrice: 'NZ$ 169',
+          proPrice: 'NZ$ 235',
+          starterPriceVariant2: 'NZ$ 115',
+          proPriceVariant2: 'NZ$ 169',
+          discountedStarterPrice: 'NZ$ 118',
+          discountedProPrice: 'NZ$ 164',
+        },
+        SG: {
+          currency: 'SGD',
+          starterPrice: 'SGD 135',
+          proPrice: 'SGD 189',
+          starterPriceVariant2: 'SGD 95',
+          proPriceVariant2: 'SGD 135',
+          discountedStarterPrice: 'SGD 94',
+          discountedProPrice: 'SGD 132',
+        },
+        ZA: {
+          currency: 'ZAR',
+          starterPrice: 'R1,850',
+          proPrice: 'R2,590',
+          starterPriceVariant2: 'R1,290',
+          proPriceVariant2: 'R1,850',
+          discountedStarterPrice: 'R1,295',
+          discountedProPrice: 'R1,813',
+        },
+        HK: {
+          currency: 'HKD',
+          starterPrice: 'HK$ 779',
+          proPrice: 'HK$ 1,090',
+          starterPriceVariant2: 'HK$ 539',
+          proPriceVariant2: 'HK$ 779',
+          discountedStarterPrice: 'HK$ 545',
+          discountedProPrice: 'HK$ 763',
+        },
+        SE: {
+          currency: 'SEK',
+          starterPrice: '1,090kr',
+          proPrice: '1,490kr',
+          starterPriceVariant2: '759kr',
+          proPriceVariant2: '1,090kr',
+          discountedStarterPrice: '763kr',
+          discountedProPrice: '1,043kr',
+        },
+        DK: {
+          currency: 'DKK',
+          starterPrice: '709kr',
+          proPrice: '990kr',
+          starterPriceVariant2: '479kr',
+          proPriceVariant2: '709kr',
+          discountedStarterPrice: '496kr',
+          discountedProPrice: '693kr',
+        },
+        NO: {
+          currency: 'NOK',
+          starterPrice: '1090kr',
+          proPrice: '1490kr',
+          starterPriceVariant2: '765kr',
+          proPriceVariant2: '1090kr',
+          discountedStarterPrice: '763kr',
+          discountedProPrice: '1,043kr',
+        },
+        JP: {
+          currency: 'JPY',
+          starterPrice: '¥14,900',
+          proPrice: '¥20,900',
+          starterPriceVariant2: '¥10,900',
+          proPriceVariant2: '¥14,900',
+          discountedStarterPrice: '¥10,430',
+          discountedProPrice: '¥14,630',
+        },
+        QA: {
+          currency: 'QAR',
+          starterPrice: 'QR 359',
+          proPrice: 'QR 509',
+          starterPriceVariant2: 'QR 249',
+          proPriceVariant2: 'QR 359',
+          discountedStarterPrice: 'QR 251',
+          discountedProPrice: 'QR 356',
+        },
+        SA: {
+          currency: 'SAR',
+          starterPrice: 'SR 379',
+          proPrice: 'SR 519',
+          starterPriceVariant2: 'SR 259',
+          proPriceVariant2: 'SR 379',
+          discountedStarterPrice: 'SR 265',
+          discountedProPrice: 'SR 363',
+        },
+        IN: {
+          currency: 'INR',
+          starterPrice: '₹2,990',
+          proPrice: '₹3,990',
+          starterPriceVariant2: '₹2,990',
+          proPriceVariant2: '₹3,990',
+          discountedStarterPrice: '₹2,093',
+          discountedProPrice: '₹2,793',
+        },
+        AR: {
+          currency: 'ARS',
+          starterPrice: 'ARS 29,000',
+          proPrice: 'ARS 39,500',
+          starterPriceVariant2: 'ARS 29,000',
+          proPriceVariant2: 'ARS 39,500',
+          discountedStarterPrice: 'ARS 20,300',
+          discountedProPrice: 'ARS 27,650',
+        },
+        CL: {
+          currency: 'CLP',
+          starterPrice: 'CLP 32,900',
+          proPrice: 'CLP 43,900',
+          starterPriceVariant2: 'CLP 32,900',
+          proPriceVariant2: 'CLP 43,900',
+          discountedStarterPrice: 'CLP 23,030',
+          discountedProPrice: 'CLP 30,730',
+        },
+        BR: {
+          currency: 'BRL',
+          starterPrice: 'R$ 175',
+          proPrice: 'R$ 235',
+          starterPriceVariant2: 'R$ 175',
+          proPriceVariant2: 'R$ 235',
+          discountedStarterPrice: 'R$ 122',
+          discountedProPrice: 'R$ 164',
+        },
+      };
+      // split test code here
+      const currencyMappingsVAR2 = {
+        AE: {
+          currency: 'AED',
+          starterPrice: 'د.إ249',
+          proPrice: 'د.إ365',
+        },
+        AR: {
+          currency: 'ARS',
+          starterPrice: 'ARS 29,000',
+          proPrice: 'ARS 39,500',
+        },
+        AU: {
+          currency: 'AUD',
+          starterPrice: 'A$ 109',
+          proPrice: 'A$ 155',
+        },
+        BR: {
+          currency: 'BRL',
+          starterPrice: 'R$ 175',
+          proPrice: 'R$ 235',
+        },
+        CA: {
+          currency: 'CAD',
+          starterPrice: 'CA$ 95',
+          proPrice: 'CA$ 135',
+        },
+        CH: {
+          currency: 'CHF',
+          starterPrice: 'CHF 65',
+          proPrice: 'CHF 89',
+        },
+        CL: {
+          currency: 'CLP',
+          starterPrice: 'CLP 32,900',
+          proPrice: 'CLP 43,900',
+        },
+        DK: {
+          currency: 'DKK',
+          starterPrice: '479kr',
+          proPrice: '709kr',
+        },
+        EU: {
+          currency: 'EUR',
+          starterPrice: '€65',
+          proPrice: '€95',
+        },
+        GB: {
+          currency: 'GBP',
+          starterPrice: '£55',
+          proPrice: '£79',
+        },
+        HK: {
+          currency: 'HKD',
+          starterPrice: 'HK$ 539',
+          proPrice: 'HK$ 779',
+        },
+        IN: {
+          currency: 'INR',
+          starterPrice: '₹2,990',
+          proPrice: '₹3,990',
+        },
+        JP: {
+          currency: 'JPY',
+          starterPrice: '¥10,900',
+          proPrice: '¥14,900',
+        },
+        NO: {
+          currency: 'NOK',
+          starterPrice: '765kr',
+          proPrice: '1090kr',
+        },
+        NZ: {
+          currency: 'NZD',
+          starterPrice: 'NZ$ 115',
+          proPrice: 'NZ$ 169',
+        },
+        QA: {
+          currency: 'QAR',
+          starterPrice: 'QR 249',
+          proPrice: 'QR 359',
+        },
+        SA: {
+          currency: 'SAR',
+          starterPrice: 'SR 259',
+          proPrice: 'SR 379',
+        },
+        SE: {
+          currency: 'SEK',
+          starterPrice: '759kr',
+          proPrice: '1,090kr',
+        },
+        SG: {
+          currency: 'SGD',
+          starterPrice: 'SGD 95',
+          proPrice: 'SGD 135',
+        },
+        ZA: {
+          currency: 'ZAR',
+          starterPrice: 'R1,290',
+          proPrice: 'R1,850',
+        },
+      };
+
+      const euroCountries = [
+        'DE',
+        'FR',
+        'IT',
+        'ES',
+        'NL',
+        'BE',
+        'LU',
+        'IE',
+        'PT',
+        'AT',
+        'FI',
+        'GR',
+        'CY',
+        'MT',
+        'EE',
+        'LV',
+        'LT',
+        'SK',
+        'SI',
+      ];
+
+      const countryMapping = currencyMappingsVAR2[country];
+
+      if (!euroCountries.includes(country) && countryMapping) {
+        console.log('not euro country inside: ', country);
+        setStarterPrice(countryMapping.starterPrice);
+        setProPrice(countryMapping.proPrice);
+        // setDiscountedStarterPrice(countryMapping.discountedStarterPrice);
+        // setDiscountedProPrice(countryMapping.discountedProPrice);
+      } else if (euroCountries.includes(country)) {
+        console.log('is euro country inside: ', country);
+        setStarterPrice('€65');
+        setProPrice('€95');
+        // setDiscountedStarterPrice('€66');
+        // setDiscountedProPrice('€90');
       } else {
-        if (planPackage === 'starter') {
-          priceId = 'price_1PBJjSHawG1pyJK2fA0XH2je';
-        } else if (planPackage === 'professional') {
-          priceId = 'price_1PBJJCHawG1pyJK2ZWC8pUDA';
-        } else {
-          console.log('no planPackage');
-        }
-      }
-
-      // Incase of testing on localhost or vercel development.
-      if (
-        window.location.hostname === 'localhost' ||
-        window.location.hostname === '15minuteplan-ai.vercel.app'
-      ) {
-        priceId =
-          planPackage === 'starter'
-            ? starterTestPlanPriceId
-            : professionalTestPlanPriceId;
-      }
-
-      if (country !== 'TH') {
-        const currencyMappingsVAR1 = {
-          AE: {
-            currency: 'AED',
-            starterPrice: 'د.إ365',
-            proPrice: 'د.إ499',
-            starterPriceVariant2: 'د.249',
-            proPriceVariant2: 'د.365',
-            discountedStarterPrice: 'د.إ255',
-            discountedProPrice: 'د.إ349',
-          },
-          AU: {
-            currency: 'AUD',
-            starterPrice: 'A$ 155',
-            proPrice: 'A$ 219',
-            starterPriceVariant2: 'A$ 109',
-            proPriceVariant2: 'A$ 155',
-            discountedStarterPrice: 'A$ 108',
-            discountedProPrice: 'A$ 153',
-          },
-          CA: {
-            currency: 'CAD',
-            starterPrice: 'CA$ 135',
-            proPrice: 'CA$ 189',
-            starterPriceVariant2: 'CA$ 95',
-            proPriceVariant2: 'CA$ 135',
-            discountedStarterPrice: 'CA$ 94',
-            discountedProPrice: 'CA$ 132',
-          },
-          CH: {
-            currency: 'CHF',
-            starterPrice: 'CHF 89',
-            proPrice: 'CHF 125',
-            starterPriceVariant2: 'CHF 65',
-            proPriceVariant2: 'CHF 89',
-            discountedStarterPrice: 'CHF 62',
-            discountedProPrice: 'CHF 88',
-          },
-          EU: {
-            currency: 'EUR',
-            starterPrice: '€95',
-            proPrice: '€129',
-            starterPriceVariant2: '€65',
-            proPriceVariant2: '€95',
-            discountedStarterPrice: '€66',
-            discountedProPrice: '€90',
-          },
-          GB: {
-            currency: 'GBP',
-            starterPrice: '£79',
-            proPrice: '£109',
-            starterPriceVariant2: '£55',
-            proPriceVariant2: '£79',
-            discountedStarterPrice: '£55',
-            discountedProPrice: '£76',
-          },
-          NZ: {
-            currency: 'NZD',
-            starterPrice: 'NZ$ 169',
-            proPrice: 'NZ$ 235',
-            starterPriceVariant2: 'NZ$ 115',
-            proPriceVariant2: 'NZ$ 169',
-            discountedStarterPrice: 'NZ$ 118',
-            discountedProPrice: 'NZ$ 164',
-          },
-          SG: {
-            currency: 'SGD',
-            starterPrice: 'SGD 135',
-            proPrice: 'SGD 189',
-            starterPriceVariant2: 'SGD 95',
-            proPriceVariant2: 'SGD 135',
-            discountedStarterPrice: 'SGD 94',
-            discountedProPrice: 'SGD 132',
-          },
-          ZA: {
-            currency: 'ZAR',
-            starterPrice: 'R1,850',
-            proPrice: 'R2,590',
-            starterPriceVariant2: 'R1,290',
-            proPriceVariant2: 'R1,850',
-            discountedStarterPrice: 'R1,295',
-            discountedProPrice: 'R1,813',
-          },
-          HK: {
-            currency: 'HKD',
-            starterPrice: 'HK$ 779',
-            proPrice: 'HK$ 1,090',
-            starterPriceVariant2: 'HK$ 539',
-            proPriceVariant2: 'HK$ 779',
-            discountedStarterPrice: 'HK$ 545',
-            discountedProPrice: 'HK$ 763',
-          },
-          SE: {
-            currency: 'SEK',
-            starterPrice: '1,090kr',
-            proPrice: '1,490kr',
-            starterPriceVariant2: '759kr',
-            proPriceVariant2: '1,090kr',
-            discountedStarterPrice: '763kr',
-            discountedProPrice: '1,043kr',
-          },
-          DK: {
-            currency: 'DKK',
-            starterPrice: '709kr',
-            proPrice: '990kr',
-            starterPriceVariant2: '479kr',
-            proPriceVariant2: '709kr',
-            discountedStarterPrice: '496kr',
-            discountedProPrice: '693kr',
-          },
-          NO: {
-            currency: 'NOK',
-            starterPrice: '1090kr',
-            proPrice: '1490kr',
-            starterPriceVariant2: '765kr',
-            proPriceVariant2: '1090kr',
-            discountedStarterPrice: '763kr',
-            discountedProPrice: '1,043kr',
-          },
-          JP: {
-            currency: 'JPY',
-            starterPrice: '¥14,900',
-            proPrice: '¥20,900',
-            starterPriceVariant2: '¥10,900',
-            proPriceVariant2: '¥14,900',
-            discountedStarterPrice: '¥10,430',
-            discountedProPrice: '¥14,630',
-          },
-          QA: {
-            currency: 'QAR',
-            starterPrice: 'QR 359',
-            proPrice: 'QR 509',
-            starterPriceVariant2: 'QR 249',
-            proPriceVariant2: 'QR 359',
-            discountedStarterPrice: 'QR 251',
-            discountedProPrice: 'QR 356',
-          },
-          SA: {
-            currency: 'SAR',
-            starterPrice: 'SR 379',
-            proPrice: 'SR 519',
-            starterPriceVariant2: 'SR 259',
-            proPriceVariant2: 'SR 379',
-            discountedStarterPrice: 'SR 265',
-            discountedProPrice: 'SR 363',
-          },
-          IN: {
-            currency: 'INR',
-            starterPrice: '₹2,990',
-            proPrice: '₹3,990',
-            starterPriceVariant2: '₹2,990',
-            proPriceVariant2: '₹3,990',
-            discountedStarterPrice: '₹2,093',
-            discountedProPrice: '₹2,793',
-          },
-          AR: {
-            currency: 'ARS',
-            starterPrice: 'ARS 29,000',
-            proPrice: 'ARS 39,500',
-            starterPriceVariant2: 'ARS 29,000',
-            proPriceVariant2: 'ARS 39,500',
-            discountedStarterPrice: 'ARS 20,300',
-            discountedProPrice: 'ARS 27,650',
-          },
-          CL: {
-            currency: 'CLP',
-            starterPrice: 'CLP 32,900',
-            proPrice: 'CLP 43,900',
-            starterPriceVariant2: 'CLP 32,900',
-            proPriceVariant2: 'CLP 43,900',
-            discountedStarterPrice: 'CLP 23,030',
-            discountedProPrice: 'CLP 30,730',
-          },
-          BR: {
-            currency: 'BRL',
-            starterPrice: 'R$ 175',
-            proPrice: 'R$ 235',
-            starterPriceVariant2: 'R$ 175',
-            proPriceVariant2: 'R$ 235',
-            discountedStarterPrice: 'R$ 122',
-            discountedProPrice: 'R$ 164',
-          },
-        };
-        // split test code here
-        const currencyMappingsVAR2 = {
-          AE: {
-            currency: 'AED',
-            starterPrice: 'د.إ249',
-            proPrice: 'د.إ365',
-          },
-          AR: {
-            currency: 'ARS',
-            starterPrice: 'ARS 29,000',
-            proPrice: 'ARS 39,500',
-          },
-          AU: {
-            currency: 'AUD',
-            starterPrice: 'A$ 109',
-            proPrice: 'A$ 155',
-          },
-          BR: {
-            currency: 'BRL',
-            starterPrice: 'R$ 175',
-            proPrice: 'R$ 235',
-          },
-          CA: {
-            currency: 'CAD',
-            starterPrice: 'CA$ 95',
-            proPrice: 'CA$ 135',
-          },
-          CH: {
-            currency: 'CHF',
-            starterPrice: 'CHF 65',
-            proPrice: 'CHF 89',
-          },
-          CL: {
-            currency: 'CLP',
-            starterPrice: 'CLP 32,900',
-            proPrice: 'CLP 43,900',
-          },
-          DK: {
-            currency: 'DKK',
-            starterPrice: '479kr',
-            proPrice: '709kr',
-          },
-          EU: {
-            currency: 'EUR',
-            starterPrice: '€65',
-            proPrice: '€95',
-          },
-          GB: {
-            currency: 'GBP',
-            starterPrice: '£55',
-            proPrice: '£79',
-          },
-          HK: {
-            currency: 'HKD',
-            starterPrice: 'HK$ 539',
-            proPrice: 'HK$ 779',
-          },
-          IN: {
-            currency: 'INR',
-            starterPrice: '₹2,990',
-            proPrice: '₹3,990',
-          },
-          JP: {
-            currency: 'JPY',
-            starterPrice: '¥10,900',
-            proPrice: '¥14,900',
-          },
-          NO: {
-            currency: 'NOK',
-            starterPrice: '765kr',
-            proPrice: '1090kr',
-          },
-          NZ: {
-            currency: 'NZD',
-            starterPrice: 'NZ$ 115',
-            proPrice: 'NZ$ 169',
-          },
-          QA: {
-            currency: 'QAR',
-            starterPrice: 'QR 249',
-            proPrice: 'QR 359',
-          },
-          SA: {
-            currency: 'SAR',
-            starterPrice: 'SR 259',
-            proPrice: 'SR 379',
-          },
-          SE: {
-            currency: 'SEK',
-            starterPrice: '759kr',
-            proPrice: '1,090kr',
-          },
-          SG: {
-            currency: 'SGD',
-            starterPrice: 'SGD 95',
-            proPrice: 'SGD 135',
-          },
-          ZA: {
-            currency: 'ZAR',
-            starterPrice: 'R1,290',
-            proPrice: 'R1,850',
-          },
-        };
-
-        const euroCountries = [
-          'DE',
-          'FR',
-          'IT',
-          'ES',
-          'NL',
-          'BE',
-          'LU',
-          'IE',
-          'PT',
-          'AT',
-          'FI',
-          'GR',
-          'CY',
-          'MT',
-          'EE',
-          'LV',
-          'LT',
-          'SK',
-          'SI',
-        ];
-
-        const countryMapping = currencyMappingsVAR2[country];
-
-        if (!euroCountries.includes(country) && countryMapping) {
-          console.log('not euro country inside: ', country);
-          setStarterPrice(countryMapping.starterPrice);
-          setProPrice(countryMapping.proPrice);
-          // setDiscountedStarterPrice(countryMapping.discountedStarterPrice);
-          // setDiscountedProPrice(countryMapping.discountedProPrice);
-        } else if (euroCountries.includes(country)) {
-          console.log('is euro country inside: ', country);
-          setStarterPrice('€65');
-          setProPrice('€95');
-          // setDiscountedStarterPrice('€66');
-          // setDiscountedProPrice('€90');
-        } else {
-          console.log('no country match inside: ', country);
-          setStarterPrice('$69');
-          setProPrice('$99');
-          // setDiscountedStarterPrice('$69');
-          // setDiscountedProPrice('$97');
-        }
-      } else {
-        console.log('no country: ', country);
+        console.log('no country match inside: ', country);
         setStarterPrice('$69');
         setProPrice('$99');
         // setDiscountedStarterPrice('$69');
         // setDiscountedProPrice('$97');
       }
-
-      if (userEmail) {
-        checkout({
-          lineitems: [
-            {
-              price: priceId,
-              quantity: 1,
-            },
-          ],
-          userEmail,
-          secretKey,
-        });
-      }
     } else {
-      console.log('no plan package');
+      console.log('no country: ', country);
+      setStarterPrice('$69');
+      setProPrice('$99');
+      // setDiscountedStarterPrice('$69');
+      // setDiscountedProPrice('$97');
+    }
+
+    if (userEmail) {
+      checkout({
+        lineitems: [
+          {
+            price: priceId,
+            quantity: 1,
+          },
+        ],
+        userEmail,
+        secretKey,
+      });
     }
   }, [country, planPackage, userEmail]);
 

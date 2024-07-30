@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MoonLoader } from 'react-spinners';
 import DOMPurify from 'dompurify';
@@ -17,7 +17,10 @@ import useLocale from '../hooks/useLocale';
 import { API_KEY_HEADER } from './api/constants';
 import trackEvent from '../utils/trackEvent';
 import Pixel from '../components/Pixel';
+import { AppContext } from '../context/appContext';
+import { ROUTE_PATH } from '../constants/path';
 import XPixel from '../components/XPixel';
+import useCookies from '../hooks/useCookies';
 
 export default function LastStepPlanGen({ secretKey, fbPixelId, xPixelId }) {
   const { t } = useTranslation('loggedInFullPlan');
@@ -36,9 +39,7 @@ export default function LastStepPlanGen({ secretKey, fbPixelId, xPixelId }) {
   const [planContentEdited, setPlanContentEdited] = useState(null);
   const [userInput, setUserInput] = useState(null);
 
-  const router = useRouter();
-  const { planId } = router.query;
-  const planIdNum = Number(planId);
+  const { planId: planIdNum } = useContext(AppContext);
 
   useEffect(() => {
     let interval;
@@ -47,14 +48,11 @@ export default function LastStepPlanGen({ secretKey, fbPixelId, xPixelId }) {
     async function fetchUserData() {
       console.log('fetchUserData triggered');
       setLoading(true);
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/getAllUserData`,
-        {
-          headers: {
-            [API_KEY_HEADER]: secretKey,
-          },
+      const res = await fetch('/api/getAllUserData', {
+        headers: {
+          [API_KEY_HEADER]: secretKey,
         },
-      );
+      });
       const data = await res.json();
 
       if (data) {
@@ -217,7 +215,7 @@ export default function LastStepPlanGen({ secretKey, fbPixelId, xPixelId }) {
   //   const newHeadingHtmlContent = updateHeadingTags(htmlContent);
 
   //   try {
-  //     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/convertToDocx`, {
+  //     const response = await fetch('/api/convertToDocx', {
   //       method: 'POST',
   //       headers: {
   //         'Content-Type': 'application/json'
@@ -251,11 +249,13 @@ export default function LastStepPlanGen({ secretKey, fbPixelId, xPixelId }) {
   useEffect(() => {
     if (
       userData &&
-      userData.plans[planIdNum].originalVer.userInput.planLanguage === 'ar'
+      userData.plans[planIdNum]?.originalVer?.userInput?.planLanguage === 'ar'
     )
       setTextAlign('text-right');
   }, [userData]);
 
+  const { getCookie } = useCookies();
+  const variantID = getCookie("variantID")
   return (
     <>
       <Pixel id={fbPixelId} />
@@ -328,14 +328,26 @@ export default function LastStepPlanGen({ secretKey, fbPixelId, xPixelId }) {
                       )}
                     </div>
 
+                    {variantID === '2' && userData.plans[planIdNum]?.isFinanceIncomplete && (
+                      <div className="relative flex justify-center items-center">
+                        <div className="absolute truncate h-[26px] bottom-[24px] bg-[#FE6C66] font-bold flex justify-center items-center text-center text-white text-[11px] md:text-[12px] pt-[0] md:pt-[5px] pb-[0] md:pb-[5px] pr-[5px] md:pr-[17px] pl-[5px] md:pl-[17px] rounded-[16px] shadow-[0px_4px_5px_0px_rgba(254,108,102,0.30)]">
+                          {t('financeIncomplete')}
+                        </div>
+                      </div>
+                    )}
+
                     <div className="flex gap-5 justify-center mb-10">
                       <div className="flex gap-3">
                         <Link
                           className="button"
-                          href={{
-                            pathname: '/editPlanStarter',
-                            query: { planId: planIdNum },
-                          }}
+                          href={
+                            variantID === '2' && userData.plans[planIdNum]?.isFinanceIncomplete
+                              ? ROUTE_PATH.investmentItems
+                              : {
+                                  pathname: '/editPlanStarter',
+                                  query: { planId: planIdNum },
+                                }
+                          }
                           onClick={() => {
                             trackEvent({
                               event_name: 'edit_and_save_button',
@@ -633,7 +645,8 @@ export default function LastStepPlanGen({ secretKey, fbPixelId, xPixelId }) {
 
                         {!isError &&
                         planContentOriginal &&
-                        !planContentOriginal.editedFin ? (
+                        !planContentOriginal.editedFin &&
+                        !userInput.isFinanceIncomplete ? (
                           <FinTable
                             investmentItem1={
                               userData &&

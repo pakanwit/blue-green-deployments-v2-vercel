@@ -221,7 +221,7 @@ export const situationAnalysisSwotAnalysisProHandler = (
     Generate response in html surrounding key topics with h5 tag.
     Surround each individual Strengths, Weaknesses, Opportunities, and Threats points with <ol> and <li> tag.
     Begin the completion with "<h4>${promptTopic.en}</h4>"
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
     Generate everything in English.
     use british english spelling and grammar
     This is important: Be very insightful in your response.
@@ -255,7 +255,7 @@ export const situationAnalysisSwotAnalysisProHandler = (
     Generate response in html surrounding key topics with h5 tag.
     Surround each individual Strengths, Weaknesses, Opportunities, and Threats points with <ol> and <li> tag.
     Begin the completion with "<h4>${promptTopic.en}</h4>"
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
     Generate everything in English.
     This is important: Be very insightful in your response.
     This is the long, detailed, and insightful ${promptTopic.en} you came up with:
@@ -289,7 +289,7 @@ export const situationAnalysisSwotAnalysisProHandler = (
     Generieren Sie mit dem h5-Tag Antworten im HTML-Format zu wichtigen Themen.
     Umgeben Sie jeden einzelnen Stärken-, Schwächen-, Chancen- und Bedrohungspunkt mit den Tags <ol> und <li>.
     Beginnen Sie die Vervollständigung mit „<h4>${promptTopic.de}</h4>“
-    Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie das -Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie das -Tag für Kursivschrift. Verwenden Sie nicht *, sondern verwenden Sie das -Tag für Aufzählungspunkte.
+Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie den <strong>-Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie den <em>-Tag für Kursivschrift. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie die <ul>- und <li>-Tags.
     Generiere alles auf Deutsch.
     Dies ist wichtig: Seien Sie in Ihrer Antwort sehr einsichtig.
     Dies ist das lange, detaillierte und aufschlussreiche ${promptTopic.de}, das Sie sich ausgedacht haben:
@@ -324,7 +324,7 @@ export const situationAnalysisSwotAnalysisProHandler = (
   Générez une réponse en HTML entourant les sujets clés avec le tag h5.
   Entourez chaque point individuel de Forces, Faiblesses, Opportunités et Menaces avec les balises <ol> et <li>.
   Commencez la complétion avec "<h4>${promptTopic.fr}</h4>"
-  Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
   Générez tout en français.
   C’est important : Soyez très perspicace dans votre réponse.
   Voici le long, détaillé et perspicace ${promptTopic.fr} que vous avez trouvé :
@@ -359,7 +359,7 @@ export const situationAnalysisSwotAnalysisProHandler = (
     Genera una respuesta en HTML rodeando los temas clave con el tag h5.
     Rodea cada punto individual de Fortalezas, Debilidades, Oportunidades y Amenazas con las etiquetas <ol> y <li>.
     Comienza la finalización con "<h4>${promptTopic.es}</h4>"
-    Use solo etiquetas HTML, no use markdown. No use ** **, use la etiqueta  para negrita. No use * *, use la etiqueta  para cursiva. No use *, use la etiqueta  para viñetas.
+Use solo etiquetas HTML, no use markdown. No use ** **, use en su lugar la etiqueta <strong> para negrita. No use * *, use en su lugar la etiqueta <em> para cursiva. No use * para viñetas, use en su lugar las etiquetas <ul> y <li>.
     Genere todo en español.
       Esto es importante: Sea muy perspicaz en su respuesta.
       Este es el largo, detallado y perspicaz ${promptTopic.es} que se le ocurrió:
@@ -394,7 +394,7 @@ export const situationAnalysisSwotAnalysisProHandler = (
     Genera una risposta in HTML circondando gli argomenti chiave con il tag h5.
     Circonda ogni singolo punto di Forza, Debolezza, Opportunità e Minacce con i tag <ol> e <li>.
     Inizia la realizzazione con "<h4>${promptTopic.it}</h4>"
-    Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag  per il grassetto. Non usare * *, usa invece il tag  per il corsivo. Non usare *, usa invece il tag  per i punti elenco.
+Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
     Genera tutto in italiano.
     Questo è importante: Sii molto perspicace nella tua risposta.
     Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai ideato:
@@ -429,7 +429,7 @@ export const situationAnalysisSwotAnalysisProHandler = (
     Genereer een reactie in html en omring belangrijke onderwerpen met de h5-tag.
     Omring elk individueel punt van Sterke punten, Zwakke punten, Kansen en Bedreigingen met de <ol> en <li> tag.
     Begin de voltooiing met "<h4>${promptTopic.nl}</h4>"
-    Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik niet ** **, gebruik in plaats daarvan de -tag voor vetgedrukte tekst. Gebruik niet * *, gebruik in plaats daarvan de -tag voor cursieve tekst. Gebruik geen *, gebruik in plaats daarvan de -tag voor opsommingstekens.
+Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik geen ** **, gebruik in plaats daarvan de <strong>-tag voor vetgedrukte tekst. Gebruik geen * *, gebruik in plaats daarvan de <em>-tag voor cursieve tekst. Gebruik geen * voor opsommingstekens, gebruik in plaats daarvan de <ul>- en <li>-tags.
     Genereer alles in het Nederlands.
     Dit is belangrijk: Wees zeer inzichtelijk in uw antwoord.
     Dit is de lange, gedetailleerde en inzichtelijke ${promptTopic.nl} die u bedacht hebt:
@@ -464,7 +464,7 @@ export const situationAnalysisSwotAnalysisProHandler = (
     h5タグでキートピックを囲んでhtmlのレスポンスを生成してください。
     各個の強み、弱み、機会、脅威のポイントを<ol>と<li>タグで囲んでください。
     完成を"<h4>${promptTopic.ja}</h4>"で始めてください。
-    HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、太字にはタグを使用してください。 * *を使用せず、斜体にはタグを使用してください。 *を使用せず、箇条書きにはタグを使用してください。
+HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、代わりに太字には<strong>タグを使用してください。 * *を使用せず、代わりに斜体には<em>タグを使用してください。箇条書きには*を使用せず、代わりに<ul>と<li>タグを使用してください。
     すべてを日本語で生成します。
     これは重要です: 回答には非常に洞察力を持ってください。
     これがあなたが考えた長くて詳細で洞察に満ちた${promptTopic.ja}です:
@@ -499,7 +499,7 @@ export const situationAnalysisSwotAnalysisProHandler = (
     أنشئ الرد في html محيطًا المواضيع الرئيسية بوسم h5.
     أحاطة كل نقطة من القوة، الضعف، الفرص، والتهديدات بوسم <ol> و <li>.
     ابدأ الإكمال بـ "<h4>${promptTopic.ar}</h4>"
-    استخدم فقط علامات HTML، ولا تستخدم ماركداون. لا تستخدم ** **، بدلاً من ذلك استخدم علامة  للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة  للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامة  للنقاط.
+    استخدم فقط علامات HTML، ولا تستخدم markdown. لا تستخدم ** **، بدلاً من ذلك استخدم علامة <strong> للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة <em> للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامتي <ul> و <li>.
     أنشئ كل شيء باللغة العربية.
     هذا مهم: كن ثاقبًا جدًا في ردك.
     هذا هو الـ${promptTopic.ar} الطويل والمفصل والعميق الذي توصلت إليه:
@@ -534,7 +534,7 @@ export const situationAnalysisSwotAnalysisProHandler = (
     Generera svar i html omger nyckelämnen med h5-taggen.
     Omge varje individuell Styrkor, Svagheter, Möjligheter och Hot punkter med <ol> och <li> tagg.
     Börja slutförandet med "<h4>${promptTopic.sv}</h4>"
-    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället -taggen för fetstil. Använd inte * *, använd istället -taggen för kursiv. Använd inte *, använd istället -taggen för punktlistor.
+    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv. Använd inte * för punktlistor, använd istället <ul>- och <li>-taggarna.
     Generera allt på svenska.
     Detta är viktigt: Var mycket insiktsfull i ditt svar.
     Detta är den långa, detaljerade och insiktsfulla ${promptTopic.sv} du kom på:
@@ -569,7 +569,7 @@ export const situationAnalysisSwotAnalysisProHandler = (
     Tuota vastaus html-muodossa, jossa avainaiheet on ympäröity h5-tagilla.
     Ympäröi jokainen yksittäinen Vahvuudet, Heikkoudet, Mahdollisuudet ja Uhat -kohta <ol> ja <li> -tagilla.
     Aloita täydennys "<h4>${promptTopic.fi}</h4>"
-    Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä vahvennukseen -tagia. Älä käytä * *, vaan käytä kursivointiin -tagia. Älä käytä *, vaan käytä luettelomerkeille -tagia.
+Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä <strong>-tagia lihavointiin. Älä käytä * *, vaan käytä <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, vaan käytä <ul>- ja <li>-tageja.
     Luo kaikki suomeksi.
     Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
     Tämä on pitkä, yksityiskohtainen ja oivaltava ${promptTopic.fi}, jonka keksit:
@@ -604,7 +604,7 @@ export const situationAnalysisSwotAnalysisProHandler = (
     Generer svar i html, der omgiver nøgleemner med h5-tag.
     Omgiv hver individuel Styrker, Svagheder, Muligheder og Trusler punkter med <ol> og <li> tag.
     Begynd udfyldelsen med "<h4>${promptTopic.da}</h4>"
-    Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet -tagget til fed skrift. Brug ikke * *, brug i stedet -tagget til kursiv skrift. Brug ikke *, brug i stedet -tagget til punkttegn.
+Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
     Generer alt på dansk.
     Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
     Dette er den lange, detaljerede og indsigtsfulde ${promptTopic.da}, du kom op med:
@@ -638,33 +638,36 @@ export const situationAnalysisSwotAnalysisProHandler = (
     Generer svar i html som omgir nøkkeltemaer med h5-taggen.
     Omgir hvert individuelle Styrker, Svakheter, Muligheter, og Trusler punkter med <ol> og <li> tagg.
     Begynn utfyllingen med "<h4>${promptTopic.no}</h4>"
-    Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet -taggen for fet skrift. Ikke bruk * *, bruk i stedet -taggen for kursiv skrift. Ikke bruk *, bruk i stedet -taggen for punktlister.
+Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-taggen for fet skrift. Ikke bruk * *, bruk i stedet <em>-taggen for kursiv skrift. Ikke bruk * for punktlister, bruk i stedet <ul>- og <li>-taggene.
     Generer alt på norsk.
     Dette er viktig: Vær veldig innsiktsfull i ditt svar.
     Dette er den lange, detaljerte og innsiktsfulle ${promptTopic.no} du kom opp med:
     `,
   };
 
-  let modelPlanQuota = 'gpt-3.5-turbo';
-  if (planQuota <= 8) {
-    modelPlanQuota = 'gpt-3.5-turbo';
-    console.log('using gpt-3.5-turbo');
-  } else {
-    modelPlanQuota = 'gpt-4';
-    console.log('using gpt-4');
-  }
+let modelPlanQuota = 'gpt-3.5-turbo';
+if (planQuota <= 8) {
+  modelPlanQuota = 'gpt-3.5-turbo';
+  console.log('using gpt-3.5-turbo');
+} else {
+  modelPlanQuota = 'gpt-4';
+  console.log('using gpt-4');
+}
 
-  const payload = {
-    model: variantID === '2' ? 'gpt-4o' : modelPlanQuota,
-    messages: [{ role: 'user', content: prompt[planLanguage] ?? prompt.en }],
-    temperature: 0.5,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 1200,
-    stream: true,
-    n: 1,
-  };
+const model = variantID === '2' ? 'gpt-4o' : modelPlanQuota;
+console.log('final model:', model);
 
-  return OpenAIStream(payload);
+const payload = {
+  model: model,
+  messages: [{ role: 'user', content: prompt[planLanguage] ?? prompt.en }],
+  temperature: 0.5,
+  top_p: 1,
+  frequency_penalty: 0,
+  presence_penalty: 0,
+  max_tokens: 1200,
+  stream: true,
+  n: 1,
+};
+
+return OpenAIStream(payload);
 };

@@ -14,9 +14,12 @@ import { useTranslation } from 'next-i18next';
 import { API_KEY_HEADER } from '../pages/api/constants';
 import trackEvent from '../utils/trackEvent';
 import Input from './input';
+import useCookies from '../hooks/useCookies';
 
 // your code here
 export default function EditorComponent({
+  isFinanceIncomplete,
+
   planIdNum,
 
   Exec,
@@ -167,6 +170,9 @@ export default function EditorComponent({
   const [showUndoExec, setShowUndoExec] = useState(false);
   const [toggleExec, setToggleExec] = useState(false);
 
+  const { getCookie } = useCookies();
+  const variantID = getCookie("variantID")
+
   const editorRefExec = useRef(null);
 
   useEffect(() => {
@@ -264,6 +270,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID
       }),
     });
 
@@ -457,6 +464,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -650,6 +658,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -843,6 +852,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -1061,6 +1071,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -1255,6 +1266,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -1449,6 +1461,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -1649,6 +1662,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -1843,6 +1857,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -2033,6 +2048,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -2222,6 +2238,7 @@ export default function EditorComponent({
         planLanguage,
         sectionName,
         userInput,
+        variantID,
       }),
     });
 
@@ -2416,6 +2433,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -2610,6 +2628,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -2804,6 +2823,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -2998,6 +3018,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -3192,6 +3213,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -3539,6 +3561,7 @@ export default function EditorComponent({
         userInput,
         planLanguage,
         sectionName,
+        variantID,
       }),
     });
 
@@ -3631,7 +3654,7 @@ export default function EditorComponent({
   }, [userInput]);
 
   // Define common editor prMangs
-  const editorApiKey = 'w8akvuenco5bc2a35ee29tjd7fwuh3p80ym7cn8dic0bc92s';
+  const editorApiKey = process.env.NEXT_PUBLIC_TINYMCE_API_KEY;
   const [editorInit, setEditorInit] = useState({
     height: 500,
     menubar: false,
@@ -6123,32 +6146,34 @@ export default function EditorComponent({
           </div>
 
           {/*------------------------ Finance -----------------------*/}
-          <div className="mt-5">
-            <hr />
-            <div className="flex flex-col justify-center items-start mb-6 mt-5">
-              <h3>{t('Edit Finance')}</h3>
-              <div className="">
-                {t(
-                  'Note: If you want to edit initial invesment you can download the plan in word format and edit it there, but for the income statement you can scroll to the bottom of the charts to edit',
-                )}
+          {!isFinanceIncomplete && (
+            <div className="mt-5">
+              <hr />
+              <div className="flex flex-col justify-center items-start mb-6 mt-5">
+                <h3>{t('Edit Finance')}</h3>
+                <div className="">
+                  {t(
+                    'Note: If you want to edit initial invesment you can download the plan in word format and edit it there, but for the income statement you can scroll to the bottom of the charts to edit',
+                  )}
+                </div>
+              </div>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(contentFin),
+                }}
+              />
+              <br />
+              <div className="flex justify-center items-center mb-6 mt-5">
+                <button
+                  type="button"
+                  className="button-small"
+                  onClick={handleEditFinance}
+                >
+                  {t('Edit Finance')}
+                </button>
               </div>
             </div>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(contentFin),
-              }}
-            />
-            <br />
-            <div className="flex justify-center items-center mb-6 mt-5">
-              <button
-                type="button"
-                className="button-small"
-                onClick={handleEditFinance}
-              >
-                {t('Edit Finance')}
-              </button>
-            </div>
-          </div>
+          )}
 
           {/*------------------------ Risk and Mitigation -----------------------*/}
           <div className="mt-5">

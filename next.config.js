@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
-const { withSentryConfig } = require("@sentry/nextjs");
-const { i18n } = require("./next-i18next.config");
+const { withSentryConfig } = require('@sentry/nextjs');
+const { i18n } = require('./next-i18next.config');
 
 const nextConfig = {
   assetPrefix: process.env.BASE_URL
@@ -30,12 +30,12 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "images-static.trustpilot.com",
+        protocol: 'https',
+        hostname: 'images-static.trustpilot.com',
       },
       {
-        protocol: "https",
-        hostname: "user-images.trustpilot.com",
+        protocol: 'https',
+        hostname: 'user-images.trustpilot.com',
       },
     ],
   },
@@ -47,8 +47,8 @@ const sentryWebpackPluginOptions = {
 
   // Suppresses source map uploading logs during build
   silent: true,
-  org: "15minuteplanai",
-  project: "15minuteplanai",
+  org: '15minuteplanai',
+  project: '15minuteplanai',
 };
 
 module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);

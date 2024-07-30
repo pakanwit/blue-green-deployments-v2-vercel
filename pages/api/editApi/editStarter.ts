@@ -1,4 +1,3 @@
-import { FireworksAIStream } from '../../../utils/llama3/FireworksAIStream';
 import { OpenAIStream } from '../../../utils/OpenAIChatStream';
 // a bunch of states to be input into prompts of payloads
 
@@ -78,30 +77,18 @@ export default async function editStarter(request, response) {
 
   console.log('editPromptFinal', editPromptFinal);
 
-  if (variantID === '2') {
-    const payload = {
-      messages: [{ role: 'user', content: editPromptFinal }],
-      temperature: 0.5,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      max_tokens: 1500,
-      stream: true,
-      n: 1,
-    };
-    return FireworksAIStream(payload);
-  } else {
-    const payload = {
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: editPromptFinal }],
-      temperature: 0.5,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      max_tokens: 2000,
-      stream: true,
-      n: 1,
-    };
-    return OpenAIStream(payload);
-  }
+    const model = variantID === '2' ? 'gpt-4o-mini' : 'gpt-3.5-turbo';
+  console.log("model:", model)
+  const payload = {
+    model,
+    messages: [{ role: 'user', content: editPromptFinal }],
+    temperature: 0.5,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+    max_tokens: 2000,
+    stream: true,
+    n: 1,
+  };
+  return OpenAIStream(payload);
 }

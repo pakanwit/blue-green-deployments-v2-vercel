@@ -1,6 +1,4 @@
-import { promptForSuggestionResponseFormat } from '../../../constants/prompt/firework/format';
 import { splitTextByDoubleSlash } from '../../../utils/aiResponseParser/text';
-import { FireworksAI } from '../../../utils/llama3/FireworksAI';
 import { withApiKeyValidation } from '../utils/withApiKeyValidation';
 
 export default async function handler(request, response) {
@@ -97,7 +95,7 @@ export default async function handler(request, response) {
         "coffee//non-alcoholic drinks//snacks//cake//milkshakes"
         Don't deviate from this format.
         Don't use numbered list. 
-    
+        Generate content in the language specified by the two-letter code provided: ${locale}. For example, use ‘en’ for English, ‘fr’ for French, ‘de’ for German, etc.
         Here is what you've come up with:
         `;
 
@@ -172,35 +170,10 @@ export default async function handler(request, response) {
           stream: false,
           n: 1,
         };
-        if (variantID === '2') {
-          const response = await FireworksAI(
-            {
-              ...basePayload,
-              messages: [
-                { role: 'user', content: finalPrompt },
-                {
-                  role: 'system',
-                  content:
-                    locale === 'de'
-                      ? promptForSuggestionResponseFormat['de']
-                      : promptForSuggestionResponseFormat['en'],
-                },
-              ],
-            },
-            'string',
-          );
-          const recommendations = splitTextByDoubleSlash(response);
-          console.log({
-            message:
-              'getStep4SuggestionsProductNameHandler: Fireworks AI recommendations',
-            recommendations,
-          });
-          if (recommendations.length > 0) {
-            res.status(200).json(recommendations);
-          } else {
-            throw new Error('response text is empty.');
-          }
-        } else {
+
+ const model = variantID === '2' ? 'gpt-4o-mini' : 'gpt-3.5-turbo';
+        console.log("model:", model)
+       
           const openAIResponse = await fetch(
             'https://api.openai.com/v1/chat/completions',
             {
@@ -209,8 +182,9 @@ export default async function handler(request, response) {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
               },
+              
               body: JSON.stringify({
-                model: 'gpt-3.5-turbo', // Specify the model you want to use
+                model,
                 messages: [{ role: 'user', content: finalPrompt }],
                 ...basePayload,
               }),
@@ -231,7 +205,7 @@ export default async function handler(request, response) {
           } else {
             throw new Error('response text is empty.');
           }
-        }
+        
       } catch (error) {
         console.error(error);
         res

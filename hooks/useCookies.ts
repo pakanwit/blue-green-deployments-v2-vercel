@@ -6,7 +6,6 @@ const useCookies = () => {
     // Initialize the state with all existing cookies
     return Cookies.get();
   });
-  console.log("cookies", cookies);
 
   const [isCanary, setIsCanary] = useState(false);
 
@@ -19,7 +18,6 @@ const useCookies = () => {
   // Get a cookie value
   const getCookie = useCallback(
     (name) => {
-      console.log("getCookie", name, Cookies.get(name));
       // Check if the cookie exists
       if (cookies === undefined || !Cookies.get(name)) {
         return null;

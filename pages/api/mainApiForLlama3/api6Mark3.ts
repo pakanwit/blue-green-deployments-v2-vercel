@@ -455,7 +455,7 @@ export default async function api6Mark3(request, response) {
     Write this as if you are the owner of the business, using "we" don't use "I".
     Generate response in html surrounding ${mark3TopicEN} topics with h5 tag. 
     Begin the completion with "<h4>4P</h4>" followed by "<h5>Product Strategy</h5>" don't repeat these topic: "<h4>4P</h4>" and "<h5>Product Strategy</h5>", again in the completion.
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
 Generate everything in English.
     ${UKEngPrompt}
     This is important: Be very insightful in your response.
@@ -498,7 +498,7 @@ Generate everything in English.
     Schreiben Sie so, als ob Sie der Eigentümer des Unternehmens wären, verwenden Sie "wir" und nicht "ich".
     Erzeugen Sie eine Antwort in html, die die ${mark3TopicDE}-Themen mit dem h5-Tag umgibt. 
     Beginnen Sie die Ergänzung mit "<h4>4P</h4>" gefolgt von "<h5>Produktstrategie</h5>"
-    Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie das -Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie das -Tag für Kursivschrift. Verwenden Sie nicht *, sondern verwenden Sie das -Tag für Aufzählungspunkte.
+Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie den <strong>-Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie den <em>-Tag für Kursivschrift. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie die <ul>- und <li>-Tags.
     Generiere alles auf Deutsch.
     Dies ist wichtig: Seien Sie in Ihrer Antwort sehr einsichtig.
     Dies ist das lange, detaillierte und aufschlussreiche ${mark3TopicDE}, das Sie sich ausgedacht haben:
@@ -539,8 +539,8 @@ Generate everything in English.
     Rédigez cela comme si vous étiez le propriétaire de l'entreprise, en utilisant "nous" et non "je".
     Générez une réponse en html entourant les sujets ${mark3TopicFR} avec la balise h5. 
     Commencez la complétion par "<h4>4P</h4>" suivi de "<h5>Stratégie de produit</h5>" ne répétez pas ces sujets : "<h4>4P</h4>" et "<h5>Stratégie de produit</h5>", à nouveau dans la complétion.
-    Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
-    Générez tout en français.
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
+générez tout en français.
     C’est important : Soyez très perspicace dans votre réponse.
     Voici le long, détaillé et perspicace ${mark3TopicFR} que vous avez trouvé :
     `;
@@ -580,7 +580,7 @@ Generate everything in English.
     Escriba esto como si fuera el dueño del negocio, usando "nosotros" no use "yo".
     Genere una respuesta en html rodeando los temas ${mark3TopicES} con la etiqueta h5. 
     Comience la finalización con "<h4>4P</h4>" seguido de "<h5>Estrategia de producto</h5>" no repita estos temas: "<h4>4P</h4>" y "<h5>Estrategia de producto</h5>", de nuevo en la finalización.
-    Use solo etiquetas HTML, no use markdown. No use ** **, use la etiqueta  para negrita. No use * *, use la etiqueta  para cursiva. No use *, use la etiqueta  para viñetas.
+Use solo etiquetas HTML, no use markdown. No use ** **, use en su lugar la etiqueta <strong> para negrita. No use * *, use en su lugar la etiqueta <em> para cursiva. No use * para viñetas, use en su lugar las etiquetas <ul> y <li>.
     Genere todo en español.
     Esto es importante: Sea muy perspicaz en su respuesta.
     Este es el largo, detallado y perspicaz ${mark3TopicES} que se le ocurrió:
@@ -621,7 +621,7 @@ Generate everything in English.
     Scrivi questo come se fossi il proprietario dell'azienda, usando "noi" non usare "io".
     Genera una risposta in html circondando gli argomenti ${mark3TopicIT} con il tag h5. 
     Inizia il completamento con "<h4>4P</h4>" seguito da "<h5>Strategia di prodotto</h5>" non ripetere questi argomenti: "<h4>4P</h4>" e "<h5>Strategia di prodotto</h5>", di nuovo nel completamento.
-    Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag  per il grassetto. Non usare * *, usa invece il tag  per il corsivo. Non usare *, usa invece il tag  per i punti elenco.
+Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
     Genera tutto in italiano.
     Questo è importante: Sii molto perspicace nella tua risposta.
     Questo è il lungo, dettagliato e perspicace ${mark3TopicIT} che hai ideato:
@@ -663,7 +663,7 @@ Generate everything in English.
     Schrijf dit alsof u de eigenaar van het bedrijf bent, gebruik "wij" en niet "ik".
     Genereer een reactie in html rond de onderwerpen ${mark3TopicNL} met de h5-tag. 
     Begin de voltooiing met "<h4>4P</h4>" gevolgd door "<h5>Productstrategie</h5>" herhaal deze onderwerpen niet: "<h4>4P</h4>" en "<h5>Productstrategie</h5>", opnieuw in de voltooiing.
-    Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik niet ** **, gebruik in plaats daarvan de -tag voor vetgedrukte tekst. Gebruik niet * *, gebruik in plaats daarvan de -tag voor cursieve tekst. Gebruik geen *, gebruik in plaats daarvan de -tag voor opsommingstekens.
+Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik geen ** **, gebruik in plaats daarvan de <strong>-tag voor vetgedrukte tekst. Gebruik geen * *, gebruik in plaats daarvan de <em>-tag voor cursieve tekst. Gebruik geen * voor opsommingstekens, gebruik in plaats daarvan de <ul>- en <li>-tags.
     Genereer alles in het Nederlands.
     Dit is belangrijk: Wees zeer inzichtelijk in uw antwoord.
     Dit is de lange, gedetailleerde en inzichtelijke ${mark3TopicNL} die u bedacht hebt:
@@ -703,7 +703,7 @@ Generate everything in English.
     あなたがビジネスのオーナーであるかのように書き、"私たちは"を使い、"私は"を使わないでください。
     ${mark3TopicJA}のトピックをh5タグで囲んでHTMLのレスポンスを生成します。
     完成を"<h4>4P</h4>"で始め、次に"<h5>製品戦略</h5>"を続けます。これらのトピックを再度繰り返さないでください: "<h4>4P</h4>"と"<h5>製品戦略</h5>"。
-    HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、太字にはタグを使用してください。 * *を使用せず、斜体にはタグを使用してください。 *を使用せず、箇条書きにはタグを使用してください。
+HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、代わりに太字には<strong>タグを使用してください。 * *を使用せず、代わりに斜体には<em>タグを使用してください。箇条書きには*を使用せず、代わりに<ul>と<li>タグを使用してください。
     すべてを日本語で生成します。
     これは重要です: 回答には非常に洞察力を持ってください。
     これがあなたが考えた長くて詳細で洞察に満ちた${mark3TopicJA}です:
@@ -743,7 +743,7 @@ Generate everything in English.
     اكتب هذا كما لو كنت صاحب العمل، باستخدام "نحن" وليس "أنا".
     قم بإنشاء الرد في html محيطًا بمواضيع ${mark3TopicAR} بوسم h5.
     ابدأ الاكتمال بـ "<h4>4P</h4>" تليها "<h5>استراتيجية المنتج</h5>" لا تكرر هذا الموضوع: "<h4>4P</h4>" و "<h5>استراتيجية المنتج</h5>"، مرة أخرى في الاكتمال.
-    استخدم فقط علامات HTML، ولا تستخدم ماركداون. لا تستخدم ** **، بدلاً من ذلك استخدم علامة  للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة  للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامة  للنقاط.
+    استخدم فقط علامات HTML، ولا تستخدم markdown. لا تستخدم ** **، بدلاً من ذلك استخدم علامة <strong> للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة <em> للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامتي <ul> و <li>.
     أنشئ كل شيء باللغة العربية.
     هذا مهم: كن بليغًا جدًا في ردك.
     هذا هو الـ${mark3TopicAR} الطويل والمفصل والعميق الذي توصلت إليه:
@@ -785,7 +785,7 @@ Generate everything in English.
     Skriv detta som om du är ägaren till företaget, använd "vi" använd inte "jag".
     Generera svar i html omger ${mark3TopicSV} ämnen med h5 tagg. 
     Börja slutförandet med "<h4>4P</h4>" följt av "<h5>Produktstrategi</h5>" upprepa inte dessa ämnen: "<h4>4P</h4>" och "<h5>Produktstrategi</h5>", igen i slutförandet.
-    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället -taggen för fetstil. Använd inte * *, använd istället -taggen för kursiv. Använd inte *, använd istället -taggen för punktlistor.
+    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv. Använd inte * för punktlistor, använd istället <ul>- och <li>-taggarna.
     Generera allt på svenska.
     Detta är viktigt: Var mycket insiktsfull i ditt svar.
     Detta är den långa, detaljerade och insiktsfulla ${mark3TopicSV} du kom på:
@@ -827,7 +827,7 @@ Generate everything in English.
     Kirjoita tämä ikään kuin olisit yrityksen omistaja, käytä "me", älä käytä "minä".
     Generoi vastaus html:ssä ympäröimällä ${mark3TopicFI} aiheet h5-tagilla. 
     Aloita täydennys "<h4>4P</h4>" seurattuna "<h5>Tuotestrategia</h5>", älä toista näitä aiheita: "<h4>4P</h4>" ja "<h5>Tuotestrategia</h5>", uudelleen täydennyksessä.
-    Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä vahvennukseen -tagia. Älä käytä * *, vaan käytä kursivointiin -tagia. Älä käytä *, vaan käytä luettelomerkeille -tagia.
+Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä <strong>-tagia lihavointiin. Älä käytä * *, vaan käytä <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, vaan käytä <ul>- ja <li>-tageja.
     Luo kaikki suomeksi.
     Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
     Tämä on pitkä, yksityiskohtainen ja oivaltava ${mark3TopicFI}, jonka keksit:
@@ -869,7 +869,7 @@ Generate everything in English.
     Skriv dette som om du er ejeren af virksomheden, brug "vi", brug ikke "jeg".
     Generer svar i html omgivet ${mark3TopicDA} emner med h5 tag. 
     Begynd udfyldelsen med "<h4>4P</h4>" efterfulgt af "<h5>Produktstrategi</h5>" gentag ikke disse emner: "<h4>4P</h4>" og "<h5>Produktstrategi</h5>", igen i udfyldelsen.
-    Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet -tagget til fed skrift. Brug ikke * *, brug i stedet -tagget til kursiv skrift. Brug ikke *, brug i stedet -tagget til punkttegn.
+Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
     Generer alt på dansk.
     Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
     Dette er den lange, detaljerede og indsigtsfulde ${mark3TopicDA}, du kom op med:
@@ -911,7 +911,7 @@ Generate everything in English.
     Skriv dette som om du er eieren av virksomheten, bruk "vi", bruk ikke "jeg".
     Generer svar i html omgir ${mark3TopicNO} emner med h5 tag. 
     Begynn utfyllingen med "<h4>4P</h4>" etterfulgt av "<h5>Produktstrategi</h5>" gjenta ikke disse emnene: "<h4>4P</h4>" og "<h5>Produktstrategi</h5>", igjen i utfyllingen.
-    Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet -taggen for fet skrift. Ikke bruk * *, bruk i stedet -taggen for kursiv skrift. Ikke bruk *, bruk i stedet -taggen for punktlister.
+Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-taggen for fet skrift. Ikke bruk * *, bruk i stedet <em>-taggen for kursiv skrift. Ikke bruk * for punktlister, bruk i stedet <ul>- og <li>-taggene.
     Generer alt på norsk.
     Dette er viktig: Vær veldig innsiktsfull i ditt svar.
     Dette er den lange, detaljerte og innsiktsfulle ${mark3TopicNO} du kom opp med:

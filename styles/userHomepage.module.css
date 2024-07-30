@@ -1,9 +1,9 @@
 .plan_box {
-  @apply flex flex-col justify-center gap-6 mb-3 items-center px-5 pl-4 border rounded-xl border-gray-300 dark:border-gray-700 no-underline h-32;
+  @apply flex flex-col justify-center gap-6 mb-6 items-center px-5 pl-4 border rounded-xl border-gray-300 dark:border-gray-700 no-underline;
 }
 
 .inside_box {
-  @apply flex flex-col justify-center gap-4 items-center px-5 pt-4 pb-4 no-underline;
+  @apply flex flex-col justify-center gap-4 items-center px-5 pt-6 pb-4 no-underline;
 }
 
 .text_input {

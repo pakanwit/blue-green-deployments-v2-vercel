@@ -9,5 +9,6 @@
   "Showing Edited Version": "Vis endret versjon",
   "Showing Original Version": "Vis originalversjonen",
   "There was a problem with your payment": "Det oppstod et problem med betalingen din",
-  "Verifying Account...": "Kontoen blir sjekket..."
+  "Verifying Account...": "Kontoen blir sjekket...",
+  "financeIncomplete": "Finansseksjonen er ufullstendig Klikk på \"Rediger og lagre\" for å fullføre"
 }

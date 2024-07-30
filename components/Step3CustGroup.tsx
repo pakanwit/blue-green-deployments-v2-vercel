@@ -14,6 +14,7 @@ import Input from './input';
 import { API_KEY_HEADER } from '../pages/api/constants';
 import { formDataTitle } from '../constants/formTitle';
 import { useSession } from 'next-auth/react';
+import useCookies from '../hooks/useCookies';
 
 export default function Step3CustGroup({
   customerIncome1,
@@ -239,6 +240,9 @@ export default function Step3CustGroup({
   const locale = i18n.language;
 
   async function getSuggestionCustomerDescription(id, retryCount = 0) {
+    const { getCookie } = useCookies();
+    const variantID = getCookie("variantID")
+
     callCounter.current += 1;
 
     if (callCounter.current >= 2) {
@@ -310,6 +314,7 @@ export default function Step3CustGroup({
               customerIncome3,
 
               locale,
+              variantID,
             }),
           },
         );

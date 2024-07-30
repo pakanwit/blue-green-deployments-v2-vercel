@@ -9,5 +9,6 @@
   "Showing Edited Version": "Vis ændret version",
   "Showing Original Version": "Vis den originale version",
   "There was a problem with your payment": "Der opstod et problem med din betaling",
-  "Verifying Account...": "Kontoen er ved at blive tjekket..."
+  "Verifying Account...": "Kontoen er ved at blive tjekket...",
+  "financeIncomplete": "Finansiel sektion ufuldstændig Klik på \"Rediger og gem\" for at afslutte"
 }

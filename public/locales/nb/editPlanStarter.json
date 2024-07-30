@@ -24,6 +24,7 @@
   "Your edits will be automatically saved": "Endringene lagres automatisk",
   "above\" try to input": "ovenfor\" prøver å gå inn",
   "copyFeatureButton": "Gå tilbake og endre inndata",
+  "financeIncomplete": "Du må fylle ut den økonomiske delen før du kan laste ned planen",
   "help@15minuteplan.ai": "help@15minuteplan.ai",
   "warningCopyPlanMessage": "Du kan for øyeblikket opprette {{planQuota}} flere planer. Hvis du går tilbake og redigerer inndataene dine, mister du 1 plankvote."
 }

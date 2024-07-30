@@ -1,7 +1,5 @@
 import { splitTextByDoubleSlash } from './../../../utils/aiResponseParser/text';
-import { FireworksAI } from '../../../utils/llama3/FireworksAI';
 import { withApiKeyValidation } from '../utils/withApiKeyValidation';
-import { promptForSuggestionResponseFormat } from '../../../constants/prompt/firework/format';
 
 export default async function handler(request, response) {
   const getStep3SuggestionsCustomerDescriptionHandler = async (req, res) => {
@@ -22,7 +20,6 @@ export default async function handler(request, response) {
         customerIncome3,
 
         locale,
-
         variantID,
       } = req.body;
 
@@ -63,8 +60,8 @@ export default async function handler(request, response) {
   "Tech-savvy Millennials//Fitness Enthusiast//International Travelers//blue-collar workers"
   Don't deviate from this format.
   Don't use numbered list. 
-
-    Here is what you've come up with:
+  Generate content in the language specified by the two-letter code provided: ${locale}. For example, use ‘en’ for English, ‘fr’ for French, ‘de’ for German, etc.
+  Here is what you've come up with:
     `;
 
       // german lang --------------------------------------------------------------------------
@@ -124,36 +121,9 @@ Hier ist, was Sie erstellt haben:
           stream: false,
           n: 1,
         };
-        if (variantID === '2') {
-          const response = await FireworksAI(
-            {
-              ...basePayload,
-              messages: [
-                { role: 'user', content: finalPrompt },
-                {
-                  role: 'system',
-                  content:
-                    locale === 'de'
-                      ? promptForSuggestionResponseFormat['de']
-                      : promptForSuggestionResponseFormat['en'],
-                },
-              ],
-            },
-            'string',
-          );
-          const recommendations = splitTextByDoubleSlash(response);
-          console.log({
-            message:
-              'getStep3SuggestionsCustomerDescriptionHandler: Fireworks AI recommendations',
-            recommendations,
-          });
-          if (recommendations.length > 0) {
-            console.log('used llama 3 fireworks recommendations', recommendations);
-            res.status(200).json(recommendations);
-          } else {
-            throw new Error('response text is empty.');
-          }
-        } else {
+        const model = variantID === '2' ? 'gpt-4o-mini' : 'gpt-3.5-turbo';
+        console.log("model:", model)
+       
           const openAIResponse = await fetch(
             'https://api.openai.com/v1/chat/completions',
             {
@@ -162,8 +132,9 @@ Hier ist, was Sie erstellt haben:
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
               },
+              
               body: JSON.stringify({
-                model: 'gpt-3.5-turbo', // Specify the model you want to use
+                model,
                 messages: [{ role: 'user', content: finalPrompt }],
                 ...basePayload,
               }),
@@ -186,7 +157,6 @@ Hier ist, was Sie erstellt haben:
           } else {
             throw new Error('response text is empty.');
           }
-        }
       } catch (error) {
         console.error(error);
         res

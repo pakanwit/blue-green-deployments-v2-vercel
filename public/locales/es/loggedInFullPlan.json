@@ -9,5 +9,6 @@
   "Showing Edited Version": "Mostrar versión modificada",
   "Showing Original Version": "Mostrar versión original",
   "There was a problem with your payment": "Ha habido un problema con su pago",
-  "Verifying Account...": "Se está comprobando la cuenta..."
+  "Verifying Account...": "Se está comprobando la cuenta...",
+  "financeIncomplete": "Sección financiera incompleta Haga clic en \"Editar y guardar\" para finalizar"
 }

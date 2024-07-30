@@ -45,9 +45,14 @@ interface IPlanContent {
 }
 
 export interface IPlan {
-  originalVer: object;
+  originalVer: {
+    userInput: object;
+    planContent: object;
+    refId: string;
+  };
   editedVer?: IPlanContent;
   _id?: string;
+  isFinanceIncomplete?: boolean;
 }
 
 export interface ISurveyResult {
@@ -116,8 +121,13 @@ const planContentSchema = new Schema<IPlanContent>({
 });
 
 const planSchema = new Schema<IPlan>({
-  originalVer: Object,
+  originalVer: {
+    userInput: Object,
+    planContent: Object,
+    refId: String,
+  },
   editedVer: planContentSchema,
+  isFinanceIncomplete: Boolean,
   _id: String,
 });
 

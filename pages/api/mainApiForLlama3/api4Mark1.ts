@@ -88,7 +88,7 @@ export default async function api4Mark1(request, response) {
     Write this as if you are the owner of the business, using "we" don't use "I".
     Generate response in html.
     Begin the completion with "<h3>Marketing</h3>" followed by "<h4>${mark1TopicEN}</h4>". There should only be one <h3> tag which is <h3>Marketing</h3> and one <h4> tag which is <h4>${mark1TopicEN}</h4>. There must be 3 <h5> tags which are <h5>Short-term Objectives<h5>, <h5>Medium-term Objectives<h5> and <h5>Long-term Objectives<h5>.
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
     Generate everything in English.
     This is important: Be very insightful in your response.
     ${UKEngPrompt}
@@ -134,7 +134,7 @@ export default async function api4Mark1(request, response) {
     Schreiben Sie dies so, als ob Sie der Eigentümer des Unternehmens wären. Verwenden Sie „wir“ und nicht „ich“.
     Antwort im HTML generieren.
     Beginnen Sie die Vervollständigung mit „<h3>Marketing</h3>“, gefolgt von „<h4>${mark1TopicDE}</h4>“. Es sollte nur ein <h3>-Tag für <h3>Marketing</h3> und ein <h4>-Tag für <h4>${mark1TopicDE}</h4> geben. Es müssen 3 <h5>-Tags vorhanden sein, nämlich <h5>Kurzfristige Ziele<h5>, <h5>Mittelfristige Ziele<h5> und <h5>Langfristige Ziele<h5>.
-    Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie das -Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie das -Tag für Kursivschrift. Verwenden Sie nicht *, sondern verwenden Sie das -Tag für Aufzählungspunkte.
+Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie den <strong>-Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie den <em>-Tag für Kursivschrift. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie die <ul>- und <li>-Tags.
     Generiere alles auf Deutsch.
     Dies ist wichtig: Seien Sie in Ihrer Antwort sehr einsichtig.
     Dies ist das lange, detaillierte und aufschlussreiche ${mark1TopicDE}, das Sie sich ausgedacht haben:
@@ -178,8 +178,8 @@ export default async function api4Mark1(request, response) {
     Rédigez ceci comme si vous étiez le propriétaire de l'entreprise, en utilisant "nous" ne pas utiliser "je".
     Générez une réponse en html.
     Commencez la complétion avec "<h3>Marketing</h3>" suivi de "<h4>${mark1TopicFR}</h4>". Il ne doit y avoir qu'une seule balise <h3> qui est <h3>Marketing</h3> et une seule balise <h4> qui est <h4>${mark1TopicFR}</h4>. Il doit y avoir 3 balises <h5> qui sont <h5>Objectifs à court terme<h5>, <h5>Objectifs à moyen terme<h5> et <h5>Objectifs à long terme<h5>.
-    Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
-    Générez tout en français.
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
+générez tout en français.
     C’est important : Soyez très perspicace dans votre réponse.
     Voici le long, détaillé et perspicace ${mark1TopicFR} que vous avez trouvé :`
 
@@ -221,7 +221,7 @@ export default async function api4Mark1(request, response) {
     Escribe esto como si fueras el dueño del negocio, usando "nosotros", no uses "yo".
     Genera la respuesta en html.
     Comienza la respuesta con "<h3>Marketing</h3>" seguido de "<h4>${mark1TopicES}</h4>". Solo debe haber una etiqueta <h3> que es <h3>Marketing</h3> y una etiqueta <h4> que es <h4>${mark1TopicES}</h4>. Debe haber 3 etiquetas <h5> que son <h5>Objetivos a corto plazo<h5>, <h5>Objetivos a medio plazo<h5> y <h5>Objetivos a largo plazo<h5>.
-    Use solo etiquetas HTML, no use markdown. No use ** **, use la etiqueta  para negrita. No use * *, use la etiqueta  para cursiva. No use *, use la etiqueta  para viñetas.
+Use solo etiquetas HTML, no use markdown. No use ** **, use en su lugar la etiqueta <strong> para negrita. No use * *, use en su lugar la etiqueta <em> para cursiva. No use * para viñetas, use en su lugar las etiquetas <ul> y <li>.
     Genere todo en español.
     Esto es importante: Sea muy perspicaz en su respuesta.
     Este es el largo, detallado y perspicaz ${mark1TopicES} que se le ocurrió:`
@@ -263,7 +263,7 @@ export default async function api4Mark1(request, response) {
     Scrivi questo come se fossi il proprietario del business, usando "noi", non usare "io".
     Genera la risposta in html.
     Inizia la risposta con "<h3>Marketing</h3>" seguito da "<h4>${mark1TopicIT}</h4>". Ci dovrebbe essere solo un tag <h3> che è <h3>Marketing</h3> e un tag <h4> che è <h4>${mark1TopicIT}</h4>. Ci devono essere 3 tag <h5> che sono <h5>Obiettivi a breve termine<h5>, <h5>Obiettivi a medio termine<h5> e <h5>Obiettivi a lungo termine<h5>.
-    Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag  per il grassetto. Non usare * *, usa invece il tag  per il corsivo. Non usare *, usa invece il tag  per i punti elenco.
+Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
 Genera tutto in italiano.
 Questo è importante: Sii molto perspicace nella tua risposta.
 Questo è il lungo, dettagliato e perspicace ${mark1TopicIT} che hai ideato:`
@@ -307,7 +307,7 @@ Questo è il lungo, dettagliato e perspicace ${mark1TopicIT} che hai ideato:`
     Schrijf dit alsof je de eigenaar van het bedrijf bent, gebruik "we" niet "ik".
     Genereer reactie in html.
     Begin de voltooiing met "<h3>Marketing</h3>" gevolgd door "<h4>${mark1TopicNL}</h4>". Er mag maar één <h3> tag zijn, dat is <h3>Marketing</h3> en één <h4> tag, dat is <h4>${mark1TopicNL}</h4>. Er moeten 3 <h5> tags zijn, dat zijn <h5>Korte termijn doelstellingen<h5>, <h5>Middellange termijn doelstellingen<h5> en <h5>Lange termijn doelstellingen<h5>.
-    Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik niet ** **, gebruik in plaats daarvan de -tag voor vetgedrukte tekst. Gebruik niet * *, gebruik in plaats daarvan de -tag voor cursieve tekst. Gebruik geen *, gebruik in plaats daarvan de -tag voor opsommingstekens.
+Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik geen ** **, gebruik in plaats daarvan de <strong>-tag voor vetgedrukte tekst. Gebruik geen * *, gebruik in plaats daarvan de <em>-tag voor cursieve tekst. Gebruik geen * voor opsommingstekens, gebruik in plaats daarvan de <ul>- en <li>-tags.
     Genereer alles in het Nederlands.
     Dit is belangrijk: Wees zeer inzichtelijk in uw antwoord.
     Dit is de lange, gedetailleerde en inzichtelijke ${mark1TopicNL} die u bedacht hebt:
@@ -352,7 +352,7 @@ Questo è il lungo, dettagliato e perspicace ${mark1TopicIT} che hai ideato:`
     あなたがビジネスのオーナーであるかのように書いてください。"we"を使用し、"I"を使用しないでください。
     応答をhtmlで生成します。
     完成を"<h3>マーケティング</h3>"で始め、その後に"<h4>${mark1TopicJA}</h4>"を続けます。"<h3>マーケティング</h3>"という1つの<h3>タグと、"<h4>${mark1TopicJA}</h4>"という1つの<h4>タグだけがあるべきです。"<h5>短期目標<h5>"、"<h5>中期目標<h5>"、"<h5>長期目標<h5>"という3つの<h5>タグがあるべきです。
-    HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、太字にはタグを使用してください。 * *を使用せず、斜体にはタグを使用してください。 *を使用せず、箇条書きにはタグを使用してください。
+HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、代わりに太字には<strong>タグを使用してください。 * *を使用せず、代わりに斜体には<em>タグを使用してください。箇条書きには*を使用せず、代わりに<ul>と<li>タグを使用してください。
     すべてを日本語で生成します。
     これは重要です: 回答には非常に洞察力を持ってください。
     これがあなたが考えた長くて詳細で洞察に満ちた${mark1TopicJA}です:
@@ -441,7 +441,7 @@ Questo è il lungo, dettagliato e perspicace ${mark1TopicIT} che hai ideato:`
     Skriv detta som om du är ägaren till företaget, använd "vi" använd inte "jag".
     Generera svar i html.
     Börja utfyllnaden med "<h3>Marknadsföring</h3>" följt av "<h4>${mark1TopicSV}</h4>". Det bör bara finnas en <h3> tagg som är <h3>Marknadsföring</h3> och en <h4> tagg som är <h4>${mark1TopicSV}</h4>. Det måste finnas 3 <h5> taggar som är <h5>Kortsiktiga mål<h5>, <h5>Medellånga mål<h5> och <h5>Långsiktiga mål<h5>.
-    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället -taggen för fetstil. Använd inte * *, använd istället -taggen för kursiv. Använd inte *, använd istället -taggen för punktlistor.
+    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv. Använd inte * för punktlistor, använd istället <ul>- och <li>-taggarna.
     Generera allt på svenska.
     Detta är viktigt: Var mycket insiktsfull i ditt svar.
     Detta är den långa, detaljerade och insiktsfulla ${mark1TopicSV} du kom på:
@@ -485,7 +485,7 @@ Questo è il lungo, dettagliato e perspicace ${mark1TopicIT} che hai ideato:`
     Kirjoita tämä kuin olisit yrityksen omistaja, käytä "me", älä käytä "minä".
     Tuota vastaus html-muodossa.
     Aloita täydennys "<h3>Markkinointi</h3>" seuraa "<h4>${mark1TopicFI}</h4>". Pitäisi olla vain yksi <h3> -tagi, joka on <h3>Markkinointi</h3> ja yksi <h4> -tagi, joka on <h4>${mark1TopicFI}</h4>. Pitäisi olla 3 <h5> -tagia, jotka ovat <h5>Lyhyen aikavälin tavoitteet<h5>, <h5>Keskipitkän aikavälin tavoitteet<h5> ja <h5>Pitkän aikavälin tavoitteet<h5>.
-    Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä vahvennukseen -tagia. Älä käytä * *, vaan käytä kursivointiin -tagia. Älä käytä *, vaan käytä luettelomerkeille -tagia.
+Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä <strong>-tagia lihavointiin. Älä käytä * *, vaan käytä <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, vaan käytä <ul>- ja <li>-tageja.
     Luo kaikki suomeksi.
     Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
     Tämä on pitkä, yksityiskohtainen ja oivaltava ${mark1TopicFI}, jonka keksit:
@@ -530,7 +530,7 @@ Questo è il lungo, dettagliato e perspicace ${mark1TopicIT} che hai ideato:`
     Skriv dette som om du er ejeren af virksomheden, brug "vi" brug ikke "jeg".
     Generer svar i html.
     Begynd udfyldelsen med "<h3>Marketing</h3>" efterfulgt af "<h4>${mark1TopicDA}</h4>". Der skal kun være en <h3> tag som er <h3>Marketing</h3> og en <h4> tag som er <h4>${mark1TopicDA}</h4>. Der skal være 3 <h5> tags som er <h5>Kortsigtede Mål<h5>, <h5>Mellemlange Mål<h5> og <h5>Lange Mål<h5>.
-    Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet -tagget til fed skrift. Brug ikke * *, brug i stedet -tagget til kursiv skrift. Brug ikke *, brug i stedet -tagget til punkttegn.
+Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
     Generer alt på dansk.
     Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
     Dette er den lange, detaljerede og indsigtsfulde ${mark1TopicDA}, du kom op med:
@@ -575,7 +575,7 @@ Questo è il lungo, dettagliato e perspicace ${mark1TopicIT} che hai ideato:`
     Skriv dette som om du er eieren av virksomheten, bruk "vi" bruk ikke "jeg".
     Generer svar i html.
     Begynn utfyllingen med "<h3>Markedsføring</h3>" etterfulgt av "<h4>${mark1TopicNO}</h4>". Det skal bare være en <h3> tag som er <h3>Markedsføring</h3> og en <h4> tag som er <h4>${mark1TopicNO}</h4>. Det må være 3 <h5> tags som er <h5>Kortsiktige Mål<h5>, <h5>Mellomlangsiktige Mål<h5> og <h5>Langsiktige Mål<h5>.
-    Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet -taggen for fet skrift. Ikke bruk * *, bruk i stedet -taggen for kursiv skrift. Ikke bruk *, bruk i stedet -taggen for punktlister.
+Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-taggen for fet skrift. Ikke bruk * *, bruk i stedet <em>-taggen for kursiv skrift. Ikke bruk * for punktlister, bruk i stedet <ul>- og <li>-taggene.
     Generer alt på norsk.
     Dette er viktig: Vær veldig innsiktsfull i ditt svar.
     Dette er den lange, detaljerte og innsiktsfulle ${mark1TopicNO} du kom opp med:

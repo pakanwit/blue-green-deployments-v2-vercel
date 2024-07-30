@@ -24,6 +24,7 @@
   "Your edits will be automatically saved": "Ihre Änderungen werden automatisch gespeichert",
   "above\" try to input": "oben\" versuchen Sie einzugeben",
   "copyFeatureButton": "Zurückgehen und Eingaben ändern",
+  "financeIncomplete": "Sie müssen den Finanzteil ausfüllen, bevor Sie den Plan herunterladen können.",
   "help@15minuteplan.ai": "help@15minuteplan.ai",
   "warningCopyPlanMessage": "Sie können derzeit {{planQuota}} weitere Pläne erstellen. Wenn Sie zurückgehen und Ihre Eingaben bearbeiten, verlieren Sie 1 Planquote"
 }

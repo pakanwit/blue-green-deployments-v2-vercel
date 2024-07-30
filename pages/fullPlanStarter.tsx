@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, use } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Head from 'next/head';
@@ -17,8 +17,10 @@ import useLocale from '../hooks/useLocale';
 import { API_KEY_HEADER } from './api/constants';
 import trackEvent from '../utils/trackEvent';
 import Pixel from '../components/Pixel';
+import { ROUTE_PATH } from '../constants/path';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import XPixel from '../components/XPixel';
+import useCookies from '../hooks/useCookies';
 
 declare let gtag: (...args: any[]) => void;
 
@@ -30,8 +32,9 @@ export default function fullPlanStarter({
   conversionDestinationId,
 }) {
   const { t } = useTranslation('fullPlanStarter');
-  const variantID =
-    typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+  
+  const { getCookie } = useCookies();
+  const variantID = getCookie("variantID")
 
   const { data: session } = useSession();
 
@@ -182,9 +185,77 @@ export default function fullPlanStarter({
 
   const [paid, setPaid] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-  const [variantIDState, setVariantIDState] = useState('');
   const [readyToGeneratePlan, setReadyToGeneratePlan] = useState(false);
+  const isFinanceIncomplete = userData?.plans[0]?.isFinanceIncomplete;
+  const specificProductQuestion1 =
+    userData.plans[0].originalVer.userInput?.specificProductQuestion1;
+  const specificProductQuestion2 =
+    userData.plans[0].originalVer.userInput?.specificProductQuestion2;
+  const specificProductQuestion3 =
+    userData.plans[0].originalVer.userInput?.specificProductQuestion3;
+  const specificProductQuestion4 =
+    userData.plans[0].originalVer.userInput?.specificProductQuestion4;
+  const specificProductQuestion5 =
+    userData.plans[0].originalVer.userInput?.specificProductQuestion5;
+  const specificOperationQuestion1 =
+    userData.plans[0].originalVer.userInput?.specificOperationQuestion1;
+  const specificOperationQuestion2 =
+    userData.plans[0].originalVer.userInput?.specificOperationQuestion2;
+  const specificOperationQuestion3 =
+    userData.plans[0].originalVer.userInput?.specificOperationQuestion3;
+  const specificOperationQuestion4 =
+    userData.plans[0].originalVer.userInput?.specificOperationQuestion4;
+  const specificOperationQuestion5 =
+    userData.plans[0].originalVer.userInput?.specificOperationQuestion5;
+  const specificProductAnswer1 =
+    userData.plans[0].originalVer.userInput?.specificProductAnswer1;
+  const specificProductAnswer2 =
+    userData.plans[0].originalVer.userInput?.specificProductAnswer2;
+  const specificProductAnswer3 =
+    userData.plans[0].originalVer.userInput?.specificProductAnswer3;
+  const specificProductAnswer4 =
+    userData.plans[0].originalVer.userInput?.specificProductAnswer4;
+  const specificProductAnswer5 =
+    userData.plans[0].originalVer.userInput?.specificProductAnswer5;
+  const specificOperationAnswer1 =
+    userData.plans[0].originalVer.userInput?.specificOperationAnswer1;
+  const specificOperationAnswer2 =
+    userData.plans[0].originalVer.userInput?.specificOperationAnswer2;
+  const specificOperationAnswer3 =
+    userData.plans[0].originalVer.userInput?.specificOperationAnswer3;
+  const specificOperationAnswer4 =
+    userData.plans[0].originalVer.userInput?.specificOperationAnswer4;
+  const specificOperationAnswer5 =
+    userData.plans[0].originalVer.userInput?.specificOperationAnswer5;
+  const productQuestions = [
+    specificProductQuestion1,
+    specificProductQuestion2,
+    specificProductQuestion3,
+    specificProductQuestion4,
+    specificProductQuestion5,
+  ];
+  const productAnswers = [
+    specificProductAnswer1,
+    specificProductAnswer2,
+    specificProductAnswer3,
+    specificProductAnswer4,
+    specificProductAnswer5,
+  ];
+  const operationQuestions = [
+    specificOperationQuestion1,
+    specificOperationQuestion2,
+    specificOperationQuestion3,
+    specificOperationQuestion4,
+    specificOperationQuestion5,
+  ];
 
+  const operationAnswers = [
+    specificOperationAnswer1,
+    specificOperationAnswer2,
+    specificOperationAnswer3,
+    specificOperationAnswer4,
+    specificOperationAnswer5,
+  ];
   // this is the main useEffect
   useEffect(() => {
     if (userData && userData.paymentStatus === 'paid' && userData.paymentId)
@@ -225,11 +296,6 @@ export default function fullPlanStarter({
       setWeakness2(userInput.weakness2);
       setWeakness3(userInput.weakness3);
       setInitialInvestmentAmount(userInput.initialInvestmentAmount);
-      console.log('userInput.investmentItem1', userInput.investmentItem1);
-      console.log(
-        'userInput.investmentAmountItem1',
-        userInput.investmentAmountItem1,
-      );
       setInvestmentItem1(userInput.investmentItem1);
       setInvestmentAmountItem1(userInput.investmentAmountItem1);
       setInvestmentItem2(userInput.investmentItem2);
@@ -405,7 +471,6 @@ export default function fullPlanStarter({
 
   // enhanced conversion
   const handleConversion = () => {
-    const experimentIDFromLocal = localStorage.getItem('experimentID');
     let price;
     if (
       userData.country === 'IN' ||
@@ -511,55 +576,52 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark1.current = currentExecutionId;
-    const mark1 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApi/api4Mark1`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          businessOperationalStatus,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          situ1Ref,
-          productInfoPrompt,
-        }),
+    const mark1 = await fetch('/api/mainApi/api4Mark1', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        businessOperationalStatus,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        situ1Ref,
+        productInfoPrompt,
+      }),
+    });
 
     console.log('Edge function returned.');
 
@@ -606,62 +668,66 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark3.current = currentExecutionId;
-    const mark3 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApi/api6Mark3`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          mark2Ref,
-          productInfoPrompt,
-        }),
+    const mark3 = await fetch('/api/mainApi/api6Mark3', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        mark2Ref,
+        productInfoPrompt,
+        AITopic: variantID === '2' && {
+          product: productQuestions.map((question, index) => ({
+            topic: question.topic,
+            question: question.value,
+            answer: productAnswers[index],
+          })),
+        },
+      }),
+    });
 
     console.log('Edge function returned.');
 
@@ -711,64 +777,61 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark4.current = currentExecutionId;
-    const mark4 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApi/api7Mark4`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-          productOrService,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          mark2Ref,
-          productInfoPrompt,
-        }),
+    const mark4 = await fetch('/api/mainApi/api7Mark4', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+        productOrService,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        mark2Ref,
+        productInfoPrompt,
+      }),
+    });
 
     console.log('Edge function returned.');
 
@@ -817,58 +880,55 @@ export default function fullPlanStarter({
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefExec.current = currentExecutionId;
 
-    const exec = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApi/api1Exec`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerDescription1,
-
-          customerIncome2,
-          customerDescription2,
-
-          customerIncome3,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const exec = await fetch('/api/mainApi/api1Exec', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerDescription1,
+
+        customerIncome2,
+        customerDescription2,
+
+        customerIncome3,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
 
     console.log('Edge function returned.');
 
@@ -923,53 +983,50 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu1.current = currentExecutionId;
-    const situ1 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApi/api2Situ1`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const situ1 = await fetch('/api/mainApi/api2Situ1', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!situ1.ok) {
@@ -1023,53 +1080,50 @@ export default function fullPlanStarter({
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefSitu2.current = currentExecutionId;
 
-    const situ2 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApi/api3Situ2`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const situ2 = await fetch('/api/mainApi/api3Situ2', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
 
     console.log('Edge function returned.');
 
@@ -1124,61 +1178,58 @@ export default function fullPlanStarter({
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark2.current = currentExecutionId;
 
-    const mark2 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApi/api5Mark2`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const mark2 = await fetch('/api/mainApi/api5Mark2', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!mark2.ok) {
@@ -1234,61 +1285,58 @@ export default function fullPlanStarter({
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMark2.current = currentExecutionId;
 
-    const mark2 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApi/api5Mark2`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const mark2 = await fetch('/api/mainApi/api5Mark2', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!mark2.ok) {
@@ -1336,80 +1384,84 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefOp1.current = currentExecutionId;
-    const op1 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApi/api8Op1`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          investmentItem4,
-          investmentItem5,
-          investmentItem6,
-          investmentItem7,
-          investmentItem8,
-          investmentItem9,
-          investmentItem10,
-
-          investmentAmountItem1,
-          investmentAmountItem2,
-          investmentAmountItem3,
-          investmentAmountItem4,
-          investmentAmountItem5,
-          investmentAmountItem6,
-          investmentAmountItem7,
-          investmentAmountItem8,
-          investmentAmountItem9,
-          investmentAmountItem10,
-
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const op1 = await fetch('/api/mainApi/api8Op1', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        investmentItem4,
+        investmentItem5,
+        investmentItem6,
+        investmentItem7,
+        investmentItem8,
+        investmentItem9,
+        investmentItem10,
+
+        investmentAmountItem1,
+        investmentAmountItem2,
+        investmentAmountItem3,
+        investmentAmountItem4,
+        investmentAmountItem5,
+        investmentAmountItem6,
+        investmentAmountItem7,
+        investmentAmountItem8,
+        investmentAmountItem9,
+        investmentAmountItem10,
+
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+        AITopic: variantID === '2' && {
+          operation: operationQuestions.map((question, index) => ({
+            topic: question.topic,
+            question: question.value,
+            answer: operationAnswers[index],
+          })),
+        },
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!op1.ok) {
@@ -1456,61 +1508,58 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefMang1.current = currentExecutionId;
-    const mang1 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApi/api9Mang1`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const mang1 = await fetch('/api/mainApi/api9Mang1', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!mang1.ok) {
@@ -1557,61 +1606,58 @@ export default function fullPlanStarter({
 
     const currentExecutionId = Date.now(); // Generate a unique execution ID
     executionIdRefRisk1.current = currentExecutionId;
-    const risk1 = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mainApi/api11Risk1`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          [API_KEY_HEADER]: secretKey,
-        },
-        body: JSON.stringify({
-          variantID,
-          businessName,
-          planLanguage,
-          productName1,
-          productDescription1,
-          productName2,
-          productDescription2,
-          productName3,
-          productDescription3,
-          productName4,
-          productDescription4,
-          productName5,
-          productDescription5,
-          businessOperationalStatus,
-          businessType,
-          NEmployee,
-          location,
-          salesChannel,
-
-          customerIncome1,
-          customerIncome2,
-          customerIncome3,
-
-          customerDescription1,
-          customerDescription2,
-          customerDescription3,
-
-          successFactors1,
-          successFactors2,
-          successFactors3,
-
-          weakness1,
-          weakness2,
-          weakness3,
-
-          initialInvestmentAmount,
-          investmentItem1,
-          investmentItem2,
-          investmentItem3,
-          firstYearRevenue,
-          revenueGrowthRate,
-
-          productInfoPrompt,
-        }),
+    const risk1 = await fetch('/api/mainApi/api11Risk1', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        [API_KEY_HEADER]: secretKey,
       },
-    );
+      body: JSON.stringify({
+        variantID,
+        businessName,
+        planLanguage,
+        productName1,
+        productDescription1,
+        productName2,
+        productDescription2,
+        productName3,
+        productDescription3,
+        productName4,
+        productDescription4,
+        productName5,
+        productDescription5,
+        businessOperationalStatus,
+        businessType,
+        NEmployee,
+        location,
+        salesChannel,
+
+        customerIncome1,
+        customerIncome2,
+        customerIncome3,
+
+        customerDescription1,
+        customerDescription2,
+        customerDescription3,
+
+        successFactors1,
+        successFactors2,
+        successFactors3,
+
+        weakness1,
+        weakness2,
+        weakness3,
+
+        initialInvestmentAmount,
+        investmentItem1,
+        investmentItem2,
+        investmentItem3,
+        firstYearRevenue,
+        revenueGrowthRate,
+
+        productInfoPrompt,
+      }),
+    });
     console.log('Edge function returned.');
 
     if (!risk1.ok) {
@@ -1792,21 +1838,71 @@ export default function fullPlanStarter({
 
       planCurrency,
       planCurrencySymbol,
+      specificProductQuestion1: variantID === '2' && {
+        value: specificProductQuestion1.value,
+        topic: specificProductQuestion1.topic,
+      },
+      specificProductQuestion2: variantID === '2' && {
+        value: specificProductQuestion2.value,
+        topic: specificProductQuestion2.topic,
+      },
+      specificProductQuestion3: variantID === '2' && {
+        value: specificProductQuestion3.value,
+        topic: specificProductQuestion3.topic,
+      },
+      specificProductQuestion4: variantID === '2' && {
+        value: specificProductQuestion4.value,
+        topic: specificProductQuestion4.topic,
+      },
+      specificProductQuestion5: variantID === '2' && {
+        value: specificProductQuestion5.value,
+        topic: specificProductQuestion5.topic,
+      },
+      specificProductAnswer1: variantID === '2' && specificProductAnswer1,
+      specificProductAnswer2: variantID === '2' && specificProductAnswer2,
+      specificProductAnswer3: variantID === '2' && specificProductAnswer3,
+      specificProductAnswer4: variantID === '2' && specificProductAnswer4,
+      specificProductAnswer5: variantID === '2' && specificProductAnswer5,
+      specificOperationQuestion1: variantID === '2' && {
+        value: specificOperationQuestion1.value,
+        topic: specificOperationQuestion1.topic,
+      },
+      specificOperationQuestion2: variantID === '2' && {
+        value: specificOperationQuestion2.value,
+        topic: specificOperationQuestion2.topic,
+      },
+      specificOperationQuestion3: variantID === '2' && {
+        value: specificOperationQuestion3.value,
+        topic: specificOperationQuestion3.topic,
+      },
+      specificOperationQuestion4: variantID === '2' && {
+        value: specificOperationQuestion4.value,
+        topic: specificOperationQuestion4.topic,
+      },
+      specificOperationQuestion5: variantID === '2' && {
+        value: specificOperationQuestion5.value,
+        topic: specificOperationQuestion5.topic,
+      },
+      specificOperationAnswer1: variantID === '2' && specificOperationAnswer1,
+      specificOperationAnswer2: variantID === '2' && specificOperationAnswer2,
+      specificOperationAnswer3: variantID === '2' && specificOperationAnswer3,
+      specificOperationAnswer4: variantID === '2' && specificOperationAnswer4,
+      specificOperationAnswer5: variantID === '2' && specificOperationAnswer5,
     };
 
     const planContent = {
-      generatedExec,
-      generatedSitu1,
-      generatedSitu2,
-      generatedMark1,
-      generatedMark2,
-      generatedMark3,
-      generatedMark4,
-      generatedOp1,
-      generatedOp2,
-      generatedMang1,
-      generatedMang2,
-      generatedRisk1,
+      generatedExec: convertMarkdownBoldToHtml(generatedExec),
+      generatedSitu1: convertMarkdownBoldToHtml(generatedSitu1),
+      generatedSitu2: convertMarkdownBoldToHtml(generatedSitu2),
+      generatedMark1: convertMarkdownBoldToHtml(generatedMark1),
+      generatedMark2: convertMarkdownBoldToHtml(generatedMark2),
+      generatedMark3: convertMarkdownBoldToHtml(generatedMark3),
+      generatedMark4: convertMarkdownBoldToHtml(generatedMark4),
+      generatedOp1: convertMarkdownBoldToHtml(generatedOp1),
+      generatedOp2: convertMarkdownBoldToHtml(generatedOp2),
+      generatedMang1: convertMarkdownBoldToHtml(generatedMang1),
+      generatedMang2: convertMarkdownBoldToHtml(generatedMang2),
+      generatedRisk1: convertMarkdownBoldToHtml(generatedRisk1),
     };
 
     const newPlan = {
@@ -1883,6 +1979,25 @@ export default function fullPlanStarter({
     }
   }, [latestPlanIDStarter]);
 
+  function convertMarkdownBoldToHtml(text: string): string {
+    return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  }
+
+  function turnAllgeneratedBoldToHtml() {
+    setGeneratedExec(convertMarkdownBoldToHtml(generatedExec));
+    setGeneratedSitu1(convertMarkdownBoldToHtml(generatedSitu1));
+    setGeneratedSitu2(convertMarkdownBoldToHtml(generatedSitu2));
+    setGeneratedMark1(convertMarkdownBoldToHtml(generatedMark1));
+    setGeneratedMark2(convertMarkdownBoldToHtml(generatedMark2));
+    setGeneratedMark3(convertMarkdownBoldToHtml(generatedMark3));
+    setGeneratedMark4(convertMarkdownBoldToHtml(generatedMark4));
+    setGeneratedOp1(convertMarkdownBoldToHtml(generatedOp1));
+    setGeneratedOp2(convertMarkdownBoldToHtml(generatedOp2));
+    setGeneratedMang1(convertMarkdownBoldToHtml(generatedMang1));
+    setGeneratedMang2(convertMarkdownBoldToHtml(generatedMang2));
+    setGeneratedRisk1(convertMarkdownBoldToHtml(generatedRisk1));
+  }
+
   useEffect(() => {
     if (
       session &&
@@ -1890,6 +2005,7 @@ export default function fullPlanStarter({
       !prevAllDoneGenerating.current &&
       !hasAddedNewPlan
     ) {
+      turnAllgeneratedBoldToHtml()
       addNewPlan();
       if (session) {
         localStorage.setItem(
@@ -2126,27 +2242,45 @@ export default function fullPlanStarter({
                         <div className="flex flex-col justify-center items-center gap-5">
                           {!loading && !isError ? (
                             <div className="flex flex-col justify-center items-center gap-4">
-                              <p>
-                                <strong>
-                                  {t(
-                                    'Congratulations On Making Your First Plan!',
-                                  )}
-                                </strong>
-                              </p>
-                              <Link
-                                href={{
-                                  pathname: '/editPlanStarter',
-                                  query: { planId: 1 },
-                                }}
-                                className="button"
-                                onClick={() => {
-                                  trackEvent({
-                                    event_name: 'edit_and_save_button',
-                                  });
-                                }}
-                              >
-                                {t('Edit & Save')}
-                              </Link>
+                              {
+                                variantID === '2' ?
+                                <Link
+                                  href={{
+                                    pathname: ROUTE_PATH.investmentItems,
+                                  }}
+                                  className="button"
+                                  onClick={() => {
+                                    trackEvent({
+                                      event_name: 'complete_finance_button',
+                                    });
+                                  }}
+                                >
+                                  {t('goToFinanceSection')}
+                                </Link>
+                                : <>
+                                <p>
+                                  <strong>
+                                    {t(
+                                      'Congratulations On Making Your First Plan!',
+                                    )}
+                                  </strong>
+                                </p>
+                                <Link
+                                  href={{
+                                    pathname: '/editPlanStarter',
+                                    query: { planId: 1 },
+                                  }}
+                                  className="button"
+                                  onClick={() => {
+                                    trackEvent({
+                                      event_name: 'edit_and_save_button',
+                                    });
+                                  }}
+                                >
+                                  {t('Edit & Save')}
+                                </Link>
+                              </>
+                              }
                             </div>
                           ) : (
                             <></>
@@ -2239,7 +2373,9 @@ export default function fullPlanStarter({
                         }
                         <br />
 
-                        {readyToGeneratePlan && planLanguage ? (
+                        {readyToGeneratePlan &&
+                        planLanguage &&
+                        (variantID === '2' ? !isFinanceIncomplete : true ) ? (
                           <FinTable
                             investmentItem1={investmentItem1}
                             investmentAmountItem1={investmentAmountItem1}

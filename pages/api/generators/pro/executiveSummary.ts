@@ -187,7 +187,7 @@ export const executiveSummaryProHandler = async (req: IExecutiveSummaryPro) => {
     Die Zusammenfassung sollte die folgenden Themen enthalten: Überblick über das Unternehmen, Ursprünge des Unternehmens, Wettbewerbsvorteil, finanzielle Zusammenfassung. Nehmen Sie keine anderen Themen auf, es sei denn, sie sind hier angegeben. Seien Sie bei der Erstellung der einzelnen Themen sehr anschaulich.
     Erzeugen Sie eine Antwort in HTML, die die Hauptthemen mit dem Tag h4 umgibt. 
     Beginnen Sie die Ergänzung mit "<h3>Zusammenfassung</h3>".
-    Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie das -Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie das -Tag für Kursivschrift. Verwenden Sie nicht *, sondern verwenden Sie das -Tag für Aufzählungspunkte.
+Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie den <strong>-Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie den <em>-Tag für Kursivschrift. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie die <ul>- und <li>-Tags.
     Einfache Sprache verwenden.
     Fertigstellung auf Deutsch generieren.
     Dies ist wichtig: Seien Sie in Ihrer Antwort sehr einsichtig.
@@ -219,8 +219,8 @@ export const executiveSummaryProHandler = async (req: IExecutiveSummaryPro) => {
     Le résumé exécutif doit inclure ces sujets : Vue d'ensemble de l'entreprise, Origines de l'entreprise, Avantage concurrentiel, Résumé financier. Ne pas inclure d'autres sujets à moins qu'ils ne soient spécifiés ici. Soyez très descriptif lors de la génération de chaque sujet.
     Générez la réponse en HTML entourant les sujets clés avec la balise h4.
     Commencez la réalisation avec "<h3>Résumé Exécutif</h3>"
-    Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
-    Générez tout en français.
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
+générez tout en français.
     C’est important : Soyez très perspicace dans votre réponse.
     Voici le long, détaillé et perspicace Résumé Exécutif que vous avez trouvé 
     `,
@@ -250,7 +250,7 @@ export const executiveSummaryProHandler = async (req: IExecutiveSummaryPro) => {
     El Resumen Ejecutivo debe incluir estos temas: Visión General del Negocio, Orígenes del Negocio, Ventaja Competitiva, Resumen Financiero. No incluya otros temas a menos que se especifique aquí. Sea muy descriptivo al generar cada tema.
     Genere la respuesta en HTML rodeando los temas clave con la etiqueta h4.
     Comience la finalización con "<h3>Resumen Ejecutivo</h3>"
-    Use solo etiquetas HTML, no use markdown. No use ** **, use la etiqueta  para negrita. No use * *, use la etiqueta  para cursiva. No use *, use la etiqueta  para viñetas.
+Use solo etiquetas HTML, no use markdown. No use ** **, use en su lugar la etiqueta <strong> para negrita. No use * *, use en su lugar la etiqueta <em> para cursiva. No use * para viñetas, use en su lugar las etiquetas <ul> y <li>.
     Genere todo en español.
     Esto es importante: Sea muy perspicaz en su respuesta.
     Este es el largo, detallado y perspicaz Resumen Ejecutivo que se le ocurrió:
@@ -281,7 +281,7 @@ export const executiveSummaryProHandler = async (req: IExecutiveSummaryPro) => {
     Il Riassunto Esecutivo dovrebbe includere questi argomenti: Panoramica dell'Azienda, Origini dell'Azienda, Vantaggio Competitivo, Riepilogo Finanziario. Non includere altri argomenti a meno che non siano specificati qui. Sii molto descrittivo nella generazione di ogni argomento.
     Genera la risposta in HTML circondando gli argomenti chiave con il tag h4.
     Inizia il completamento con "<h3>Riassunto Esecutivo</h3>"
-    Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag  per il grassetto. Non usare * *, usa invece il tag  per il corsivo. Non usare *, usa invece il tag  per i punti elenco.
+Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
     Genera tutto in italiano.
     Questo è importante: Sii molto perspicace nella tua risposta.
     Questo è il lungo, dettagliato e perspicace Riassunto Esecutivo che hai ideato:
@@ -313,7 +313,7 @@ export const executiveSummaryProHandler = async (req: IExecutiveSummaryPro) => {
     De Executive Summary moet deze onderwerpen bevatten: Overzicht van het bedrijf, Oorsprong van het bedrijf, Concurrentievoordeel, Financiële samenvatting. Voeg geen andere onderwerpen toe tenzij hier gespecificeerd. Wees zeer beschrijvend bij het genereren van elk onderwerp.
     Genereer de reactie in HTML en omring de sleutelonderwerpen met de h4-tag.
     Begin de voltooiing met "<h3>Samenvatting</h3>"
-    Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik niet ** **, gebruik in plaats daarvan de -tag voor vetgedrukte tekst. Gebruik niet * *, gebruik in plaats daarvan de -tag voor cursieve tekst. Gebruik geen *, gebruik in plaats daarvan de -tag voor opsommingstekens.
+Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik geen ** **, gebruik in plaats daarvan de <strong>-tag voor vetgedrukte tekst. Gebruik geen * *, gebruik in plaats daarvan de <em>-tag voor cursieve tekst. Gebruik geen * voor opsommingstekens, gebruik in plaats daarvan de <ul>- en <li>-tags.
     Genereer alles in het Nederlands.
     Dit is belangrijk: Wees zeer inzichtelijk in uw antwoord.
     Dit is de lange, gedetailleerde en inzichtelijke Uitvoerend Overzicht die u bedacht hebt:
@@ -345,7 +345,7 @@ export const executiveSummaryProHandler = async (req: IExecutiveSummaryPro) => {
     エグゼクティブサマリーには、ビジネスの概要、ビジネスの起源、競争優位性、財務要約というトピックを含める必要があります。ここで指定されていない他のトピックは含めないでください。各トピックを生成するときには非常に詳細になるようにしてください。
     h4タグでキートピックを囲んでhtmlでレスポンスを生成します。
     完成を"<h3>エグゼクティブサマリー</h3>"で始めます
-    HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、太字にはタグを使用してください。 * *を使用せず、斜体にはタグを使用してください。 *を使用せず、箇条書きにはタグを使用してください。
+HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、代わりに太字には<strong>タグを使用してください。 * *を使用せず、代わりに斜体には<em>タグを使用してください。箇条書きには*を使用せず、代わりに<ul>と<li>タグを使用してください。
     すべてを日本語で生成します。
     これは重要です: 回答には非常に洞察力を持ってください。
     これがあなたが考えた長くて詳細で洞察に満ちたエグゼクティブサマリーです:
@@ -377,7 +377,7 @@ export const executiveSummaryProHandler = async (req: IExecutiveSummaryPro) => {
     يجب أن يتضمن الملخص التنفيذي هذه المواضيع: نظرة عامة على العمل، أصول العمل، الأفضلية التنافسية، الملخص المالي. لا تتضمن مواضيع أخرى ما لم يتم تحديدها هنا. كن وصفياً جداً عند إنشاء كل موضوع.
     أنشئ الرد في html محيطة المواضيع الرئيسية بوسم h4.
     ابدأ الإكمال بـ "<h3>الملخص التنفيذي</h3>"
-    استخدم فقط علامات HTML، ولا تستخدم ماركداون. لا تستخدم ** **، بدلاً من ذلك استخدم علامة  للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة  للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامة  للنقاط.
+    استخدم فقط علامات HTML، ولا تستخدم markdown. لا تستخدم ** **، بدلاً من ذلك استخدم علامة <strong> للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة <em> للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامتي <ul> و <li>.
     أنشئ كل شيء باللغة العربية.
     هذا مهم: كن بليغًا جدًا في ردك.
     هذا هو الملخص التنفيذي الطويل والمفصل والعميق الذي توصلت إليه:
@@ -409,7 +409,7 @@ export const executiveSummaryProHandler = async (req: IExecutiveSummaryPro) => {
     Den verkställande sammanfattningen bör inkludera dessa ämnen: Företagsöversikt, Företagets ursprung, Konkurrensfördel, Finansiell sammanfattning. Inkludera inte andra ämnen om det inte specificeras här. var mycket beskrivande när du genererar varje ämne.
     Generera svar i html omger nyckelämnen med h4-taggen. 
     Börja slutförandet med "<h3>Verkställande sammanfattning</h3>"
-    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället -taggen för fetstil. Använd inte * *, använd istället -taggen för kursiv. Använd inte *, använd istället -taggen för punktlistor.
+    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv. Använd inte * för punktlistor, använd istället <ul>- och <li>-taggarna.
     Generera allt på svenska.
     Detta är viktigt: Var mycket insiktsfull i ditt svar.
     Detta är den långa, detaljerade och insiktsfulla Sammanfattning du kom på:
@@ -441,7 +441,7 @@ export const executiveSummaryProHandler = async (req: IExecutiveSummaryPro) => {
     Toimeenpanevan yhteenvedon tulisi sisältää nämä aiheet: Liiketoimintakatsaus, Liiketoiminnan alkuperä, Kilpailuetu, Taloudellinen yhteenveto. Älä sisällytä muita aiheita, ellei niitä ole määritelty tässä. ole hyvin kuvaileva luodessasi jokaista aihetta.
     Luo vastaus html:llä ympäröimällä avainaiheet h4-tagilla. 
     Aloita täydennys "<h3>Toimeenpaneva yhteenveto</h3>"
-    Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä vahvennukseen -tagia. Älä käytä * *, vaan käytä kursivointiin -tagia. Älä käytä *, vaan käytä luettelomerkeille -tagia.
+Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä <strong>-tagia lihavointiin. Älä käytä * *, vaan käytä <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, vaan käytä <ul>- ja <li>-tageja.
     Luo kaikki suomeksi.
     Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
     Tämä on pitkä, yksityiskohtainen ja oivaltava Johtotiivistelmä, jonka keksit:
@@ -473,7 +473,7 @@ export const executiveSummaryProHandler = async (req: IExecutiveSummaryPro) => {
     Ledelsesresuméet skal inkludere disse emner: Virksomhedsoversigt, Virksomhedens oprindelse, Konkurrencemæssig fordel, Finansiel oversigt. Inkluder ikke andre emner, medmindre det er specificeret her. vær meget beskrivende, når du genererer hvert emne.
     Generer svar i html omgiver nøgleemner med h4-tag. 
     Begynd udfyldningen med "<h3>Udførende Resumé</h3>"
-    Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet -tagget til fed skrift. Brug ikke * *, brug i stedet -tagget til kursiv skrift. Brug ikke *, brug i stedet -tagget til punkttegn.
+Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
     Generer alt på dansk.
     Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
 Dette er den lange, detaljerede og indsigtsfulde Ledelsesresumé, du kom op med:
@@ -505,33 +505,36 @@ Dette er den lange, detaljerede og indsigtsfulde Ledelsesresumé, du kom op med:
     Ledelsesoppsummeringen skal inkludere disse emnene: Oversikt over virksomheten, Virksomhetens opprinnelse, Konkurransefortrinn, Finansiell oppsummering. Ikke inkluder andre emner med mindre det er spesifisert her. vær veldig beskrivende når du genererer hvert emne.
     Generer svar i html som omgir nøkkelemner med h4-tag. 
     Begynn utfyllingen med "<h3>Utdrag</h3>"
-    Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet -taggen for fet skrift. Ikke bruk * *, bruk i stedet -taggen for kursiv skrift. Ikke bruk *, bruk i stedet -taggen for punktlister.
+Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-taggen for fet skrift. Ikke bruk * *, bruk i stedet <em>-taggen for kursiv skrift. Ikke bruk * for punktlister, bruk i stedet <ul>- og <li>-taggene.
     Generer alt på norsk.
     Dette er viktig: Vær veldig innsiktsfull i ditt svar.
     Dette er den lange, detaljerte og innsiktsfulle Lederoppsummering du kom opp med:
     `,
   };
 
-  let modelPlanQuota = 'gpt-3.5-turbo';
-  if (planQuota <= 8) {
-    modelPlanQuota = 'gpt-3.5-turbo';
-    console.log('using gpt-3.5-turbo');
-  } else {
-    modelPlanQuota = 'gpt-4';
-    console.log('using gpt-4');
-  }
+let modelPlanQuota = 'gpt-3.5-turbo';
+if (planQuota <= 8) {
+  modelPlanQuota = 'gpt-3.5-turbo';
+  console.log('using gpt-3.5-turbo');
+} else {
+  modelPlanQuota = 'gpt-4';
+  console.log('using gpt-4');
+}
 
-  const payload = {
-    model: variantID === '2' ? 'gpt-4o' : modelPlanQuota,
-    messages: [{ role: 'user', content: prompt[planLanguage] ?? prompt.en }],
-    temperature: 0.5,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 1200,
-    stream: true,
-    n: 1,
-  };
+const model = variantID === '2' ? 'gpt-4o' : modelPlanQuota;
+console.log('final model:', model);
 
-  return OpenAIStream(payload);
+const payload = {
+  model: model,
+  messages: [{ role: 'user', content: prompt[planLanguage] ?? prompt.en }],
+  temperature: 0.5,
+  top_p: 1,
+  frequency_penalty: 0,
+  presence_penalty: 0,
+  max_tokens: 1200,
+  stream: true,
+  n: 1,
+};
+
+return OpenAIStream(payload);
 };

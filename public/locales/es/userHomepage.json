@@ -19,5 +19,6 @@
   "You need to be logged in to view this page": "Debe iniciar sesión para ver esta página",
   "You're logged in as: ": "Has iniciado sesión como: ",
   "duplicatedPlanForm": "Este plan se hizo de cambiar la entrada de \"Plan {{refId}}: {{businessName}}\"",
+  "financeIncomplete": "Sección financiera incompleta Haga clic en \"Editar y guardar\" para finalizar",
   "logo": "Logotipo"
 }

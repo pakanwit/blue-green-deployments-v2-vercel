@@ -14,5 +14,8 @@
       "description": "but if you could take just a moment to leave us a review on Trustpilot, it would truly help our small company grow.",
       "reviewUsOnTrustpilot": "Review us on Trustpilot"
     }
-  }
+  },
+  "step": "STEP",
+  "of": "OF",
+  "optional": "(optional)"
 }

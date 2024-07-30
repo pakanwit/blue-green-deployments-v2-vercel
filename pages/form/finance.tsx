@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useFormik, FormikHelpers } from 'formik';
 import Step7FinanceValidate from '../../utils/Step7FinanceValidate';
@@ -17,8 +17,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Navbar from '../../components/navbar';
 import { useLoadFormData } from '../../hooks/useLoadFormData';
 import { ROUTE_PATH } from '../../constants/path';
-import { MoonLoader } from 'react-spinners';
+import { AppContext } from '../../context/appContext';
 import useBeforeUnload from '../../hooks/useBeforeUnload';
+import useCookies from '../../hooks/useCookies';
 
 const mapPlanLanguage = {
   en: 'English (US)',
@@ -52,12 +53,53 @@ interface FormValues {
   planLanguage: string;
 }
 
-export default function Fincance({ fbPixelId, secretKey }) {
+export default function Finance({ fbPixelId, secretKey }) {
   const { t } = useTranslation('Step7Finance');
   const { t: tValidate } = useTranslation('validate');
+  const { t: tCommon } = useTranslation('common');
   const { data: session } = useSession();
   const router = useRouter();
-  const { planCurrencySymbol = '' } = useLoadFormData();
+
+  const { getCookie } = useCookies();
+  const variantID = getCookie("variantID")
+
+  const {
+    investmentItem1,
+    investmentAmountItem1,
+    investmentItem2,
+    investmentAmountItem2,
+    investmentItem3,
+    investmentAmountItem3,
+    investmentItem4,
+    investmentAmountItem4,
+    investmentItem5,
+    investmentAmountItem5,
+    investmentItem6,
+    investmentAmountItem6,
+    investmentItem7,
+    investmentAmountItem7,
+    investmentItem8,
+    investmentAmountItem8,
+    investmentItem9,
+    investmentAmountItem9,
+    investmentItem10,
+    investmentAmountItem10,
+    initialInvestmentAmount,
+    firstYearRevenue,
+    revenueGrowthRate,
+    COGSP,
+    wageCostP,
+    markCostP,
+    rentCostP,
+    genCostP,
+    depreCostP,
+    utilCostP,
+    otherCostP,
+    intCostP,
+    taxCostP,
+    planCurrency,
+    planCurrencySymbol,
+  } = useLoadFormData();
 
   const [absoluteCOGSCost, setAbsoluteCOGSCost] = useState(0);
   const [absoluteWageCost, setAbsoluteWageCost] = useState(0);
@@ -73,9 +115,14 @@ export default function Fincance({ fbPixelId, secretKey }) {
   const [absoluteTotalCost, setAbsoluteTotalCost] = useState(0);
   const [absoluteNetProfit, setAbsoluteNetProfit] = useState(0);
   const [absoluteNetProfitMargin, setAbsoluteNetProfitMargin] = useState(0);
+
+  // For VariantID === '2'
   const [planLanguageError, setPlanLanguageError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTextLanguage, setSelectedTextLanguage] = useState('Language');
+  // end here
+
+  const { planId, setIsPlanCompleted } = useContext(AppContext);
 
   useBeforeUnload();
 
@@ -87,6 +134,10 @@ export default function Fincance({ fbPixelId, secretKey }) {
     values: FormValues,
     { setSubmitting }: FormikHelpers<FormValues>,
   ) {
+    if (variantID === '2') {
+      updatePlanDetails(); // Change isFinanceIncomplete to false
+      setIsPlanCompleted(true);
+    }
     setSubmitting(true);
     if (!values.planLanguage) {
       setPlanLanguageError(true);
@@ -118,83 +169,143 @@ export default function Fincance({ fbPixelId, secretKey }) {
     onSubmit,
   });
 
+  async function updatePlanDetails() {
+    try {
+      const formData = JSON.parse(localStorage.getItem('formData')) || {};
+      const response = await fetch('/api/updatePlanDetails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          [API_KEY_HEADER]: secretKey,
+        },
+        body: JSON.stringify({
+          email: session.user.email,
+          planIdNum: planId,
+          userInput: {
+            investmentItem1,
+            investmentAmountItem1,
+            investmentItem2,
+            investmentAmountItem2,
+            investmentItem3,
+            investmentAmountItem3,
+            investmentItem4,
+            investmentAmountItem4,
+            investmentItem5,
+            investmentAmountItem5,
+            investmentItem6,
+            investmentAmountItem6,
+            investmentItem7,
+            investmentAmountItem7,
+            investmentItem8,
+            investmentAmountItem8,
+            investmentItem9,
+            investmentAmountItem9,
+            investmentItem10,
+            investmentAmountItem10,
+            initialInvestmentAmount,
+            planCurrency,
+            planCurrencySymbol,
+            firstYearRevenue: formik.values.firstYearRevenue || firstYearRevenue,
+            revenueGrowthRate: formik.values.revenueGrowthRate || revenueGrowthRate,
+            COGSP: formik.values.COGSP / 100 || COGSP,
+            wageCostP: formik.values.wageCostP / 100 || wageCostP,
+            markCostP: formik.values.markCostP / 100 || markCostP,
+            rentCostP: formik.values.rentCostP / 100 || rentCostP,
+            genCostP: formik.values.genCostP / 100 || genCostP,
+            depreCostP: formik.values.depreCostP / 100 || depreCostP,
+            utilCostP: formik.values.utilCostP / 100 || utilCostP,
+            otherCostP: formik.values.otherCostP / 100 || otherCostP,
+            intCostP: formik.values.intCostP / 100 || intCostP,
+            taxCostP: formik.values.taxCostP / 100 || taxCostP,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      throw err;
+    }
+  }
   useEffect(() => {
     window.scrollTo(0, 0);
     const formData = JSON.parse(localStorage.getItem('formData')) || {};
 
-    if (formData[formDataTitle.FORM7_1]) {
+    if (!formik.values[formDataTitle.FORM7_1] && formData[formDataTitle.FORM7_1]?.value) {
       formik.setFieldValue(
         'firstYearRevenue',
-        formData[formDataTitle.FORM7_1].value,
+        !formik.values[formDataTitle.FORM7_1] && formData[formDataTitle.FORM7_1].value,
       );
     }
-    if (formData[formDataTitle.FORM7_2]) {
+    if (!formik.values[formDataTitle.FORM7_2] && formData[formDataTitle.FORM7_2]?.value) {
       formik.setFieldValue(
         'revenueGrowthRate',
-        parseFloat(formData[formDataTitle.FORM7_2].value) * 100,
+        parseFloat(!formik.values[formDataTitle.FORM7_2] && formData[formDataTitle.FORM7_2].value) * 100,
       );
     }
-    if (formData[formDataTitle.FORM7_3]) {
+    if (!formik.values[formDataTitle.FORM7_3] && formData[formDataTitle.FORM7_3]?.value) {
       formik.setFieldValue(
         'COGSP',
-        parseFloat(formData[formDataTitle.FORM7_3].value) * 100,
+        parseFloat(!formik.values[formDataTitle.FORM7_3] && formData[formDataTitle.FORM7_3].value) * 100,
       );
     }
-    if (formData[formDataTitle.FORM7_4]) {
+    if (!formik.values[formDataTitle.FORM7_4] && formData[formDataTitle.FORM7_4]?.value) {
       formik.setFieldValue(
         'wageCostP',
-        parseFloat(formData[formDataTitle.FORM7_4].value) * 100,
+        parseFloat(!formik.values[formDataTitle.FORM7_4] && formData[formDataTitle.FORM7_4].value) * 100,
       );
     }
-    if (formData[formDataTitle.FORM7_5]) {
+    if (!formik.values[formDataTitle.FORM7_5] && formData[formDataTitle.FORM7_5]?.value) {
       formik.setFieldValue(
         'markCostP',
-        parseFloat(formData[formDataTitle.FORM7_5].value) * 100,
+        parseFloat(!formik.values[formDataTitle.FORM7_5] && formData[formDataTitle.FORM7_5].value) * 100,
       );
     }
-    if (formData[formDataTitle.FORM7_6]) {
+    if (!formik.values[formDataTitle.FORM7_6] && formData[formDataTitle.FORM7_6]?.value) {
       formik.setFieldValue(
         'rentCostP',
-        parseFloat(formData[formDataTitle.FORM7_6].value) * 100,
+        parseFloat(!formik.values[formDataTitle.FORM7_6] && formData[formDataTitle.FORM7_6].value) * 100,
       );
     }
-    if (formData[formDataTitle.FORM7_7]) {
+    if (!formik.values[formDataTitle.FORM7_7] && formData[formDataTitle.FORM7_7]?.value) {
       formik.setFieldValue(
         'genCostP',
-        parseFloat(formData[formDataTitle.FORM7_7].value) * 100,
+        parseFloat(!formik.values[formDataTitle.FORM7_7] && formData[formDataTitle.FORM7_7].value) * 100,
       );
     }
-    if (formData[formDataTitle.FORM7_8]) {
+    if (!formik.values[formDataTitle.FORM7_8] && formData[formDataTitle.FORM7_8]?.value) {
       formik.setFieldValue(
         'depreCostP',
-        parseFloat(formData[formDataTitle.FORM7_8].value) * 100,
+        parseFloat(!formik.values[formDataTitle.FORM7_8] && formData[formDataTitle.FORM7_8].value) * 100,
       );
     }
-    if (formData[formDataTitle.FORM7_9]) {
+    if (!formik.values[formDataTitle.FORM7_9] && formData[formDataTitle.FORM7_9]?.value) {
       formik.setFieldValue(
         'utilCostP',
-        parseFloat(formData[formDataTitle.FORM7_9].value) * 100,
+        parseFloat(!formik.values[formDataTitle.FORM7_9] && formData[formDataTitle.FORM7_9].value) * 100,
       );
     }
-    if (formData[formDataTitle.FORM7_10]) {
+    if (!formik.values[formDataTitle.FORM7_10] && formData[formDataTitle.FORM7_10]?.value) {
       formik.setFieldValue(
         'otherCostP',
-        parseFloat(formData[formDataTitle.FORM7_10].value) * 100,
+        parseFloat(!formik.values[formDataTitle.FORM7_10] && formData[formDataTitle.FORM7_10].value) * 100,
       );
     }
-    if (formData[formDataTitle.FORM7_11]) {
+    if (!formik.values[formDataTitle.FORM7_11] && formData[formDataTitle.FORM7_11]?.value) {
       formik.setFieldValue(
         'intCostP',
-        parseFloat(formData[formDataTitle.FORM7_11].value) * 100,
+        parseFloat(!formik.values[formDataTitle.FORM7_11] && formData[formDataTitle.FORM7_11].value) * 100,
       );
     }
-    if (formData[formDataTitle.FORM7_12]) {
+    if (!formik.values[formDataTitle.FORM7_12] && formData[formDataTitle.FORM7_12]?.value) {
       formik.setFieldValue(
         'taxCostP',
-        parseFloat(formData[formDataTitle.FORM7_12].value) * 100,
+        parseFloat(!formik.values[formDataTitle.FORM7_12] && formData[formDataTitle.FORM7_12].value) * 100,
       );
     }
-    if (formData[formDataTitle.FORM7_13]) {
+    if (!formik.values[formDataTitle.FORM7_13] && formData[formDataTitle.FORM7_13]) {
       const value = formData[formDataTitle.FORM7_13].value;
       setSelectedTextLanguage(mapPlanLanguage[value]);
       formik.setFieldValue('planLanguage', value);
@@ -383,14 +494,11 @@ export default function Fincance({ fbPixelId, secretKey }) {
 
     async function fetchUserData() {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/getUserData`,
-          {
-            headers: {
-              [API_KEY_HEADER]: secretKey,
-            },
+        const res = await fetch('/api/getUserData', {
+          headers: {
+            [API_KEY_HEADER]: secretKey,
           },
-        );
+        });
         const data = await res.json();
 
         if (data) {
@@ -425,6 +533,7 @@ export default function Fincance({ fbPixelId, secretKey }) {
     return () => clearInterval(interval);
   }, [session]);
 
+  // For VariantID === '2'
   const toggleDropdown = () => {
     trackEvent({
       event_name: 'page_7_language_button',
@@ -461,7 +570,7 @@ export default function Fincance({ fbPixelId, secretKey }) {
             <div className="get-started">
               <div className="form-bg">
                 <div className="flex justify-center items-center mt-5 mb-8 text-black">
-                  {t('STEP 7 OF 7')}
+                  {tCommon('step')} {variantID === '2' ? 8 : 7} {tCommon('of')} {variantID === '2' ? 8 : 7}
                 </div>
                 <h4 className="">
                   {t('Enter Financial Details and Plan Language')}
@@ -974,9 +1083,10 @@ export default function Fincance({ fbPixelId, secretKey }) {
                       ) : (
                         <></>
                       )}
+
                       {/* select language */}
 
-                      <div className="flex gap-5 mb-5 justify-center relative">
+                      {variantID !== '2' && <div className="flex gap-5 mb-5 justify-center relative">
                         <div>{t('Select plan language (required)')}</div>
 
                         <div className="">
@@ -1095,15 +1205,16 @@ export default function Fincance({ fbPixelId, secretKey }) {
                             )}
                           </div>
                         </div>
-                      </div>
+                      </div>}
 
-                      {planLanguageError ? (
+                      {variantID !== '2' && planLanguageError ? (
                         <span className="text-rose-400">
                           {t('Please select plan language')}
                         </span>
                       ) : (
                         <></>
                       )}
+
                       <div className="flex gap-5 justify-center mt-10">
                         <button
                           type="button"
@@ -1122,7 +1233,7 @@ export default function Fincance({ fbPixelId, secretKey }) {
                             });
                           }}
                         >
-                          {t('Next')}
+                          {variantID === '2' ? t('Done') : t('Next')}
                         </button>
                       </div>
                     </div>

@@ -9,5 +9,6 @@
   "Showing Edited Version": "عرض النسخة المعدلة",
   "Showing Original Version": "عرض النسخة الأصلية",
   "There was a problem with your payment": "كانت هناك مشكلة في عملية الدفع الخاصة بك",
-  "Verifying Account...": "جار التحقق من الحساب..."
+  "Verifying Account...": "جار التحقق من الحساب...",
+  "financeIncomplete": "القسم المالي غير مكتمل، انقر فوق &quot;تحرير وحفظ&quot; للإنهاء"
 }

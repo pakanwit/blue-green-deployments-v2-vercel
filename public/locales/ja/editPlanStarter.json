@@ -24,6 +24,7 @@
   "Your edits will be automatically saved": "編集内容は自動的に保存されます。",
   "above\" try to input": "上記\"を入力してみてください",
   "copyFeatureButton": "戻って入力を変更する",
+  "financeIncomplete": "プランをダウンロードするには、財務セクションを完了する必要があります。",
   "help@15minuteplan.ai": "help@15minuteplan.ai",
   "warningCopyPlanMessage": "現在、{{planQuota}} プランを作成することができます。戻って入力内容を編集すると、プラン枠が1つ失われます。"
 }

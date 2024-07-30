@@ -71,7 +71,7 @@ export default async function api2Situ1(request, response) {
   Generate response in html surrounding "Industry Overview" and "Key Market Trends" with h4 tag.
   In "Key Market Trends" topic surround each key trend with <li> tag. 
   Begin the completion with "<h3>Situation Analysis</h3>" followed by "<h4>Industry Overview</h4>"
-  Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+Use only HTML tags, don’t use markdown. Don’t use ** **, instead use <strong> tag for bold. Don’t use * *, instead use <em> tag for italic. Don’t use * for bullet points, instead use <ul> and <li> tag.
   Generate everything in English.
   ${UKEngPrompt}
   This is important: Be very insightful in your response.
@@ -109,7 +109,7 @@ export default async function api2Situ1(request, response) {
    Generieren Sie mit dem h4-Tag Antworten im HTML-Format rund um „Branchenüberblick“ und „Wichtige Markttrends“.
    Umgeben Sie im Thema „Wichtige Markttrends“ jeden wichtigen Trend mit dem Tag <li>.
    Beginnen Sie den Abschluss mit „<h3>Situationsanalyse</h3>“, gefolgt von „<h4>Branchenüberblick</h4>“.
-   Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie das -Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie das -Tag für Kursivschrift. Verwenden Sie nicht *, sondern verwenden Sie das -Tag für Aufzählungspunkte.
+   Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie den <strong>-Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie den <em>-Tag für Kursivschrift. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie die <ul>- und <li>-Tags.
 Generiere alles auf Deutsch.
 Dies ist wichtig: Seien Sie in Ihrer Antwort sehr einsichtig.
 Dies ist das lange, detaillierte und aufschlussreiche ${situ1TopicDE}, das Sie sich ausgedacht haben:
@@ -145,7 +145,7 @@ Dies ist das lange, detaillierte und aufschlussreiche ${situ1TopicDE}, das Sie s
   Générez une réponse en html entourant "Vue d'ensemble de l'industrie" et "Tendances clés du marché" avec la balise h4.
   Dans le sujet "Tendances clés du marché", entourez chaque tendance clé avec la balise <li>.
   Commencez la réalisation avec "<h3>Analyse de la situation</h3>" suivi de "<h4>Vue d'ensemble de l'industrie</h4>"
-  Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
 Générez tout en français.
 C’est important : Soyez très perspicace dans votre réponse.
 Voici le long, détaillé et perspicace ${situ1TopicFR} que vous avez trouvé :
@@ -183,7 +183,7 @@ Voici le long, détaillé et perspicace ${situ1TopicFR} que vous avez trouvé :
   Genera la respuesta en html rodeando "Panorama del sector" y "Principales tendencias del mercado" con la etiqueta h4.
   En el tema "Principales tendencias del mercado", rodea cada tendencia clave con la etiqueta <li>.
   Comienza la realización con "<h3>Análisis de la situación</h3>" seguido de "<h4>Panorama del sector</h4>"
-  Use solo etiquetas HTML, no use markdown. No use ** **, use la etiqueta  para negrita. No use * *, use la etiqueta  para cursiva. No use *, use la etiqueta  para viñetas.
+Use solo etiquetas HTML, no use markdown. No use ** **, use en su lugar la etiqueta <strong> para negrita. No use * *, use en su lugar la etiqueta <em> para cursiva. No use * para viñetas, use en su lugar las etiquetas <ul> y <li>.
 Genere todo en español.
   Esto es importante: Sea muy perspicaz en su respuesta.
   Este es el largo, detallado y perspicaz ${situ1TopicES} que se le ocurrió:`;
@@ -219,7 +219,7 @@ Genere todo en español.
   Genera la risposta in html circondando "Panoramica del settore" e "Principali tendenze di mercato" con il tag h4.
   Nel tema "Principali tendenze di mercato", circonda ogni tendenza chiave con il tag <li>.
   Inizia la realizzazione con "<h3>Analisi della situazione</h3>" seguito da "<h4>Panoramica del settore</h4>"
-  Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag  per il grassetto. Non usare * *, usa invece il tag  per il corsivo. Non usare *, usa invece il tag  per i punti elenco.
+Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
 Genera tutto in italiano.
 Questo è importante: Sii molto perspicace nella tua risposta.
 Questo è il lungo, dettagliato e perspicace ${situ1TopicIT} che hai ideato:`
@@ -329,7 +329,7 @@ Questo è il lungo, dettagliato e perspicace ${situ1TopicIT} che hai ideato:`
   قم بإنشاء الرد في html محيط "نظرة عامة على الصناعة" و"الاتجاهات الرئيسية في السوق" بوسم h4.
   في موضوع "الاتجاهات الرئيسية في السوق" قم بتحييد كل اتجاه رئيسي بوسم <li>.
   ابدأ الاكتمال بـ "<h3>تحليل الوضع</h3>" تليها "<h4>نظرة عامة على الصناعة</h4>"
-  استخدم فقط علامات HTML، ولا تستخدم ماركداون. لا تستخدم ** **، بدلاً من ذلك استخدم علامة  للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة  للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامة  للنقاط.
+  استخدم فقط علامات HTML، ولا تستخدم markdown. لا تستخدم ** **، بدلاً من ذلك استخدم علامة <strong> للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة <em> للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامتي <ul> و <li>.
   أنشئ كل شيء باللغة العربية.
   هذا مهم: كن ثاقبًا جدًا في ردك.
   هذا هو الـ${situ1TopicAR} الطويل والمفصل والعميق الذي توصلت إليه:
@@ -367,7 +367,7 @@ Questo è il lungo, dettagliato e perspicace ${situ1TopicIT} che hai ideato:`
   Generera svar i html som omger "Översikt över branschen" och "Viktiga marknadstrender" med h4-taggen.
   I ämnet "Viktiga marknadstrender" omger varje nyckeltrend med <li>-taggen.
   Börja slutförandet med "<h3>Situationsanalys</h3>" följt av "<h4>Översikt över branschen</h4>"
-  Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället -taggen för fetstil. Använd inte * *, använd istället -taggen för kursiv. Använd inte *, använd istället -taggen för punktlistor.
+  Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv. Använd inte * för punktlistor, använd istället <ul>- och <li>-taggarna.
   Generera allt på svenska.
   Detta är viktigt: Var mycket insiktsfull i ditt svar.
   Detta är den långa, detaljerade och insiktsfulla ${situ1TopicSV} du kom på:
@@ -404,7 +404,7 @@ Questo è il lungo, dettagliato e perspicace ${situ1TopicIT} che hai ideato:`
   Tuota vastaus html-muodossa ympäröimällä "Toimialan yleiskatsaus" ja "Tärkeimmät markkinatrendit" h4-tagilla.
   "Tärkeimmät markkinatrendit" -aiheessa ympäröi jokainen keskeinen trendi <li>-tagilla.
   Aloita täydennys "<h3>Tilanneanalyysi</h3>" seurasi "<h4>Toimialan yleiskatsaus</h4>"
-  Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä vahvennukseen -tagia. Älä käytä * *, vaan käytä kursivointiin -tagia. Älä käytä *, vaan käytä luettelomerkeille -tagia.
+Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä <strong>-tagia lihavointiin. Älä käytä * *, vaan käytä <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, vaan käytä <ul>- ja <li>-tageja.
   Luo kaikki suomeksi.
   Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
   Tämä on pitkä, yksityiskohtainen ja oivaltava ${situ1TopicFI}, jonka keksit:
@@ -441,7 +441,7 @@ Questo è il lungo, dettagliato e perspicace ${situ1TopicIT} che hai ideato:`
   Generer svar i html, der omgiver "Branchegennemgang" og "Vigtige markedsudviklinger" med h4-tag.
   I emnet "Vigtige markedsudviklinger" omgiv hver nøgletrend med <li>-tag.
   Begynd udfyldelsen med "<h3>Situationsanalyse</h3>" efterfulgt af "<h4>Branchegennemgang</h4>"
-  Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet -tagget til fed skrift. Brug ikke * *, brug i stedet -tagget til kursiv skrift. Brug ikke *, brug i stedet -tagget til punkttegn.
+Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
   Generer alt på dansk.
   Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
   Dette er den lange, detaljerede og indsigtsfulde ${situ1TopicDA}, du kom op med:
@@ -477,7 +477,7 @@ Questo è il lungo, dettagliato e perspicace ${situ1TopicIT} che hai ideato:`
   Generer svar i html, som omgir "Industrioversikt" og "Viktige markedsutviklinger" med h4-tag.
   I emnet "Viktige markedsutviklinger" omgir hver nøkkeltrend med <li>-tag.
   Begynn utfyllingen med "<h3>Situasjonsanalyse</h3>" etterfulgt av "<h4>Industrioversikt</h4>"
-  Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet -taggen for fet skrift. Ikke bruk * *, bruk i stedet -taggen for kursiv skrift. Ikke bruk *, bruk i stedet -taggen for punktlister.
+Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-taggen for fet skrift. Ikke bruk * *, bruk i stedet <em>-taggen for kursiv skrift. Ikke bruk * for punktlister, bruk i stedet <ul>- og <li>-taggene.
   Generer alt på norsk.
   Dette er viktig: Vær veldig innsiktsfull i ditt svar.
   Dette er den lange, detaljerte og innsiktsfulle ${situ1TopicNO} du kom opp med:

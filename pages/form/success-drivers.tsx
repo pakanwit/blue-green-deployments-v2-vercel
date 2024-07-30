@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { useFormik, FormikHelpers } from 'formik';
 import { event } from 'nextjs-google-analytics';
@@ -19,6 +19,9 @@ import Navbar from '../../components/navbar';
 import { useLoadFormData } from '../../hooks/useLoadFormData';
 import { ROUTE_PATH } from '../../constants/path';
 import useBeforeUnload from '../../hooks/useBeforeUnload';
+import { AppContext } from '../../context/appContext';
+import useDynamicQuestion from '../../hooks/useDynamicQuestion';
+import useCookies from '../../hooks/useCookies';
 
 interface FormValues {
   successFactors1: string;
@@ -29,13 +32,18 @@ interface FormValues {
   weakness3: string;
 }
 
-export default function Step5KeySuccess({ fbPixelId, secretKey }) {
+export default function Step5KeySuccess({ fbPixelId, secretKey, xPixelId }) {
   const { t } = useTranslation('Step5KeySuccess');
   const { t: tv } = useTranslation('validate');
+  const { t: tCommon } = useTranslation('common');
   const { data: session } = useSession();
   const router = useRouter();
 
+  const { getCookie } = useCookies();
+  const variantID = getCookie("variantID")
+
   const {
+    planLanguage,
     businessName,
     businessType,
     NEmployee,
@@ -58,6 +66,16 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
     productDescription3,
     productDescription4,
     productDescription5,
+    specificOperationQuestion1,
+    specificOperationQuestion2,
+    specificOperationQuestion3,
+    specificOperationQuestion4,
+    specificOperationQuestion5,
+    specificProductQuestion1,
+    specificProductQuestion2,
+    specificProductQuestion3,
+    specificProductQuestion4,
+    specificProductQuestion5,
   } = useLoadFormData();
 
   const formik = useFormik({
@@ -130,12 +148,84 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
     }
   }, [session]);
 
+  const {
+    get: { productInfoPrompt },
+  } = useContext(AppContext);
+  const hasGenDynamicQuestion =
+    (typeof window !== 'undefined' &&
+      JSON.parse(localStorage.getItem('hasGenDynamicQuestion'))) ||
+    false;
+
+  const isReadyToFetch =
+    !!(productInfoPrompt && planLanguage && businessType) &&
+    !hasGenDynamicQuestion;
+  const { questions } = useDynamicQuestion({
+    params: { productInfoPrompt, businessType },
+    planLanguage,
+    secretKey,
+    isReadyToFetch,
+    existingQuestions: {
+      specificOperationQuestion1,
+      specificOperationQuestion2,
+      specificOperationQuestion3,
+      specificOperationQuestion4,
+      specificOperationQuestion5,
+      specificProductQuestion1,
+      specificProductQuestion2,
+      specificProductQuestion3,
+      specificProductQuestion4,
+      specificProductQuestion5,
+    },
+  });
+
+  useEffect(() => {
+    const formData = JSON.parse(localStorage.getItem('formData')) || {};
+    if (Object.keys(questions).length > 0) {
+      if (Object.keys(questions?.product || {}).length > 0) {
+        Object.keys(questions.product).forEach((topic, index) => {
+          formData[
+            formDataTitle[`FORM_SPECIFIC_PRODUCT_QUESTION_${index + 1}`]
+          ] = {
+            id: 'specificProductQuestion',
+            value: questions.product[topic],
+            topic: topic,
+          };
+        });
+      }
+      if (Object.keys(questions?.operation || {}).length > 0) {
+        Object.keys(questions.operation).forEach((topic, index) => {
+          formData[
+            formDataTitle[`FORM_SPECIFIC_OPERATION_QUESTION_${index + 1}`]
+          ] = {
+            id: 'specificOperationQuestion',
+            value: questions.operation[topic],
+            topic: topic,
+          };
+        });
+      }
+      localStorage.setItem('hasGenDynamicQuestion', JSON.stringify(true));
+      localStorage.setItem('formData', JSON.stringify(formData));
+    }
+  }, [
+    questions,
+    specificProductQuestion1,
+    specificProductQuestion2,
+    specificProductQuestion3,
+    specificProductQuestion4,
+    specificProductQuestion5,
+    specificOperationQuestion1,
+    specificOperationQuestion2,
+    specificOperationQuestion3,
+    specificOperationQuestion4,
+    specificOperationQuestion5,
+  ]);
+
   async function onSubmit(
     values: FormValues,
     { setSubmitting }: FormikHelpers<FormValues>,
   ) {
     setSubmitting(true);
-    router.push(ROUTE_PATH.investmentItems);
+    router.push(variantID === '2' ? ROUTE_PATH.specificQuestion : ROUTE_PATH.investmentItems);
     setSubmitting(false);
   }
 
@@ -247,8 +337,6 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
   const locale = i18n.language;
 
   async function getSuggestionSuccessFactors(id, retryCount = 0) {
-    const variantID =
-      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
 
     callCounterSuccess.current += 1;
 
@@ -298,7 +386,7 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
         }
 
         const responsePromise = fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/inputSuggestion/getStep5SuggestionsKeySuccess`,
+          '/api/inputSuggestion/getStep5SuggestionsKeySuccess',
           {
             method: 'POST',
             headers: {
@@ -440,9 +528,6 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
   const pendingExecutionWeakness = useRef(null);
 
   async function getSuggestionWeakness(id, retryCount = 0) {
-    const variantID =
-      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
-
     callCounterWeakness.current += 1;
 
     if (callCounterWeakness.current >= 2) {
@@ -491,7 +576,7 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
         }
 
         const responsePromise = fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/inputSuggestion/getStep5SuggestionsWeakness`,
+          '/api/inputSuggestion/getStep5SuggestionsWeakness',
           {
             method: 'POST',
             headers: {
@@ -705,14 +790,11 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
 
     async function fetchUserData() {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/getUserData`,
-          {
-            headers: {
-              [API_KEY_HEADER]: secretKey,
-            },
+        const res = await fetch('/api/getUserData', {
+          headers: {
+            [API_KEY_HEADER]: secretKey,
           },
-        );
+        });
         const data = await res.json();
 
         if (data) {
@@ -784,7 +866,7 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
 
   return (
     <>
-      <Navbar fbPixelId={fbPixelId} />
+      <Navbar fbPixelId={fbPixelId} xPixelId={xPixelId} />
       <motion.div
         key="component-four"
         initial={{ opacity: 0 }}
@@ -797,7 +879,7 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
             <div className="get-started">
               <div className="form-bg">
                 <div className="flex justify-center items-center mt-5 mb-8 text-black">
-                  {t('STEP 5 OF 7')}
+                  {tCommon('step')} 5 {tCommon('of')} {variantID === '2' ? 8 : 7}
                 </div>
                 <h4 className="">{t('Enter Success Drivers')}</h4>
                 <p className="subheading-form">
@@ -1501,6 +1583,7 @@ export default function Step5KeySuccess({ fbPixelId, secretKey }) {
 export async function getStaticProps({ locale }) {
   const secretKey = process.env.API_KEY;
   const fbPixelId = process.env.FB_PIXEL_ID;
+  const xPixelId = process.env.X_PIXEL_ID;
   return {
     props: {
       ...(await serverSideTranslations(locale, [
@@ -1509,6 +1592,7 @@ export async function getStaticProps({ locale }) {
       ])),
       secretKey,
       fbPixelId,
+      xPixelId,
       // Will be passed to the page component as props
     },
   };

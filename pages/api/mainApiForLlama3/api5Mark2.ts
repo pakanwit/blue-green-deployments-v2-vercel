@@ -160,7 +160,7 @@ export default async function api5Mark2(request, response) {
     Write this as if you are the owner of the businsess, using "we" don't use "I".
     Generate response in html surround these key topics:${mark2TopicEN} with h5 tags. 
     Begin the completion with "<h4>STP</h4>" followed by "<h5>Segmentation</h5>
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
 Generate everything in English.
     ${UKEngPrompt}
     This is important: Be very insightful in your response.
@@ -198,7 +198,7 @@ Generate everything in English.
     Schreiben Sie dies, als ob Sie der Eigentümer des Unternehmens sind, verwenden Sie "wir" und nicht "ich".
     Erstellen Sie die Antwort in HTML und umgeben Sie diese Schlüsselthemen: ${mark2TopicDE} mit h5-Tags.
     Beginnen Sie den Abschluss mit "<h4>STP</h4>", gefolgt von "<h5>Segmentierung</h5>
-    Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie das -Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie das -Tag für Kursivschrift. Verwenden Sie nicht *, sondern verwenden Sie das -Tag für Aufzählungspunkte.
+Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie den <strong>-Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie den <em>-Tag für Kursivschrift. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie die <ul>- und <li>-Tags.
     Generiere alles auf Deutsch.
     Dies ist wichtig: Seien Sie in Ihrer Antwort sehr einsichtig.
     Dies ist das lange, detaillierte und aufschlussreiche ${mark2TopicDE}, das Sie sich ausgedacht haben:
@@ -236,8 +236,8 @@ Generate everything in English.
     Rédigez ceci comme si vous étiez le propriétaire de l'entreprise, en utilisant "nous" et non "je".
     Générez une réponse en HTML entourant ces sujets clés :${mark2TopicFR} avec des balises h5.
     Commencez le texte final avec "<h4>STP</h4>" suivi de "<h5>Segmentation</h5>
-    Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
-    Générez tout en français.
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
+générez tout en français.
     C’est important : Soyez très perspicace dans votre réponse.
     Voici le long, détaillé et perspicace ${mark2TopicFR} que vous avez trouvé :
     `;
@@ -273,7 +273,7 @@ Generate everything in English.
     Escribe esto como si fueras el propietario del negocio, utilizando "nosotros" no uses "yo".
     Genera una respuesta en HTML rodeando estos temas clave: ${mark2TopicES} con etiquetas h5.
     Comienza la finalización con "<h4>STP</h4>" seguido de "<h5>Segmentación</h5>
-    Use solo etiquetas HTML, no use markdown. No use ** **, use la etiqueta  para negrita. No use * *, use la etiqueta  para cursiva. No use *, use la etiqueta  para viñetas.
+Use solo etiquetas HTML, no use markdown. No use ** **, use en su lugar la etiqueta <strong> para negrita. No use * *, use en su lugar la etiqueta <em> para cursiva. No use * para viñetas, use en su lugar las etiquetas <ul> y <li>.
     Genere todo en español.
     Esto es importante: Sea muy perspicaz en su respuesta.
     Este es el largo, detallado y perspicaz ${mark2TopicES} que se le ocurrió:
@@ -311,7 +311,7 @@ Generate everything in English.
     Genera una risposta in html circonda questi argomenti chiave:${mark2TopicIT} con i tag h5.
     Inizia la realizzazione con "<h4>STP</h4>" seguito da "<h5>Segmentazione</h5>
     
-    Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag  per il grassetto. Non usare * *, usa invece il tag  per il corsivo. Non usare *, usa invece il tag  per i punti elenco.
+Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
 Genera tutto in italiano.
 Questo è importante: Sii molto perspicace nella tua risposta.
 Questo è il lungo, dettagliato e perspicace ${mark2TopicIT} che hai ideato:
@@ -349,7 +349,7 @@ Questo è il lungo, dettagliato e perspicace ${mark2TopicIT} che hai ideato:
     Schrijf dit alsof je de eigenaar van het bedrijf bent, gebruik "wij" en niet "ik".
     Genereer een reactie in html en omring deze sleutelonderwerpen:${mark2TopicNL} met h5 tags.
     Begin de voltooiing met "<h4>STP</h4>" gevolgd door "<h5>Segmentatie</h5>
-    Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik niet ** **, gebruik in plaats daarvan de -tag voor vetgedrukte tekst. Gebruik niet * *, gebruik in plaats daarvan de -tag voor cursieve tekst. Gebruik geen *, gebruik in plaats daarvan de -tag voor opsommingstekens.
+Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik geen ** **, gebruik in plaats daarvan de <strong>-tag voor vetgedrukte tekst. Gebruik geen * *, gebruik in plaats daarvan de <em>-tag voor cursieve tekst. Gebruik geen * voor opsommingstekens, gebruik in plaats daarvan de <ul>- en <li>-tags.
 Genereer alles in het Nederlands.
 Dit is belangrijk: Wees zeer inzichtelijk in uw antwoord.
 Dit is de lange, gedetailleerde en inzichtelijke ${mark2TopicNL} die u bedacht hebt:
@@ -387,7 +387,7 @@ Dit is de lange, gedetailleerde en inzichtelijke ${mark2TopicNL} die u bedacht h
     これをビジネスのオーナーであるかのように書き、"we"を使用し、"I"を使用しないでください。
     HTMLでレスポンスを生成し、これらのキートピック：${mark2TopicJA}をh5タグで囲みます。
     完成品を"<h4>STP</h4>"で始め、次に"<h5>Segmentation</h5>を続けます。
-    HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、太字にはタグを使用してください。 * *を使用せず、斜体にはタグを使用してください。 *を使用せず、箇条書きにはタグを使用してください。
+HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、代わりに太字には<strong>タグを使用してください。 * *を使用せず、代わりに斜体には<em>タグを使用してください。箇条書きには*を使用せず、代わりに<ul>と<li>タグを使用してください。
     すべてを日本語で生成します。
     これは重要です: 回答には非常に洞察力を持ってください。
     これがあなたが考えた長くて詳細で洞察に満ちた${mark2TopicJA}です:
@@ -425,7 +425,7 @@ Dit is de lange, gedetailleerde en inzichtelijke ${mark2TopicNL} die u bedacht h
     اكتب هذا كما لو كنت صاحب العمل، باستخدام "نحن" لا تستخدم "أنا".
     أنشئ الرد في html وحيط هذه المواضيع الرئيسية:${mark2TopicAR} بوسوم h5.
     ابدأ الاكتمال بـ "<h4>STP</h4>" تليها "<h5>التفريق</h5>
-    استخدم فقط علامات HTML، ولا تستخدم ماركداون. لا تستخدم ** **، بدلاً من ذلك استخدم علامة  للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة  للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامة  للنقاط.
+    استخدم فقط علامات HTML، ولا تستخدم markdown. لا تستخدم ** **، بدلاً من ذلك استخدم علامة <strong> للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة <em> للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامتي <ul> و <li>.
     أنشئ كل شيء باللغة العربية.
     هذا مهم: كن بليغًا جدًا في ردك.
     هذا هو الـ${mark2TopicAR} الطويل والمفصل والعميق الذي توصلت إليه:
@@ -463,7 +463,7 @@ Dit is de lange, gedetailleerde en inzichtelijke ${mark2TopicNL} die u bedacht h
     Skriv detta som om du är ägaren till företaget, använd "vi" använd inte "jag".
     Generera svar i html omge dessa nyckelämnen:${mark2TopicSV} med h5-taggar.
     Börja slutförandet med "<h4>STP</h4>" följt av "<h5>Segmentering</h5>
-    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället -taggen för fetstil. Använd inte * *, använd istället -taggen för kursiv. Använd inte *, använd istället -taggen för punktlistor.
+    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv. Använd inte * för punktlistor, använd istället <ul>- och <li>-taggarna.
     Generera allt på svenska.
     Detta är viktigt: Var mycket insiktsfull i ditt svar.
     Detta är den långa, detaljerade och insiktsfulla ${mark2TopicSV} du kom på:
@@ -501,7 +501,7 @@ Dit is de lange, gedetailleerde en inzichtelijke ${mark2TopicNL} die u bedacht h
     Kirjoita tämä ikään kuin olisit yrityksen omistaja, käyttäen "me", älä käytä "minä".
     Generoi vastaus html: ssä ympäröi nämä avainaiheet:${mark2TopicFI} h5-tageilla.
     Aloita täydennys "<h4>STP</h4>" seuraa "<h5>Segmentointi</h5>
-    Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä vahvennukseen -tagia. Älä käytä * *, vaan käytä kursivointiin -tagia. Älä käytä *, vaan käytä luettelomerkeille -tagia.
+Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä <strong>-tagia lihavointiin. Älä käytä * *, vaan käytä <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, vaan käytä <ul>- ja <li>-tageja.
     Luo kaikki suomeksi.
     Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
     Tämä on pitkä, yksityiskohtainen ja oivaltava ${mark2TopicFI}, jonka keksit:
@@ -539,7 +539,7 @@ Dit is de lange, gedetailleerde en inzichtelijke ${mark2TopicNL} die u bedacht h
     Skriv dette, som om du er ejeren af virksomheden, ved hjælp af "vi", brug ikke "jeg".
     Generer svar i html omgiv disse nøgleemner:${mark2TopicDA} med h5-tags.
     Begynd fuldførelsen med "<h4>STP</h4>" efterfulgt af "<h5>Segmentering</h5>
-    Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet -tagget til fed skrift. Brug ikke * *, brug i stedet -tagget til kursiv skrift. Brug ikke *, brug i stedet -tagget til punkttegn.
+Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
     Generer alt på dansk.
     Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
     Dette er den lange, detaljerede og indsigtsfulde ${mark2TopicDA}, du kom op med:
@@ -576,7 +576,7 @@ Dit is de lange, gedetailleerde en inzichtelijke ${mark2TopicNL} die u bedacht h
     Skriv dette som om du er eieren av virksomheten, ved hjelp av "vi", bruk ikke "jeg".
     Generer svar i html, omgir disse nøkkelemner:${mark2TopicNO} med h5-tags.
     Begynn fullførelsen med "<h4>STP</h4>" etterfulgt av "<h5>Segmentering</h5>
-    Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet -taggen for fet skrift. Ikke bruk * *, bruk i stedet -taggen for kursiv skrift. Ikke bruk *, bruk i stedet -taggen for punktlister.
+Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-taggen for fet skrift. Ikke bruk * *, bruk i stedet <em>-taggen for kursiv skrift. Ikke bruk * for punktlister, bruk i stedet <ul>- og <li>-taggene.
     Generer alt på norsk.
     Dette er viktig: Vær veldig innsiktsfull i ditt svar.
     Dette er den lange, detaljerte og innsiktsfulle ${mark2TopicNO} du kom opp med:

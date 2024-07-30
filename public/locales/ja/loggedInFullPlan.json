@@ -9,5 +9,6 @@
   "Showing Edited Version": "編集済みバージョンを表示",
   "Showing Original Version": "オリジナルバージョンを表示",
   "There was a problem with your payment": "お支払いに問題が発生しました",
-  "Verifying Account...": "アカウントを確認中..."
+  "Verifying Account...": "アカウントを確認中...",
+  "financeIncomplete": "財務セクションに記入漏れがある場合 \"Edit &amp; Save \"をクリックして完了する。"
 }

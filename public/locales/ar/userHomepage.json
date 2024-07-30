@@ -19,5 +19,6 @@
   "You need to be logged in to view this page": "يجب عليك تسجيل الدخول لعرض هذه الصفحة",
   "You're logged in as: ": "أنت مسجل الدخول باسم:",
   "duplicatedPlanForm": "تم إنشاء هذه الخطة من خلال تغيير مدخلات &quot;الخطة&quot;.{{refId}} :{{businessName}} &quot;",
+  "financeIncomplete": "القسم المالي غير مكتمل، انقر فوق &quot;تحرير وحفظ&quot; للإنهاء",
   "logo": "الشعار"
 }

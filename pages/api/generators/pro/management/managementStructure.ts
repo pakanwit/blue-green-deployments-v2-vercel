@@ -202,7 +202,7 @@ export const managementStructurePro = async (req: IManagementStructurePro) => {
 
     Do not repeat business details.
     Begin the completion with "<h3>Management</h3>" followed by "<h4>Management Structure</h4>" and "<h5>Organizational Hierarchy</h5>"
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
     Generate everything in English.
     use british english spelling and grammar
     This is important: Be very insightful in your response.
@@ -233,7 +233,7 @@ export const managementStructurePro = async (req: IManagementStructurePro) => {
 
     Do not repeat business details.
     Begin the completion with "<h3>Management</h3>" followed by "<h4>Management Structure</h4>" and "<h5>Organizational Hierarchy</h5>"
-    Use only HTML tags, don’t use markdown. Don’t use ** **, instead use  tag for bold. Don’t use * *, instead use  tag for italic. Don’t use * for bullet points, instead use  tag.
+Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
     Generate everything in English.
     This is important: Be very insightful in your response.
     This is the long, detailed, and insightful ${promptTopic.en} you came up with:
@@ -264,7 +264,7 @@ export const managementStructurePro = async (req: IManagementStructurePro) => {
 
     Wiederholen Sie keine Geschäftsdetails.
     Beginnen Sie die Vervollständigung mit „<h3>Verwaltung</h3>“, gefolgt von „<h4>Managementstruktur</h4>“ und „<h5>Organisationshierarchie</h5>“.
-    Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie das -Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie das -Tag für Kursivschrift. Verwenden Sie nicht *, sondern verwenden Sie das -Tag für Aufzählungspunkte.
+Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie den <strong>-Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie den <em>-Tag für Kursivschrift. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie die <ul>- und <li>-Tags.
     Generiere alles auf Deutsch.
     Dies ist wichtig: Seien Sie in Ihrer Antwort sehr einsichtig.
     Dies ist das lange, detaillierte und aufschlussreiche ${promptTopic.de}, das Sie sich ausgedacht haben:
@@ -296,8 +296,8 @@ export const managementStructurePro = async (req: IManagementStructurePro) => {
 
     Ne répétez pas les détails de l'entreprise.
     Commencez la rédaction par "<h3>Gestion</h3>", suivi de "<h4>Structure de Gestion</h4>" et "<h5>Hiérarchie Organisationnelle</h5>"
-    Utilisez uniquement des balises HTML, n’utilisez pas de markdown. N’utilisez pas ** **, utilisez plutôt la balise  pour le gras. N’utilisez pas * *, utilisez plutôt la balise  pour l’italique. N’utilisez pas *, utilisez plutôt la balise  pour les points de liste.
-    Générez tout en français.
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
+générez tout en français.
     C’est important : Soyez très perspicace dans votre réponse.
     Voici le long, détaillé et perspicace ${promptTopic.fr} que vous avez trouvé ::
     `,
@@ -328,7 +328,7 @@ export const managementStructurePro = async (req: IManagementStructurePro) => {
 
     No repita los detalles del negocio.
     Comience la redacción con "<h3>Gestión</h3>", seguido de "<h4>Estructura de Gestión</h4>" y "<h5>Jerarquía Organizacional</h5>"
-    Use solo etiquetas HTML, no use markdown. No use ** **, use la etiqueta  para negrita. No use * *, use la etiqueta  para cursiva. No use *, use la etiqueta  para viñetas.
+Use solo etiquetas HTML, no use markdown. No use ** **, use en su lugar la etiqueta <strong> para negrita. No use * *, use en su lugar la etiqueta <em> para cursiva. No use * para viñetas, use en su lugar las etiquetas <ul> y <li>.
     Genere todo en español.
     Esto es importante: Sea muy perspicaz en su respuesta.
     Este es el largo, detallado y perspicaz ${promptTopic.es} que se le ocurrió:
@@ -360,7 +360,7 @@ export const managementStructurePro = async (req: IManagementStructurePro) => {
 
     Non ripetere i dettagli aziendali.
     Inizia il testo con "<h3>Gestione</h3>" seguito da "<h4>Struttura di Gestione</h4>" e "<h5>Gerarchia Organizzativa</h5>"
-    Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag  per il grassetto. Non usare * *, usa invece il tag  per il corsivo. Non usare *, usa invece il tag  per i punti elenco.
+Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
 Genera tutto in italiano.
 Questo è importante: Sii molto perspicace nella tua risposta.
 Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai ideato:
@@ -392,7 +392,7 @@ Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai ideato:
 
     Herhaal de bedrijfsdetails niet.
     Begin de voltooiing met "<h3>Beheer</h3>" gevolgd door "<h4>Managementstructuur</h4>" en "<h5>Organisatorische Hiërarchie</h5>"
-    Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik niet ** **, gebruik in plaats daarvan de -tag voor vetgedrukte tekst. Gebruik niet * *, gebruik in plaats daarvan de -tag voor cursieve tekst. Gebruik geen *, gebruik in plaats daarvan de -tag voor opsommingstekens.
+Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik geen ** **, gebruik in plaats daarvan de <strong>-tag voor vetgedrukte tekst. Gebruik geen * *, gebruik in plaats daarvan de <em>-tag voor cursieve tekst. Gebruik geen * voor opsommingstekens, gebruik in plaats daarvan de <ul>- en <li>-tags.
     Genereer alles in het Nederlands.
     Dit is belangrijk: Wees zeer inzichtelijk in uw antwoord.
     Dit is de lange, gedetailleerde en inzichtelijke ${promptTopic.nl} die u bedacht hebt:
@@ -424,7 +424,7 @@ Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai ideato:
 
     ビジネスの詳細を繰り返さないでください。
     完成を"<h3>管理</h3>"で始め、次に"<h4>管理構造</h4>"と"<h5>組織の階層</h5>"を続けます。
-    HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、太字にはタグを使用してください。 * *を使用せず、斜体にはタグを使用してください。 *を使用せず、箇条書きにはタグを使用してください。
+HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、代わりに太字には<strong>タグを使用してください。 * *を使用せず、代わりに斜体には<em>タグを使用してください。箇条書きには*を使用せず、代わりに<ul>と<li>タグを使用してください。
     すべてを日本語で生成します。
     これは重要です: 回答には非常に洞察力を持ってください。
     これがあなたが考えた長くて詳細で洞察に満ちた${promptTopic.ja}です:
@@ -456,7 +456,7 @@ Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai ideato:
 
     لا تكرر تفاصيل العمل.
     ابدأ الإكمال بـ "<h3>الإدارة</h3>" تليها "<h4>الهيكل التنظيمي</h4>" و"<h5>الهيكل التنظيمي</h5>"
-    استخدم فقط علامات HTML، ولا تستخدم ماركداون. لا تستخدم ** **، بدلاً من ذلك استخدم علامة  للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة  للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامة  للنقاط.
+    استخدم فقط علامات HTML، ولا تستخدم markdown. لا تستخدم ** **، بدلاً من ذلك استخدم علامة <strong> للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة <em> للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامتي <ul> و <li>.
     أنشئ كل شيء باللغة العربية.
     هذا مهم: كن بليغًا جدًا في ردك.
     هذا هو الـ${promptTopic.ar} الطويل والمفصل والعميق الذي توصلت إليه:
@@ -488,7 +488,7 @@ Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai ideato:
 
     Upprepa inte affärsdetaljer.
     Börja slutförandet med "<h3>Ledning</h3>" följt av "<h4>Ledningsstruktur</h4>" och "<h5>Organisationshierarki</h5>"
-    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället -taggen för fetstil. Använd inte * *, använd istället -taggen för kursiv. Använd inte *, använd istället -taggen för punktlistor.
+    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv. Använd inte * för punktlistor, använd istället <ul>- och <li>-taggarna.
     Generera allt på svenska.
     Detta är viktigt: Var mycket insiktsfull i ditt svar.
     Detta är den långa, detaljerade och insiktsfulla ${promptTopic.sv} du kom på:
@@ -520,7 +520,7 @@ Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai ideato:
 
     Älä toista liiketoiminnan tietoja.
     Aloita täydennys "<h3>Johto</h3>" seurattuna "<h4>Hallintorakenne</h4>" ja "<h5>Organisaatiohierarkia</h5>"
-    Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä vahvennukseen -tagia. Älä käytä * *, vaan käytä kursivointiin -tagia. Älä käytä *, vaan käytä luettelomerkeille -tagia.
+Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä <strong>-tagia lihavointiin. Älä käytä * *, vaan käytä <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, vaan käytä <ul>- ja <li>-tageja.
     Luo kaikki suomeksi.
     Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
     Tämä on pitkä, yksityiskohtainen ja oivaltava ${promptTopic.fi}, jonka keksit:
@@ -552,7 +552,7 @@ Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai ideato:
 
     Gentag ikke forretningsdetaljer.
     Begynd udfyldelsen med "<h3>Ledelse</h3>" efterfulgt af "<h4>Ledelsesstruktur</h4>" og "<h5>Organisationshierarki</h5>"
-    Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet -tagget til fed skrift. Brug ikke * *, brug i stedet -tagget til kursiv skrift. Brug ikke *, brug i stedet -tagget til punkttegn.
+Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
     Generer alt på dansk.
     Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
     Dette er den lange, detaljerede og indsigtsfulde ${promptTopic.da}, du kom op med:
@@ -584,33 +584,36 @@ Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai ideato:
 
     Gjenta ikke forretningsdetaljer.
     Begynn utfyllingen med "<h3>Ledelse</h3>" etterfulgt av "<h4>Ledelsesstruktur</h4>" og "<h5>Organisasjonshierarki</h5>"
-    Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet -taggen for fet skrift. Ikke bruk * *, bruk i stedet -taggen for kursiv skrift. Ikke bruk *, bruk i stedet -taggen for punktlister.
+Bruk bare HTML-koder, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-taggen for fet skrift. Ikke bruk * *, bruk i stedet <em>-taggen for kursiv skrift. Ikke bruk * for punktlister, bruk i stedet <ul>- og <li>-taggene.
     Generer alt på norsk.
     Dette er viktig: Vær veldig innsiktsfull i ditt svar.
     Dette er den lange, detaljerte og innsiktsfulle ${promptTopic.no} du kom opp med:
     `,
   };
 
-  let modelPlanQuota = 'gpt-3.5-turbo';
-  if (planQuota <= 8) {
-    modelPlanQuota = 'gpt-3.5-turbo';
-    console.log('using gpt-3.5-turbo');
-  } else {
-    modelPlanQuota = 'gpt-4';
-    console.log('using gpt-4');
-  }
+let modelPlanQuota = 'gpt-3.5-turbo';
+if (planQuota <= 8) {
+  modelPlanQuota = 'gpt-3.5-turbo';
+  console.log('using gpt-3.5-turbo');
+} else {
+  modelPlanQuota = 'gpt-4';
+  console.log('using gpt-4');
+}
 
-  const payload = {
-    model: variantID === '2' ? 'gpt-4o' : modelPlanQuota,
-    messages: [{ role: 'user', content: prompt[planLanguage] ?? prompt.en }],
-    temperature: 0.5,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    max_tokens: 1200,
-    stream: true,
-    n: 1,
-  };
+const model = variantID === '2' ? 'gpt-4o' : modelPlanQuota;
+console.log('final model:', model);
 
-  return OpenAIStream(payload);
+const payload = {
+  model: model,
+  messages: [{ role: 'user', content: prompt[planLanguage] ?? prompt.en }],
+  temperature: 0.5,
+  top_p: 1,
+  frequency_penalty: 0,
+  presence_penalty: 0,
+  max_tokens: 1200,
+  stream: true,
+  n: 1,
+};
+
+return OpenAIStream(payload);
 };

@@ -71,5 +71,7 @@
   "Mentioned In..": "Mentioned In..",
   "Apply for review discount": "Apply for review discount",
   "Pay Once, use forever. No extra costs.": "Pay Once, use forever. No extra costs.",
-  "confirmCopyPlanMessage": "Are you sure you want to lose 1 plan quota?"
+  "confirmCopyPlanMessage": "Are you sure you want to lose 1 plan quota?",
+  "goToFinanceSection": "Complete Finance section",
+  "generatePlanCompleted": "Your finance section has been completed, its at the bottom"
 }

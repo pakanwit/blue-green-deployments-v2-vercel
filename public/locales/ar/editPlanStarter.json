@@ -24,6 +24,7 @@
   "Your edits will be automatically saved": "سيتم حفظ التعديلات الخاصة بك تلقائيًا",
   "above\" try to input": "أعلاه\" حاول الإدخال",
   "copyFeatureButton": "العودة وتغيير المدخلات",
+  "financeIncomplete": "تحتاج إلى إكمال القسم المالي قبل أن تتمكن من تنزيل الخطة",
   "help@15minuteplan.ai": "help@15minuteplan.ai",
   "warningCopyPlanMessage": "أنت الآن قادر على الإنشاء{{planQuota}} المزيد من الخطة. إذا عدت وقمت بتعديل مدخلاتك فسوف تفقد حصة واحدة في الخطة"
 }

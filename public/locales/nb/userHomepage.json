@@ -19,5 +19,6 @@
   "You need to be logged in to view this page": "Du må være logget inn for å se denne siden",
   "You're logged in as: ": "Du er logget inn som: ",
   "duplicatedPlanForm": "Denne planen ble laget ved å endre inndataene i \"Plan {{refId}}: {{businessName}}\".",
+  "financeIncomplete": "Finansseksjonen er ufullstendig Klikk på \"Rediger og lagre\" for å fullføre",
   "logo": "Logo"
 }
