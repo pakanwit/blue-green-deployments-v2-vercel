@@ -42,19 +42,20 @@ export async function middleware(req: NextRequest) {
     experiment_id.value === experimentId &&
     req.cookies.has("hostname")
   ) {
-    // const hostname = req.cookies.get('hostname');
-    // const headers = new Headers(req.headers);
-    // headers.set('x-deployment-override', hostname.value);
-    // headers.set(
-    //   'x-vercel-protection-bypass',
-    //   process.env.VERCEL_AUTOMATION_BYPASS_SECRET || 'unknown',
-    // );
-    // const url = new URL(req.url);
-    // url.hostname = hostname.value;
-    // return fetch(url, {
-    //   headers,
-    //   redirect: 'manual',
-    // });
+    console.log("if has: pathname", pathname, req.url);
+    const hostname = req.cookies.get("hostname");
+    const headers = new Headers(req.headers);
+    headers.set("x-deployment-override", hostname.value);
+    headers.set(
+      "x-vercel-protection-bypass",
+      process.env.VERCEL_AUTOMATION_BYPASS_SECRET || "unknown"
+    );
+    const url = new URL(req.url);
+    url.hostname = hostname.value;
+    return fetch(url, {
+      headers,
+      redirect: "manual",
+    });
     return NextResponse.next();
   }
 
