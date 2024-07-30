@@ -31,8 +31,8 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
   const { isCanary, getCookie } = useCookies();
 
   console.log("session: UserHomepage CANARY", session, isCanary);
-  const varintID = getCookie("varintID");
-  console.log("varintID", varintID);
+  const varaintID = getCookie("varaintID");
+  console.log("varintID", varaintID);
 
   //create signout function
   const handleSignout = async () => {
