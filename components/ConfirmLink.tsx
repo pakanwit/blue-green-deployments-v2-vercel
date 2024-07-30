@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 interface ConfirmLinkProps {
   href: string;
@@ -15,7 +15,7 @@ const ConfirmLink: React.FC<ConfirmLinkProps> = ({
 }) => {
   const router = useRouter();
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const handleClick = (e) => {
     e.preventDefault();
     if (window.confirm(message)) {
       router.push(href);
@@ -23,9 +23,9 @@ const ConfirmLink: React.FC<ConfirmLinkProps> = ({
   };
 
   return (
-    <a href={href} onClick={handleClick} className={className}>
+    <button onClick={handleClick} className={className}>
       {children}
-    </a>
+    </button>
   );
 };
 
