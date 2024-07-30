@@ -28,15 +28,12 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
   const [isSecondSurvey, setIsSecondSurvey] = useState(false);
 
   const { data: session } = useSession();
-  const { isCanary } = useCookies();
+  const { isCanary, getCookie } = useCookies();
 
   console.log("session: UserHomepage CANARY", session, isCanary);
-  console.log("isCanary", isCanary);
-  const endpoint = isCanary
-    ? `/api/canary/getAllUserData`
-    : `/api/getAllUserData`;
+  const varintID = getCookie("varintID");
+  console.log("varintID", varintID);
 
-  console.log("endpoint", endpoint);
   //create signout function
   const handleSignout = async () => {
     trackEvent({
@@ -52,7 +49,7 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
 
     async function fetchUserData() {
       setLoading(true);
-      const res = await fetch(endpoint, {
+      const res = await fetch("/api/getAllUserData", {
         headers: {
           [API_KEY_HEADER]: secretKey,
         },

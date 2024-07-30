@@ -21,7 +21,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const experiment_id = req.cookies.get("experiment_id");
+  const experiment_id = req.cookies.get("experimentID");
   const experimentId = process.env.EXPERIMENT_ID;
 
   if (
@@ -34,40 +34,40 @@ export async function middleware(req: NextRequest) {
   // If pathname is /api/..., set allowed origin.
   const origin = req.headers.get("origin") || "";
   const res = NextResponse.next();
-  if (pathname.startsWith("/api/")) {
-    console.log("pathname API >>>>", pathname);
-    if (allowedOrigins.includes(origin)) {
-      res.headers.set("Access-Control-Allow-Origin", origin);
-    }
-    res.headers.set("Access-Control-Allow-Credentials", "true");
-    res.headers.set(
-      "Access-Control-Allow-Methods",
-      "GET, DELETE, PATCH, POST, PUT, OPTIONS"
-    );
-    res.headers.set(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization, Api-Key"
-    );
-    // Handle preflight requests
-    if (req.method === "OPTIONS") {
-      console.log("OPTIONS =====");
-      return new NextResponse(null, { status: 204, headers: res.headers });
-    }
+  // if (pathname.startsWith("/api/")) {
+  //   if (allowedOrigins.includes(origin)) {
+  //     res.headers.set("Access-Control-Allow-Origin", origin);
+  //   }
+  //   res.headers.set("Access-Control-Allow-Credentials", "true");
+  //   res.headers.set(
+  //     "Access-Control-Allow-Methods",
+  //     "GET, DELETE, PATCH, POST, PUT, OPTIONS"
+  //   );
+  //   res.headers.set(
+  //     "Access-Control-Allow-Headers",
+  //     "Content-Type, Authorization, Api-Key"
+  //   );
+  //   // Handle preflight requests
+  //   if (req.method === "OPTIONS") {
+  //     console.log("OPTIONS =====");
+  //     return new NextResponse(null, { status: 204, headers: res.headers });
+  //   }
 
-    return res;
-  }
+  //   return res;
+  // }
 
   if (
     pathname.startsWith("/_next") || // exclude Next.js internals
     pathname.startsWith("/static") || // exclude static files
     pathname.includes("/favicon") ||
+    pathname.startsWith("/api/") ||
     PUBLIC_FILE.test(pathname) // exclude all files in the public folder
   ) {
     return NextResponse.next();
   }
 
   if (
-    req.cookies.has("experiment_id") &&
+    req.cookies.has("experimentID") &&
     experiment_id.value === experimentId &&
     req.cookies.has("hostname")
   ) {
@@ -143,14 +143,12 @@ export async function middleware(req: NextRequest) {
 async function fetchDocument(req: NextRequest, selectedDeploymentDomain) {
   const headers = new Headers(req.headers);
   headers.set("x-deployment-override", selectedDeploymentDomain);
-  headers.set("x-forwarded-host", "15minuteplan-ai.kanoonth.com");
   headers.set(
     "x-vercel-protection-bypass",
     process.env.VERCEL_AUTOMATION_BYPASS_SECRET || "unknown"
   );
   const url = new URL(req.url);
   url.hostname = selectedDeploymentDomain;
-  console.log("url ==", url);
   return fetch(url, {
     headers,
     redirect: "manual",
@@ -204,7 +202,7 @@ async function saveVariantIDCount(variantID, experimentID) {
 
 function setDefaultCookies(hostname: string) {
   const response = NextResponse.next();
-  response.cookies.set("experiment_id", "NO_EXPERIMENT");
+  response.cookies.set("experimentID", "NO_EXPERIMENT");
   response.cookies.set("hostname", hostname);
   return response;
 }
@@ -215,18 +213,18 @@ async function getDeploymentWithCookieBasedOnEnvVar(
   const response = NextResponse.next();
   const experimentId = process.env.EXPERIMENT_ID;
 
-  if (!req.cookies.has("experiment_id")) {
-    const experiment_id = req.cookies.get("experiment_id");
+  if (!req.cookies.has("experimentID")) {
+    const experiment_id = req.cookies.get("experimentID");
     if (
-      req.cookies.has("experiment_id") &&
+      req.cookies.has("experimentID") &&
       experiment_id.value === experimentId
     ) {
       return response;
     } else {
       const random = Math.random() * 100;
       const variantID = defaultVariantID ?? random < 50 ? "1" : "2";
-      response.cookies.set("experiment_id", experimentId);
-      response.cookies.set("variant_id", variantID);
+      response.cookies.set("experimentID", experimentId);
+      response.cookies.set("variantID", variantID);
       response.cookies.set("hostname", req.nextUrl.hostname);
 
       await saveVariantIDCount(variantID, experimentId);
