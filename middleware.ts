@@ -60,7 +60,7 @@ export async function middleware(req: NextRequest) {
     pathname.startsWith("/_next") || // exclude Next.js internals
     pathname.startsWith("/static") || // exclude static files
     pathname.includes("/favicon") ||
-    pathname.startsWith("/api/") ||
+    pathname.startsWith("/api") ||
     PUBLIC_FILE.test(pathname) // exclude all files in the public folder
   ) {
     return NextResponse.next();
@@ -74,7 +74,6 @@ export async function middleware(req: NextRequest) {
     const hostname = req.cookies.get("hostname");
     const headers = new Headers(req.headers);
     headers.set("x-deployment-override", hostname.value);
-    headers.set("x-forwarded-host", "15minuteplan-ai.kanoonth.com");
     headers.set(
       "x-vercel-protection-bypass",
       process.env.VERCEL_AUTOMATION_BYPASS_SECRET || "unknown"
