@@ -2,10 +2,10 @@ import { useState, useCallback, useEffect } from "react";
 import Cookies from "js-cookie";
 
 const useCookies = () => {
-  const [cookies, setCookies] = useState(() => {
-    // Initialize the state with all existing cookies
-    return Cookies.get();
-  });
+  // const [cookies, setCookies] = useState(() => {
+  //   // Initialize the state with all existing cookies
+  //   return Cookies.get();
+  // });
 
   const [isCanary, setIsCanary] = useState(false);
 
@@ -19,49 +19,49 @@ const useCookies = () => {
   const getCookie = useCallback(
     (name) => {
       // Check if the cookie exists
-      if (cookies === undefined || !Cookies.get(name)) {
+      if (!Cookies.get(name)) {
         return null;
       }
       // Return the cookie value if it exists
       return Cookies.get(name);
     },
-    [cookies]
+    [Cookies]
   );
 
   // Set a cookie
-  const setCookie = useCallback((name, value, options = {}) => {
-    Cookies.set(name, value, options);
-    setCookies((prevCookies) => ({
-      ...prevCookies,
-      [name]: value,
-    }));
+  // const setCookie = useCallback((name, value, options = {}) => {
+  //   Cookies.set(name, value, options);
+  //   setCookies((prevCookies) => ({
+  //     ...prevCookies,
+  //     [name]: value,
+  //   }));
 
-    // Update isCanary if setting the hostname cookie
-    if (name === "hostname") {
-      setIsCanary(value.includes("canary"));
-    }
-  }, []);
+  //   // Update isCanary if setting the hostname cookie
+  //   if (name === "hostname") {
+  //     setIsCanary(value.includes("canary"));
+  //   }
+  // }, []);
 
-  // Remove a cookie
-  const removeCookie = useCallback((name, options = {}) => {
-    Cookies.remove(name, options);
-    setCookies((prevCookies) => {
-      const newCookies = { ...prevCookies };
-      delete newCookies[name];
-      return newCookies;
-    });
+  // // Remove a cookie
+  // const removeCookie = useCallback((name, options = {}) => {
+  //   Cookies.remove(name, options);
+  //   setCookies((prevCookies) => {
+  //     const newCookies = { ...prevCookies };
+  //     delete newCookies[name];
+  //     return newCookies;
+  //   });
 
-    // Update isCanary if removing the hostname cookie
-    if (name === "hostname") {
-      setIsCanary(false);
-    }
-  }, []);
+  //   // Update isCanary if removing the hostname cookie
+  //   if (name === "hostname") {
+  //     setIsCanary(false);
+  //   }
+  // }, []);
 
   return {
-    cookies,
+    // cookies,
     getCookie,
-    setCookie,
-    removeCookie,
+    // setCookie,
+    // removeCookie,
     isCanary,
   };
 };
