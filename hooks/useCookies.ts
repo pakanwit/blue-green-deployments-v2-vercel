@@ -19,9 +19,9 @@ const useCookies = () => {
   // Get a cookie value
   const getCookie = useCallback(
     (name) => {
-      console.log("getCookie", name, cookies[name], Cookies.get(name));
+      console.log("getCookie", name, Cookies.get(name));
       // Check if the cookie exists
-      if (cookies === undefined || Cookies.get(name)) {
+      if (cookies === undefined || !Cookies.get(name)) {
         return null;
       }
       // Return the cookie value if it exists
