@@ -18,7 +18,6 @@ type InitialState = {
     planPackage: string;
     starterPrice: string;
     proPrice: string;
-    productInfoPrompt: string;
   };
   set: {
     setGeneratedExec: React.Dispatch<React.SetStateAction<string>>;
@@ -37,12 +36,7 @@ type InitialState = {
     setPlanPackage: React.Dispatch<React.SetStateAction<string>>;
     setStarterPrice: React.Dispatch<React.SetStateAction<string>>;
     setProPrice: React.Dispatch<React.SetStateAction<string>>;
-    setProductInfoPrompt: React.Dispatch<React.SetStateAction<string>>;
   };
-  planId: string;
-  setPlanId: React.Dispatch<React.SetStateAction<string>>;
-  isPlanCompleted: boolean;
-  setIsPlanCompleted: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const initialState: InitialState = {
@@ -63,7 +57,6 @@ const initialState: InitialState = {
     planPackage: '',
     starterPrice: '',
     proPrice: '',
-    productInfoPrompt: '',
   },
   set: {
     setGeneratedExec: () => {},
@@ -82,12 +75,7 @@ const initialState: InitialState = {
     setPlanPackage: () => {},
     setStarterPrice: () => {},
     setProPrice: () => {},
-    setProductInfoPrompt: () => {},
   },
-  planId: '',
-  setPlanId: () => {},
-  isPlanCompleted: false,
-  setIsPlanCompleted: () => {},
 };
 export const AppContext = createContext(initialState);
 export const AppDispatchContext = createContext(initialState);

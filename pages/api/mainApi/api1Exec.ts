@@ -10,9 +10,5 @@ export const config = {
 };
 
 export default async function api1Exec(request, response) {
-  // TODO: Please remove then test fallback AI Model pass
-  // if (request.modelName !== 'gpt-3.5-turbo') {
-  //   response.status(500).json({ error: 'Internal Server Error' });
-  // }
   return executiveSummary(await request.json())
 }

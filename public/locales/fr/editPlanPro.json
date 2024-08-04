@@ -22,7 +22,6 @@
   "Verifying Payment...": "Vérifier le paiement...",
   "above\" try to input": "en haut\" essayez de saisir",
   "copyFeatureButton": "Revenir en arrière et modifier les entrées",
-  "financeIncomplete": "Vous devez compléter la section financière avant de pouvoir télécharger le plan.",
   "help@15minuteplan.ai": "help@15minuteplan.ai",
   "make shorter": "raccourcir",
   "warningCopyPlanMessage": "Vous pouvez actuellement créer {{planQuota}} plans supplémentaires. Si vous revenez en arrière et modifiez vos entrées, vous perdrez 1 quota de plan."

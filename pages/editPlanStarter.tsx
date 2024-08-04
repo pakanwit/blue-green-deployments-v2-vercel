@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { MoonLoader } from 'react-spinners';
 import React from 'react';
 import { useState } from 'react';
@@ -27,9 +27,7 @@ import dayjs from 'dayjs';
 import { is45MinutesPassed } from '../utils/date';
 import { ROUTE_PATH } from '../constants/path';
 import TrustpilotModal from '../components/modal/TrustpilotModal';
-import { AppContext } from '../context/appContext';
 import XPixel from '../components/XPixel';
-import useCookies from '../hooks/useCookies';
 
 interface EditPlanStarterProps {
   secretKey: string;
@@ -44,20 +42,10 @@ export default function editPlanStarter({
 }: EditPlanStarterProps) {
   const { t } = useTranslation('editPlanStarter');
   const router = useRouter();
-  const { planId: currentPlanId } = router.query;
-
-  const {
-    set: { setGeneratedExec, setGeneratedSitu1, setGeneratedSitu2, setGeneratedMark1, setGeneratedMark2, setGeneratedMark3, setGeneratedMark4, setGeneratedOp1, setGeneratedOp2, setGeneratedMang1, setGeneratedMang2, setGeneratedFin1, setGeneratedRisk1, setProPrice, setStarterPrice },
-    setPlanId,
-    setIsPlanCompleted
-  } = useContext(AppContext);
+  const { planId } = router.query;
 
   const { data: session } = useSession();
-  useEffect(() => {
-    if (currentPlanId) {
-      setPlanId(currentPlanId as string);
-    }
-  }, [currentPlanId]);
+
   //if no session redirect to login
 
   useEffect(() => {
@@ -225,14 +213,14 @@ export default function editPlanStarter({
   }, [updateUserData]);
 
   useEffect(() => {
-    if (userData && currentPlanId) {
-      const currentPlanIdNum = Number(currentPlanId);
+    if (userData && planId) {
+      const currentPlanIdNum = Number(planId);
       setPlanIdNum(currentPlanIdNum);
     }
-  }, [userData, currentPlanId]);
+  }, [userData, planId]);
 
   useEffect(() => {
-    if (userData && currentPlanId) {
+    if (userData && planId) {
       if (userData.plans[planIdNum]) {
         setUserEmail(userData.email);
 
@@ -703,30 +691,12 @@ export default function editPlanStarter({
   }
 
   const duplicatePlan = async () => {
-    const planIdIndex = parseFloat(currentPlanId[0]);
+    const planIdIndex = parseFloat(planId[0]);
     const planDuplicate = userData.plans[planIdIndex];
     transformDataToLocalStorage(
-      planDuplicate?.originalVer?.userInput,
+      planDuplicate.originalVer.userInput,
       planIdIndex,
     );
-    setGeneratedExec('');
-    setGeneratedSitu1('');
-    setGeneratedSitu2('');
-    setGeneratedMark1('');
-    setGeneratedMark2('');
-    setGeneratedMark3('');
-    setGeneratedMark4('');
-    setGeneratedOp1('');
-    setGeneratedOp2('');
-    setGeneratedMang1('');
-    setGeneratedMang2('');
-    setGeneratedFin1('');
-    setGeneratedRisk1('');
-    setProPrice('');
-    setStarterPrice('');
-    // Clear old planId
-    setPlanId('');
-    setIsPlanCompleted(false)
     router.push(ROUTE_PATH.objective);
   };
 
@@ -786,9 +756,6 @@ export default function editPlanStarter({
   };
 
   useLocale(country);
-
-  const { getCookie } = useCookies();
-  const variantID = getCookie("variantID")
 
   return (
     <>
@@ -868,64 +835,49 @@ export default function editPlanStarter({
                             </div>
                           )}
                         </div>
-                        {variantID === '2' && userData.plans[planIdNum]?.isFinanceIncomplete && (
-                          <div className="relative flex justify-center items-center">
-                            <div className="absolute truncate h-[26px] bg-[#FE6C66] bottom-[20px] font-bold flex justify-center items-center text-center text-white text-[11px] md:text-[12px] pt-[0] md:pt-[5px] pb-[0] md:pb-[5px] pr-[5px] md:pr-[17px] pl-[5px] md:pl-[17px] rounded-[16px] shadow-[0px_4px_5px_0px_rgba(254,108,102,0.30)]">
-                              {t('financeIncomplete')}
-                            </div>
-                          </div>
-                        )}
+
                         <div className="flex gap-5 justify-center items-center mb-10">
                           <div className="flex gap-3">
                             <div className="flex flex-col justify-center items-center gap-5">
                               <div className="relative flex flex-col justify-center items-center text-center">
                                 <h2>{t('Talk To Plan, Edit, and Save')}</h2>
                                 <div className="flex justify-center flex-col gap-4">
-                                  {variantID === '2' && userData.plans[planIdNum]
-                                    ?.isFinanceIncomplete ? (
-                                    <Link href={ROUTE_PATH.investmentItems}>
-                                      <button className="button">
-                                        Complete Financial Section
-                                      </button>
-                                    </Link>
-                                  ) : (
-                                    <div className="flex justify-center gap-4">
-                                      {saveAsWordLoading && (
-                                        <MoonLoader size={20} />
-                                      )}
-                                      {showSaveButtons ? (
-                                        <>
-                                          <button
-                                            className="button"
-                                            onClick={showSurveyWordfunc}
-                                          >
-                                            {t('Save As Word')}
-                                          </button>
-                                          <button
-                                            className="button"
-                                            onClick={showSurveyPDFfunc}
-                                          >
-                                            {t('Save As PDF')}
-                                          </button>
-                                        </>
-                                      ) : (
-                                        <>
-                                          <button
-                                            className="button opacity-30"
-                                            disabled
-                                          >
-                                            {t('Save As Word')}
-                                          </button>
-                                          <button
-                                            className="button opacity-30"
-                                            disabled
-                                          >
-                                            {t('Save As PDF')}
-                                          </button>
-                                        </>
-                                      )}
-                                    </div>
-                                  )}
+                                  <div className="flex justify-center gap-4">
+                                    {saveAsWordLoading && (
+                                      <MoonLoader size={20} />
+                                    )}
+                                    {showSaveButtons ? (
+                                      <>
+                                        <button
+                                          className="button"
+                                          onClick={showSurveyWordfunc}
+                                        >
+                                          {t('Save As Word')}
+                                        </button>
+                                        <button
+                                          className="button"
+                                          onClick={showSurveyPDFfunc}
+                                        >
+                                          {t('Save As PDF')}
+                                        </button>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <button
+                                          className="button opacity-30"
+                                          disabled
+                                        >
+                                          {t('Save As Word')}
+                                        </button>
+                                        <button
+                                          className="button opacity-30"
+                                          disabled
+                                        >
+                                          {t('Save As PDF')}
+                                        </button>
+                                      </>
+                                    )}
+                                  </div>
                                   <button
                                     className="transparent-button w-button disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                                     disabled={userData.planQuota === 0}
@@ -1007,9 +959,6 @@ export default function editPlanStarter({
                     )}
 
                     <EditorStarter
-                      isFinanceIncomplete={
-                        userData.plans[planIdNum]?.isFinanceIncomplete
-                      }
                       planIdNum={planIdNum}
                       Exec={Exec}
                       Situ={Situ}

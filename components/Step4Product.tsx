@@ -13,7 +13,6 @@ import trackEvent from '../utils/trackEvent';
 import Input from './input';
 import { API_KEY_HEADER } from '../pages/api/constants';
 import { formDataTitle } from '../constants/formTitle';
-import useCookies from '../hooks/useCookies';
 
 export default function Step4Product({
   productName1,
@@ -61,9 +60,6 @@ export default function Step4Product({
   secretKey,
 }) {
   const { t } = useTranslation('Step4Product');
-
-  const { getCookie } = useCookies();
-  const variantID = getCookie("variantID")
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -339,6 +335,9 @@ export default function Step4Product({
   const pendingExecutionProductName = useRef(null);
 
   async function getSuggestionProductName(id, retryCount = 0) {
+    const variantID =
+      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+
     callCounterProductName.current += 1;
 
     if (callCounterProductName.current >= 2) {
@@ -523,6 +522,9 @@ export default function Step4Product({
   const locale = i18n.language;
 
   async function getSuggestionProductDescription(id, retryCount = 0) {
+    const variantID =
+      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+
     console.log('getSuggestionProductDescription called id: ', id);
     callCounterProductDescription.current += 1;
 

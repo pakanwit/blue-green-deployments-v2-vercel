@@ -22,7 +22,6 @@
   "Verifying Payment...": "Controllare il pagamento...",
   "above\" try to input": "sopra\" prova ad entrare",
   "copyFeatureButton": "Tornare indietro e modificare gli ingressi",
-  "financeIncomplete": "È necessario completare la sezione finanziaria prima di poter scaricare il piano.",
   "help@15minuteplan.ai": "help@15minuteplan.ai",
   "make shorter": "accorciare",
   "warningCopyPlanMessage": "Attualmente è possibile creare {{planQuota}} altri piani. Se si torna indietro e si modificano gli input, si perderà 1 quota piano."

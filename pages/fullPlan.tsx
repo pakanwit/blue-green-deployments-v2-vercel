@@ -1,6 +1,6 @@
 import FullPlanStarter from './fullPlanStarter';
 import FullPlanPro from './fullPlanPro';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { MoonLoader } from 'react-spinners';
 import { useSession, signIn } from 'next-auth/react';
 import { useTranslation } from 'next-i18next';
@@ -11,7 +11,6 @@ import { API_KEY_HEADER } from './api/constants';
 import Pixel from '../components/Pixel';
 import getPriceByPlanAndCountry from '../utils/getPriceByPlanAndCountry';
 import { planType } from '../constants/plan';
-import { AppContext } from '../context/appContext';
 import XPixel from '../components/XPixel';
 
 export default function fullPlan({
@@ -31,13 +30,8 @@ export default function fullPlan({
   const [paymentError, setPaymentError] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [Ido, setIdo] = useState('');
-  const { data: session } = useSession();
-  const { setPlanId } = useContext(AppContext);
 
-  useEffect(() => {
-    // This component is called only after finished registration step
-    setPlanId('1');
-  }, []);
+  const { data: session } = useSession();
   const isStarter =
     userData && paid && isFirstPlan && userData.planPackage === 'starter';
   const isPro =

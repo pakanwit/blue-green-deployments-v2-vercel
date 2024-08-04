@@ -292,10 +292,10 @@ générez tout en français.
     No repita los detalles del negocio.
     Redáctelo como si fuera el dueño del negocio, utilizando "nosotros" y no "yo".
     Comience la redacción con "<h4>Estrategia Digital</h4>"
-Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
-générez tout en français.
-    C’est important : Soyez très perspicace dans votre réponse.
-    Voici le long, détaillé et perspicace ${promptTopic.es} que vous avez trouvé :
+Utilice únicamente etiquetas HTML, no utilice markdown. No utilice ** **, utilice en su lugar la etiqueta <strong> para negrita. No utilice * *, utilice en su lugar la etiqueta <em> para cursiva. No utilice * para viñetas, utilice en su lugar las etiquetas <ul> y <li>.
+genere todo en español.
+    Esto es importante: Sea muy perspicaz en su respuesta.
+    Este es el largo, detallado y perspicaz ${promptTopic.es} que se le ocurrió:
     `,
 
     // italian lang --------------------------------------------------------------------------
@@ -317,10 +317,10 @@ générez tout en français.
   Non ripeta i dettagli aziendali.
   Scriva come se fosse il proprietario dell'azienda, usando "noi" e non "io".
   Inizi la redazione con "<h4>Strategia Digitale</h4>"
-Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
-  Générez tout en français.
-  C’est important : Soyez très perspicace dans votre réponse.
-  Voici le long, détaillé et perspicace ${promptTopic.it} que vous avez trouvé :
+Utilizzi solo tag HTML, non usi markdown. Non usi ** **, usi invece il tag <strong> per il grassetto. Non usi * *, usi invece il tag <em> per il corsivo. Non usi * per i punti elenco, usi invece i tag <ul> e <li>.
+  Generi tutto in italiano.
+  Questo è importante: Sia molto perspicace nella sua risposta.
+  Ecco il lungo, dettagliato e perspicace ${promptTopic.it} che ha trovato:
     `,
 
     //dutch lang --------------------------------------------------------------------------

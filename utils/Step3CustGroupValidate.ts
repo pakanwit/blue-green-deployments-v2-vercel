@@ -10,15 +10,15 @@ export default function Step3CustGroupValidate(values, tv) {
 
   if (!values.customerDescription1) {
     errors.customerDescription1 = tv("Required")
-  } else if (values?.customerDescription1 && values?.customerDescription1.length > 300) {
+  } else if (values.customerDescription1.length > 300) {
     errors.customerDescription1 = tv("Customer Description must be between 1 and 300 characters")
   }
 
-  if (values?.customerDescription2 && values?.customerDescription2.length > 300) {
+  if (values.customerDescription2.length > 300) {
     errors.customerDescription2 = tv("Customer Description must be between 1 and 300 characters")
   }
 
-  if (values?.customerDescription3 && values?.customerDescription3.length > 300) {
+  if (values.customerDescription3.length > 300) {
     errors.customerDescription3 = tv("Customer Description must be between 1 and 300 characters")
   }
 

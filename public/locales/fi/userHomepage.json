@@ -19,6 +19,5 @@
   "You need to be logged in to view this page": "Sinun täytyy olla kirjautuneena sisään nähdäksesi tämän sivun",
   "You're logged in as: ": "Olet kirjautunut sisään nimellä: ",
   "duplicatedPlanForm": "Tämä suunnitelma tehtiin muuttamalla \"Plan {{refId}}: {{businessName}}\" -kentän syöttötiedot.",
-  "financeIncomplete": "Rahoitusosio puutteellinen Klikkaa \"Muokkaa ja tallenna\" viimeistellessäsi.",
   "logo": "Logo"
 }

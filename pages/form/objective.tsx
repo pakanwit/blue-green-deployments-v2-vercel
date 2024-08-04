@@ -15,37 +15,16 @@ import Navbar from '../../components/navbar';
 import PrivacyPolicyModal from '../../components/modal/PrivacyPolicyModal';
 import { ROUTE_PATH } from '../../constants/path';
 import useBeforeUnload from '../../hooks/useBeforeUnload';
-import useCookies from '../../hooks/useCookies';
-
-const mapPlanLanguage = {
-  en: 'English (US)',
-  de: 'German',
-  fr: 'French',
-  es: 'Spanish',
-  it: 'Italian',
-  'en-uk': 'English (UK)',
-  nl: 'Dutch',
-  ja: 'Japanese',
-  ar: 'Arabic',
-  sv: 'Swedish',
-  fi: 'Finnish',
-  no: 'Norwegian',
-  da: 'Danish',
-};
 
 export default function Step1Obj({ fbPixelId, secretKey }) {
   const router = useRouter();
-  const { t: tCommon } = useTranslation('common');
   const [businessPlanObj, setBusinessPlanObj] = useState();
   const [selectedRadioStep1_1, setSelectedRadioStep1_1] = useState();
   const [selectedRadioStep1_2, setSelectedRadioStep1_2] = useState();
   const [businessOperationalStatus, setBusinessOperationalStatus] = useState();
   const [radioError1, setRadioError1] = useState('');
   const [radioError2, setRadioError2] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
-  const [planLanguageError, setPlanLanguageError] = useState(false);
-  const [planLanguage, setPlanLanguage] = useState('');
-  const [selectedTextLanguage, setSelectedTextLanguage] = useState('Language');
+  const [loading, setLoading] = useState(false);
   const isCleanCase = !(radioError1 || radioError2);
 
   const [isPrivacyPolicyModalOpen, setIsPrivacyPolicyModalOpen] =
@@ -73,11 +52,8 @@ export default function Step1Obj({ fbPixelId, secretKey }) {
       setSelectedRadioStep1_2(formData[formDataTitle.FORM1_2].id);
       document.getElementById(formData[formDataTitle.FORM1_2].id).click();
     }
-    if (formData[formDataTitle.FORM1_3]) {
-      const value = formData[formDataTitle.FORM1_3].value;
-      setSelectedTextLanguage(mapPlanLanguage[value]);
-      setPlanLanguage(value);
-    }
+    const time = performance.now();
+    console.log('objective', time);
   }, []);
 
   const handleRadioChangeOperationalStatus = (e) => {
@@ -122,27 +98,8 @@ export default function Step1Obj({ fbPixelId, secretKey }) {
     return `${baseClasses} ${selectedRadioStep1_2 === inputId ? selectedClasses : deselectedClasses}`;
   };
 
-  const handleItemClickLanguage = (text) => {
-    setSelectedTextLanguage(mapPlanLanguage[text]);
-    const formData = JSON.parse(localStorage.getItem('formData')) || {};
-    formData[formDataTitle.FORM1_3] = {
-      id: 'dropdownDefaultButton',
-      value: text,
-    };
-    localStorage.setItem('formData', JSON.stringify(formData));
-    setPlanLanguage(text);
-    if (planLanguageError) {
-      setPlanLanguageError(false);
-    }
-    setIsOpen(false);
-  };
-
   const handleNext = (e) => {
     e.preventDefault();
-    if (variantID === '2' && !planLanguage) {
-      setPlanLanguageError(true);
-      return;
-    }
     if (!businessOperationalStatus) {
       setRadioError1('Please Select One');
       return;
@@ -217,16 +174,9 @@ export default function Step1Obj({ fbPixelId, secretKey }) {
   }, [session]);
 
   const { t } = useTranslation('Step1Obj');
-  const toggleDropdown = () => {
-    trackEvent({
-      event_name: 'page_7_language_button',
-      is_clean_case: isCleanCase,
-    });
-    setIsOpen(!isOpen);
-  };
-  
-  const { getCookie } = useCookies();
-  const variantID = getCookie("variantID")
+
+  const variantIDFromLocal =
+    typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
 
   return (
     <>
@@ -243,7 +193,7 @@ export default function Step1Obj({ fbPixelId, secretKey }) {
             <div className="get-started">
               <div className="form-bg">
                 <div className="flex justify-center items-center mt-5 mb-8 text-black">
-                  {tCommon('step')} 1 {tCommon('of')} {variantID === '2' ? 8 : 7}
+                  {t('STEP 1 OF 7')}
                 </div>
                 <div className="text-center bg-sky-100 rounded-lg border border-solid border-blue-500 p-4 mb-8">
                   <h5 className="m-0 mb-2">{t('privacy_policy_header')}</h5>
@@ -563,136 +513,8 @@ export default function Step1Obj({ fbPixelId, secretKey }) {
                       )}
                     </fieldset>
 
-                    <hr className="w-full mb-10" />
-
-                    {variantID === '2' && <div className="flex gap-5 mb-5 justify-center relative">
-                        <div>{t('Select plan language (required)')}</div>
-
-                        <div className="">
-                          <button
-                            id="dropdownDefaultButton"
-                            data-dropdown-toggle="dropdown"
-                            className="text-white bg-black hover:bg-gray-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-gray-700 dark:hover:bg-gray-800"
-                            type="button"
-                            onClick={toggleDropdown}
-                          >
-                            {selectedTextLanguage}
-                            <svg
-                              className="w-2.5 h-2.5 ml-2.5"
-                              aria-hidden="true"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 10 6"
-                            >
-                              <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="m1 1 4 4 4-4"
-                              />
-                            </svg>
-                          </button>
-                          <div
-                            className={`relative z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 transition-opacity duration-300 ${isOpen ? 'opacity-100 visibility-visible pointer-events-auto' : 'opacity-0 visibility-hidden pointer-events-none'}`}
-                          >
-                            {isOpen && (
-                              <div className="py-2 text-sm text-gray-700 dark:text-gray-200">
-                                <div
-                                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={() => handleItemClickLanguage('en')}
-                                >
-                                  English (US)
-                                </div>
-                                <div
-                                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={() => handleItemClickLanguage('en-uk')}
-                                >
-                                  English (UK)
-                                </div>
-                                <div
-                                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={() => handleItemClickLanguage('de')}
-                                >
-                                  German
-                                </div>
-                                <div
-                                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={() => handleItemClickLanguage('fr')}
-                                >
-                                  French
-                                </div>
-                                <div
-                                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={() => handleItemClickLanguage('es')}
-                                >
-                                  Spanish
-                                </div>
-                                <div
-                                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={() => handleItemClickLanguage('it')}
-                                >
-                                  Italian
-                                </div>
-                                <div
-                                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={() => handleItemClickLanguage('nl')}
-                                >
-                                  Dutch
-                                </div>
-                                <div
-                                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={() => handleItemClickLanguage('ja')}
-                                >
-                                  Japanese
-                                </div>
-                                <div
-                                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={() => handleItemClickLanguage('ar')}
-                                >
-                                  Arabic
-                                </div>
-
-                                <div
-                                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={() => handleItemClickLanguage('sv')}
-                                >
-                                  Swedish
-                                </div>
-                                <div
-                                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={() => handleItemClickLanguage('fi')}
-                                >
-                                  Finnish
-                                </div>
-                                <div
-                                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={() => handleItemClickLanguage('no')}
-                                >
-                                  Norwegian
-                                </div>
-                                <div
-                                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  onClick={() => handleItemClickLanguage('da')}
-                                >
-                                  Danish
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    }
-
-                    {variantID === '2' && planLanguageError ? (
-                      <span className="text-rose-400">
-                        {t('Please select plan language')}
-                      </span>
-                    ) : (
-                      <></>
-                    )}
                     <div className="flex flex-col gap-5 justify-center items-center m-auto text-center">
-                      {variantID === '2' && radioError1 || radioError2 ? (
+                      {radioError1 || radioError2 ? (
                         <div className="text-rose-400">
                           {t('Check your inputs')}
                         </div>
@@ -701,8 +523,11 @@ export default function Step1Obj({ fbPixelId, secretKey }) {
                       )}
                       <button
                         type="submit"
-                        className="button-2 w-button m-auto mt-5"
+                        className={`button-2 w-[110px] w-button m-auto ${loading ? 'opacity-50 pointer-events-none' : ''}`}
                         onClick={() => {
+                          const time = performance.now();
+                          console.log('objective next', time);
+                          setLoading(true);
                           trackEvent({
                             event_name: 'page_1_next_button',
                             is_clean_case: isCleanCase,

@@ -1,7 +1,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../styles/userHomepage.module.css';
 import { MoonLoader } from 'react-spinners';
 import { useTranslation } from 'next-i18next';
@@ -15,9 +15,7 @@ import dayjs from 'dayjs';
 import { is45MinutesPassed } from '../utils/date';
 import Survey from '../components/Survey';
 import { ROUTE_PATH } from '../constants/path';
-import { AppContext } from '../context/appContext';
 import XPixel from '../components/XPixel';
-import useCookies from '../hooks/useCookies';
 
 export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
   const [userData, setuserData] = useState(null);
@@ -27,7 +25,6 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
   const [paymentError, setPaymentError] = useState(false);
   const [showSurvey, setShowSurvey] = useState(false);
   const [isSecondSurvey, setIsSecondSurvey] = useState(false);
-  const { setPlanId } = useContext(AppContext);
 
   const { data: session } = useSession();
 
@@ -37,7 +34,6 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
       event_name: 'sign_out_button',
     });
     localStorage.removeItem('formData');
-    localStorage.removeItem('hasGenDynamicQuestion');
     await signOut({ redirect: true, callbackUrl: '/' });
   };
 
@@ -139,8 +135,11 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
 
   useLocale(country);
 
-  const { getCookie } = useCookies();
-  const variantID = getCookie("variantID")
+  const [variantIDFromLocal, setVariantIDFromLocal] = useState('');
+
+  useEffect(() => {
+    setVariantIDFromLocal(localStorage.getItem('variantID'));
+  }, []);
 
   return (
     <>
@@ -237,70 +236,61 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                       </p>
                     </div>
                     <h3 className="">{t('My Plans:')}</h3>
+
                     {userData && userData.planPackage ? (
                       userData.plans.slice(1).map((plan, index) => (
-                        <>
-                          {variantID === '2' && plan?.isFinanceIncomplete && (
-                            <div className="relative flex justify-center items-center top-[2px]">
-                              <div className="absolute truncate bg-[#FE6C66] h-[26px] font-bold flex justify-center items-center text-center text-white text-[10px] md:text-[12px] pt-[0] md:pt-[5px] pb-[0] md:pb-[5px] pr-[5px] md:pr-[17px] pl-[5px] md:pl-[17px] rounded-[16px] shadow-[0px_4px_5px_0px_rgba(254,108,102,0.30)]">
-                                {t('financeIncomplete')}
+                        <div key={index} className={styles.plan_box}>
+                          <div className={styles.inside_box}>
+                            <div className="text-center">
+                              <strong>
+                                {t('Plan ')}
+                                {index + 1}:{' '}
+                              </strong>
+                              {plan.originalVer.userInput.businessName}
+                              <div className="text-xs leading-3">
+                                {plan.originalVer.refId &&
+                                  t('duplicatedPlanForm', {
+                                    refId: plan.originalVer.refId,
+                                    businessName:
+                                      userData.plans[plan.originalVer.refId]
+                                        .originalVer.userInput.businessName,
+                                  })}
                               </div>
                             </div>
-                          )}
-                          <div key={index} className={styles.plan_box}>
-                            <div className={styles.inside_box}>
-                              <div className="text-center">
-                                <strong>
-                                  {t('Plan ')}
-                                  {index + 1}:{' '}
-                                </strong>
-                                {plan.originalVer.userInput.businessName}
-                                <div className="text-xs leading-3">
-                                  {plan.originalVer.refId &&
-                                    t('duplicatedPlanForm', {
-                                      refId: plan.originalVer.refId,
-                                      businessName:
-                                        userData.plans[plan.originalVer.refId]
-                                          .originalVer.userInput.businessName,
-                                    })}
-                                </div>
-                              </div>
-                              <div className="flex gap-4">
-                                <Link
-                                  className="transparent-button-small-rounded"
-                                  href={{
-                                    pathname: viewPath,
-                                  }}
-                                  onClick={() => {
-                                    setPlanId(index + 1);
-                                    trackEvent({
-                                      event_name: 'my_plan_view_button',
-                                      plan_id: index + 1,
-                                    });
-                                  }}
-                                >
-                                  {t('View')}
-                                </Link>
-                                <Link
-                                  className="button-small-rounded"
-                                  href={{
-                                    pathname: editPath,
-                                    query: { planId: index + 1 },
-                                  }}
-                                  onClick={() => {
-                                    trackEvent({
-                                      event_name:
-                                        'my_plan_edit_and_save_button',
-                                      plan_id: index + 1,
-                                    });
-                                  }}
-                                >
-                                  {t('Edit & Save')}
-                                </Link>
-                              </div>
+                            <div className="flex gap-4">
+                              <Link
+                                className="transparent-button-small-rounded"
+                                href={{
+                                  pathname: viewPath,
+                                  query: { planId: index + 1 },
+                                }}
+                                onClick={() => {
+                                  trackEvent({
+                                    event_name: 'my_plan_view_button',
+                                    plan_id: index + 1,
+                                  });
+                                }}
+                              >
+                                {t('View')}
+                              </Link>
+                              <Link
+                                className="button-small-rounded"
+                                href={{
+                                  pathname: editPath,
+                                  query: { planId: index + 1 },
+                                }}
+                                onClick={() => {
+                                  trackEvent({
+                                    event_name: 'my_plan_edit_and_save_button',
+                                    plan_id: index + 1,
+                                  });
+                                }}
+                              >
+                                {t('Edit & Save')}
+                              </Link>
                             </div>
                           </div>
-                        </>
+                        </div>
                       ))
                     ) : (
                       <></>
@@ -322,8 +312,8 @@ export default function userHomepage({ secretKey, fbPixelId, xPixelId }) {
                                 className="transparent-button-small-rounded"
                                 href={{
                                   pathname: '/loggedInFullPlan',
+                                  query: { planId: index },
                                 }}
-                                onClick={() => setPlanId(index)}
                               >
                                 {t('View')}
                               </Link>

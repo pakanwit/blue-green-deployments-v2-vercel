@@ -325,14 +325,6 @@ export default function LastStepPlanGen({ secretKey, fbPixelId, xPixelId }) {
                       )}
                     </div>
 
-                    {!userData.plans[planIdNum]?.isFinanceIncomplete && (
-                      <div className="relative flex justify-center items-center">
-                        <div className="absolute truncate h-[26px] bottom-[24px] bg-[#FE6C66] font-bold flex justify-center items-center text-center text-white text-[11px] md:text-[12px] pt-[0] md:pt-[5px] pb-[0] md:pb-[5px] pr-[5px] md:pr-[17px] pl-[5px] md:pl-[17px] rounded-[16px] shadow-[0px_4px_5px_0px_rgba(254,108,102,0.30)]">
-                          {t('financeIncomplete')}
-                        </div>
-                      </div>
-                    )}
-
                     <div className="flex gap-5 justify-center mb-10">
                       <div className="flex gap-3">
                         <Link
@@ -877,9 +869,7 @@ export default function LastStepPlanGen({ secretKey, fbPixelId, xPixelId }) {
                         )}
                         <br />
 
-                        {!isError &&
-                        planContentOriginal &&
-                        !userData.plans[planIdNum]?.isFinanceIncomplete ? (
+                        {!isError && planContentOriginal ? (
                           <FinTable
                             investmentItem1={
                               userData &&

@@ -898,10 +898,13 @@ export default function LastStepPlanGen({
   }
   const [priceAbb, setPriceAbb] = useState('');
 
+  const variantIDFromLocal = localStorage.getItem('variantID');
+
   console.log('country: ', country);
 
   useEffect(() => {
     console.log('country from laststep: ', country);
+    const variantID = localStorage.getItem('variantID');
     if (country) {
       const currencyMappingsVAR1 = {
         AE: {

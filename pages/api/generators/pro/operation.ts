@@ -479,7 +479,7 @@ Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas
 
     // spanish lang --------------------------------------------------------------
     es: `
-    Usted es un consultor profesional, y un cliente se acerca a usted para escribir un ${promptTopic.es} largo y detallado para un plan de negocios.
+    Usted es un consultor profesional, y un cliente se acerca a usted para escribir una ${promptTopic.es} larga y detallada para un plan de negocios.
 
     detalles del negocio:
     detalle de negocio 1: El nombre del negocio del cliente es ${businessName}.
@@ -500,10 +500,10 @@ Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas
     No repita detalles del negocio.
     Escriba esto como si usted fuera el propietario del negocio, utilizando "nosotros" y no "yo".
     Comience la redacción con "<h4>Control de Calidad</h4>"
-Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
-générez tout en français.
-    C’est important : Soyez très perspicace dans votre réponse.
-    Voici le long, détaillé et perspicace ${promptTopic.es} que vous avez trouvé :
+Utilice solo etiquetas HTML, no utilice markdown. No utilice ** **, utilice en su lugar la etiqueta <strong> para negrita. No utilice * *, utilice en su lugar la etiqueta <em> para cursiva. No utilice * para viñetas, utilice en su lugar las etiquetas <ul> y <li>.
+Genere todo en español.
+    Esto es importante: Sea muy perspicaz en su respuesta.
+    Este es el largo, detallado y perspicaz ${promptTopic.es} que se le ocurrió:
     `,
 
     // italian lang --------------------------------------------------------------
@@ -529,10 +529,10 @@ générez tout en français.
   Non ripetere dettagli aziendali.
   Scrivi questo come se fossi il proprietario dell'azienda, usando "noi" e non "io".
   Inizia il testo con "<h4>Controllo della Qualità</h4>"
-Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
-  Générez tout en français.
-  C’est important : Soyez très perspicace dans votre réponse.
-  Voici le long, détaillé et perspicace ${promptTopic.it} que vous avez trouvé :
+Utilizza solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
+  Genera tutto in italiano.
+  Questo è importante: Sii molto perspicace nella tua risposta.
+  Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai ideato:
     `,
 
     //dutch lang --------------------------------------------------------------

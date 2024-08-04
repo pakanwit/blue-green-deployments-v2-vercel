@@ -17,7 +17,6 @@ import {
   InvestmentItems,
   InvestmentFormValues,
 } from '../types/step6InitialInvestment.type';
-import useCookies from '../hooks/useCookies';
 
 // function to check if the value is in the formDataTitle object
 const getFormDataTitleByValue = (value) => {
@@ -426,8 +425,8 @@ export default function Step6InitialInvestment({
   const locale = i18n.language;
 
   async function getSuggestionInvestmentItem(id, retryCount = 0) {
-    const { getCookie } = useCookies();
-    const variantID = getCookie('variantID');
+    const variantID =
+      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
 
     console.log('getSuggestionInvestmentItem called id: ', id);
     callCounterInvestmentItem.current += 1;

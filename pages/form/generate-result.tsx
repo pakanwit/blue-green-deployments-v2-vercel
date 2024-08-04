@@ -26,8 +26,6 @@ import TrustBox from '../../components/trustBox';
 import { IReviewsResponse } from '../../model/Schema';
 import { ROUTE_PATH } from '../../constants/path';
 import useBeforeUnload from '../../hooks/useBeforeUnload';
-import { AI_MODEL } from '../../constants/plan';
-import useCookies from '../../hooks/useCookies';
 
 const createDOMPurify = () => {
   if (typeof window !== 'undefined') {
@@ -40,7 +38,7 @@ const createDOMPurify = () => {
 
 const domPurify = createDOMPurify();
 
-export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
+export default function LastStepPlanGen({ fbPixelId, secretKey }) {
   const router = useRouter();
   const { t, i18n } = useTranslation('LastStepPlanGen');
   const [warningModal, setWarningModal] = useState({
@@ -48,12 +46,10 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
     fn: () => {},
   });
 
-  const { getCookie } = useCookies();
-  const variantID = getCookie('variantID');
-
   const [reviews, setReviews] = useState<IReviewsResponse[]>([]);
   const [userData, setuserData] = useState(null);
   const [paid, setPaid] = useState(false);
+  const [planId, setPlanId] = useState(null);
 
   const { data: session } = useSession();
   const [hasAddedNewPlan, setHasAddedNewPlan] = useState(false);
@@ -204,9 +200,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
   const [latestPlanIDStarter, setLatestPlanIDStarter] = useState('');
   const [latestPlanIDPro, setLatestPlanIDStarterPro] = useState('');
 
-  const [inputData, setInputData] = useState({});
-  const [planContent, setPlanContent] = useState({});
-
   const {
     set: {
       setGeneratedExec,
@@ -227,25 +220,22 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
       setProPrice,
     },
     get: {
-      generatedExec: generatedExecContext,
-      generatedSitu1: generatedSitu1Context,
-      generatedSitu2: generatedSitu2Context,
-      generatedMark1: generatedMark1Context,
-      generatedMark2: generatedMark2Context,
-      generatedMark3: generatedMark3Context,
-      generatedMark4: generatedMark4Context,
-      generatedOp1: generatedOp1Context,
-      generatedOp2: generatedOp2Context,
-      generatedMang1: generatedMang1Context,
-      generatedMang2: generatedMang2Context,
-      generatedFin1: generatedFin1Context,
-      generatedRisk1: generatedRisk1Context,
-      proPrice: proPriceContext,
-      starterPrice: starterPriceContext,
+      generatedExec,
+      generatedSitu1,
+      generatedSitu2,
+      generatedMark1,
+      generatedMark2,
+      generatedMark3,
+      generatedMark4,
+      generatedOp1,
+      generatedOp2,
+      generatedMang1,
+      generatedMang2,
+      generatedFin1,
+      generatedRisk1,
+      proPrice,
+      starterPrice,
     },
-    planId,
-    setPlanId,
-    isPlanCompleted,
   } = useContext(AppContext);
 
   useEffect(() => {
@@ -259,449 +249,81 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
       event_name: 'page_8_back_button',
       is_clean_case: true,
     });
-    router.push(
-      variantID === '2' ? ROUTE_PATH.specificQuestion : ROUTE_PATH.finance,
-    );
+    router.push(ROUTE_PATH.finance);
   };
 
-  const dataFromLocalStorage = useLoadFormData();
-
-  const businessPlanObj =
-    variantID === '2'
-      ? dataFromLocalStorage.businessPlanObj || inputData?.businessPlanObj
-      : dataFromLocalStorage.businessPlanObj;
-  const businessOperationalStatus =
-    variantID === '2'
-      ? dataFromLocalStorage.businessOperationalStatus ||
-        inputData?.businessOperationalStatus
-      : dataFromLocalStorage.businessOperationalStatus;
-  const businessName =
-    variantID === '2'
-      ? dataFromLocalStorage.businessName || inputData?.businessName
-      : dataFromLocalStorage.businessName;
-  const businessType =
-    variantID === '2'
-      ? dataFromLocalStorage.businessType || inputData?.businessType
-      : dataFromLocalStorage.businessType;
-  const NEmployee =
-    variantID === '2'
-      ? dataFromLocalStorage.NEmployee || inputData?.NEmployee
-      : dataFromLocalStorage.NEmployee;
-  const productOrService =
-    variantID === '2'
-      ? dataFromLocalStorage.productOrService || inputData?.productOrService
-      : dataFromLocalStorage.productOrService;
-  const salesChannel =
-    variantID === '2'
-      ? dataFromLocalStorage.salesChannel || inputData?.salesChannel
-      : dataFromLocalStorage.salesChannel;
-  const location =
-    variantID === '2'
-      ? dataFromLocalStorage.location || inputData?.location
-      : dataFromLocalStorage.location;
-  const customerDescription1 =
-    variantID === '2'
-      ? dataFromLocalStorage.customerDescription1 ||
-        inputData?.customerDescription1
-      : dataFromLocalStorage.customerDescription1;
-  const customerIncome1 =
-    variantID === '2'
-      ? dataFromLocalStorage.customerIncome1 || inputData?.customerIncome1
-      : dataFromLocalStorage.customerIncome1;
-  const customerDescription2 =
-    variantID === '2'
-      ? dataFromLocalStorage.customerDescription2 ||
-        inputData?.customerDescription2
-      : dataFromLocalStorage.customerDescription2;
-  const customerIncome2 =
-    variantID === '2'
-      ? dataFromLocalStorage.customerIncome2 || inputData?.customerIncome2
-      : dataFromLocalStorage.customerIncome2;
-  const customerDescription3 =
-    variantID === '2'
-      ? dataFromLocalStorage.customerDescription3 ||
-        inputData?.customerDescription3
-      : dataFromLocalStorage.customerDescription3;
-  const customerIncome3 =
-    variantID === '2'
-      ? dataFromLocalStorage.customerIncome3 || inputData?.customerIncome3
-      : dataFromLocalStorage.customerIncome3;
-  const productName1 =
-    variantID === '2'
-      ? dataFromLocalStorage.productName1 || inputData?.productName1
-      : dataFromLocalStorage.productName1;
-  const productName2 =
-    variantID === '2'
-      ? dataFromLocalStorage.productName2 || inputData?.productName2
-      : dataFromLocalStorage.productName2;
-  const productName3 =
-    variantID === '2'
-      ? dataFromLocalStorage.productName3 || inputData?.productName3
-      : dataFromLocalStorage.productName3;
-  const productName4 =
-    variantID === '2'
-      ? dataFromLocalStorage.productName4 || inputData?.productName4
-      : dataFromLocalStorage.productName4;
-  const productName5 =
-    variantID === '2'
-      ? dataFromLocalStorage.productName5 || inputData?.productName5
-      : dataFromLocalStorage.productName5;
-  const productDescription1 =
-    variantID === '2'
-      ? dataFromLocalStorage.productDescription1 ||
-        inputData?.productDescription1
-      : dataFromLocalStorage.productDescription1;
-  const productDescription2 =
-    variantID === '2'
-      ? dataFromLocalStorage.productDescription2 ||
-        inputData?.productDescription2
-      : dataFromLocalStorage.productDescription2;
-  const productDescription3 =
-    variantID === '2'
-      ? dataFromLocalStorage.productDescription3 ||
-        inputData?.productDescription3
-      : dataFromLocalStorage.productDescription3;
-  const productDescription4 =
-    variantID === '2'
-      ? dataFromLocalStorage.productDescription4 ||
-        inputData?.productDescription4
-      : dataFromLocalStorage.productDescription4;
-  const productDescription5 =
-    variantID === '2'
-      ? dataFromLocalStorage.productDescription5 ||
-        inputData?.productDescription5
-      : dataFromLocalStorage.productDescription5;
-  const successFactors1 =
-    variantID === '2'
-      ? dataFromLocalStorage.successFactors1 || inputData?.successFactors1
-      : dataFromLocalStorage.successFactors1;
-  const successFactors2 =
-    variantID === '2'
-      ? dataFromLocalStorage.successFactors2 || inputData?.successFactors2
-      : dataFromLocalStorage.successFactors2;
-  const successFactors3 =
-    variantID === '2'
-      ? dataFromLocalStorage.successFactors3 || inputData?.successFactors3
-      : dataFromLocalStorage.successFactors3;
-  const weakness1 =
-    variantID === '2'
-      ? dataFromLocalStorage.weakness1 || inputData?.weakness1
-      : dataFromLocalStorage.weakness1;
-  const weakness2 =
-    variantID === '2'
-      ? dataFromLocalStorage.weakness2 || inputData?.weakness2
-      : dataFromLocalStorage.weakness2;
-  const weakness3 =
-    variantID === '2'
-      ? dataFromLocalStorage.weakness3 || inputData?.weakness3
-      : dataFromLocalStorage.weakness3;
-  const planCurrency =
-    variantID === '2'
-      ? dataFromLocalStorage.planCurrency || inputData?.planCurrency
-      : dataFromLocalStorage.planCurrency;
-  const initialInvestmentAmount =
-    variantID === '2'
-      ? dataFromLocalStorage.initialInvestmentAmount ||
-        inputData?.initialInvestmentAmount
-      : dataFromLocalStorage.initialInvestmentAmount;
-  const investmentItem1 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentItem1 || inputData?.investmentItem1
-      : dataFromLocalStorage.investmentItem1;
-  const investmentAmountItem1 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentAmountItem1 ||
-        inputData?.investmentAmountItem1
-      : dataFromLocalStorage.investmentAmountItem1;
-  const investmentItem2 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentItem2 || inputData?.investmentItem2
-      : dataFromLocalStorage.investmentItem2;
-  const investmentAmountItem2 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentAmountItem2 ||
-        inputData?.investmentAmountItem2
-      : dataFromLocalStorage.investmentAmountItem2;
-  const investmentItem3 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentItem3 || inputData?.investmentItem3
-      : dataFromLocalStorage.investmentItem3;
-  const investmentAmountItem3 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentAmountItem3 ||
-        inputData?.investmentAmountItem3
-      : dataFromLocalStorage.investmentAmountItem3;
-  const investmentItem4 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentItem4 || inputData?.investmentItem4
-      : dataFromLocalStorage.investmentItem4;
-  const investmentAmountItem4 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentAmountItem4 ||
-        inputData?.investmentAmountItem4
-      : dataFromLocalStorage.investmentAmountItem4;
-  const investmentItem5 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentItem5 || inputData?.investmentItem5
-      : dataFromLocalStorage.investmentItem5;
-  const investmentAmountItem5 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentAmountItem5 ||
-        inputData?.investmentAmountItem5
-      : dataFromLocalStorage.investmentAmountItem5;
-  const investmentItem6 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentItem6 || inputData?.investmentItem6
-      : dataFromLocalStorage.investmentItem6;
-  const investmentAmountItem6 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentAmountItem6 ||
-        inputData?.investmentAmountItem6
-      : dataFromLocalStorage.investmentAmountItem6;
-  const investmentItem7 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentItem7 || inputData?.investmentItem7
-      : dataFromLocalStorage.investmentItem7;
-  const investmentAmountItem7 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentAmountItem7 ||
-        inputData?.investmentAmountItem7
-      : dataFromLocalStorage.investmentAmountItem7;
-  const investmentItem8 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentItem8 || inputData?.investmentItem8
-      : dataFromLocalStorage.investmentItem8;
-  const investmentAmountItem8 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentAmountItem8 ||
-        inputData?.investmentAmountItem8
-      : dataFromLocalStorage.investmentAmountItem8;
-  const investmentItem9 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentItem9 || inputData?.investmentItem9
-      : dataFromLocalStorage.investmentItem9;
-  const investmentAmountItem9 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentAmountItem9 ||
-        inputData?.investmentAmountItem9
-      : dataFromLocalStorage.investmentAmountItem9;
-  const investmentItem10 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentItem10 || inputData?.investmentItem10
-      : dataFromLocalStorage.investmentItem10;
-  const investmentAmountItem10 =
-    variantID === '2'
-      ? dataFromLocalStorage.investmentAmountItem10 ||
-        inputData?.investmentAmountItem10
-      : dataFromLocalStorage.investmentAmountItem10;
-  const planCurrencySymbol =
-    variantID === '2'
-      ? dataFromLocalStorage.planCurrencySymbol || inputData?.planCurrencySymbol
-      : dataFromLocalStorage.planCurrencySymbol;
-  const firstYearRevenue =
-    variantID === '2'
-      ? dataFromLocalStorage.firstYearRevenue || inputData?.firstYearRevenue
-      : dataFromLocalStorage.firstYearRevenue;
-  const revenueGrowthRate =
-    variantID === '2'
-      ? dataFromLocalStorage.revenueGrowthRate || inputData?.revenueGrowthRate
-      : dataFromLocalStorage.revenueGrowthRate;
-  const COGSP =
-    variantID === '2'
-      ? dataFromLocalStorage.COGSP || inputData?.COGSP || 0
-      : dataFromLocalStorage.COGSP;
-  const wageCostP =
-    variantID === '2'
-      ? dataFromLocalStorage.wageCostP || inputData?.wageCostP || 0
-      : dataFromLocalStorage.wageCostP;
-  const markCostP =
-    variantID === '2'
-      ? dataFromLocalStorage.markCostP || inputData?.markCostP || 0
-      : dataFromLocalStorage.markCostP;
-  const rentCostP =
-    variantID === '2'
-      ? dataFromLocalStorage.rentCostP || inputData?.rentCostP || 0
-      : dataFromLocalStorage.rentCostP;
-  const genCostP =
-    variantID === '2'
-      ? dataFromLocalStorage.genCostP || inputData?.genCostP || 0
-      : dataFromLocalStorage.genCostP;
-  const depreCostP =
-    variantID === '2'
-      ? dataFromLocalStorage.depreCostP || inputData?.depreCostP || 0
-      : dataFromLocalStorage.depreCostP;
-  const utilCostP =
-    variantID === '2'
-      ? dataFromLocalStorage.utilCostP || inputData?.utilCostP || 0
-      : dataFromLocalStorage.utilCostP;
-  const otherCostP =
-    variantID === '2'
-      ? dataFromLocalStorage.otherCostP || inputData?.otherCostP || 0
-      : dataFromLocalStorage.otherCostP;
-  const intCostP =
-    variantID === '2'
-      ? dataFromLocalStorage.intCostP || inputData?.intCostP || 0
-      : dataFromLocalStorage.intCostP;
-  const taxCostP =
-    variantID === '2'
-      ? dataFromLocalStorage.taxCostP || inputData?.taxCostP || 0
-      : dataFromLocalStorage.taxCostP;
-  const planLanguage =
-    variantID === '2'
-      ? dataFromLocalStorage.planLanguage || inputData?.planLanguage
-      : dataFromLocalStorage.planLanguage;
-  const refId =
-    variantID === '2'
-      ? dataFromLocalStorage.refId || inputData?.refId
-      : dataFromLocalStorage.refId;
-  const specificProductQuestion1 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificProductQuestion1 ||
-        inputData?.specificProductQuestion1
-      : dataFromLocalStorage.specificProductQuestion1;
-  const specificProductQuestion2 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificProductQuestion2 ||
-        inputData?.specificProductQuestion2
-      : dataFromLocalStorage.specificProductQuestion2;
-  const specificProductQuestion3 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificProductQuestion3 ||
-        inputData?.specificProductQuestion3
-      : dataFromLocalStorage.specificProductQuestion3;
-  const specificProductQuestion4 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificProductQuestion4 ||
-        inputData?.specificProductQuestion4
-      : dataFromLocalStorage.specificProductQuestion4;
-  const specificProductQuestion5 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificProductQuestion5 ||
-        inputData?.specificProductQuestion5
-      : dataFromLocalStorage.specificProductQuestion5;
-  const specificProductAnswer1 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificProductAnswer1 ||
-        inputData?.specificProductAnswer1
-      : dataFromLocalStorage.specificProductAnswer1;
-  const specificProductAnswer2 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificProductAnswer2 ||
-        inputData?.specificProductAnswer2
-      : dataFromLocalStorage.specificProductAnswer2;
-  const specificProductAnswer3 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificProductAnswer3 ||
-        inputData?.specificProductAnswer3
-      : dataFromLocalStorage.specificProductAnswer3;
-  const specificProductAnswer4 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificProductAnswer4 ||
-        inputData?.specificProductAnswer4
-      : dataFromLocalStorage.specificProductAnswer4;
-  const specificProductAnswer5 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificProductAnswer5 ||
-        inputData?.specificProductAnswer5
-      : dataFromLocalStorage.specificProductAnswer5;
-  const specificOperationQuestion1 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificOperationQuestion1 ||
-        inputData?.specificOperationQuestion1
-      : dataFromLocalStorage.specificOperationQuestion1;
-  const specificOperationQuestion2 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificOperationQuestion2 ||
-        inputData?.specificOperationQuestion2
-      : dataFromLocalStorage.specificOperationQuestion2;
-  const specificOperationQuestion3 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificOperationQuestion3 ||
-        inputData?.specificOperationQuestion3
-      : dataFromLocalStorage.specificOperationQuestion3;
-  const specificOperationQuestion4 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificOperationQuestion4 ||
-        inputData?.specificOperationQuestion4
-      : dataFromLocalStorage.specificOperationQuestion4;
-  const specificOperationQuestion5 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificOperationQuestion5 ||
-        inputData?.specificOperationQuestion5
-      : dataFromLocalStorage.specificOperationQuestion5;
-  const specificOperationAnswer1 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificOperationAnswer1 ||
-        inputData?.specificOperationAnswer1
-      : dataFromLocalStorage.specificOperationAnswer1;
-  const specificOperationAnswer2 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificOperationAnswer2 ||
-        inputData?.specificOperationAnswer2
-      : dataFromLocalStorage.specificOperationAnswer2;
-  const specificOperationAnswer3 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificOperationAnswer3 ||
-        inputData?.specificOperationAnswer3
-      : dataFromLocalStorage.specificOperationAnswer3;
-  const specificOperationAnswer4 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificOperationAnswer4 ||
-        inputData?.specificOperationAnswer4
-      : dataFromLocalStorage.specificOperationAnswer4;
-  const specificOperationAnswer5 =
-    variantID === '2'
-      ? dataFromLocalStorage.specificOperationAnswer5 ||
-        inputData?.specificOperationAnswer5
-      : dataFromLocalStorage.specificOperationAnswer5;
-  const generatedExec = generatedExecContext || planContent?.generatedExec;
-  const generatedSitu1 = generatedSitu1Context || planContent?.generatedSitu1;
-  const generatedSitu2 = generatedSitu2Context || planContent?.generatedSitu2;
-  const generatedMark1 = generatedMark1Context || planContent?.generatedMark1;
-  const generatedMark2 = generatedMark2Context || planContent?.generatedMark2;
-  const generatedMark3 = generatedMark3Context || planContent?.generatedMark3;
-  const generatedMark4 = generatedMark4Context || planContent?.generatedMark4;
-  const generatedOp1 = generatedOp1Context || planContent?.generatedOp1;
-  const generatedOp2 = generatedOp2Context || planContent?.generatedOp2;
-  const generatedMang1 = generatedMang1Context || planContent?.generatedMang1;
-  const generatedMang2 = generatedMang2Context || planContent?.generatedMang2;
-  const generatedFin1 = generatedFin1Context || planContent?.generatedFin1;
-  const generatedRisk1 = generatedRisk1Context || planContent?.generatedRisk1;
-  const proPrice = proPriceContext || planContent?.proPrice;
-  const starterPrice = starterPriceContext || planContent?.starterPrice;
-
-  const productQuestions = [
-    specificProductQuestion1,
-    specificProductQuestion2,
-    specificProductQuestion3,
-    specificProductQuestion4,
-    specificProductQuestion5,
-  ];
-  const productAnswers = [
-    specificProductAnswer1,
-    specificProductAnswer2,
-    specificProductAnswer3,
-    specificProductAnswer4,
-    specificProductAnswer5,
-  ];
-  const operationQuestions = [
-    specificOperationQuestion1,
-    specificOperationQuestion2,
-    specificOperationQuestion3,
-    specificOperationQuestion4,
-    specificOperationQuestion5,
-  ];
-
-  const operationAnswers = [
-    specificOperationAnswer1,
-    specificOperationAnswer2,
-    specificOperationAnswer3,
-    specificOperationAnswer4,
-    specificOperationAnswer5,
-  ];
+  const {
+    businessPlanObj,
+    businessOperationalStatus,
+    businessName,
+    businessType,
+    NEmployee,
+    productOrService,
+    salesChannel,
+    location,
+    customerDescription1,
+    customerIncome1,
+    customerDescription2,
+    customerIncome2,
+    customerDescription3,
+    customerIncome3,
+    productName1,
+    productName2,
+    productName3,
+    productName4,
+    productName5,
+    productDescription1,
+    productDescription2,
+    productDescription3,
+    productDescription4,
+    productDescription5,
+    successFactors1,
+    successFactors2,
+    successFactors3,
+    weakness1,
+    weakness2,
+    weakness3,
+    planCurrency,
+    initialInvestmentAmount,
+    investmentItem1,
+    investmentAmountItem1,
+    investmentItem2,
+    investmentAmountItem2,
+    investmentItem3,
+    investmentAmountItem3,
+    investmentItem4,
+    investmentAmountItem4,
+    investmentItem5,
+    investmentAmountItem5,
+    investmentItem6,
+    investmentAmountItem6,
+    investmentItem7,
+    investmentAmountItem7,
+    investmentItem8,
+    investmentAmountItem8,
+    investmentItem9,
+    investmentAmountItem9,
+    investmentItem10,
+    investmentAmountItem10,
+    planCurrencySymbol,
+    firstYearRevenue,
+    revenueGrowthRate,
+    COGSP,
+    wageCostP,
+    markCostP,
+    rentCostP,
+    genCostP,
+    depreCostP,
+    utilCostP,
+    otherCostP,
+    intCostP,
+    taxCostP,
+    planLanguage,
+    refId,
+  } = useLoadFormData();
 
   //main functions------------------------------------------------------------
-  async function generateExec(modelName?: string) {
+  async function generateExec() {
     setGeneratedExec('');
 
     setAllDoneGenerating(false);
@@ -718,7 +340,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessName,
         productName1,
         productDescription1,
@@ -758,12 +380,11 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         revenueGrowthRate,
 
         productInfoPrompt,
-        modelName,
       }),
     });
 
     console.log('Edge function returned.');
-    console.log('execApi:', exec);
+    console.log("execApi:",exec);
 
     if (!exec.ok) {
       setIsError(true);
@@ -817,7 +438,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessOperationalStatus,
         businessName,
         productName1,
@@ -893,7 +514,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
     }
   }
 
-  async function generateSitu1andMark1(modelName?: string) {
+  async function generateSitu1andMark1() {
     // generate situ1 first
     setGeneratedSitu1('');
 
@@ -913,7 +534,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessName,
         productName1,
         productDescription1,
@@ -994,7 +615,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
     }
   }
 
-  async function generateSitu2(modelName?: string) {
+  async function generateSitu2() {
     setGeneratedSitu2('');
 
     setAllDoneGenerating(false);
@@ -1011,7 +632,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessName,
         productName1,
         productDescription1,
@@ -1090,7 +711,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
   const doneRef2 = useRef(false);
   const generatedMark2Ref = useRef('');
 
-  async function generateMark2(modelName?: string) {
+  async function generateMark2() {
     setGeneratedMark2('');
 
     setAllDoneGenerating(false);
@@ -1109,7 +730,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessName,
         productName1,
         productDescription1,
@@ -1207,7 +828,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
   }, [doneExec, doneSitu1, doneSitu2, doneMark1, doneMark2]);
 
   //main functions------------------------------------------------------------
-  async function generateExecStarter(modelName) {
+  async function generateExecStarter() {
     setGeneratedExec('');
 
     setAllDoneGeneratingStarter(false);
@@ -1224,7 +845,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessName,
         productName1,
         productDescription1,
@@ -1258,7 +879,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         firstYearRevenue,
         revenueGrowthRate,
         productInfoPrompt,
-        modelName,
       }),
     });
 
@@ -1318,7 +938,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessOperationalStatus,
         businessName,
         productName1,
@@ -1409,7 +1029,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessName,
         productName1,
         productDescription1,
@@ -1453,13 +1073,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
 
         mark2Ref: mark2Ref,
         productInfoPrompt,
-        AITopic: {
-          product: productQuestions?.map((question, index) => ({
-            topic: question?.topic,
-            question: question?.value,
-            answer: productAnswers[index],
-          })),
-        },
       }),
     });
 
@@ -1517,7 +1130,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessName,
         productName1,
         productDescription1,
@@ -1601,7 +1214,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
     }
   }
 
-  async function generateSitu1andMark1Starter(modelName) {
+  async function generateSitu1andMark1Starter() {
     // generate situ1 first
     setGeneratedSitu1('');
 
@@ -1621,7 +1234,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessName,
         productName1,
         productDescription1,
@@ -1652,7 +1265,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         firstYearRevenue,
         revenueGrowthRate,
         productInfoPrompt,
-        modelName,
       }),
     });
     console.log('Edge function returned.');
@@ -1699,7 +1311,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
     }
   }
 
-  async function generateSitu2Starter(modelName) {
+  async function generateSitu2Starter() {
     setGeneratedSitu2('');
 
     setAllDoneGeneratingStarter(false);
@@ -1716,7 +1328,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessName,
         productName1,
         productDescription1,
@@ -1747,7 +1359,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         firstYearRevenue,
         revenueGrowthRate,
         productInfoPrompt,
-        modelName,
       }),
     });
 
@@ -1791,7 +1402,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
   const doneRef2Starter = useRef(false);
   const generatedMark2RefStarter = useRef('');
 
-  async function generateMark2Mark3Mark4Starter(modelName) {
+  async function generateMark2Mark3Mark4Starter() {
     setGeneratedMark2('');
 
     setAllDoneGeneratingStarter(false);
@@ -1811,7 +1422,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessName,
         productName1,
         productDescription1,
@@ -1848,7 +1459,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         firstYearRevenue,
         revenueGrowthRate,
         productInfoPrompt,
-        modelName,
       }),
     });
     console.log('Edge function returned.');
@@ -1895,7 +1505,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
     }
   }
 
-  async function generateOp1Starter(modelName) {
+  async function generateOp1Starter() {
     setGeneratedOp1('');
 
     setAllDoneGeneratingStarter(false);
@@ -1911,7 +1521,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessName,
         productName1,
         productDescription1,
@@ -1973,14 +1583,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         revenueGrowthRate,
 
         productInfoPrompt,
-        modelName,
-        AITopic: {
-          operation: operationQuestions?.map((question, index) => ({
-            topic: question?.topic,
-            question: question?.value,
-            answer: operationAnswers[index]?.value,
-          })),
-        },
       }),
     });
     console.log('Edge function returned.');
@@ -2020,7 +1622,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
     }
   }
 
-  async function generateMang1Starter(modelName) {
+  async function generateMang1Starter() {
     setGeneratedMang1('');
 
     setAllDoneGeneratingStarter(false);
@@ -2036,7 +1638,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessName,
         productName1,
         productDescription1,
@@ -2079,7 +1681,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         revenueGrowthRate,
 
         productInfoPrompt,
-        modelName,
       }),
     });
     console.log('Edge function returned.');
@@ -2119,7 +1720,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
     }
   }
 
-  async function generateRisk1Starter(modelName) {
+  async function generateRisk1Starter() {
     setGeneratedRisk1('');
 
     setAllDoneGeneratingStarter(false);
@@ -2135,7 +1736,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID: variantID,
+        variantID: variantIDFromLocal,
         businessName,
         productName1,
         productDescription1,
@@ -2178,7 +1779,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         revenueGrowthRate,
 
         productInfoPrompt,
-        modelName,
       }),
     });
     console.log('Edge function returned.');
@@ -2261,10 +1861,28 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
     doneRisk1Starter,
   ]);
 
+  //set setLatestPlanIDStarter with userData.latestPlanID
+  // useEffect(() => {
+  //   if (userData) {
+  //     setLatestPlanIDStarter(userData?.latestPlanID?.toString());
+  //   }
+  // }, [userData]);
+
   //set latestPlanID to local storage use useEffect
   useEffect(() => {
     console.log('storing latestPlanID:', latestPlanIDStarter);
     localStorage.setItem('latestPlanIDStarter', latestPlanIDStarter);
+  }, [latestPlanIDStarter]);
+
+  useEffect(() => {
+    if (session) {
+      const storedValue = localStorage.getItem(
+        `hasAddedNewPlanStarter_${session.user.email}_${latestPlanIDStarter}`,
+      );
+      if (storedValue === 'true') {
+        setHasAddedNewPlan(true);
+      }
+    }
   }, [latestPlanIDStarter]);
 
   const prevAllDoneGenerating = useRef(false);
@@ -2339,56 +1957,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
       taxCostP,
       planCurrency,
       planCurrencySymbol,
-      specificProductQuestion1: variantID === '2' && {
-        value: specificProductQuestion1?.value,
-        topic: specificProductQuestion1?.topic,
-      },
-      specificProductQuestion2: variantID === '2' && {
-        value: specificProductQuestion2?.value,
-        topic: specificProductQuestion2?.topic,
-      },
-      specificProductQuestion3: variantID === '2' && {
-        value: specificProductQuestion3?.value,
-        topic: specificProductQuestion3?.topic,
-      },
-      specificProductQuestion4: variantID === '2' && {
-        value: specificProductQuestion4?.value,
-        topic: specificProductQuestion4?.topic,
-      },
-      specificProductQuestion5: variantID === '2' && {
-        value: specificProductQuestion5?.value,
-        topic: specificProductQuestion5?.topic,
-      },
-      specificProductAnswer1: variantID === '2' && specificProductAnswer1,
-      specificProductAnswer2: variantID === '2' && specificProductAnswer2,
-      specificProductAnswer3: variantID === '2' && specificProductAnswer3,
-      specificProductAnswer4: variantID === '2' && specificProductAnswer4,
-      specificProductAnswer5: variantID === '2' && specificProductAnswer5,
-      specificOperationQuestion1: variantID === '2' && {
-        value: specificOperationQuestion1?.value,
-        topic: specificOperationQuestion1?.topic,
-      },
-      specificOperationQuestion2: variantID === '2' && {
-        value: specificOperationQuestion2?.value,
-        topic: specificOperationQuestion2?.topic,
-      },
-      specificOperationQuestion3: variantID === '2' && {
-        value: specificOperationQuestion3?.value,
-        topic: specificOperationQuestion3?.topic,
-      },
-      specificOperationQuestion4: variantID === '2' && {
-        value: specificOperationQuestion4?.value,
-        topic: specificOperationQuestion4?.topic,
-      },
-      specificOperationQuestion5: variantID === '2' && {
-        value: specificOperationQuestion5?.value,
-        topic: specificOperationQuestion5?.topic,
-      },
-      specificOperationAnswer1: variantID === '2' && specificOperationAnswer1,
-      specificOperationAnswer2: variantID === '2' && specificOperationAnswer2,
-      specificOperationAnswer3: variantID === '2' && specificOperationAnswer3,
-      specificOperationAnswer4: variantID === '2' && specificOperationAnswer4,
-      specificOperationAnswer5: variantID === '2' && specificOperationAnswer5,
     };
 
     const planContent = {
@@ -2441,10 +2009,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         } else {
           const data = await res.json();
           console.log(data);
-          setPlanId(data.planId);
           setAddNewPlanDone(true);
-          localStorage.removeItem('formData');
-          localStorage.removeItem('hasGenDynamicQuestion');
         }
       })
       .catch((error) => {
@@ -2487,7 +2052,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessOperationalStatus,
         businessName,
@@ -2580,7 +2145,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -2683,7 +2248,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -2786,7 +2351,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -2889,7 +2454,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -2994,7 +2559,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -3099,7 +2664,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -3194,7 +2759,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -3292,7 +2857,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -3393,7 +2958,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -3512,7 +3077,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -3631,7 +3196,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -3750,7 +3315,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -3874,7 +3439,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -3993,7 +3558,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -4113,7 +3678,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -4232,7 +3797,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         [API_KEY_HEADER]: secretKey,
       },
       body: JSON.stringify({
-        variantID,
+        variantID: variantIDFromLocal,
         planQuota: userData.planQuota,
         businessName,
         productName1,
@@ -4355,18 +3920,18 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
 
   const startTimeStarter = useRef<number | null>(null);
   const intervalIdRefStarter = useRef(null);
-  async function generatePlanStarter(modelName?: string) {
+  async function generatePlanStarter() {
     startTimeStarter.current = Date.now();
     setIsErrorStarter(false);
     setLoadingStarter(true);
     setShowGeneratePlanButtonStarter(false);
-    generateExecStarter(modelName); //
-    generateSitu1andMark1Starter(modelName); // mark1
-    generateSitu2Starter(modelName); //
-    generateMark2Mark3Mark4Starter(modelName); //generated in another function above
-    generateOp1Starter(modelName);
-    generateMang1Starter(modelName);
-    generateRisk1Starter(modelName);
+    generateExecStarter(); //
+    generateSitu1andMark1Starter(); // mark1
+    generateSitu2Starter(); //
+    generateMark2Mark3Mark4Starter(); //generated in another function above
+    generateOp1Starter();
+    generateMang1Starter();
+    generateRisk1Starter();
 
     // Set an interval to check if 70 seconds have passed can change 120000 to adjust timeout
     intervalIdRefStarter.current = setInterval(() => {
@@ -4381,16 +3946,16 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
   // for generating example plan
   const startTime = useRef(null);
   const intervalIdRef = useRef(null);
-  async function generatePlan(modelName?: string) {
+  async function generatePlan() {
     startTime.current = Date.now();
     setIsError(false);
     setShowGeneratePlanButton(false);
 
     setLoading(true);
-    generateExec(modelName);
-    generateSitu1andMark1(modelName); // mark1
-    generateSitu2(modelName); //
-    generateMark2(modelName);
+    generateExec();
+    generateSitu1andMark1(); // mark1
+    generateSitu2(); //
+    generateMark2();
 
     // Set an interval to check if 70 seconds have passed can change 120000 to adjust timeout
 
@@ -4431,8 +3996,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
   const [addNewPlanDone, setAddNewPlanDone] = useState(false);
   const [runGeneratePrompt, setRunGeneratePrompt] = useState(false);
   const [productInfoPrompt, setProductInfoPrompt] = useState('');
-  const isFinanceIncomplete =
-    !planId || userData?.plans[planId]?.isFinanceIncomplete;
 
   useEffect(() => {
     if (!session) return;
@@ -4474,7 +4037,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
 
     // Clear the interval when the component is unmounted
     return () => clearInterval(interval);
-  }, [addNewPlanDone, isFinanceIncomplete]);
+  }, [addNewPlanDone]);
 
   //helper functions-------------------------------------------------------
   const generatePrompt = (
@@ -4571,6 +4134,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
   const [showUndoExec, setShowUndoExec] = useState(false);
   const [focusExec, setFocusExec] = useState(false);
   const [toggleFocusExec, setToggleFocusExec] = useState(false);
+
   const [editedExec, setEditedExec] = useState('');
 
   const handleEditExec = (event) => {
@@ -4637,7 +4201,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
       body: JSON.stringify({
         promptContentExec,
         editInputExec,
-        variantID,
+        variantID: variantIDFromLocal,
       }),
     });
 
@@ -4696,25 +4260,16 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
 
   //get the last array number in userData.plans array and setPlanId to that number
   useEffect(() => {
-    if (planId) {
-      setPlanId(planId);
-      setHasAddedNewPlan(true);
-      setShowGeneratePlanButtonStarter(false);
-      setShowGeneratePlanButtonPro(false);
-      setInputData(userData?.plans[planId]?.originalVer?.userInput);
-      console.log('userData:', userData, planId);
-      setPlanContent(userData?.plans[planId]?.originalVer?.planContent);
-      localStorage.removeItem('formData');
-      localStorage.removeItem('hasGenDynamicQuestion');
-    }
-  }, [planId, userData, isFinanceIncomplete]);
+    if (userData) {
+      setLatestPlanIDStarter(userData?.latestPlanID?.toString());
+      setLatestPlanIDStarterPro(userData?.latestPlanID?.toString());
 
-  useEffect(() => {
-    if (isPlanCompleted) {
-      setAllDoneGenerating(false);
-      setAllDoneGeneratingStarter(false);
+      if (userData.plans.length > 0) {
+        console.log('userData.plans.length - 1', userData.plans.length - 1);
+        setPlanId(userData.plans.length - 1);
+      }
     }
-  }, [isPlanCompleted]);
+  }, [userData]);
 
   // Get today's date
   const today = new Date();
@@ -4753,11 +4308,11 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
   }, [allDoneGenerating]);
 
   useEffect(() => {
-    let limit = 1000;
+    let limit = 500;
     if (planLanguage === 'ja') {
-      limit -= 600;
+      limit = 200;
     } else if (planLanguage === 'ar') {
-      limit -= 100;
+      limit = 400;
     }
 
     if (allDoneGenerating) {
@@ -4897,58 +4452,9 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
       otherCostP,
       intCostP,
       taxCostP,
+
       planCurrency,
       planCurrencySymbol,
-      specificProductQuestion1: {
-        value: specificProductQuestion1?.value,
-        topic: specificProductQuestion1?.topic,
-      },
-      specificProductQuestion2: {
-        value: specificProductQuestion2?.value,
-        topic: specificProductQuestion2?.topic,
-      },
-      specificProductQuestion3: {
-        value: specificProductQuestion3?.value,
-        topic: specificProductQuestion3?.topic,
-      },
-      specificProductQuestion4: {
-        value: specificProductQuestion4?.value,
-        topic: specificProductQuestion4?.topic,
-      },
-      specificProductQuestion5: {
-        value: specificProductQuestion5?.value,
-        topic: specificProductQuestion5?.topic,
-      },
-      specificProductAnswer1,
-      specificProductAnswer2,
-      specificProductAnswer3,
-      specificProductAnswer4,
-      specificProductAnswer5,
-      specificOperationQuestion1: {
-        value: specificOperationQuestion1?.value,
-        topic: specificOperationQuestion1?.topic,
-      },
-      specificOperationQuestion2: {
-        value: specificOperationQuestion2?.value,
-        topic: specificOperationQuestion2?.topic,
-      },
-      specificOperationQuestion3: {
-        value: specificOperationQuestion3?.value,
-        topic: specificOperationQuestion3?.topic,
-      },
-      specificOperationQuestion4: {
-        value: specificOperationQuestion4?.value,
-        topic: specificOperationQuestion4?.topic,
-      },
-      specificOperationQuestion5: {
-        value: specificOperationQuestion5?.value,
-        topic: specificOperationQuestion5?.topic,
-      },
-      specificOperationAnswer1,
-      specificOperationAnswer2,
-      specificOperationAnswer3,
-      specificOperationAnswer4,
-      specificOperationAnswer5,
     };
 
     const planContent = {
@@ -5008,9 +4514,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         } else {
           const data = await res.json();
           console.log(data);
-          setPlanId(data.planId);
-          localStorage.removeItem('formData');
-          localStorage.removeItem('hasGenDynamicQuestion');
           setAddNewPlanDone(true);
         }
       })
@@ -5189,6 +4692,9 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
   }
   const [priceAbb, setPriceAbb] = useState('');
 
+  const variantIDFromLocal =
+    typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+
   // country ------------------------------------------------
   const [country, setCountry] = useState('');
   useEffect(() => {
@@ -5217,7 +4723,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
 
   useEffect(() => {
     if (userData && !userData.variantID) {
-      fetch('/api/updateUserVariantID', {
+      fetch('/api/updateUserVariant', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -5225,7 +4731,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
         },
         body: JSON.stringify({
           email: userData.email,
-          variantID: variantID,
+          variantID: variantIDFromLocal,
         }),
       })
         .then((res) => res.json())
@@ -6239,7 +5745,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
   function noSession() {
     return (
       <>
-        <Navbar fbPixelId={fbPixelId} xPixelId={xPixelId} />
+        <Navbar fbPixelId={fbPixelId} />
         <motion.div
           key="component-seven"
           initial={{ opacity: 0 }}
@@ -6248,19 +5754,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
           transition={{ duration: 0.2 }}
         >
           <div className="overflow">
-            {variantID === '2' && isPlanCompleted ? (
-              <div className={stylesW.loading_box}>
-                <div className="flex gap-4 items-center justify-center">
-                  <div>
-                    {t(
-                      'Your finance section has been completed, its at the bottom',
-                    )}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
             {loading && !session ? (
               <div className={stylesW.loading_box}>
                 <div className="flex gap-4 items-center justify-center">
@@ -6311,27 +5804,22 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
                           className="flex flex-col gap-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-5 rounded relative text-center"
                           role="alert"
                         >
-                          <span className="text-red-700">
-                            {t('Our main AI model Haiku  is down, but you')}
-                          </span>
-                          <span className="text-red-700">
-                            {t('can use GPT 3.5 Turbo to generate your plan')}
-                          </span>
-                          <span className="text-red-700">
+                          <strong className="font-bold text-red-700">
+                            {t('Failed to generate business plan')}
+                          </strong>
+                          <span className="block sm:inline">
                             {t(
-                              'instead. The 2 models are comparable in quality',
-                            )}
+                              'OpenAI servers might be down, please try again later, retry on',
+                            )}{' '}
+                            <strong className="text-red-700">{t('PC')}</strong>,{' '}
+                            {t('or try using a')}{' '}
+                            <strong className="text-red-700">
+                              {t('different browser')}
+                            </strong>
                           </span>
-                          <div>
-                            <button
-                              onClick={() =>
-                                generatePlan(AI_MODEL.GPT_3_5_TURBO)
-                              }
-                              className="button mt-1"
-                            >
-                              {t('Use GPT 3.5 Turbo to generate plan')}
-                            </button>
-                          </div>
+                          <button onClick={generatePlan} className="button">
+                            {t('Regenerate Plan')}
+                          </button>
                         </div>
                       )}
                     </div>
@@ -6915,7 +6403,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
   function sessionStarter() {
     return (
       <>
-        <Navbar fbPixelId={fbPixelId} />
         {warningModal.isOpen && (
           <Modal
             onClose={() => setWarningModal({ isOpen: false, fn: () => {} })}
@@ -6932,19 +6419,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
           transition={{ duration: 0.2 }}
         >
           <div className="overflow">
-            {variantID === '2' && isPlanCompleted ? (
-              <div className={stylesW.loading_box}>
-                <div className="flex gap-4 items-center justify-center">
-                  <div>
-                    {t(
-                      'Your finance section has been completed, its at the bottom',
-                    )}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
             {loadingStarter ? (
               <div className={stylesW.loading_box}>
                 <div className="flex gap-4 items-center justify-center">
@@ -6983,78 +6457,54 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
                           className="flex flex-col gap-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-5 rounded relative text-center"
                           role="alert"
                         >
-                          <span className="text-red-700">
-                            {t('Our main AI model Haiku  is down, but you')}
-                          </span>
-                          <span className="text-red-700">
-                            {t('can use GPT 3.5 Turbo to generate your plan')}
-                          </span>
-                          <span className="text-red-700">
+                          <strong className="font-bold text-red-700">
+                            {t('Failed to generate business plan')}
+                          </strong>
+                          <span className="block sm:inline">
                             {t(
-                              'instead. The 2 models are comparable in quality',
-                            )}
+                              'OpenAI servers might be down, please try again later, retry on',
+                            )}{' '}
+                            <strong className="text-red-700">{t('PC')}</strong>,{' '}
+                            {t('or try using a')}{' '}
+                            <strong className="text-red-700">
+                              {t('different browser')}
+                            </strong>
                           </span>
-                          <div>
-                            <button
-                              onClick={() =>
-                                generatePlanStarter(AI_MODEL.GPT_3_5_TURBO)
-                              }
-                              className="button mt-1"
-                            >
-                              {t('Use GPT 3.5 Turbo to generate plan')}
-                            </button>
-                          </div>
+                          <button
+                            onClick={generatePlanStarter}
+                            className="button"
+                          >
+                            {t('Regenerate Plan')}
+                          </button>
                         </div>
                       )}
                     </div>
 
                     <div className="flex gap-5 justify-center mb-10">
                       {!loadingStarter &&
-                        !showGeneratePlanButtonStarter &&
-                        !isErrorStarter &&
-                        paid &&
-                        variantID === '2' &&
-                        !isPlanCompleted && (
-                          <div className="flex gap-3">
-                            <Link
-                              href={{
-                                pathname: ROUTE_PATH.investmentItems,
-                              }}
-                              className="button"
-                              onClick={() => {
-                                setPlanId(planId);
-                                trackEvent({
-                                  event_name: 'complete_finance_button',
-                                });
-                              }}
-                            >
-                              {t('goToFinanceSection')}
-                            </Link>
-                          </div>
-                        )}
-                      {!loadingStarter &&
-                        !showGeneratePlanButtonStarter &&
-                        !isErrorStarter &&
-                        paid &&
-                        (variantID === '2' ? isPlanCompleted : true) && (
-                          <div className="flex gap-3">
-                            <Link
-                              href={{
-                                pathname: '/editPlanStarter',
-                                query: { planId: planId },
-                              }}
-                              className="button"
-                              onClick={() => {
-                                trackEvent({
-                                  event_name: 'edit_and_save_button',
-                                });
-                              }}
-                            >
-                              {' '}
-                              {t('Edit & Save')}
-                            </Link>
-                          </div>
-                        )}
+                      !showGeneratePlanButtonStarter &&
+                      !isErrorStarter &&
+                      paid ? (
+                        <div className="flex gap-3">
+                          <Link
+                            href={{
+                              pathname: '/editPlanStarter',
+                              query: { planId: planId },
+                            }}
+                            className="button"
+                            onClick={() => {
+                              trackEvent({
+                                event_name: 'edit_and_save_button',
+                              });
+                            }}
+                          >
+                            {' '}
+                            {t('Edit & Save')}
+                          </Link>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
 
                       {showGeneratePlanButtonStarter && !generatedExec && (
                         <div className="flex flex-col justify-center items-center gap-4">
@@ -7160,49 +6610,46 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
                             }}
                           />
                           <br />
-                          {!showGeneratePlanButtonStarter &&
-                            (variantID === '2' ? isPlanCompleted : true) && (
-                              <FinTable
-                                investmentItem1={investmentItem1}
-                                investmentAmountItem1={investmentAmountItem1}
-                                investmentItem2={investmentItem2}
-                                investmentAmountItem2={investmentAmountItem2}
-                                investmentItem3={investmentItem3}
-                                investmentAmountItem3={investmentAmountItem3}
-                                investmentItem4={investmentItem4}
-                                investmentAmountItem4={investmentAmountItem4}
-                                investmentItem5={investmentItem5}
-                                investmentAmountItem5={investmentAmountItem5}
-                                investmentItem6={investmentItem6}
-                                investmentAmountItem6={investmentAmountItem6}
-                                investmentItem7={investmentItem7}
-                                investmentAmountItem7={investmentAmountItem7}
-                                investmentItem8={investmentItem8}
-                                investmentAmountItem8={investmentAmountItem8}
-                                investmentItem9={investmentItem9}
-                                investmentAmountItem9={investmentAmountItem9}
-                                investmentItem10={investmentItem10}
-                                investmentAmountItem10={investmentAmountItem10}
-                                initialInvestmentAmount={
-                                  initialInvestmentAmount
-                                }
-                                firstYearRevenue={firstYearRevenue}
-                                revenueGrowthRate={revenueGrowthRate}
-                                COGSP={COGSP}
-                                wageCostP={wageCostP}
-                                markCostP={markCostP}
-                                rentCostP={rentCostP}
-                                genCostP={genCostP}
-                                depreCostP={depreCostP}
-                                utilCostP={utilCostP}
-                                otherCostP={otherCostP}
-                                intCostP={intCostP}
-                                taxCostP={taxCostP}
-                                planLanguage={planLanguage}
-                                planCurrency={planCurrency}
-                                planCurrencySymbol={planCurrencySymbol}
-                              />
-                            )}
+                          {!showGeneratePlanButtonStarter && (
+                            <FinTable
+                              investmentItem1={investmentItem1}
+                              investmentAmountItem1={investmentAmountItem1}
+                              investmentItem2={investmentItem2}
+                              investmentAmountItem2={investmentAmountItem2}
+                              investmentItem3={investmentItem3}
+                              investmentAmountItem3={investmentAmountItem3}
+                              investmentItem4={investmentItem4}
+                              investmentAmountItem4={investmentAmountItem4}
+                              investmentItem5={investmentItem5}
+                              investmentAmountItem5={investmentAmountItem5}
+                              investmentItem6={investmentItem6}
+                              investmentAmountItem6={investmentAmountItem6}
+                              investmentItem7={investmentItem7}
+                              investmentAmountItem7={investmentAmountItem7}
+                              investmentItem8={investmentItem8}
+                              investmentAmountItem8={investmentAmountItem8}
+                              investmentItem9={investmentItem9}
+                              investmentAmountItem9={investmentAmountItem9}
+                              investmentItem10={investmentItem10}
+                              investmentAmountItem10={investmentAmountItem10}
+                              initialInvestmentAmount={initialInvestmentAmount}
+                              firstYearRevenue={firstYearRevenue}
+                              revenueGrowthRate={revenueGrowthRate}
+                              COGSP={COGSP}
+                              wageCostP={wageCostP}
+                              markCostP={markCostP}
+                              rentCostP={rentCostP}
+                              genCostP={genCostP}
+                              depreCostP={depreCostP}
+                              utilCostP={utilCostP}
+                              otherCostP={otherCostP}
+                              intCostP={intCostP}
+                              taxCostP={taxCostP}
+                              planLanguage={planLanguage}
+                              planCurrency={planCurrency}
+                              planCurrencySymbol={planCurrencySymbol}
+                            />
+                          )}
                           <br />
                           <div
                             dangerouslySetInnerHTML={{
@@ -7229,7 +6676,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
   function sessionPro() {
     return (
       <>
-        <Navbar fbPixelId={fbPixelId} />
         {warningModal.isOpen && (
           <Modal
             onClose={() => setWarningModal({ isOpen: false, fn: () => {} })}
@@ -7246,19 +6692,6 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
           transition={{ duration: 0.2 }}
         >
           <div className="overflow">
-            {variantID === '2' && isPlanCompleted ? (
-              <div className={stylesW.loading_box}>
-                <div className="flex gap-4 items-center justify-center">
-                  <div>
-                    {t(
-                      'Your finance section has been completed, its at the bottom',
-                    )}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
             {loadingPro ? (
               <div className={stylesW.loading_box}>
                 <div className="flex gap-4 items-center justify-center">
@@ -7300,7 +6733,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
                           <strong className="font-bold text-red-700">
                             {t('Failed to generate business plan')}
                           </strong>
-                          {/* <span className="block sm:inline">
+                          <span className="block sm:inline">
                             {t(
                               'OpenAI servers might be down, please try again later, retry on',
                             )}{' '}
@@ -7309,66 +6742,39 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
                             <strong className="text-red-700">
                               {t('different browser')}
                             </strong>
-                          </span> */}
-                          <div>
-                            <button
-                              onClick={generatePlanPro}
-                              className="button"
-                            >
-                              {t('Regenerate Plan')}
-                            </button>
-                          </div>
+                          </span>
+                          <button onClick={generatePlanPro} className="button">
+                            {t('Regenerate Plan')}
+                          </button>
                         </div>
                       )}
                     </div>
 
                     <div className="flex gap-5 justify-center mb-10">
                       {!loadingPro &&
-                        !showGeneratePlanButtonPro &&
-                        !isErrorPro &&
-                        paid &&
-                        variantID === '2' &&
-                        !isPlanCompleted && (
-                          <div className="flex gap-3">
-                            <Link
-                              href={{
-                                pathname: ROUTE_PATH.investmentItems,
-                                query: { planId },
-                              }}
-                              className="button"
-                              onClick={() => {
-                                trackEvent({
-                                  event_name: 'complete_finance_button',
-                                });
-                              }}
-                            >
-                              {t('goToFinanceSection')}
-                            </Link>
-                          </div>
-                        )}
-                      {!loadingPro &&
-                        !showGeneratePlanButtonPro &&
-                        !isErrorPro &&
-                        paid &&
-                        (variantID === '2' ? isPlanCompleted : true) && (
-                          <div className="flex gap-3">
-                            <Link
-                              href={{
-                                pathname: '/editPlanPro',
-                                query: { planId: planId },
-                              }}
-                              className="button"
-                              onClick={() => {
-                                trackEvent({
-                                  event_name: 'edit_and_save_button',
-                                });
-                              }}
-                            >
-                              {' '}
-                              {t('Edit & Save')}
-                            </Link>
-                          </div>
-                        )}
+                      !showGeneratePlanButtonPro &&
+                      !isErrorPro &&
+                      paid ? (
+                        <div className="flex gap-3">
+                          <Link
+                            href={{
+                              pathname: '/editPlanPro',
+                              query: { planId: planId },
+                            }}
+                            className="button"
+                            onClick={() => {
+                              trackEvent({
+                                event_name: 'edit_and_save_button',
+                              });
+                            }}
+                          >
+                            {' '}
+                            {t('Edit & Save')}
+                          </Link>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
 
                       {showGeneratePlanButtonPro && !generatedExec && (
                         <div className="flex flex-col justify-center items-center gap-4">
@@ -7564,7 +6970,7 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
 
                           <br />
 
-                          {!showGeneratePlanButtonPro && isPlanCompleted && (
+                          {!showGeneratePlanButtonPro && (
                             <FinTable
                               investmentItem1={investmentItem1}
                               investmentAmountItem1={investmentAmountItem1}
@@ -7630,13 +7036,11 @@ export default function LastStepPlanGen({ fbPixelId, xPixelId, secretKey }) {
 export async function getStaticProps({ locale }) {
   const secretKey = process.env.API_KEY;
   const fbPixelId = process.env.FB_PIXEL_ID;
-  const xPixelId = process.env.X_PIXEL_ID;
   return {
     props: {
       ...(await serverSideTranslations(locale, ['LastStepPlanGen'])),
       secretKey,
       fbPixelId,
-      xPixelId,
       // Will be passed to the page component as props
     },
   };

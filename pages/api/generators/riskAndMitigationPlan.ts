@@ -1,5 +1,5 @@
-import { AI_MODEL } from '../../../constants/plan';
 import { OpenAIStream } from '../../../utils/OpenAIChatStream';
+
 
 interface IRiskAndMitigationPlan {
   businessOperationalStatus: string;
@@ -12,7 +12,6 @@ interface IRiskAndMitigationPlan {
   productInfoPrompt: string;
   planLanguage: string;
   variantID: string;
-  modelName?: string;
 }
 
 // api11Risk1.ts
@@ -28,7 +27,6 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
     productInfoPrompt,
     planLanguage,
     variantID,
-    modelName,
   } = request;
 
   const risk1TopicEN = 'Risk and Mitigation Plan';
@@ -44,8 +42,8 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
   const risk1TopicDA = 'Risiko- og lindringplan';
   const risk1TopicNO = 'Risiko- og lindringsplan';
 
-  const promptTemplates = {
-    en: `
+    const promptTemplates = {
+        en: `
         You are a professional consultant, and a customer approaches you to write a long and detailed ${risk1TopicEN} for a business plan.
 
         business details:
@@ -69,7 +67,7 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
         This is important: Be very insightful in your response.
         This is the long, detailed, and insightful ${risk1TopicEN} you came up with:
         `,
-    'en-uk': `
+        'en-uk': `
         You are a professional consultant, and a customer approaches you to write a long and detailed ${risk1TopicEN} for a business plan.
 
         business details:
@@ -94,7 +92,7 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
         This is important: Be very insightful in your response.
         This is the long, detailed, and insightful ${risk1TopicEN} you came up with:
         `,
-    de: `Sie sind ein professioneller Berater und ein Kunde kommt auf Sie zu, um einen langen und detaillierten ${risk1TopicDE} für einen Geschäftsplan zu verfassen.
+        de: `Sie sind ein professioneller Berater und ein Kunde kommt auf Sie zu, um einen langen und detaillierten ${risk1TopicDE} für einen Geschäftsplan zu verfassen.
 
                 Geschäftsdaten:
                 Geschäftsdetail 1: Der Firmenname des Kunden ist ${businessName}.
@@ -116,7 +114,7 @@ export const riskAndMitigationPlan = (request: IRiskAndMitigationPlan) => {
 Fertigstellung auf Deutsch generieren.
             
                 Dies ist das lange, detaillierte ${risk1TopicDE}, das Sie erstellt haben:`,
-    fr: `Vous êtes un consultant professionnel et un client vous approche pour rédiger un ${risk1TopicFR} long et détaillé pour un plan d'affaires.
+        fr: `Vous êtes un consultant professionnel et un client vous approche pour rédiger un ${risk1TopicFR} long et détaillé pour un plan d'affaires.
 
                 Détails de l'entreprise :
                 Détail de l'entreprise 1 : Le nom de l'entreprise du client est ${businessName}.
@@ -137,7 +135,7 @@ Fertigstellung auf Deutsch generieren.
                 Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
 génère tout en français
                 Voici le ${risk1TopicFR} long et détaillé que vous avez élaboré :`,
-    es: `Eres un consultor profesional y un cliente se acerca a ti para escribir un ${risk1TopicES} largo y detallado para un plan de negocios.
+        es: `Eres un consultor profesional y un cliente se acerca a ti para escribir un ${risk1TopicES} largo y detallado para un plan de negocios.
 
                 Detalles del negocio:
                 Detalle del negocio 1: El nombre del negocio del cliente es ${businessName}.
@@ -158,7 +156,7 @@ génère tout en français
                 Use solo etiquetas HTML, no use markdown. No use ** **, use en su lugar la etiqueta <strong> para negrita. No use * *, use en su lugar la etiqueta <em> para cursiva. No use * para viñetas, use en su lugar las etiquetas <ul> y <li>.
 genera todo en español
                 Este es el ${risk1TopicES} largo y detallado que has elaborado:`,
-    it: `Sei un consulente professionista e un cliente si avvicina a te per scrivere un ${risk1TopicIT} lungo e dettagliato per un piano aziendale.
+        it: `Sei un consulente professionista e un cliente si avvicina a te per scrivere un ${risk1TopicIT} lungo e dettagliato per un piano aziendale.
 
                 dettagli dell'azienda:
                 dettaglio dell'azienda 1: Il nome dell'azienda del cliente è ${businessName}.
@@ -179,7 +177,7 @@ genera todo en español
                 Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
 genera tutto in italiano
                 Questo è il ${risk1TopicIT} lungo e dettagliato che hai elaborato:`,
-    nl: `
+        nl: `
                 Je bent een professionele consultant en een klant benadert je om een lang en gedetailleerd ${risk1TopicNL} te schrijven voor een bedrijfsplan.
             
                 bedrijfsdetails:
@@ -202,7 +200,7 @@ genera tutto in italiano
                 Genereer alles in het Nederlands.
                 Dit is het lange, gedetailleerde ${risk1TopicNL} dat je hebt bedacht:
                 `,
-    ja: `
+        ja: `
                 あなたはプロのコンサルタントで、顧客がビジネスプランのための詳細で長い${risk1TopicJA}を書くようにあなたに依頼してきました。
             
                 ビジネスの詳細:
@@ -225,7 +223,7 @@ genera tutto in italiano
 すべてを日本語で生成します。
                 これがあなたが考え出した長く、詳細な${risk1TopicJA}です:
                 `,
-    ar: `
+        ar: `
                 أنت مستشار محترف، ويقترب منك عميل لكتابة ${risk1TopicAR} طويلة ومفصلة لخطة عمل.
             
                 تفاصيل العمل:
@@ -248,7 +246,7 @@ genera tutto in italiano
 أنشئ كل شيء باللغة العربية
                 هذا هو ${risk1TopicAR} الطويل والمفصل الذي ابتكرته:
                 `,
-    sv: `
+        sv: `
                 Du är en professionell konsult och en kund närmar sig dig för att skriva en lång och detaljerad ${risk1TopicSV} för en affärsplan.
             
                 Affärsdetaljer:
@@ -271,7 +269,7 @@ genera tutto in italiano
 Generera allt på svenska.
                 Detta är den långa, detaljerade ${risk1TopicSV} du kom upp med:
                 `,
-    fi: `
+        fi: `
                 Olet ammattikonsultti, ja asiakas lähestyy sinua kirjoittamaan pitkän ja yksityiskohtaisen ${risk1TopicFI} liiketoimintasuunnitelmaan.
             
                 liiketoiminnan tiedot:
@@ -294,7 +292,7 @@ Generera allt på svenska.
 Generoi kaikki suomeksi.
                 Tämä on pitkä, yksityiskohtainen ${risk1TopicFI}, jonka keksit:
                 `,
-    da: `
+        da: `
                 Du er en professionel konsulent, og en kunde nærmer dig for at skrive en lang og detaljeret ${risk1TopicDA} til en forretningsplan.
             
                 forretningsdetaljer:
@@ -317,7 +315,7 @@ Generoi kaikki suomeksi.
 Generer alt på dansk.
                 Dette er den lange, detaljerede ${risk1TopicDA} du kom op med:
                 `,
-    no: `
+        no: `
                 Du er en profesjonell konsulent, og en kunde nærmer deg for å skrive en lang og detaljert ${risk1TopicNO} for en forretningsplan.
             
                 forretningsdetaljer:
@@ -340,13 +338,12 @@ Generer alt på dansk.
 Generer alt på norsk.
                 Dette er den lange, detaljerte ${risk1TopicNO} du kom opp med:
                 `,
-  };
+    };
 
-  const model =
-    variantID === '2' ? AI_MODEL.GPT_4O_MINI : AI_MODEL.GPT_3_5_TURBO;
-  console.log('model:', model);
+      const model = variantID === '2' ? 'gpt-4o-mini' : 'gpt-3.5-turbo';
+  console.log("model:", model)
   const payload = {
-    model: modelName ? modelName : model,
+    model,
     messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
     temperature: 0.5,
     top_p: 1,

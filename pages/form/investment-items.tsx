@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useMemo, useContext } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useFormik, FormikHelpers } from 'formik';
 import Step6InitialInvestmentValidate from '../../utils/Step6InitialInvestmentValidate';
@@ -18,15 +18,12 @@ import {
   InvestmentItems,
   InvestmentFormValues,
 } from '../../types/step6InitialInvestment.type';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/navbar';
 import { useLoadFormData } from '../../hooks/useLoadFormData';
 import { ROUTE_PATH } from '../../constants/path';
-import { AppContext } from '../../context/appContext';
-import { transformDataToLocalStorage } from '../../utils/transformDataToLocalStorage';
 import useBeforeUnload from '../../hooks/useBeforeUnload';
-import useCookies from '../../hooks/useCookies';
 
 // function to check if the value is in the formDataTitle object
 const getFormDataTitleByValue = (value) => {
@@ -130,12 +127,7 @@ export const getNumberOfInput = (investmentItems: InvestmentItems) => {
 
 export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
   const { data: session } = useSession();
-  const { t: tCommon } = useTranslation('common');
   const router = useRouter();
-
-  const { getCookie } = useCookies();
-  const variantID = getCookie("variantID")
-
   const {
     businessName,
     businessType,
@@ -178,8 +170,7 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
       event_name: 'page_6_back_button',
       is_clean_case: isCleanCase,
     });
-    router.push(variantID === '2' ? ROUTE_PATH.generateResult : ROUTE_PATH.successDrivers);
-    // router.back() - how to pass params plan id?
+    router.push(ROUTE_PATH.successDrivers);
   };
 
   const { t } = useTranslation('Step6InitialInvestment');
@@ -189,248 +180,9 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
     {},
   );
 
-  const { planId } = useContext(AppContext);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  useEffect(() => {
-    if (!session) {
-      event('Step5investment_component_view', {
-        category: 'Component View',
-        label: 'Step5Investment Component View',
-      });
-      return; // Don't run the effect if there is no session
-    }
-
-    let interval = null;
-    let counter = 0; // Initialize the counter
-
-    async function fetchUserData() {
-      try {
-        const res = await fetch('/api/getAllUserData', {
-          headers: {
-            [API_KEY_HEADER]: secretKey,
-          },
-        });
-        const data = await res.json();
-        const userInput = data.plans[planId]?.originalVer?.userInput;
-        const formData = JSON.parse(localStorage.getItem('formData')) || {};
-        if (userInput && !formData.planCurrency) {
-          transformDataToLocalStorage(
-            userInput,
-            planId,
-          );
-        }
-        if (variantID === '2' && !formData.planCurrency) {
-          if (formData[formDataTitle.FORM6_1]?.value) {
-            const value = formData[formDataTitle.FORM6_1].value;
-            const planCurrencyValue = value || mapPlanCurrency.currency;
-            setSelectedTextCurrency(
-              mapPlanCurrency[planCurrencyValue]?.text ||
-                mapPlanCurrency.currency.symbol,
-            );
-            formik.setFieldValue('planCurrency', value);
-            formik.setFieldValue(
-              'planCurrencySymbol',
-              mapPlanCurrency[planCurrencyValue]?.symbol ||
-                mapPlanCurrency.currency.symbol,
-            );
-          }
-          if (formData[formDataTitle.FORM6_3]?.value) {
-            formik.setFieldValue(
-              'investmentItems[0].itemName',
-              formData[formDataTitle.FORM6_3].value,
-            );
-          }
-          if (formData[formDataTitle.FORM6_4]?.value) {
-            formik.setFieldValue(
-              'investmentItems[0].amount',
-              formData[formDataTitle.FORM6_4].value,
-            );
-            formik.setFieldValue(
-              'investmentItems[0].formattedAmount',
-              new Intl.NumberFormat().format(formData[formDataTitle.FORM6_4].value),
-            );
-          }
-          if (formData[formDataTitle.FORM6_5]?.value) {
-            formik.setFieldValue(
-              'investmentItems[1].itemName',
-              formData[formDataTitle.FORM6_5].value,
-            );
-          }
-          if (formData[formDataTitle.FORM6_6]?.value) {
-            formik.setFieldValue(
-              'investmentItems[1].amount',
-              formData[formDataTitle.FORM6_6].value,
-            );
-            formik.setFieldValue(
-              'investmentItems[1].formattedAmount',
-              new Intl.NumberFormat().format(formData[formDataTitle.FORM6_6].value),
-            );
-          }
-          if (formData[formDataTitle.FORM6_7]?.value) {
-            formik.setFieldValue(
-              'investmentItems[2].itemName',
-              formData[formDataTitle.FORM6_7].value,
-            );
-          }
-          if (formData[formDataTitle.FORM6_8]?.value) {
-            formik.setFieldValue(
-              'investmentItems[2].amount',
-              formData[formDataTitle.FORM6_8].value,
-            );
-            formik.setFieldValue(
-              'investmentItems[2].formattedAmount',
-              new Intl.NumberFormat().format(formData[formDataTitle.FORM6_8].value),
-            );
-          }
-          if (formData[formDataTitle.FORM6_9]?.value) {
-            formik.setFieldValue(
-              'investmentItems[3].itemName',
-              formData[formDataTitle.FORM6_9].value,
-            );
-          }
-          if (formData[formDataTitle.FORM6_10]?.value) {
-            formik.setFieldValue(
-              'investmentItems[3].amount',
-              formData[formDataTitle.FORM6_10].value,
-            );
-            formik.setFieldValue(
-              'investmentItems[3].formattedAmount',
-              new Intl.NumberFormat().format(formData[formDataTitle.FORM6_10].value),
-            );
-          }
-          if (formData[formDataTitle.FORM6_11]?.value) {
-            formik.setFieldValue(
-              'investmentItems[4].itemName',
-              formData[formDataTitle.FORM6_11].value,
-            );
-          }
-          if (formData[formDataTitle.FORM6_12]?.value) {
-            formik.setFieldValue(
-              'investmentItems[4].amount',
-              formData[formDataTitle.FORM6_12].value,
-            );
-            formik.setFieldValue(
-              'investmentItems[4].formattedAmount',
-              new Intl.NumberFormat().format(formData[formDataTitle.FORM6_12].value),
-            );
-          }
-          if (formData[formDataTitle.FORM6_13]?.value) {
-            formik.setFieldValue(
-              'investmentItems[5].itemName',
-              formData[formDataTitle.FORM6_13].value,
-            );
-          }
-          if (formData[formDataTitle.FORM6_14]?.value) {
-            formik.setFieldValue(
-              'investmentItems[5].amount',
-              formData[formDataTitle.FORM6_14].value,
-            );
-            formik.setFieldValue(
-              'investmentItems[5].formattedAmount',
-              new Intl.NumberFormat().format(formData[formDataTitle.FORM6_14].value),
-            );
-          }
-          if (formData[formDataTitle.FORM6_15]?.value) {
-            formik.setFieldValue(
-              'investmentItems[6].itemName',
-              formData[formDataTitle.FORM6_15].value,
-            );
-          }
-          if (formData[formDataTitle.FORM6_16]?.value) {
-            formik.setFieldValue(
-              'investmentItems[6].amount',
-              formData[formDataTitle.FORM6_16].value,
-            );
-            formik.setFieldValue(
-              'investmentItems[6].formattedAmount',
-              new Intl.NumberFormat().format(formData[formDataTitle.FORM6_16].value),
-            );
-          }
-          if (formData[formDataTitle.FORM6_17]?.value) {
-            formik.setFieldValue(
-              'investmentItems[7].itemName',
-              formData[formDataTitle.FORM6_17].value,
-            );
-          }
-          if (formData[formDataTitle.FORM6_18]?.value) {
-            formik.setFieldValue(
-              'investmentItems[7].amount',
-              formData[formDataTitle.FORM6_18].value,
-            );
-            formik.setFieldValue(
-              'investmentItems[7].formattedAmount',
-              new Intl.NumberFormat().format(formData[formDataTitle.FORM6_18].value),
-            );
-          }
-          if (formData[formDataTitle.FORM6_19]?.value) {
-            formik.setFieldValue(
-              'investmentItems[8].itemName',
-              formData[formDataTitle.FORM6_19].value,
-            );
-          }
-          if (formData[formDataTitle.FORM6_20]?.value) {
-            formik.setFieldValue(
-              'investmentItems[8].amount',
-              formData[formDataTitle.FORM6_20].value,
-            );
-            formik.setFieldValue(
-              'investmentItems[8].formattedAmount',
-              new Intl.NumberFormat().format(formData[formDataTitle.FORM6_20].value),
-            );
-          }
-          if (formData[formDataTitle.FORM6_21]?.value) {
-            formik.setFieldValue(
-              'investmentItems[9].itemName',
-              formData[formDataTitle.FORM6_21].value,
-            );
-          }
-          if (formData[formDataTitle.FORM6_22]?.value) {
-            formik.setFieldValue(
-              'investmentItems[9].amount',
-              formData[formDataTitle.FORM6_22].value,
-            );
-            formik.setFieldValue(
-              'investmentItems[9].formattedAmount',
-              new Intl.NumberFormat().format(formData[formDataTitle.FORM6_22].value),
-            );
-          }
-        }
-
-        if (data) {
-          // Check if user payment status is not "paid"
-          if (data.paymentStatus !== 'paid') {
-            console.log('signing out');
-            signOut(); // call signOut function
-            return; // stop here, no need to continue
-          }
-          clearInterval(interval);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    counter++; // Increment the counter
-
-    // Clear the interval and stop fetching if the counter reaches 5
-    if (counter >= 5) {
-      clearInterval(interval);
-    }
-
-    fetchUserData(); // Fetch data initially
-
-    // Call the fetchUserData function every 3 seconds
-    interval = setInterval(() => {
-      fetchUserData();
-    }, 3000);
-
-    // Clear the interval when the component is unmounted
-    return () => clearInterval(interval);
-  }, [session]);
 
   // create a variable that com
 
@@ -465,27 +217,27 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
 
   useEffect(() => {
     const formData = JSON.parse(localStorage.getItem('formData')) || {};
-    if (!formik.values[formDataTitle.FORM6_1] && formData[formDataTitle.FORM6_1]?.value) {
+    if (formData[formDataTitle.FORM6_1]) {
       const value = formData[formDataTitle.FORM6_1].value;
       const planCurrencyValue = value || mapPlanCurrency.currency;
       setSelectedTextCurrency(
-        mapPlanCurrency[planCurrencyValue]?.text ||
+        mapPlanCurrency[planCurrencyValue].text ||
           mapPlanCurrency.currency.symbol,
       );
       formik.setFieldValue('planCurrency', value);
       formik.setFieldValue(
         'planCurrencySymbol',
-        mapPlanCurrency[planCurrencyValue]?.symbol ||
+        mapPlanCurrency[planCurrencyValue].symbol ||
           mapPlanCurrency.currency.symbol,
       );
     }
-    if (!formik.values[formDataTitle.FORM6_3] &&formData[formDataTitle.FORM6_3]?.value) {
+    if (formData[formDataTitle.FORM6_3]) {
       formik.setFieldValue(
         'investmentItems[0].itemName',
         formData[formDataTitle.FORM6_3].value,
       );
     }
-    if (!formik.values[formDataTitle.FORM6_4] && formData[formDataTitle.FORM6_4]?.value) {
+    if (formData[formDataTitle.FORM6_4]) {
       formik.setFieldValue(
         'investmentItems[0].amount',
         formData[formDataTitle.FORM6_4].value,
@@ -495,13 +247,13 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
         new Intl.NumberFormat().format(formData[formDataTitle.FORM6_4].value),
       );
     }
-    if (!formik.values[formDataTitle.FORM6_5] && formData[formDataTitle.FORM6_5]?.value) {
+    if (formData[formDataTitle.FORM6_5]) {
       formik.setFieldValue(
         'investmentItems[1].itemName',
         formData[formDataTitle.FORM6_5].value,
       );
     }
-    if (!formik.values[formDataTitle.FORM6_6] && formData[formDataTitle.FORM6_6]?.value) {
+    if (formData[formDataTitle.FORM6_6]) {
       formik.setFieldValue(
         'investmentItems[1].amount',
         formData[formDataTitle.FORM6_6].value,
@@ -511,13 +263,13 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
         new Intl.NumberFormat().format(formData[formDataTitle.FORM6_6].value),
       );
     }
-    if (!formik.values[formDataTitle.FORM6_7] && formData[formDataTitle.FORM6_7]?.value) {
+    if (formData[formDataTitle.FORM6_7]) {
       formik.setFieldValue(
         'investmentItems[2].itemName',
         formData[formDataTitle.FORM6_7].value,
       );
     }
-    if (!formik.values[formDataTitle.FORM6_8] && formData[formDataTitle.FORM6_8]?.value) {
+    if (formData[formDataTitle.FORM6_8]) {
       formik.setFieldValue(
         'investmentItems[2].amount',
         formData[formDataTitle.FORM6_8].value,
@@ -527,13 +279,13 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
         new Intl.NumberFormat().format(formData[formDataTitle.FORM6_8].value),
       );
     }
-    if (!formik.values[formDataTitle.FORM6_9] && formData[formDataTitle.FORM6_9]?.value) {
+    if (formData[formDataTitle.FORM6_9]) {
       formik.setFieldValue(
         'investmentItems[3].itemName',
         formData[formDataTitle.FORM6_9].value,
       );
     }
-    if (!formik.values[formDataTitle.FORM6_10] && formData[formDataTitle.FORM6_10]?.value) {
+    if (formData[formDataTitle.FORM6_10]) {
       formik.setFieldValue(
         'investmentItems[3].amount',
         formData[formDataTitle.FORM6_10].value,
@@ -543,13 +295,13 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
         new Intl.NumberFormat().format(formData[formDataTitle.FORM6_10].value),
       );
     }
-    if (!formik.values[formDataTitle.FORM6_11] && formData[formDataTitle.FORM6_11]?.value) {
+    if (formData[formDataTitle.FORM6_11]) {
       formik.setFieldValue(
         'investmentItems[4].itemName',
         formData[formDataTitle.FORM6_11].value,
       );
     }
-    if (!formik.values[formDataTitle.FORM6_12] && formData[formDataTitle.FORM6_12]?.value) {
+    if (formData[formDataTitle.FORM6_12]) {
       formik.setFieldValue(
         'investmentItems[4].amount',
         formData[formDataTitle.FORM6_12].value,
@@ -559,13 +311,13 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
         new Intl.NumberFormat().format(formData[formDataTitle.FORM6_12].value),
       );
     }
-    if (!formik.values[formDataTitle.FORM6_13] && formData[formDataTitle.FORM6_13]?.value) {
+    if (formData[formDataTitle.FORM6_13]) {
       formik.setFieldValue(
         'investmentItems[5].itemName',
         formData[formDataTitle.FORM6_13].value,
       );
     }
-    if (!formik.values[formDataTitle.FORM6_14] && formData[formDataTitle.FORM6_14]?.value) {
+    if (formData[formDataTitle.FORM6_14]) {
       formik.setFieldValue(
         'investmentItems[5].amount',
         formData[formDataTitle.FORM6_14].value,
@@ -575,13 +327,13 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
         new Intl.NumberFormat().format(formData[formDataTitle.FORM6_14].value),
       );
     }
-    if (!formik.values[formDataTitle.FORM6_15] && formData[formDataTitle.FORM6_15]?.value) {
+    if (formData[formDataTitle.FORM6_15]) {
       formik.setFieldValue(
         'investmentItems[6].itemName',
         formData[formDataTitle.FORM6_15].value,
       );
     }
-    if (!formik.values[formDataTitle.FORM6_16] && formData[formDataTitle.FORM6_16]?.value) {
+    if (formData[formDataTitle.FORM6_16]) {
       formik.setFieldValue(
         'investmentItems[6].amount',
         formData[formDataTitle.FORM6_16].value,
@@ -591,13 +343,13 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
         new Intl.NumberFormat().format(formData[formDataTitle.FORM6_16].value),
       );
     }
-    if (!formik.values[formDataTitle.FORM6_17] && formData[formDataTitle.FORM6_17]?.value) {
+    if (formData[formDataTitle.FORM6_17]) {
       formik.setFieldValue(
         'investmentItems[7].itemName',
         formData[formDataTitle.FORM6_17].value,
       );
     }
-    if (!formik.values[formDataTitle.FORM6_18] && formData[formDataTitle.FORM6_18]?.value) {
+    if (formData[formDataTitle.FORM6_18]) {
       formik.setFieldValue(
         'investmentItems[7].amount',
         formData[formDataTitle.FORM6_18].value,
@@ -607,13 +359,13 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
         new Intl.NumberFormat().format(formData[formDataTitle.FORM6_18].value),
       );
     }
-    if (!formik.values[formDataTitle.FORM6_19] && formData[formDataTitle.FORM6_19]?.value) {
+    if (formData[formDataTitle.FORM6_19]) {
       formik.setFieldValue(
         'investmentItems[8].itemName',
         formData[formDataTitle.FORM6_19].value,
       );
     }
-    if (!formik.values[formDataTitle.FORM6_20] && formData[formDataTitle.FORM6_20]?.value) {
+    if (formData[formDataTitle.FORM6_20]) {
       formik.setFieldValue(
         'investmentItems[8].amount',
         formData[formDataTitle.FORM6_20].value,
@@ -623,13 +375,13 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
         new Intl.NumberFormat().format(formData[formDataTitle.FORM6_20].value),
       );
     }
-    if (!formik.values[formDataTitle.FORM6_21] && formData[formDataTitle.FORM6_21]?.value) {
+    if (formData[formDataTitle.FORM6_21]) {
       formik.setFieldValue(
         'investmentItems[9].itemName',
         formData[formDataTitle.FORM6_21].value,
       );
     }
-    if (!formik.values[formDataTitle.FORM6_22] && formData[formDataTitle.FORM6_22]?.value) {
+    if (formData[formDataTitle.FORM6_22]) {
       formik.setFieldValue(
         'investmentItems[9].amount',
         formData[formDataTitle.FORM6_22].value,
@@ -701,6 +453,9 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
   const locale = i18n.language;
 
   async function getSuggestionInvestmentItem(id, retryCount = 0) {
+    const variantID =
+      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+
     callCounterInvestmentItem.current += 1;
 
     if (callCounterInvestmentItem.current >= 2) {
@@ -1138,7 +893,7 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
     };
     formData[formDataTitle.FORM6_23] = {
       id: formDataTitle.FORM6_23,
-      value: mapPlanCurrency[text]?.symbol,
+      value: mapPlanCurrency[text].symbol,
     };
     localStorage.setItem('formData', JSON.stringify(formData));
     formik.setFieldValue('planCurrencySymbol', mapPlanCurrency[text].symbol);
@@ -1183,7 +938,7 @@ export default function Step6InitialInvestment({ secretKey, fbPixelId }) {
             <div className="get-started">
               <div className="form-bg">
                 <div className="flex justify-center items-center mt-5 mb-8 text-black">
-                  {tCommon('step')} {variantID === '2' ? 7 : 6} {tCommon('of')} {variantID === '2' ? 8 : 7}
+                  {t('STEP 6 OF 7')}
                 </div>
                 <h4 className="">
                   {t('Enter Currency and Initial Investment Details')}

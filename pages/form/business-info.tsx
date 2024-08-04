@@ -15,12 +15,10 @@ import { useRouter } from 'next/router';
 import { ROUTE_PATH } from '../../constants/path';
 import Navbar from '../../components/navbar';
 import useBeforeUnload from '../../hooks/useBeforeUnload';
-import useCookies from '../../hooks/useCookies';
 
 export default function Step2BasicInfo({ fbPixelId }) {
   const { t } = useTranslation('Step2BasicInfo');
   const { t: tv } = useTranslation('validate');
-  const { t: tCommon } = useTranslation('common');
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -215,8 +213,7 @@ export default function Step2BasicInfo({ fbPixelId }) {
     }
   }, [session]);
 
-  const { getCookie } = useCookies();
-  const variantID = getCookie("variantID")
+  console.timeEnd('Step1ToStep2:new');
   return (
     <>
       <Navbar fbPixelId={fbPixelId} />
@@ -232,7 +229,7 @@ export default function Step2BasicInfo({ fbPixelId }) {
             <div className="get-started">
               <div className="form-bg">
                 <div className="flex justify-center items-center mt-5 mb-8 text-black">
-                  {tCommon('step')} 2 {tCommon('of')} {variantID === '2' ? 8 : 7}
+                  {t('STEP 2 OF 7')}
                 </div>
                 <h4 className="">{t('Enter Basic Business Information')}</h4>
                 <p>

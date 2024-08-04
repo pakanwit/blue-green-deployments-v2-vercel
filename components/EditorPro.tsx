@@ -1,5 +1,4 @@
 import { useRef, useState, useEffect } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
 import styles from '../styles/Editor.module.css';
 import { MoonLoader } from 'react-spinners';
 import { BiUndo } from 'react-icons/bi';
@@ -14,12 +13,10 @@ import { useTranslation } from 'next-i18next';
 import { API_KEY_HEADER } from '../pages/api/constants';
 import trackEvent from '../utils/trackEvent';
 import Input from './input';
-import useCookies from '../hooks/useCookies';
+import Editor from './editor';
 
 // your code here
 export default function EditorComponent({
-  isFinanceIncomplete,
-
   planIdNum,
 
   Exec,
@@ -170,8 +167,8 @@ export default function EditorComponent({
   const [showUndoExec, setShowUndoExec] = useState(false);
   const [toggleExec, setToggleExec] = useState(false);
 
-  const { getCookie } = useCookies();
-  const variantID = getCookie("variantID")
+  const variantID =
+    typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
 
   const editorRefExec = useRef(null);
 
@@ -4023,11 +4020,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefExec.current = editor)}
               value={contentExec}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerExec}
+              onChange={editorChangeHandlerExec}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -4160,11 +4154,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefSitu1.current = editor)}
               value={contentSitu1}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerSitu1}
+              onChange={editorChangeHandlerSitu1}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -4292,11 +4283,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefSitu2.current = editor)}
               value={contentSitu2}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerSitu2}
+              onChange={editorChangeHandlerSitu2}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -4427,11 +4415,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefMark1.current = editor)}
               value={contentMark1}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerMark1}
+              onChange={editorChangeHandlerMark1}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -4562,11 +4547,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefMark2.current = editor)}
               value={contentMark2}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerMark2}
+              onChange={editorChangeHandlerMark2}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -4697,11 +4679,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefMark3.current = editor)}
               value={contentMark3}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerMark3}
+              onChange={editorChangeHandlerMark3}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -4830,11 +4809,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefMark4.current = editor)}
               value={contentMark4}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerMark4}
+              onChange={editorChangeHandlerMark4}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -4967,11 +4943,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefMark5.current = editor)}
               value={contentMark5}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerMark5}
+              onChange={editorChangeHandlerMark5}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -5100,11 +5073,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefMark6.current = editor)}
               value={contentMark6}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerMark6}
+              onChange={editorChangeHandlerMark6}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -5236,11 +5206,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefOp1.current = editor)}
               value={contentOp1}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerOp1}
+              onChange={editorChangeHandlerOp1}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -5368,11 +5335,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefOp2.current = editor)}
               value={contentOp2}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerOp2}
+              onChange={editorChangeHandlerOp2}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -5503,11 +5467,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefTech1.current = editor)}
               value={contentTech1}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerTech1}
+              onChange={editorChangeHandlerTech1}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -5635,11 +5596,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefTech2.current = editor)}
               value={contentTech2}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerTech2}
+              onChange={editorChangeHandlerTech2}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -5772,11 +5730,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefMang1.current = editor)}
               value={contentMang1}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerMang1}
+              onChange={editorChangeHandlerMang1}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -5904,11 +5859,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefMang2.current = editor)}
               value={contentMang2}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerMang2}
+              onChange={editorChangeHandlerMang2}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -6029,11 +5981,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefGrowth.current = editor)}
               value={contentGrowth}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerGrowth}
+              onChange={editorChangeHandlerGrowth}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -6146,34 +6095,32 @@ export default function EditorComponent({
           </div>
 
           {/*------------------------ Finance -----------------------*/}
-          {!isFinanceIncomplete && (
-            <div className="mt-5">
-              <hr />
-              <div className="flex flex-col justify-center items-start mb-6 mt-5">
-                <h3>{t('Edit Finance')}</h3>
-                <div className="">
-                  {t(
-                    'Note: If you want to edit initial invesment you can download the plan in word format and edit it there, but for the income statement you can scroll to the bottom of the charts to edit',
-                  )}
-                </div>
-              </div>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(contentFin),
-                }}
-              />
-              <br />
-              <div className="flex justify-center items-center mb-6 mt-5">
-                <button
-                  type="button"
-                  className="button-small"
-                  onClick={handleEditFinance}
-                >
-                  {t('Edit Finance')}
-                </button>
+          <div className="mt-5">
+            <hr />
+            <div className="flex flex-col justify-center items-start mb-6 mt-5">
+              <h3>{t('Edit Finance')}</h3>
+              <div className="">
+                {t(
+                  'Note: If you want to edit initial invesment you can download the plan in word format and edit it there, but for the income statement you can scroll to the bottom of the charts to edit',
+                )}
               </div>
             </div>
-          )}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(contentFin),
+              }}
+            />
+            <br />
+            <div className="flex justify-center items-center mb-6 mt-5">
+              <button
+                type="button"
+                className="button-small"
+                onClick={handleEditFinance}
+              >
+                {t('Edit Finance')}
+              </button>
+            </div>
+          </div>
 
           {/*------------------------ Risk and Mitigation -----------------------*/}
           <div className="mt-5">
@@ -6193,11 +6140,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefRisk.current = editor)}
               value={contentRisk}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerRisk}
+              onChange={editorChangeHandlerRisk}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"

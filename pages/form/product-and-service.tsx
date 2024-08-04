@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useFormik, FormikHelpers } from 'formik';
 import { event } from 'nextjs-google-analytics';
@@ -18,9 +18,7 @@ import { useRouter } from 'next/router';
 import Navbar from '../../components/navbar';
 import { useLoadFormData } from '../../hooks/useLoadFormData';
 import { ROUTE_PATH } from '../../constants/path';
-import { AppContext } from '../../context/appContext';
 import useBeforeUnload from '../../hooks/useBeforeUnload';
-import useCookies from '../../hooks/useCookies';
 
 interface FormValues {
   productName1: string;
@@ -36,15 +34,11 @@ interface FormValues {
   productDescription5: string;
 }
 
-export default function Step4Product({ fbPixelId, secretKey, xPixelId }) {
+export default function Step4Product({ fbPixelId, secretKey }) {
   const { t } = useTranslation('Step4Product');
   const { t: tv } = useTranslation('validate');
-  const { t: tCommon } = useTranslation('common');
   const { data: session } = useSession();
   const router = useRouter();
-
-  const { getCookie } = useCookies();
-  const variantID = getCookie("variantID")
 
   const formik = useFormik({
     initialValues: {
@@ -78,21 +72,6 @@ export default function Step4Product({ fbPixelId, secretKey, xPixelId }) {
     customerIncome3,
   } = useLoadFormData();
 
-  const {
-    productName1,
-    productName2,
-    productName3,
-    productName4,
-    productName5,
-    productDescription1,
-    productDescription2,
-    productDescription3,
-    productDescription4,
-    productDescription5,
-  } = formik.values;
-  const {
-    set: { setProductInfoPrompt },
-  } = useContext(AppContext);
   const isCleanCase = Object.keys(formik.errors).length === 0;
 
   useEffect(() => {
@@ -165,49 +144,6 @@ export default function Step4Product({ fbPixelId, secretKey, xPixelId }) {
       );
     }
   }, []);
-  const generatePrompt = (
-    products: { name: string; description: string }[],
-  ) => {
-    let prompt = '';
-
-    products.forEach((product, index) => {
-      if (product.name) {
-        prompt += `Client's product or service #${index + 1} Name: ${product.name}\n`;
-      }
-
-      if (product.description) {
-        prompt += `Client's product or service #${index + 1} Description: ${product.description}\n`;
-      }
-    });
-
-    return prompt;
-  };
-  console.log('formik.values');
-  useEffect(() => {
-    const products = [
-      { name: productName1, description: productDescription1 },
-      { name: productName2, description: productDescription2 },
-      { name: productName3, description: productDescription3 },
-      { name: productName4, description: productDescription4 },
-      { name: productName5, description: productDescription5 },
-    ];
-    console.log('products:', products, formik.values);
-
-    const prompt = generatePrompt(products);
-    console.log('prompt:', prompt);
-    setProductInfoPrompt(prompt);
-  }, [
-    productName1,
-    productName2,
-    productName3,
-    productName4,
-    productName5,
-    productDescription1,
-    productDescription2,
-    productDescription3,
-    productDescription4,
-    productDescription5,
-  ]);
 
   useEffect(() => {
     if (!session) {
@@ -244,7 +180,6 @@ export default function Step4Product({ fbPixelId, secretKey, xPixelId }) {
     useState(false);
 
   const handleInputChangeProductName1 = (event) => {
-    console.log('event:', event.target.value);
     setProductName1Clicked(true);
     setProductName1ShowSuggestion(true);
     formik.handleChange(event);
@@ -425,6 +360,9 @@ export default function Step4Product({ fbPixelId, secretKey, xPixelId }) {
   const pendingExecutionProductName = useRef(null);
 
   async function getSuggestionProductName(id, retryCount = 0) {
+    const variantID =
+      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+
     callCounterProductName.current += 1;
 
     if (callCounterProductName.current >= 2) {
@@ -609,6 +547,9 @@ export default function Step4Product({ fbPixelId, secretKey, xPixelId }) {
   const locale = i18n.language;
 
   async function getSuggestionProductDescription(id, retryCount = 0) {
+    const variantID =
+      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+
     console.log('getSuggestionProductDescription called id: ', id);
     callCounterProductDescription.current += 1;
 
@@ -1062,7 +1003,7 @@ export default function Step4Product({ fbPixelId, secretKey, xPixelId }) {
 
   return (
     <>
-      <Navbar fbPixelId={fbPixelId} xPixelId={xPixelId} />
+      <Navbar fbPixelId={fbPixelId} />
       <motion.div
         key="component-three"
         initial={{ opacity: 0 }}
@@ -1075,7 +1016,7 @@ export default function Step4Product({ fbPixelId, secretKey, xPixelId }) {
             <div className="get-started">
               <div className="form-bg">
                 <div className="flex justify-center items-center mt-5 mb-8 text-black">
-                  {tCommon('step')} 4 {tCommon('of')} {variantID === '2' ? 8 : 7}
+                  {t('STEP 4 OF 7')}
                 </div>
                 <h4 className="">{t('Enter Product or Service Details')}</h4>
                 <div className="form-block-started w-form">
@@ -2379,13 +2320,11 @@ export default function Step4Product({ fbPixelId, secretKey, xPixelId }) {
 export async function getStaticProps({ locale }) {
   const secretKey = process.env.API_KEY;
   const fbPixelId = process.env.FB_PIXEL_ID;
-  const xPixelId = process.env.X_PIXEL_ID;
   return {
     props: {
       ...(await serverSideTranslations(locale, ['Step4Product', 'validate'])),
       secretKey,
       fbPixelId,
-      xPixelId,
       // Will be passed to the page component as props
     },
   };

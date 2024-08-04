@@ -5,11 +5,11 @@ import { GoogleAnalytics } from 'nextjs-google-analytics';
 import 'react-quill/dist/quill.snow.css';
 import { appWithTranslation } from 'next-i18next';
 import '../styles/globals.css';
+import 'react-quill/dist/quill.snow.css';
 import { AppContext } from '../context/appContext';
 import { useRouter } from 'next/router';
 import { ROUTE_PATH } from '../constants/path';
 import ChatbotPopup from '../components/chatbotPopup';
-import useCookies from '../hooks/useCookies';
 function App({ Component, pageProps }) {
   const router = useRouter();
   const [generatedExec, setGeneratedExec] = useState('');
@@ -29,22 +29,13 @@ function App({ Component, pageProps }) {
   const [starterPrice, setStarterPrice] = useState('');
   const [proPrice, setProPrice] = useState('');
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [productInfoPrompt, setProductInfoPrompt] = useState('');
-  const [planId, setPlanId] = useState('');
-  const [isPlanCompleted, setIsPlanCompleted] = useState(false);
-
-  const { getCookie } = useCookies();
-  const variantID = getCookie('variantID');
 
   useEffect(() => {
-    if (
-      router.pathname.startsWith('/form') &&
-      router.pathname !== '/form/generate-result'
-    ) {
+    if (router.pathname.startsWith('/form')) {
       router.push(ROUTE_PATH.objective);
     }
     const ensureVariantIDIsSet = function () {
-      if (variantID) {
+      if (localStorage.getItem('variantID')) {
         const chatbotAutoSuggestionLeft = localStorage.getItem(
           'chatbotAutoSuggestionLeft',
         );
@@ -138,7 +129,6 @@ function App({ Component, pageProps }) {
               planPackage,
               starterPrice,
               proPrice,
-              productInfoPrompt,
             },
             set: {
               setGeneratedExec,
@@ -157,12 +147,7 @@ function App({ Component, pageProps }) {
               setPlanPackage,
               setStarterPrice,
               setProPrice,
-              setProductInfoPrompt,
             },
-            planId,
-            setPlanId,
-            isPlanCompleted,
-            setIsPlanCompleted,
           }}
         >
           <Component {...pageProps} />

@@ -286,53 +286,53 @@ générez tout en français.
     Usted es un consultor profesional y un cliente se acerca a usted para escribir un ${promptTopic.es} largo y detallado para un plan de negocios.
 
     detalles del negocio:
-    detalle de negocio 1: El nombre de la empresa del cliente es ${businessName}.
-    detalle de negocio 2: El tipo de negocio es ${businessType}.
-    detalle de negocio 3: La ubicación del negocio es: ${location}.
-    detalle de negocio 4: El canal de distribución del cliente es: ${salesChannel}.
-    detalle de negocio 5: El estado operativo del negocio del cliente es ${businessOperationalStatus}.
+    detalle del negocio 1: El nombre de la empresa del cliente es ${businessName}.
+    detalle del negocio 2: El tipo de empresa es ${businessType}.
+    detalle del negocio 3: La ubicación de la empresa es: ${location}.
+    detalle del negocio 4: El canal de distribución del cliente es: ${salesChannel}.
+    detalle del negocio 5: El estado operativo de la empresa del cliente es ${businessOperationalStatus}.
 
-    Estos son detalles de los productos o servicios del cliente:
+    Estos son los detalles de los productos o servicios del cliente:
     ${productInfoPrompt}
 
-    para el tema de Actividades Clave, esto debe explicar las actividades que se realizan para que el cliente reciba el producto o servicio. Explique qué sucede en cada una de las actividades individuales. Sea perspicaz al describir las actividades. Envuelva cada actividad con la etiqueta <li>.
+    para el tema de Actividades Clave, esto debería explicar las actividades realizadas para que el cliente reciba el producto o servicio. Explique lo que sucede en cada actividad individual. Sea perspicaz al describir las actividades. Envuelva cada actividad con la etiqueta <li>.
 
-    para el tema de KPIs, debe proponer varios KPIs que sean altamente relevantes e impactantes para este negocio. Cada KPI debe tener estos subtemas: Definición, Importancia y Recolección de Datos. Rodee el nombre del KPI con la etiqueta <li> y luego los subtemas deben estar todos en una nueva línea. Los nombres de los KPIs deben estar en negrita. Proponga al menos 5 KPIs.
+    para el tema de los KPI, debe proponer varios KPI que sean altamente relevantes e impactantes para esta empresa. Cada KPI debe tener estos subtemas: Definición, Importancia y Recolección de Datos. Rodee el nombre del KPI con la etiqueta <li> y luego los subtemas deben estar todos en una nueva línea. Los nombres de los KPI deben estar en negrita. Proponga al menos 5 KPI.
 
-    No repita detalles del negocio.
-    Escriba esto como si usted fuera el propietario del negocio, usando "nosotros" no use "yo".
-    Comience la finalización con "<h3>Operaciones</h3>", seguido de "<h4>Actividades Clave</h4>"
-Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
-générez tout en français.
-    C’est important : Soyez très perspicace dans votre réponse.
-    Voici le long, détaillé et perspicace ${promptTopic.es} que vous avez trouvé :
+    No repita los detalles del negocio.
+    Escriba esto como si fuera el propietario de la empresa, usando "nosotros" y no "yo".
+    Comience la redacción con "<h3>Operaciones</h3>" seguido de "<h4>Actividades Clave</h4>"
+Utilice únicamente etiquetas HTML, no utilice markdown. No utilice ** **, utilice en su lugar la etiqueta <strong> para negrita. No utilice * *, utilice en su lugar la etiqueta <em> para cursiva. No utilice * para viñetas, utilice en su lugar las etiquetas <ul> y <li>.
+Genere todo en español.
+    Esto es importante: Sea muy perspicaz en su respuesta.
+    Este es el largo, detallado y perspicaz ${promptTopic.es} que se le ocurrió:
     `,
 
     //italian lang---------------------------------------------------------------------
     it: `
-    Sei un consulente professionale e un cliente ti si avvicina per scrivere un ${promptTopic.it} lungo e dettagliato per un piano aziendale.
+    Sei un consulente professionale e un cliente si avvicina a te per scrivere un ${promptTopic.it} lungo e dettagliato per un piano aziendale.
 
     dettagli aziendali:
     dettaglio aziendale 1: Il nome dell'azienda del cliente è ${businessName}.
-    dettaglio aziendale 2: Il tipo di attività è ${businessType}.
+    dettaglio aziendale 2: Il tipo di azienda è ${businessType}. 
     dettaglio aziendale 3: La posizione dell'azienda è: ${location}.
     dettaglio aziendale 4: Il canale di distribuzione del cliente è: ${salesChannel}.
     dettaglio aziendale 5: Lo stato operativo dell'azienda del cliente è ${businessOperationalStatus}.
 
-    Questi sono dettagli sui prodotti o servizi del cliente:
+    Questi sono i dettagli dei prodotti o servizi del cliente:
     ${productInfoPrompt}
 
-    per l'argomento Attività Chiave, questo dovrebbe spiegare le attività che vengono intraprese affinché il cliente riceva il prodotto o servizio. Spiega cosa succede in ciascuna delle attività individuali. Sii perspicace nel descrivere le attività. Inserisci ogni attività all'interno del tag <li>.
+    per il tema delle Attività Chiave, questo dovrebbe spiegare le attività intraprese affinché il cliente riceva il prodotto o il servizio. Spiega cosa succede in ciascuna delle singole attività. Sii perspicace quando descrivi le attività. Avvolgi ogni attività con il tag <li>.
 
-    per l'argomento KPI, dovresti proporre diversi KPI che siano altamente rilevanti e impattanti per questa attività. Ogni KPI dovrebbe avere questi sotto-argomenti: Definizione, Importanza e Raccolta Dati. Circonda il nome del KPI con il tag <li> e poi i sotto-argomenti dovrebbero essere tutti su una nuova linea. I nomi dei KPI dovrebbero essere in grassetto. Proporri almeno 5 KPI.
-
+    per il tema degli KPI, dovresti proporre diversi KPI che siano altamente rilevanti e impattanti per questa azienda. Ogni KPI dovrebbe avere questi sottotemi: Definizione, Importanza e Raccolta Dati. Circonda il nome del KPI con il tag <li> e poi i sottotemi dovrebbero essere tutti su una nuova riga. I nomi dei KPI dovrebbero essere in grassetto. Proponi almeno 5 KPI.
+    
     Non ripetere i dettagli aziendali.
     Scrivi questo come se fossi il proprietario dell'azienda, usando "noi" non usare "io".
-    Inizia la conclusione con "<h3>Operazioni</h3>", seguito da "<h4>Attività Chiave</h4>"
-Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
-générez tout en français.
-    C’est important : Soyez très perspicace dans votre réponse.
-    Voici le long, détaillé et perspicace ${promptTopic.it} que vous avez trouvé :
+    Inizia il completamento con "<h3>Operazioni</h3>" seguito da "<h4>Attività Chiave</h4>"
+Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
+    Genera tutto in italiano.
+    Questo è importante: Sii molto perspicace nella tua risposta.
+    Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai ideato:
     `,
 
     //dutch lang ---------------------------------------------------------------------

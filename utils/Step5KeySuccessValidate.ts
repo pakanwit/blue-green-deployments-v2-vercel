@@ -13,27 +13,27 @@ export default function Step3CustGroupValidate(values, tv) {
 
   if (!values.successFactors1) {
     errors.successFactors1 = tv("Required")
-  } else if (values?.successFactors1 && values?.successFactors1.length > 300) {
+  } else if (values.successFactors1.length > 300) {
     errors.successFactors1 = tv("Success factor must be between 1 and 300 characters")
   }
 
-  if (values?.successFactors2 && values?.successFactors2.length > 300) {
+  if (values.successFactors2.length > 300) {
     errors.successFactors2 = tv("Success factor must be between 1 and 300 characters")
   }
 
-  if (values?.successFactors3 && values?.successFactors3.length > 300) {
+  if (values.successFactors3.length > 300) {
     errors.successFactors3 = tv("Success factor must be between 1 and 300 characters")
   }
 
-  if (values?.weakness1 && values?.weakness1.length > 300) {
+  if (values.weakness1.length > 300) {
     errors.weakness1 = tv("Weakness must be between 1 and 300 characters")
   }
 
-  if (values?.weakness2 && values?.weakness2.length > 300) {
+  if (values.weakness2.length > 300) {
     errors.weakness2 = tv("Weakness must be between 1 and 300 characters")
   }
 
-  if (values?.weakness3 && values?.weakness3.length > 300) {
+  if (values.weakness3.length > 300) {
     errors.weakness3 = tv("Weakness must be between 1 and 300 characters")
   }
 

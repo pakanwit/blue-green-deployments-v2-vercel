@@ -20,7 +20,6 @@ import Navbar from '../../components/navbar';
 import { useLoadFormData } from '../../hooks/useLoadFormData';
 import { ROUTE_PATH } from '../../constants/path';
 import useBeforeUnload from '../../hooks/useBeforeUnload';
-import useCookies from '../../hooks/useCookies';
 
 interface FormValues {
   customerDescription1: string;
@@ -31,7 +30,6 @@ interface FormValues {
 export default function Step3CustGroup({ fbPixelId, secretKey }) {
   const { t } = useTranslation('Step3CustGroup');
   const { t: tValidate } = useTranslation('validate');
-  const { t: tCommon } = useTranslation('common');
   const { data: session } = useSession();
   const router = useRouter();
   const callCounter = useRef(0);
@@ -40,9 +38,6 @@ export default function Step3CustGroup({ fbPixelId, secretKey }) {
 
   const { i18n } = useTranslation();
   const locale = i18n.language;
-
-  const { getCookie } = useCookies();
-  const variantID = getCookie('variantID');
 
   const [radioError1, setRadioError1] = useState('');
   const [radioError2, setRadioError2] = useState('');
@@ -265,6 +260,9 @@ export default function Step3CustGroup({ fbPixelId, secretKey }) {
   }, [session]);
 
   async function getSuggestionCustomerDescription(id, retryCount = 0) {
+    const variantID =
+      typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+
     callCounter.current += 1;
 
     if (callCounter.current >= 2) {
@@ -527,7 +525,7 @@ export default function Step3CustGroup({ fbPixelId, secretKey }) {
             <div className="get-started">
               <div className="form-bg">
                 <div className="flex justify-center items-center mt-5 mb-8 text-black">
-                  {tCommon('step')} 3 {tCommon('of')} {variantID === '2' ? 8 : 7}
+                  {t('STEP 3 OF 7')}
                 </div>
                 <h4 className="">{t('Enter Customer Group Details')}</h4>
                 <div className="form-block-started w-form">

@@ -18,10 +18,8 @@ import useLocale from '../hooks/useLocale';
 import { API_KEY_HEADER } from './api/constants';
 import trackEvent from '../utils/trackEvent';
 import Pixel from '../components/Pixel';
-import { ROUTE_PATH } from '../constants/path';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import XPixel from '../components/XPixel';
-import useCookies from '../hooks/useCookies';
 
 declare let gtag: (...args: any[]) => void;
 
@@ -35,9 +33,6 @@ export default function fullPlanPro({
   const { t } = useTranslation('fullPlanPro');
 
   const { data: session } = useSession();
-  
-  const { getCookie } = useCookies();
-  const variantID = getCookie("variantID")
 
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -279,6 +274,9 @@ export default function fullPlanPro({
   const [readyToGeneratePlan, setReadyToGeneratePlan] = useState(false);
   const [isGenerateMark1, setIsGenerateMark1] = useState(false);
 
+  const variantID =
+    typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
+
   useEffect(() => {
     if (userData && userData.paymentStatus === 'paid' && userData.paymentId)
       setPaid(true);
@@ -423,15 +421,15 @@ export default function fullPlanPro({
       let limit;
 
       if (planLanguage === 'ja') {
-        limit = 400;
+        limit = 200;
       } else if (planLanguage === 'ar') {
-        limit = 900;
+        limit = 400;
       } else {
         console.log(
           'planLanguage in useEffect is not ja or ar its: ',
           planLanguage,
         );
-        limit = 1000;
+        limit = 500;
       }
 
       if (userData && userData.plans[0].originalVer.planContent) {
@@ -533,6 +531,7 @@ export default function fullPlanPro({
 
   // enhanced conversion
   const handleConversion = () => {
+    const experimentIDFromLocal = localStorage.getItem('experimentID');
     let price;
     if (
       userData.country === 'IN' ||
@@ -2849,9 +2848,9 @@ export default function fullPlanPro({
     if (userData && userData.plans[0].originalVer.planContent && planLanguage) {
       const planContent = userData.plans[0].originalVer.planContent;
       let limit;
-      if (planLanguage === 'ja') limit = 400;
-      else if (planLanguage === 'ar') limit = 900;
-      else limit = 1000;
+      if (planLanguage === 'ja') limit = 200;
+      else if (planLanguage === 'ar') limit = 400;
+      else limit = 500;
 
       if (planContent.generatedExecPro.length < limit) {
         console.log('exec length less than limit');
@@ -3625,46 +3624,27 @@ export default function fullPlanPro({
                         <div className="flex flex-col justify-center items-center gap-5">
                           {!loading && !isError ? (
                             <div className="flex flex-col justify-center items-center gap-4">
-                              {
-                                variantID === '2' ?
-                                <Link
-                                  href={{
-                                    pathname: ROUTE_PATH.investmentItems,
-                                  }}
-                                  className="button"
-                                  onClick={() => {
-                                    trackEvent({
-                                      event_name: 'complete_finance_button',
-                                    });
-                                  }}
-                                >
-                                  {t('goToFinanceSection')}
-                                </Link>
-                                : <>
-                                <p>
-                                  <strong>
-                                    {t(
-                                      'Congratulations On Making Your First Plan!',
-                                    )}
-                                  </strong>
-                                </p>
-                                <Link
-                                  href={{
-                                    pathname: '/editPlanPro',
-                                    query: { planId: 1 },
-                                  }}
-                                  className="button"
-                                  onClick={() => {
-                                    trackEvent({
-                                      event_name: 'edit_and_save_button',
-                                    });
-                                  }}
-                                >
-                                  {t('Edit & Save')}
-                                </Link>
-                              </>
-                              }
-                              
+                              <p>
+                                <strong>
+                                  {t(
+                                    'Congratulations On Making Your First Plan!',
+                                  )}
+                                </strong>
+                              </p>
+                              <Link
+                                href={{
+                                  pathname: '/editPlanPro',
+                                  query: { planId: 1 },
+                                }}
+                                className="button"
+                                onClick={() => {
+                                  trackEvent({
+                                    event_name: 'edit_and_save_button',
+                                  });
+                                }}
+                              >
+                                {t('Edit & Save')}
+                              </Link>
                             </div>
                           ) : (
                             <></>

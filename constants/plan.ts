@@ -11,8 +11,3 @@ export const price = {
   PRO_SPECIAL: 48,
   PRO: 99,
 }
-
-export const AI_MODEL = {
-  GPT_3_5_TURBO: 'gpt-3.5-turbo',
-  GPT_4O_MINI: 'gpt-4o-mini',
-}

@@ -29,7 +29,6 @@ import trackEvent from '../utils/trackEvent';
 import { formDataTitle } from '../constants/formTitle';
 import Pixel from '../components/Pixel';
 import XPixel from '../components/XPixel';
-import useCookies from '../hooks/useCookies';
 
 interface MainWizardProps {
   secretKey: string;
@@ -196,9 +195,6 @@ export default function mainWizard({ secretKey, fbPixelId, xPixelId }: MainWizar
   const [fetchError, setFetchError] = useState(false);
   const [userData, setuserData] = useState(null);
   const [validPlanQuota, setValidPlanQuota] = useState(true);
-
-  const { getCookie } = useCookies();
-  const variantID = getCookie("variantID")
 
   useEffect(() => {
     if (!session) {
@@ -994,11 +990,11 @@ export default function mainWizard({ secretKey, fbPixelId, xPixelId }: MainWizar
   const [addNewPlanDone, setAddNewPlanDone] = useState(false);
 
   useEffect(() => {
-    let limit = 1000;
+    let limit = 500;
     if (planLanguage === 'ja') {
-      limit -= 600;
+      limit = 200;
     } else if (planLanguage === 'ar') {
-      limit -= 100;
+      limit = 400;
     }
 
     if (allDoneGenerating) {
@@ -2474,11 +2470,11 @@ export default function mainWizard({ secretKey, fbPixelId, xPixelId }: MainWizar
 
   useEffect(() => {
     if (planLanguage) {
-      let limit = 1000;
+      let limit = 500;
       if (planLanguage === 'ja') {
-        limit = 400;
+        limit = 200;
       } else if (planLanguage === 'ar') {
-        limit = 900;
+        limit = 400;
       }
 
       if (allDoneGeneratingStarter) {
@@ -5482,7 +5478,7 @@ export default function mainWizard({ secretKey, fbPixelId, xPixelId }: MainWizar
   //split test code ////////////////////////////////////////////////////
   useEffect(() => {
     if (userData && !userData.variantID) {
-      fetch('/api/updateUserVariantID', {
+      fetch('/api/updateUserVariant', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -5490,7 +5486,7 @@ export default function mainWizard({ secretKey, fbPixelId, xPixelId }: MainWizar
         },
         body: JSON.stringify({
           email: userData.email,
-          variantID,
+          variantID: localStorage.getItem('variantID'),
         }),
       })
         .then((res) => res.json())

@@ -339,35 +339,35 @@ Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas
 
     //italian lang----------------------------------------------
     it: `
-    Lei è un consulente professionale e un cliente si rivolge a lei per scrivere un ${promptTopic.it} lungo e dettagliato per un piano aziendale.
+    Sei un consulente professionale e un cliente si avvicina a te per scrivere un lungo e dettagliato ${promptTopic.it} per un piano aziendale.
 
     dettagli aziendali:
     dettaglio aziendale 1: Il nome dell'azienda del cliente è ${businessName}.
     dettaglio aziendale 2: Il tipo di attività è ${businessType}.
-    dettaglio aziendale 3: La ubicazione dell'azienda è: ${location}.
+    dettaglio aziendale 3: La posizione dell'azienda è: ${location}.
     dettaglio aziendale 4: Il canale di distribuzione del cliente è: ${salesChannel}.
     dettaglio aziendale 5: Lo stato operativo dell'azienda del cliente è ${businessOperationalStatus}.
 
     Questi sono i dettagli dei prodotti o servizi del cliente:
     ${productInfoPrompt}
 
-    per il sottotema Selezione Tecnologica, selezionare e descrivere le tecnologie rilevanti da utilizzare per questa specifica attività. Si dovrebbero scegliere tecnologie che si adattino alle capacità e risorse dell'azienda (una piccola impresa con un paio di dipendenti non dovrebbe utilizzare tecnologie complicate o costose). circondare ogni tecnologia con il tag <li>.
+    per il sottotema Selezione Tecnologica, seleziona e descrivi le tecnologie rilevanti da utilizzare per questa specifica attività. Dovresti scegliere tecnologie che corrispondano alle capacità e alle risorse dell'azienda (una piccola impresa con un paio di dipendenti non dovrebbe utilizzare tecnologie complicate o costose). circonda ogni tecnologia con il tag <li>.
 
-    per il sottotema Contributo Tecnologico Previsto, suggerire come la tecnologia contribuirà all'azienda. circondare ogni contributo tecnologico con il tag <li>.
+    per il sottotema Contributo Tecnologico Previsto, suggerisci come la tecnologia contribuirà all'azienda. circonda ogni contributo tecnologico con il tag <li>.
 
-    per il tema Requisiti Tecnologici, dalle tecnologie selezionate, elencare i requisiti per ciascuna tecnologia in termini di hardware, software e rete. circondare ogni requisito con il tag <li>.
+    per il tema Requisiti Tecnologici, dalle tecnologie selezionate, elenca i requisiti per ciascuna tecnologia in termini di hardware, software e rete. circonda ogni requisito con il tag <li>.
 
-    per il tema Implementazione della Tecnologia, elencare i passi per implementare la tecnologia, includendo dettagli su come selezionare un fornitore tecnologico. circondare ogni passo con il tag <li>.
+    per il tema Implementazione della Tecnologia, elenca i passaggi per implementare la tecnologia, includendo dettagli su come selezionare un fornitore tecnologico. circonda ogni passaggio con il tag <li>.
 
-    per il tema Gestione della Tecnologia, includere dettagli sulla manutenzione, gli aggiornamenti, la gestione dei dati e la sicurezza. circondare ogni passo con il tag <li>.
+    per il tema Gestione della Tecnologia, includi dettagli sulla manutenzione, gli aggiornamenti, la gestione dei dati e la sicurezza. circonda ogni passaggio con il tag <li>.
 
     Non ripetere i dettagli aziendali.
-    Scriva questo come se fosse il proprietario dell'azienda, usando "noi" e non "io".
-    Iniziare la redazione con "<h3>Strategia Tecnologica</h3>" seguito da "<h4>Selezione della Tecnologia</h4>"
-  Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
-Générez tout en français.
-C’est important : Soyez très perspicace dans votre réponse.
-Voici le long, détaillé et perspicace ${promptTopic.it} que vous avez trouvé :
+    Scrivi questo come se fossi il proprietario dell'azienda, usando "noi" e non "io".
+    Inizia la redazione con "<h3>Strategia Tecnologica</h3>" seguito da "<h4>Selezione della Tecnologia</h4>"
+    Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
+    Genera tutto in italiano.
+    Questo è importante: Sii molto perspicace nella tua risposta.
+    Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai trovato:
     `,
 
     //dutch lang----------------------------------------------

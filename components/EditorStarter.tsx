@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
+// import Editor from 'react-quill';
 import styles from '../styles/Editor.module.css';
 import { MoonLoader } from 'react-spinners';
 import { BiUndo } from 'react-icons/bi';
@@ -10,12 +10,11 @@ import FinTable from './FinTable';
 import ReactDOMServer from 'react-dom/server';
 import EditFinance from './EditFinance';
 import DOMPurify from 'dompurify';
-import { set } from 'mongoose';
 import { useTranslation } from 'next-i18next';
 import { API_KEY_HEADER } from '../pages/api/constants';
 import trackEvent from '../utils/trackEvent';
 import Input from './input';
-import useCookies from '../hooks/useCookies';
+import Editor from './editor';
 
 export default function EditorComponent({
   planIdNum,
@@ -117,7 +116,6 @@ export default function EditorComponent({
   contentFin,
   contentRisk,
   secretKey,
-  isFinanceIncomplete,
 }) {
   // console.log("initialInvestmentAmount: ", initialInvestmentAmount);
   // console.log("investmentItem1: ", investmentItem1);
@@ -157,7 +155,7 @@ export default function EditorComponent({
   useEffect(() => {
     setShowTopContent(true);
   }, []);
-
+  
   //Exec ------------------------------------------------------------------
   const [editInputExec, setEditExec] = useState('');
   const [isErrorExec, setIsErrorExec] = useState(false);
@@ -171,10 +169,8 @@ export default function EditorComponent({
   const [showUndoExec, setShowUndoExec] = useState(false);
   const [toggleExec, setToggleExec] = useState(false);
 
-  const editorRefExec = useRef(null);
-
-  const { getCookie } = useCookies();
-  const variantID = getCookie("variantID")
+  const variantID =
+    typeof window !== 'undefined' ? localStorage.getItem('variantID') : '';
 
   useEffect(() => {
     if (getUpdateFromParentExec) {
@@ -1673,7 +1669,6 @@ export default function EditorComponent({
   const [getUpdateFromParentRisk, setGetUpdateFromParentRisk] = useState(true);
   const [showUndoRisk, setShowUndoRisk] = useState(false);
   const [toggleRisk, setToggleRisk] = useState(false);
-
   const editorRefRisk = useRef(null);
 
   const handleEditFinance = () => {
@@ -2016,9 +2011,8 @@ export default function EditorComponent({
       throw error;
     }
   }
-
   const { t } = useTranslation('EditorStarter');
-
+  
   return (
     <>
       {isEdittingFinance ? (
@@ -2092,11 +2086,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefExec.current = editor)}
               value={contentExec}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerExec}
+              onChange={editorChangeHandlerExec}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -2221,11 +2212,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefSitu.current = editor)}
               value={contentSitu}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerSitu}
+              onChange={editorChangeHandlerSitu}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -2352,11 +2340,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefMark1.current = editor)}
               value={contentMark1}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerMark1}
+              onChange={editorChangeHandlerMark1}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -2487,11 +2472,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefMark2.current = editor)}
               value={contentMark2}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerMark2}
+              onChange={editorChangeHandlerMark2}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -2628,11 +2610,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefMark3.current = editor)}
               value={contentMark3}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerMark3}
+              onChange={editorChangeHandlerMark3}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -2761,11 +2740,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefOp.current = editor)}
               value={contentOp}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerOp}
+              onChange={editorChangeHandlerOp}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -2892,11 +2868,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefMang.current = editor)}
               value={contentMang}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerMang}
+              onChange={editorChangeHandlerMang}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"
@@ -3009,34 +2982,32 @@ export default function EditorComponent({
           </div>
 
           {/*------------------------ Finance -----------------------*/}
-          {isFinanceIncomplete && (
-            <div className="mt-5">
-              <hr />
-              <div className="flex flex-col justify-center items-start mb-6 mt-5">
-                <h3>{t('Edit Finance')}</h3>
-                <div className="">
-                  {t(
-                    'Note: If you want to edit initial invesment you can download the plan in word format and edit it there, but for the income statement you can scroll to the bottom of the charts to edit',
-                  )}
-                </div>
-              </div>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(contentFin),
-                }}
-              />
-              <br />
-              <div className="flex justify-center items-center mb-6 mt-5">
-                <button
-                  type="button"
-                  className="button-small"
-                  onClick={handleEditFinance}
-                >
-                  {t('Edit Finance')}
-                </button>
+          <div className="mt-5">
+            <hr />
+            <div className="flex flex-col justify-center items-start mb-6 mt-5">
+              <h3>{t('Edit Finance')}</h3>
+              <div className="">
+                {t(
+                  'Note: If you want to edit initial invesment you can download the plan in word format and edit it there, but for the income statement you can scroll to the bottom of the charts to edit',
+                )}
               </div>
             </div>
-          )}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(contentFin),
+              }}
+            />
+            <br />
+            <div className="flex justify-center items-center mb-6 mt-5">
+              <button
+                type="button"
+                className="button-small"
+                onClick={handleEditFinance}
+              >
+                {t('Edit Finance')}
+              </button>
+            </div>
+          </div>
 
           {/*------------------------ Risk and Mitigation -----------------------*/}
           <div className="mt-5">
@@ -3053,11 +3024,8 @@ export default function EditorComponent({
               )}
             </div>
             <Editor
-              apiKey={editorApiKey}
-              onInit={(evt, editor) => (editorRefRisk.current = editor)}
               value={contentRisk}
-              init={editorInit}
-              onEditorChange={editorChangeHandlerRisk}
+              onChange={editorChangeHandlerRisk}
             />
             <form
               className="flex flex-col justify-center items-start mt-2"

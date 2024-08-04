@@ -1,4 +1,3 @@
-import { AI_MODEL } from '../../../../constants/plan';
 import { OpenAIStream } from '../../../../utils/OpenAIChatStream';
 
 interface IIndustryOverviewProHandler {
@@ -32,7 +31,6 @@ interface IIndustryOverviewProHandler {
   productName5: string;
   productDescription5: string;
   variantID: string;
-  modelName?: string;
 }
 
 export const situationAnalysisIndustryOverview = (
@@ -57,7 +55,6 @@ export const situationAnalysisIndustryOverview = (
     productDescription5,
     variantID,
     planQuota,
-    modelName,
   } = req;
 
   function generatePrompt(
@@ -193,49 +190,53 @@ export const situationAnalysisIndustryOverview = (
   };
 
   const promptTemplates = {
-    en: `You are a professional consultant, and a client approaches you to write a detailed ${promptTopic.en} for a business plan.
-    These are the business details:
-    business detail 1: The client's business name is ${businessName}.
-    business detail 2: The type of business is ${businessType}. 
-    business detail 3: This is where the business's customers are: ${location}.
-    business detail 4: The client's distribution channel is ${salesChannel}.
-    business detail 5: The client's business operational status is ${businessOperationalStatus}.
+    'en-uk': `
+  You are a professional consultant, and a client approaches you to write a long and detailed ${promptTopic.en} for a business plan. If the ${promptTopic.en} is not long and detailed the client will be very upset.
+  These are the business details:
+  business detail 1: The client's business name is ${businessName}.
+  business detail 2: The type of business is ${businessType}. 
+  business detail 3: This is where the business's customers are: ${location}.
+  business detail 4: The client's distribution channel is ${salesChannel}.
+  business detail 5: The client's business operational status is ${businessOperationalStatus}.
+
+  These are details of the client's products or services:
+  ${productInfoPrompt}
+
+  These are further instructions:
+  Have a positive outlook when generating ${promptTopic.en}.
+  Be very descriptive when generating content on ${promptTopic.en}.
+  Don't mention customer segments.
+  Each topic should contain roughly the same amount of text.
+  be very descriptive when generating ${promptTopic.en}.
   
-    These are details of the client's products or services:
-    ${productInfoPrompt}
+  Include statistics and it's source where relevant but don't use data that contains the years 2021 and onwards because we are currently in 2023.
+  DO NOT quote made-up statistics or quote a made-up research firm like ABC Research or XYZ Research.
+  DO NOT mention undefined statistics like $XX.XX or XX.X%.
+  Don't include repetitive statistics.
   
-    These are further instructions:
-    Have a positive outlook when generating ${promptTopic.en}.
-    Be very descriptive when generating content on ${promptTopic.en}.
-    Don't mention customer segments.
-    Each topic should contain roughly the same amount of text.
-    be very descriptive when generating ${promptTopic.en}.
-    
-    Include statistics and it's source where relevant but don't use data that contains the years 2021 and onwards because we are currently in 2023.
-    DO NOT quote made-up statistics or quote a made-up research firm like ABC Research or XYZ Research.
-    DO NOT mention undefined statistics like $XX.XX, $X.XX, XX.X%, or XX.XX%.
-    Don't include repetitive statistics.
-    
-    Write this as if you are the owner of the business, using "we" don't use "I".
-    Don't include other topics unless specified here.
-    Generate response in html surrounding "Industry Overview" and "Key Market Trends" with h4 tag.
-    In "Key Market Trends" topic surround each key trend with <li> tag. 
-    Begin the completion with "<h3>Situation Analysis</h3>" followed by "<h4>Industry Overview</h4>"
-    use only HTML tags don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <li> tag.
+  Write this as if you are the owner of the business, using "we" don't use "I".
+  Don't include other topics unless specified here.
+  Generate response in html surrounding "Industry Overview" and "Key Market Trends" with h4 tag.
+  In "Key Market Trends" topic surround each key trend with <li> tag. 
+  Begin the completion with "<h3>Situation Analysis</h3>" followed by "<h4>Industry Overview</h4>"
+Use only HTML tags, don’t use markdown. Don’t use ** **, instead use <strong> tag for bold. Don’t use * *, instead use <em> tag for italic. Don’t use * for bullet points, instead use <ul> and <li> tag.
   Generate everything in English.
-  This is important: Be very insightful in your response
-    This is the ${promptTopic.en} you came up with:`,
-    'en-uk': `You are a professional consultant, and a client approaches you to write a detailed ${promptTopic.en} for a business plan.
+  use british english spelling and grammar
+  This is important: Be very insightful in your response.
+  This is the long, detailed, and insightful ${promptTopic.en} you came up with:
+  `,
+    en: `
+    You are a professional consultant, and a client approaches you to write a long and detailed ${promptTopic.en} for a business plan. If the ${promptTopic.en} is not long and detailed the client will be very upset.
     These are the business details:
     business detail 1: The client's business name is ${businessName}.
     business detail 2: The type of business is ${businessType}. 
     business detail 3: This is where the business's customers are: ${location}.
     business detail 4: The client's distribution channel is ${salesChannel}.
     business detail 5: The client's business operational status is ${businessOperationalStatus}.
-  
+
     These are details of the client's products or services:
     ${productInfoPrompt}
-  
+
     These are further instructions:
     Have a positive outlook when generating ${promptTopic.en}.
     Be very descriptive when generating content on ${promptTopic.en}.
@@ -245,7 +246,7 @@ export const situationAnalysisIndustryOverview = (
     
     Include statistics and it's source where relevant but don't use data that contains the years 2021 and onwards because we are currently in 2023.
     DO NOT quote made-up statistics or quote a made-up research firm like ABC Research or XYZ Research.
-    DO NOT mention undefined statistics like $XX.XX, $X.XX, XX.X%, or XX.XX%.
+    DO NOT mention undefined statistics like $XX.XX or XX.X%.
     Don't include repetitive statistics.
     
     Write this as if you are the owner of the business, using "we" don't use "I".
@@ -253,372 +254,411 @@ export const situationAnalysisIndustryOverview = (
     Generate response in html surrounding "Industry Overview" and "Key Market Trends" with h4 tag.
     In "Key Market Trends" topic surround each key trend with <li> tag. 
     Begin the completion with "<h3>Situation Analysis</h3>" followed by "<h4>Industry Overview</h4>"
-    use only HTML tags don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <li> tag.
+Use only HTML tags, don't use markdown. Don't use ** **, instead use <strong> tag for bold. Don't use * *, instead use <em> tag for italic. Don't use * for bullet points, instead use <ul> and <li> tag.
     Generate everything in English.
-    This is important: Be very insightful in your response
-    use british english spelling and grammar
-    This is the ${promptTopic.en} you came up with:`,
-    de: `Sie sind ein professioneller Berater, und ein Kunde wendet sich an Sie, um ein detailliertes ${promptTopic.de} für einen Geschäftsplan zu schreiben.
+    This is important: Be very insightful in your response.
+    This is the long, detailed, and insightful ${promptTopic.en} you came up with:
+    `,
+
+    //german lang ------------------------------------------------------------------------
+    de: `Sie sind ein professioneller Berater und ein Kunde kommt auf Sie zu, um einen langen und detaillierten ${promptTopic.de} für einen Geschäftsplan zu verfassen. Wenn ${promptTopic.de} nicht lang und detailliert ist, wird der Kunde sehr verärgert sein.
     Dies sind die Geschäftsdaten:
-    Geschäftsdaten 1: Der Name des Unternehmens des Kunden ist ${businessName}.
-    Geschäftsdaten 2: Die Art des Unternehmens ist ${businessType}. 
-    Geschäftsdaten 3: Hier befinden sich die Kunden des Unternehmens: ${location}.
-    Geschäftsdaten 4: Der Vertriebskanal des Kunden ist ${salesChannel}.
-    Geschäftsdaten 5: Der betriebliche Status des Unternehmens des Kunden ist ${businessOperationalStatus}.
-  
-    Dies sind die Details zu den Produkten oder Dienstleistungen des Kunden:
+    Geschäftsdetail 1: Der Firmenname des Kunden ist ${businessName}.
+    Geschäftsdetail 2: Die Art des Geschäfts ist ${businessType}.
+    Geschäftsdetail 3: Hier befinden sich die Kunden des Unternehmens: ${location}.
+    Geschäftsdetail 4: Der Vertriebskanal des Kunden ist ${salesChannel}.
+    Geschäftsdetail 5: Der geschäftliche Betriebsstatus des Kunden ist ${businessOperationalStatus}.
+
+    Dies sind Angaben zu den Produkten oder Dienstleistungen des Kunden:
     ${productInfoPrompt}
-  
+
     Dies sind weitere Anweisungen:
-    Haben Sie eine positive Einstellung, wenn Sie ${promptTopic.de} generieren.
-    Seien Sie sehr beschreibend, wenn Sie Inhalte zu ${promptTopic.de} generieren.
+    Seien Sie positiv eingestellt, wenn Sie ${promptTopic.de} generieren.
+    Seien Sie sehr beschreibend, wenn Sie Inhalte auf ${promptTopic.de} erstellen.
     Erwähnen Sie keine Kundensegmente.
-    Jedes Thema sollte ungefähr die gleiche Menge an Text enthalten.
-    Seien Sie sehr beschreibend, wenn Sie ${promptTopic.de} generieren.
-    
-    Fügen Sie Statistiken und deren Quelle hinzu, wo relevant, aber verwenden Sie keine Daten, die die Jahre 2021 und darüber hinaus enthalten, da wir uns derzeit im Jahr 2023 befinden.
-    Zitieren Sie KEINE erfundenen Statistiken oder ein erfundenes Forschungsunternehmen wie ABC Research oder XYZ Research.
-    Erwähnen Sie KEINE undefinierten Statistiken wie $XX.XX, $X.XX, XX.X% oder XX.XX%.
-    Fügen Sie keine sich wiederholenden Statistiken hinzu.
-    
-    Schreiben Sie dies, als ob Sie der Eigentümer des Unternehmens wären, verwenden Sie "wir", nicht "ich".
-    Fügen Sie keine anderen Themen hinzu, es sei denn, sie sind hier angegeben.
-    Generieren Sie die Antwort in HTML, umgeben von "Branchenüberblick" und "Wichtige Markttrends" mit dem h4-Tag.
-    Im Thema "Wichtige Markttrends" umgeben Sie jeden wichtigen Trend mit dem <li>-Tag. 
-    Beginnen Sie die Ausführung mit "<h3>Situationsanalyse</h3>" gefolgt von "<h4>Branchenüberblick</h4>"
-    Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie das <strong>-Tag für fett. Verwenden Sie nicht * *, sondern verwenden Sie das <em>-Tag für kursiv. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie das <li>-Tag.
-  Generieren Sie alles auf Deutsch.
-  Das ist wichtig: Seien Sie sehr aufschlussreich in Ihrer Antwort.
-  Das ist wichtig: Seien Sie sehr aufschlussreich in Ihrer Antwort
-    Dies ist das ${promptTopic.de}, das Sie sich ausgedacht haben:`,
-    fr: `Vous êtes un consultant professionnel, et un client vous approche pour rédiger un ${promptTopic.fr} détaillé pour un plan d'affaires.
-    Voici les détails de l'entreprise:
-    détail de l'entreprise 1: Le nom de l'entreprise du client est ${businessName}.
-    détail de l'entreprise 2: Le type d'entreprise est ${businessType}. 
-    détail de l'entreprise 3: Voici où se trouvent les clients de l'entreprise: ${location}.
-    détail de l'entreprise 4: Le canal de distribution du client est ${salesChannel}.
-    détail de l'entreprise 5: Le statut opérationnel de l'entreprise du client est ${businessOperationalStatus}.
+    Jedes Thema sollte ungefähr die gleiche Textmenge enthalten.
+    Seien Sie beim Generieren von ${promptTopic.de} sehr aussagekräftig.
   
-    Voici les détails des produits ou services du client:
-    ${productInfoPrompt}
+    Fügen Sie Statistiken und deren Quelle ein, wo es relevant ist, verwenden Sie jedoch keine Daten, die die Jahre 2021 und darüber hinaus enthalten, da wir uns derzeit im Jahr 2023 befinden.
+    ZITIEREN SIE KEINE erfundenen Statistiken oder zitieren Sie kein erfundenes Forschungsunternehmen wie ABC Research oder XYZ Research.
+    Erwähnen Sie KEINE undefinierten Statistiken wie $XX.XX oder XX.X%.
+    Fügen Sie keine wiederholten Statistiken ein.
   
-    Voici d'autres instructions:
-    Ayez une perspective positive lors de la génération de ${promptTopic.fr}.
-    Soyez très descriptif lors de la génération de contenu sur ${promptTopic.fr}.
-    Ne mentionnez pas les segments de clientèle.
-    Chaque sujet doit contenir à peu près la même quantité de texte.
-    Soyez très descriptif lors de la génération de ${promptTopic.fr}.
-    
-    Incluez des statistiques et leur source lorsque cela est pertinent, mais n'utilisez pas de données contenant les années 2021 et au-delà car nous sommes actuellement en 2023.
-    NE citez PAS de statistiques inventées ou un institut de recherche inventé comme ABC Research ou XYZ Research.
-    NE mentionnez PAS de statistiques non définies comme $XX.XX, $X.XX, XX.X% ou XX.XX%.
-    N'incluez pas de statistiques répétitives.
-    
-    Écrivez ceci comme si vous étiez le propriétaire de l'entreprise, en utilisant "nous" et non "je".
-    N'incluez pas d'autres sujets à moins qu'ils ne soient spécifiés ici.
-    Générez la réponse en HTML entourant "Vue d'ensemble de l'industrie" et "Tendances clés du marché" avec la balise h4.
-    Dans le sujet "Tendances clés du marché", entourez chaque tendance clé avec la balise <li>. 
-    Commencez la réalisation par "<h3>Analyse de la situation</h3>" suivi de "<h4>Vue d'ensemble de l'industrie</h4>"
-    Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les puces, utilisez plutôt la balise <li>.
+    Schreiben Sie dies so, als ob Sie der Eigentümer des Unternehmens wären. Verwenden Sie „wir“ und nicht „ich“.
+    Fügen Sie keine anderen Themen hinzu, sofern hier nicht anders angegeben.
+    Generieren Sie mit dem h4-Tag Antworten im HTML-Format rund um „Branchenübersicht“ und „Wichtige Markttrends“.
+    Umgeben Sie im Thema „Wichtige Markttrends“ jeden wichtigen Trend mit dem Tag <li>.
+    Beginnen Sie den Abschluss mit „<h3>Situationsanalyse</h3>“, gefolgt von „<h4>Branchenüberblick</h4>“.
+Verwenden Sie nur HTML-Tags, verwenden Sie kein Markdown. Verwenden Sie nicht ** **, sondern verwenden Sie den <strong>-Tag für Fettschrift. Verwenden Sie nicht * *, sondern verwenden Sie den <em>-Tag für Kursivschrift. Verwenden Sie nicht * für Aufzählungspunkte, sondern verwenden Sie die <ul>- und <li>-Tags.
+    Fertigstellung auf Deutsch generieren.
+    Dies ist wichtig: Seien Sie in Ihrer Antwort sehr einsichtig.
+    Dies ist das lange, detaillierte und aufschlussreiche ${promptTopic.de}, das Sie sich ausgedacht haben:`,
+
+    //french lang ------------------------------------------------------------------------
+    fr: `
+  Vous êtes un consultant professionnel, et un client vous approche pour rédiger un ${promptTopic.fr} long et détaillé pour un plan d'affaires. Si le ${promptTopic.fr} n'est pas long et détaillé, le client sera très mécontent.
+  Voici les détails de l'entreprise :
+  détail commercial 1 : Le nom de l'entreprise du client est ${businessName}.
+  détail commercial 2 : Le type d'entreprise est ${businessType}.
+  détail commercial 3 : Voici où se trouvent les clients de l'entreprise : ${location}.
+  détail commercial 4 : Le canal de distribution du client est ${salesChannel}.
+  détail commercial 5 : Le statut opérationnel de l'entreprise du client est ${businessOperationalStatus}.
+
+  Voici les détails des produits ou services du client :
+  ${productInfoPrompt}
+
+  Voici d'autres instructions :
+  Ayez une perspective positive lors de la génération du ${promptTopic.fr}.
+  Soyez très descriptif lors de la génération du contenu sur ${promptTopic.fr}.
+  Ne mentionnez pas les segments de clients.
+  Chaque sujet doit contenir approximativement la même quantité de texte.
+  soyez très descriptif lors de la génération du ${promptTopic.fr}.
+
+  Incluez des statistiques et leur source lorsque cela est pertinent, mais n'utilisez pas de données contenant les années 2021 et suivantes car nous sommes actuellement en 2023.
+  NE PAS citer de statistiques inventées ou citer une entreprise de recherche fictive comme ABC Research ou XYZ Research.
+  Ne pas mentionner de statistiques indéfinies comme $XX.XX ou XX.X%.
+  Ne pas inclure de statistiques répétitives.
+
+  Rédigez cela comme si vous étiez le propriétaire de l'entreprise, en utilisant "nous", ne pas utiliser "je".
+  Ne pas inclure d'autres sujets à moins qu'ils ne soient spécifiés ici.
+  Générez la réponse en HTML en entourant "Vue d'ensemble de l'industrie" et "Tendances clés du marché" avec la balise h4.
+  Dans le sujet "Tendances clés du marché", entourez chaque tendance clé avec la balise <li>.
+  Commencez la réalisation par "<h3>Analyse de la Situation</h3>" suivi de "<h4>Vue d'ensemble de l'industrie</h4>"
+Utilisez uniquement des balises HTML, n'utilisez pas de markdown. N'utilisez pas ** **, utilisez plutôt la balise <strong> pour le gras. N'utilisez pas * *, utilisez plutôt la balise <em> pour l'italique. N'utilisez pas * pour les points de liste, utilisez plutôt les balises <ul> et <li>.
   Générez tout en français.
-  C'est important : Soyez très perspicace dans votre réponse
-    Voici le ${promptTopic.fr} que vous avez proposé:`,
-    es: `Usted es un consultor profesional, y un cliente se le acerca para escribir un ${promptTopic.es} detallado para un plan de negocios.
-    Estos son los detalles del negocio:
-    detalle del negocio 1: El nombre del negocio del cliente es ${businessName}.
-    detalle del negocio 2: El tipo de negocio es ${businessType}. 
-    detalle del negocio 3: Aquí es donde están los clientes del negocio: ${location}.
-    detalle del negocio 4: El canal de distribución del cliente es ${salesChannel}.
-    detalle del negocio 5: El estado operativo del negocio del cliente es ${businessOperationalStatus}.
-  
-    Estos son los detalles de los productos o servicios del cliente:
-    ${productInfoPrompt}
-  
-    Estas son más instrucciones:
-    Tenga una perspectiva positiva al generar ${promptTopic.es}.
-    Sea muy descriptivo al generar contenido sobre ${promptTopic.es}.
-    No mencione segmentos de clientes.
-    Cada tema debe contener aproximadamente la misma cantidad de texto.
-    Sea muy descriptivo al generar ${promptTopic.es}.
-    
-    Incluya estadísticas y su fuente cuando sea relevante, pero no use datos que contengan los años 2021 en adelante porque actualmente estamos en 2023.
-    NO cite estadísticas inventadas ni cite una firma de investigación inventada como ABC Research o XYZ Research.
-    NO mencione estadísticas indefinidas como $XX.XX, $X.XX, XX.X% o XX.XX%.
-    No incluya estadísticas repetitivas.
-    
-    Escriba esto como si fuera el propietario del negocio, usando "nosotros" no "yo".
-    No incluya otros temas a menos que se especifiquen aquí.
-    Genere la respuesta en HTML rodeando "Panorama del sector" y "Principales tendencias del mercado" con la etiqueta h4.
-    En el tema "Principales tendencias del mercado" rodee cada tendencia clave con la etiqueta <li>. 
-    Comience la realización con "<h3>Análisis de la situación</h3>" seguido de "<h4>Panorama del sector</h4>"
-    Use solo etiquetas HTML, no use markdown. No use ** **, en su lugar use la etiqueta <strong> para negrita. No use * *, en su lugar use la etiqueta <em> para cursiva. No use * para puntos de viñeta, en su lugar use la etiqueta <li>.
+  C’est important : Soyez très perspicace dans votre réponse.
+  Voici le long, détaillé et perspicace ${promptTopic.fr} que vous avez trouvé :
+    `,
+
+    //spanish lang ------------------------------------------------------------------------
+
+    es: `
+    Usted es un consultor profesional, y un cliente se acerca a usted para escribir un ${promptTopic.es} largo y detallado para un plan de negocios. Si el ${promptTopic.es} no es largo y detallado, el cliente estará muy disgustado.
+  Estos son los detalles del negocio:
+  detalle de negocio 1: El nombre del negocio del cliente es ${businessName}.
+  detalle de negocio 2: El tipo de negocio es ${businessType}.
+  detalle de negocio 3: Aquí es donde están los clientes del negocio: ${location}.
+  detalle de negocio 4: El canal de distribución del cliente es ${salesChannel}.
+  detalle de negocio 5: El estado operativo del negocio del cliente es ${businessOperationalStatus}.
+
+  Estos son los detalles de los productos o servicios del cliente:
+  ${productInfoPrompt}
+
+  Estas son instrucciones adicionales:
+  Tenga una perspectiva positiva al generar ${promptTopic.es}.
+  Sea muy descriptivo al generar contenido sobre ${promptTopic.es}.
+  No mencione segmentos de clientes.
+  Cada tema debe contener aproximadamente la misma cantidad de texto.
+  sea muy descriptivo al generar ${promptTopic.es}.
+
+  Incluya estadísticas y su fuente cuando sea relevante, pero no use datos que contengan los años 2021 en adelante porque actualmente estamos en 2023.
+  NO cite estadísticas inventadas ni cite una empresa de investigación ficticia como ABC Research o XYZ Research.
+  NO mencione estadísticas indefinidas como $XX.XX o XX.X%.
+  No incluya estadísticas repetitivas.
+
+  Escríbalo como si fuera el dueño del negocio, usando "nosotros", no use "yo".
+  No incluya otros temas a menos que se especifiquen aquí.
+  Genere la respuesta en HTML rodeando "Visión General de la Industria" y "Tendencias Clave del Mercado" con la etiqueta h4.
+  En el tema "Tendencias Clave del Mercado", rodee cada tendencia clave con la etiqueta <li>.
+  Comience la finalización con "<h3>Análisis de la Situación</h3>" seguido de "<h4>Visión General de la Industria</h4>"
+Use solo etiquetas HTML, no use markdown. No use ** **, use en su lugar la etiqueta <strong> para negrita. No use * *, use en su lugar la etiqueta <em> para cursiva. No use * para viñetas, use en su lugar las etiquetas <ul> y <li>.
   Genere todo en español.
-  Esto es importante: Sé muy perspicaz en tu respuesta
-    Este es el ${promptTopic.es} que se le ocurrió:`,
-    it: `Sei un consulente professionista e un cliente si rivolge a te per scrivere un ${promptTopic.it} dettagliato per un piano aziendale.
-    Questi sono i dettagli dell'azienda:
-    dettaglio aziendale 1: Il nome dell'azienda del cliente è ${businessName}.
-    dettaglio aziendale 2: Il tipo di azienda è ${businessType}. 
-    dettaglio aziendale 3: Ecco dove si trovano i clienti dell'azienda: ${location}.
-    dettaglio aziendale 4: Il canale di distribuzione del cliente è ${salesChannel}.
-    dettaglio aziendale 5: Lo stato operativo dell'azienda del cliente è ${businessOperationalStatus}.
-  
-    Questi sono i dettagli dei prodotti o servizi del cliente:
+  Esto es importante: Sea muy perspicaz en su respuesta.
+  Este es el largo, detallado y perspicaz ${promptTopic.es} que se le ocurrió:
+    `,
+
+    //italian lang ------------------------------------------------------------------------
+    it: `
+  Sei un consulente professionale e un cliente ti avvicina per redigere un ${promptTopic.it} lungo e dettagliato per un piano di business. Se il ${promptTopic.it} non è lungo e dettagliato, il cliente sarà molto scontento.
+  Questi sono i dettagli dell'impresa:
+  dettaglio aziendale 1: Il nome dell'azienda del cliente è ${businessName}.
+  dettaglio aziendale 2: Il tipo di impresa è ${businessType}.
+  dettaglio aziendale 3: Ecco dove si trovano i clienti dell'impresa: ${location}.
+  dettaglio aziendale 4: Il canale di distribuzione del cliente è ${salesChannel}.
+  dettaglio aziendale 5: Lo stato operativo dell'azienda del cliente è ${businessOperationalStatus}.
+
+  Questi sono i dettagli dei prodotti o servizi del cliente:
+  ${productInfoPrompt}
+
+  Ulteriori istruzioni:
+  Mantieni un approccio positivo nella generazione del ${promptTopic.it}.
+  Sii molto descrittivo nel generare contenuti su ${promptTopic.it}.
+  Non menzionare i segmenti di clientela.
+  Ogni argomento dovrebbe contenere approssimativamente lo stesso numero di parole.
+  sii molto descrittivo nella generazione del ${promptTopic.it}.
+
+  Includi statistiche e relative fonti dove rilevante, ma non usare dati che contengono gli anni 2021 in poi poiché siamo attualmente nel 2023.
+  NON citare statistiche inventate o citare una società di ricerca fittizia come ABC Research o XYZ Research.
+  NON menzionare statistiche non definite come $XX.XX o XX.X%.
+  Non includere statistiche ripetitive.
+
+  Scrivi come se fossi il proprietario dell'impresa, usando "noi" e non "io".
+  Non includere altri argomenti a meno che non siano specificati qui.
+  Genera la risposta in HTML circondando "Panoramica dell'Industria" e "Tendenze Chiave del Mercato" con il tag h4.
+  Nel topic "Tendenze Chiave del Mercato" circonda ogni tendenza chiave con il tag <li>.
+  Inizia il completamento con "<h3>Analisi della Situazione</h3>" seguito da "<h4>Panoramica dell'Industria</h4>"
+Usa solo tag HTML, non usare markdown. Non usare ** **, usa invece il tag <strong> per il grassetto. Non usare * *, usa invece il tag <em> per il corsivo. Non usare * per i punti elenco, usa invece i tag <ul> e <li>.
+  Genera tutto in italiano.
+  Questo è importante: Sii molto perspicace nella tua risposta.
+Questo è il lungo, dettagliato e perspicace ${promptTopic.it} che hai ideato:`,
+
+    // dutch lang ------------------------------------------------------------------------
+    nl: `
+  Je bent een professionele consultant en een klant benadert je om een lange en gedetailleerde ${promptTopic.nl} te schrijven voor een bedrijfsplan. Als de ${promptTopic.nl} niet lang en gedetailleerd is, zal de klant erg ontevreden zijn.
+    Dit zijn de bedrijfsdetails:
+    bedrijfsdetail 1: De bedrijfsnaam van de klant is ${businessName}.
+    bedrijfsdetail 2: Het type bedrijf is ${businessType}. 
+    bedrijfsdetail 3: Dit is waar de klanten van het bedrijf zich bevinden: ${location}.
+    bedrijfsdetail 4: Het distributiekanaal van de klant is ${salesChannel}.
+    bedrijfsdetail 5: De operationele status van het bedrijf van de klant is ${businessOperationalStatus}.
+
+    Dit zijn details van de producten of diensten van de klant:
     ${productInfoPrompt}
-  
-    Queste sono ulteriori istruzioni:
-    Avere una prospettiva positiva quando si genera ${promptTopic.it}.
-    Essere molto descrittivi quando si generano contenuti su ${promptTopic.it}.
-    Non menzionare segmenti di clientela.
-    Ogni argomento dovrebbe contenere all'incirca la stessa quantità di testo.
-    Essere molto descrittivi quando si genera ${promptTopic.it}.
-    
-    Includere statistiche e la loro fonte dove rilevante, ma non utilizzare dati che contengono gli anni 2021 e oltre perché siamo attualmente nel 2023.
-    NON citare statistiche inventate o citare una società di ricerca inventata come ABC Research o XYZ Research.
-    NON menzionare statistiche non definite come $XX.XX, $X.XX, XX.X% o XX.XX%.
-    Non includere statistiche ripetitive.
-    
-    Scrivere questo come se fossi il proprietario dell'azienda, usando "noi" non "io".
-    Non includere altri argomenti a meno che non siano specificati qui.
-    Generare la risposta in HTML circondando "Panoramica del settore" e "Principali tendenze di mercato" con il tag h4.
-    Nell'argomento "Principali tendenze di mercato" circondare ogni tendenza chiave con il tag <li>. 
-    Iniziare la realizzazione con "<h3>Analisi della situazione</h3>" seguito da "<h4>Panoramica del settore</h4>"
-    Usare solo tag HTML, non usare markdown. Non usare ** **, invece usare il tag <strong> per il grassetto. Non usare * *, invece usare il tag <em> per il corsivo. Non usare * per i punti elenco, invece usare il tag <li>.
-  Generare tutto in italiano.
-  Questo è importante: Sii molto perspicace nella tua risposta
-    Questo è il ${promptTopic.it} che hai inventato:`,
-    nl: `U bent een professionele consultant en een klant benadert u om een gedetailleerd ${promptTopic.nl} voor een bedrijfsplan te schrijven.
-    Dit zijn de bedrijfsgegevens:
-    bedrijfsgegevens 1: De naam van het bedrijf van de klant is ${businessName}.
-    bedrijfsgegevens 2: Het type bedrijf is ${businessType}. 
-    bedrijfsgegevens 3: Dit is waar de klanten van het bedrijf zich bevinden: ${location}.
-    bedrijfsgegevens 4: Het distributiekanaal van de klant is ${salesChannel}.
-    bedrijfsgegevens 5: De operationele status van het bedrijf van de klant is ${businessOperationalStatus}.
-  
-    Dit zijn de details van de producten of diensten van de klant:
-    ${productInfoPrompt}
-  
+
     Dit zijn verdere instructies:
     Heb een positieve kijk bij het genereren van ${promptTopic.nl}.
     Wees zeer beschrijvend bij het genereren van inhoud over ${promptTopic.nl}.
-    Noem geen klantsegmenten.
+    Vermeld geen klantsegmenten.
     Elk onderwerp moet ongeveer dezelfde hoeveelheid tekst bevatten.
-    Wees zeer beschrijvend bij het genereren van ${promptTopic.nl}.
+    wees zeer beschrijvend bij het genereren van ${promptTopic.nl}.
     
-    Voeg statistieken en de bron ervan toe waar relevant, maar gebruik geen gegevens die de jaren 2021 en verder bevatten omdat we ons momenteel in 2023 bevinden.
-    CITEER GEEN verzonnen statistieken of een verzonnen onderzoeksbureau zoals ABC Research of XYZ Research.
-    Noem GEEN ongedefinieerde statistieken zoals $XX.XX, $X.XX, XX.X% of XX.XX%.
+    Voeg waar relevant statistieken en de bron ervan toe, maar gebruik geen gegevens die de jaren 2021 en later bevatten, omdat we momenteel in 2023 zijn.
+    CITEER GEEN verzonnen statistieken of citeer een verzonnen onderzoeksbureau zoals ABC Research of XYZ Research.
+    VERMELD GEEN ongedefinieerde statistieken zoals $XX.XX of XX.X%.
     Voeg geen repetitieve statistieken toe.
     
-    Schrijf dit alsof u de eigenaar van het bedrijf bent, gebruik "wij" niet "ik".
+    Schrijf dit alsof je de eigenaar van het bedrijf bent, gebruik "we" en niet "ik".
     Voeg geen andere onderwerpen toe tenzij hier gespecificeerd.
-    Genereer de reactie in HTML omringd door "Industrie-overzicht" en "Belangrijke markttrends" met de h4-tag.
-    Omring in het onderwerp "Belangrijke markttrends" elke belangrijke trend met de <li>-tag. 
-    Begin de uitvoering met "<h3>Situatieanalyse</h3>" gevolgd door "<h4>Industrie-overzicht</h4>"
-    Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik geen ** **, gebruik in plaats daarvan de <strong>-tag voor vetgedrukt. Gebruik geen * *, gebruik in plaats daarvan de <em>-tag voor cursief. Gebruik geen * voor opsommingstekens, gebruik in plaats daarvan de <li>-tag.
-  genereer alles in het Nederlands
-  Dit is belangrijk: Wees zeer inzichtelijk in je antwoord
-  Dit is belangrijk: Wees zeer inzichtelijk in je antwoord.
-    Dit is het ${promptTopic.nl} dat u hebt bedacht:`,
-    ja: `あなたはプロのコンサルタントであり、クライアントがビジネスプランのために詳細な${promptTopic.ja}を書くように依頼してきます。
-    これらはビジネスの詳細です:
-    ビジネスの詳細 1: クライアントのビジネス名は${businessName}です。
-    ビジネスの詳細 2: ビジネスの種類は${businessType}です。
-    ビジネスの詳細 3: ビジネスの顧客がいる場所は${location}です。
-    ビジネスの詳細 4: クライアントの流通チャネルは${salesChannel}です。
-    ビジネスの詳細 5: クライアントのビジネスの運営状況は${businessOperationalStatus}です。
-  
-    これらはクライアントの製品またはサービスの詳細です:
+    Genereer een reactie in html en omring "Industrieoverzicht" en "Belangrijkste markttrends" met de h4-tag.
+    Omring in het onderwerp "Belangrijkste markttrends" elke belangrijke trend met de <li>-tag. 
+    Begin de voltooiing met "<h3>Situatieanalyse</h3>" gevolgd door "<h4>Industrieoverzicht</h4>"
+Gebruik alleen HTML-tags, gebruik geen markdown. Gebruik geen ** **, gebruik in plaats daarvan de <strong>-tag voor vetgedrukte tekst. Gebruik geen * *, gebruik in plaats daarvan de <em>-tag voor cursieve tekst. Gebruik geen * voor opsommingstekens, gebruik in plaats daarvan de <ul>- en <li>-tags.
+    Genereer alles in het Nederlands.
+    Dit is belangrijk: Wees zeer inzichtelijk in uw antwoord.
+    Dit is de lange, gedetailleerde en inzichtelijke ${promptTopic.nl} die u bedacht hebt:
+  `,
+
+    //japanese  lang ------------------------------------------------------------------------
+    ja: `
+  あなたはプロのコンサルタントで、クライアントがビジネスプランのために詳細で長い${promptTopic.ja}を書くように依頼してきました。もし${promptTopic.ja}が詳細で長くなければ、クライアントは非常に不満を持つでしょう。
+    これらはビジネスの詳細です：
+    ビジネス詳細1：クライアントのビジネス名は${businessName}です。
+    ビジネス詳細2：ビジネスのタイプは${businessType}です。
+    ビジネス詳細3：ビジネスの顧客がいる場所は${location}です。
+    ビジネス詳細4：クライアントの配布チャネルは${salesChannel}です。
+    ビジネス詳細5：クライアントのビジネスの運営状況は${businessOperationalStatus}です。
+
+    これらはクライアントの製品またはサービスの詳細です：
     ${productInfoPrompt}
-  
-    これらはさらに指示です:
-    ${promptTopic.ja}を生成する際には前向きな見方を持ってください。
-    ${promptTopic.ja}に関するコンテンツを生成する際には非常に詳細に記述してください。
-    顧客セグメントには言及しないでください。
-    各トピックはほぼ同じ量のテキストを含むべきです。
-    ${promptTopic.ja}を生成する際には非常に詳細に記述してください。
-    
-    関連する場合は統計とその出典を含めてください。ただし、2021年以降のデータは使用しないでください。現在は2023年です。
-    架空の統計やABCリサーチやXYZリサーチのような架空の調査会社を引用しないでください。
-    $XX.XX、$X.XX、XX.X%、またはXX.XX%のような未定義の統計には言及しないでください。
+
+    これらはさらなる指示です：
+    ${promptTopic.ja}を生成するときにはポジティブな見方を持ってください。
+    ${promptTopic.ja}に関するコンテンツを生成するときには非常に詳細に説明してください。
+    顧客セグメントについては言及しないでください。
+    各トピックは大体同じ量のテキストを含むべきです。
+    ${promptTopic.ja}を生成するときには非常に詳細に説明してください。
+
+    関連する場所では統計とそのソースを含めてくださいが、2021年以降のデータは使用しないでください。なぜなら、現在は2023年だからです。
+    架空の統計を引用したり、ABCリサーチやXYZリサーチのような架空のリサーチ会社を引用したりしないでください。
+    $XX.XXやXX.X%のような未定義の統計を言及しないでください。
     繰り返しの統計を含めないでください。
-    
-    ビジネスのオーナーとして書いてください。「私」ではなく「私たち」を使用してください。
+
+    あなたがビジネスのオーナーであるかのように書いてください。"we"を使用し、"I"は使用しないでください。
     ここで指定されていない他のトピックを含めないでください。
-    "業界概要"と"主要な市場動向"をh4タグで囲んでHTMLで応答を生成してください。
-    "主要な市場動向"のトピックでは、各主要なトレンドを<li>タグで囲んでください。
-    "<h3>状況分析</h3>"で完了を開始し、続いて"<h4>業界概要</h4>"を使用してください。
-    HTMLタグのみを使用し、マークダウンを使用しないでください。** **を使用せず、代わりに<strong>タグを使用して太字にしてください。* *を使用せず、代わりに<em>タグを使用して斜体にしてください。箇条書きには*を使用せず、代わりに<li>タグを使用してください。
-  すべてを日本語で生成してください。
-  これは重要です: 回答に非常に洞察力を持ってください
-    これはあなたが考えた${promptTopic.ja}です:`,
-    ar: `أنت مستشار محترف، ويقترب منك عميل لكتابة ${promptTopic.ar} مفصل لخطة عمل.
-    هذه هي تفاصيل العمل:
-    تفاصيل العمل 1: اسم عمل العميل هو ${businessName}.
-    تفاصيل العمل 2: نوع العمل هو ${businessType}.
-    تفاصيل العمل 3: هذا هو مكان وجود عملاء العمل: ${location}.
-    تفاصيل العمل 4: قناة توزيع العميل هي ${salesChannel}.
-    تفاصيل العمل 5: حالة التشغيل لعمل العميل هي ${businessOperationalStatus}.
-  
-    هذه هي تفاصيل منتجات أو خدمات العميل:
+    "業界概要"と"主要な市場動向"をh4タグで囲んでhtmlのレスポンスを生成します。
+    "主要な市場動向"のトピックでは、各キートレンドを<li>タグで囲みます。
+    完成を"<h3>状況分析</h3>"で始め、次に"<h4>業界概要</h4>"を続けます。
+HTMLタグのみを使用し、Markdownを使用しないでください。 ** **を使用せず、代わりに太字には<strong>タグを使用してください。 * *を使用せず、代わりに斜体には<em>タグを使用してください。箇条書きには*を使用せず、代わりに<ul>と<li>タグを使用してください。
+    すべてを日本語で生成します。
+    これは重要です: 回答には非常に洞察力を持ってください。
+    これがあなたが考えた長くて詳細で洞察に満ちた${promptTopic.ja}です:
+  `,
+
+    //arabic lang ------------------------------------------------------------------------
+    ar: `
+  أنت مستشار محترف، ويقترب منك عميل لكتابة ${promptTopic.ar} طويلة ومفصلة لخطة عمل. إذا لم يكن ${promptTopic.ar} طويل ومفصل، سيكون العميل غاضبًا جدًا.
+  هذه هي تفاصيل العمل:
+  تفاصيل العمل 1: اسم العمل للعميل هو ${businessName}.
+  تفاصيل العمل 2: نوع العمل هو ${businessType}.
+  تفاصيل العمل 3: هذا هو المكان الذي يتواجد فيه عملاء العمل: ${location}.
+  تفاصيل العمل 4: قناة التوزيع للعميل هي ${salesChannel}.
+  تفاصيل العمل 5: حالة تشغيل العمل للعميل هي ${businessOperationalStatus}.
+
+  هذه هي تفاصيل منتجات العميل أو خدماته:
+  ${productInfoPrompt}
+
+  هذه هي التعليمات الإضافية:
+  كن متفائلاً عند إنشاء ${promptTopic.ar}.
+  كن واضحًا جدًا عند إنشاء محتوى على ${promptTopic.ar}.
+  لا تذكر أقسام العملاء.
+  يجب أن يحتوي كل موضوع تقريبًا على نفس كمية النص.
+  كن واضحًا جدًا عند إنشاء ${promptTopic.ar}.
+
+  قم بتضمين الإحصائيات ومصدرها حيثما كان ذلك ذا صلة ولكن لا تستخدم البيانات التي تحتوي على السنوات 2021 وما بعدها لأننا حاليًا في عام 2023.
+  لا تقتبس إحصائيات مختلقة أو تقتبس من شركة بحث مختلقة مثل ABC Research أو XYZ Research.
+  لا تذكر إحصائيات غير محددة مثل $XX.XX أو XX.X%.
+  لا تتضمن إحصائيات متكررة.
+
+  اكتب هذا كما لو كنت صاحب العمل، باستخدام "نحن" لا تستخدم "أنا".
+  لا تتضمن مواضيع أخرى ما لم يتم تحديدها هنا.
+  قم بإنشاء الرد في html محيطًا "نظرة عامة على الصناعة" و"الاتجاهات الرئيسية في السوق" بوسم h4.
+  في موضوع "الاتجاهات الرئيسية في السوق" قم بتحييد كل اتجاه رئيسي بوسم <li>.
+  ابدأ الاكتمال بـ "<h3>تحليل الوضع</h3>" تليها "<h4>نظرة عامة على الصناعة</h4>"
+  استخدم فقط علامات HTML، ولا تستخدم markdown. لا تستخدم ** **، بدلاً من ذلك استخدم علامة <strong> للنص الغامق. لا تستخدم * *، بدلاً من ذلك استخدم علامة <em> للنص المائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامتي <ul> و <li>.
+  أنشئ كل شيء باللغة العربية.
+  هذا مهم: كن ثاقبًا جدًا في ردك.
+  هذا هو الـ${promptTopic.ar} الطويل والمفصل والعميق الذي توصلت إليه:
+  `,
+
+    // swedish lang ------------------------------------------------------------------------
+    sv: `
+  Du är en professionell konsult och en klient närmar sig dig för att skriva en lång och detaljerad ${promptTopic.sv} för en affärsplan. Om ${promptTopic.sv} inte är lång och detaljerad kommer klienten att bli mycket upprörd.
+    Det här är företagets detaljer:
+    företagsdetalj 1: Kundens företagsnamn är ${businessName}.
+    företagsdetalj 2: Typ av företag är ${businessType}.
+    företagsdetalj 3: Det här är var företagets kunder finns: ${location}.
+    företagsdetalj 4: Kundens distributionskanal är ${salesChannel}.
+    företagsdetalj 5: Kundens företags operativa status är ${businessOperationalStatus}.
+
+    Det här är detaljer om kundens produkter eller tjänster:
     ${productInfoPrompt}
-  
-    هذه هي التعليمات الإضافية:
-    كن متفائلاً عند إنشاء ${promptTopic.ar}.
-    كن وصفيًا للغاية عند إنشاء محتوى حول ${promptTopic.ar}.
-    لا تذكر شرائح العملاء.
-    يجب أن يحتوي كل موضوع على نفس القدر من النص تقريبًا.
-    كن وصفيًا للغاية عند إنشاء ${promptTopic.ar}.
-    
-    قم بتضمين الإحصائيات ومصدرها حيثما كان ذلك مناسبًا ولكن لا تستخدم البيانات التي تحتوي على السنوات 2021 وما بعدها لأننا حاليًا في عام 2023.
-    لا تقتبس إحصائيات مختلقة أو تقتبس شركة أبحاث مختلقة مثل ABC Research أو XYZ Research.
-    لا تذكر الإحصائيات غير المحددة مثل $XX.XX، $X.XX، XX.X%، أو XX.XX%.
-    لا تتضمن إحصائيات متكررة.
-    
-    اكتب هذا كما لو كنت مالك العمل، باستخدام "نحن" لا تستخدم "أنا".
-    لا تتضمن مواضيع أخرى ما لم يتم تحديدها هنا.
-    قم بإنشاء الاستجابة في HTML محاطًا بـ "نظرة عامة على الصناعة" و "الاتجاهات الرئيسية في السوق" بعلامة h4.
-    في موضوع "الاتجاهات الرئيسية في السوق" قم بإحاطة كل اتجاه رئيسي بعلامة <li>.
-    ابدأ الإكمال بـ "<h3>تحليل الوضع</h3>" متبوعًا بـ "<h4>نظرة عامة على الصناعة</h4>"
-    استخدم علامات HTML فقط، لا تستخدم markdown. لا تستخدم ** **، بدلاً من ذلك استخدم علامة <strong> للتغليظ. لا تستخدم * *، بدلاً من ذلك استخدم علامة <em> للمائل. لا تستخدم * للنقاط النقطية، بدلاً من ذلك استخدم علامة <li>.
-  قم بإنشاء كل شيء باللغة العربية.
-  هذا مهم: كن ثاقب الرأي في ردك
-    هذا هو ${promptTopic.ar} الذي توصلت إليه:`,
-    sv: `Du är en professionell konsult, och en kund närmar sig dig för att skriva en detaljerad ${promptTopic.sv} för en affärsplan.
-    Detta är affärsdetaljerna:
-    affärsdetalj 1: Kundens företagsnamn är ${businessName}.
-    affärsdetalj 2: Typen av företag är ${businessType}.
-    affärsdetalj 3: Detta är var företagets kunder finns: ${location}.
-    affärsdetalj 4: Kundens distributionskanal är ${salesChannel}.
-    affärsdetalj 5: Kundens affärsoperativa status är ${businessOperationalStatus}.
-  
-    Detta är detaljerna om kundens produkter eller tjänster:
-    ${productInfoPrompt}
-  
-    Detta är ytterligare instruktioner:
-    Ha en positiv syn när du genererar ${promptTopic.sv}.
-    Var mycket beskrivande när du genererar innehåll om ${promptTopic.sv}.
+
+    Det här är ytterligare instruktioner:
+    Ha en positiv inställning när du genererar ${promptTopic.sv}.
+    Var mycket beskrivande när du genererar innehåll på ${promptTopic.sv}.
     Nämn inte kundsegment.
-    Varje ämne bör innehålla ungefär samma mängd text.
-    Var mycket beskrivande när du genererar ${promptTopic.sv}.
+    Varje ämne ska innehålla ungefär samma mängd text.
+    var mycket beskrivande när du genererar ${promptTopic.sv}.
     
     Inkludera statistik och dess källa där det är relevant men använd inte data som innehåller åren 2021 och framåt eftersom vi för närvarande är i 2023.
     CITERA INTE påhittad statistik eller citera ett påhittat forskningsföretag som ABC Research eller XYZ Research.
-    Nämn INTE odefinierad statistik som $XX.XX, $X.XX, XX.X% eller XX.XX%.
+    NÄMN INTE odefinierad statistik som $XX.XX eller XX.X%.
     Inkludera inte repetitiv statistik.
     
-    Skriv detta som om du är ägaren av företaget, använd "vi" inte "jag".
-    Inkludera inte andra ämnen om de inte specificeras här.
-    Generera svar i HTML omgiven av "Översikt över branschen" och "Viktiga marknadstrender" med h4-taggen.
-    I ämnet "Viktiga marknadstrender" omge varje nyckeltrend med <li>-taggen.
+    Skriv detta som om du är ägaren till företaget, använd "vi" använd inte "jag".
+    Inkludera inte andra ämnen om det inte specificeras här.
+    Generera svar i html som omger "Översikt över branschen" och "Viktiga marknadstrender" med h4-taggen.
+    I ämnet "Viktiga marknadstrender" omger varje nyckeltrend med <li>-taggen.
     Börja slutförandet med "<h3>Situationsanalys</h3>" följt av "<h4>Översikt över branschen</h4>"
-    använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv stil. Använd inte * för punktlistor, använd istället <li>-taggen.
-  generera allt på svenska
-  Detta är viktigt: Var mycket insiktsfull i ditt svar.
-    Detta är ${promptTopic.sv} du kom på:`,
-    fi: `Olet ammattimainen konsultti, ja asiakas lähestyy sinua kirjoittamaan yksityiskohtaisen ${promptTopic.fi} liiketoimintasuunnitelmaa varten.
-    Tässä ovat liiketoiminnan tiedot:
-    liiketoiminnan yksityiskohta 1: Asiakkaan yrityksen nimi on ${businessName}.
-    liiketoiminnan yksityiskohta 2: Yrityksen tyyppi on ${businessType}.
-    liiketoiminnan yksityiskohta 3: Tässä ovat yrityksen asiakkaat: ${location}.
-    liiketoiminnan yksityiskohta 4: Asiakkaan jakelukanava on ${salesChannel}.
-    liiketoiminnan yksityiskohta 5: Asiakkaan liiketoiminnan operatiivinen tila on ${businessOperationalStatus}.
-  
-    Tässä ovat asiakkaan tuotteiden tai palveluiden tiedot:
+    Använd endast HTML-taggar, använd inte markdown. Använd inte ** **, använd istället <strong>-taggen för fetstil. Använd inte * *, använd istället <em>-taggen för kursiv. Använd inte * för punktlistor, använd istället <ul>- och <li>-taggarna.
+    Generera allt på svenska.
+    Detta är viktigt: Var mycket insiktsfull i ditt svar.
+    Detta är den långa, detaljerade och insiktsfulla ${promptTopic.sv} du kom på:
+  `,
+
+    // finnish lang ------------------------------------------------------------------------
+    fi: `
+  Olet ammattikonsultti, ja asiakas lähestyy sinua kirjoittamaan pitkän ja yksityiskohtaisen ${promptTopic.fi} liiketoimintasuunnitelmaa varten. Jos ${promptTopic.fi} ei ole pitkä ja yksityiskohtainen, asiakas tulee olemaan erittäin pettynyt.
+    Nämä ovat yrityksen tiedot:
+    yrityksen tieto 1: Asiakkaan yrityksen nimi on ${businessName}.
+    yrityksen tieto 2: Yrityksen tyyppi on ${businessType}. 
+    yrityksen tieto 3: Tässä ovat yrityksen asiakkaat: ${location}.
+    yrityksen tieto 4: Asiakkaan jakelukanava on ${salesChannel}.
+    yrityksen tieto 5: Asiakkaan yrityksen toiminnallinen tila on ${businessOperationalStatus}.
+
+    Nämä ovat asiakkaan tuotteiden tai palveluiden tiedot:
     ${productInfoPrompt}
-  
-    Tässä ovat lisäohjeet:
-    Ole positiivinen, kun luot ${promptTopic.fi}.
-    Ole erittäin kuvaileva, kun luot sisältöä ${promptTopic.fi}.
+
+    Nämä ovat lisäohjeita:
+    Ole positiivinen tuottaessasi ${promptTopic.fi}.
+    Ole erittäin kuvaileva tuottaessasi sisältöä ${promptTopic.fi}.
     Älä mainitse asiakassegmenttejä.
-    Jokaisen aiheen tulisi sisältää suunnilleen saman verran tekstiä.
-    Ole erittäin kuvaileva, kun luot ${promptTopic.fi}.
+    Jokaisen aiheen tulisi sisältää suunnilleen sama määrä tekstiä.
+    ole erittäin kuvaileva tuottaessasi ${promptTopic.fi}.
     
-    Sisällytä tilastot ja niiden lähde, jos se on merkityksellistä, mutta älä käytä tietoja, jotka sisältävät vuodet 2021 ja sen jälkeen, koska olemme tällä hetkellä vuodessa 2023.
+    Sisällytä tilastot ja sen lähde, missä se on relevantti, mutta älä käytä tietoja, jotka sisältävät vuodet 2021 ja sen jälkeen, koska olemme tällä hetkellä vuodessa 2023.
     ÄLÄ lainaa keksittyjä tilastoja tai lainaa keksittyä tutkimusyritystä, kuten ABC Research tai XYZ Research.
-    ÄLÄ mainitse määrittelemättömiä tilastoja, kuten $XX.XX, $X.XX, XX.X% tai XX.XX%.
+    ÄLÄ mainitse määrittelemättömiä tilastoja, kuten $XX.XX tai XX.X%.
     Älä sisällytä toistuvia tilastoja.
     
-    Kirjoita tämä ikään kuin olisit yrityksen omistaja, käytä "me" älä käytä "minä".
-    Älä sisällytä muita aiheita, ellei niitä ole erikseen mainittu tässä.
-    Luo vastaus HTML-muodossa ympäröimällä "Toimialan yleiskatsaus" ja "Tärkeimmät markkinatrendit" h4-tunnisteella.
-    Aiheessa "Tärkeimmät markkinatrendit" ympäröi jokainen keskeinen trendi <li>-tunnisteella.
-    Aloita täyttö "<h3>Tilanneanalyysi</h3>"-tunnisteella, jota seuraa "<h4>Toimialan yleiskatsaus</h4>"
-    käytä vain HTML-tunnisteita, älä käytä markdownia. Älä käytä ** **, käytä sen sijaan <strong>-tunnistetta lihavointiin. Älä käytä * *, käytä sen sijaan <em>-tunnistetta kursivointiin. Älä käytä * luettelomerkeille, käytä sen sijaan <li>-tunnistetta.
-  luo kaikki suomeksi
-  Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
-    Tämä on ${promptTopic.fi}, jonka keksit:`,
-    da: `Du er en professionel konsulent, og en klient henvender sig til dig for at skrive en detaljeret ${promptTopic.da} til en forretningsplan.
-    Dette er forretningsdetaljerne:
-    forretningsdetalje 1: Kundens virksomhedsnavn er ${businessName}.
-    forretningsdetalje 2: Virksomhedstypen er ${businessType}.
-    forretningsdetalje 3: Dette er, hvor virksomhedens kunder er: ${location}.
-    forretningsdetalje 4: Kundens distributionskanal er ${salesChannel}.
-    forretningsdetalje 5: Kundens forretningsoperationelle status er ${businessOperationalStatus}.
-  
-    Dette er detaljerne om kundens produkter eller tjenester:
-    ${productInfoPrompt}
-  
-    Dette er yderligere instruktioner:
-    Hav et positivt syn, når du genererer ${promptTopic.da}.
-    Vær meget beskrivende, når du genererer indhold om ${promptTopic.da}.
-    Nævn ikke kundesegmenter.
-    Hvert emne skal indeholde omtrent samme mængde tekst.
-    Vær meget beskrivende, når du genererer ${promptTopic.da}.
-    
-    Inkluder statistik og dens kilde, hvor det er relevant, men brug ikke data, der indeholder årene 2021 og frem, fordi vi i øjeblikket er i 2023.
-    CITÉR IKKE opdigtede statistikker eller citér et opdigtet forskningsfirma som ABC Research eller XYZ Research.
-    Nævn IKKE udefinerede statistikker som $XX.XX, $X.XX, XX.X% eller XX.XX%.
-    Inkluder ikke gentagne statistikker.
-    
-    Skriv dette, som om du er ejer af virksomheden, brug "vi" ikke "jeg".
-    Inkluder ikke andre emner, medmindre de er specificeret her.
-    Generer svar i HTML omgivet af "Branchegennemgang" og "Vigtige markedsudviklinger" med h4-tag.
-    I emnet "Vigtige markedsudviklinger" omgiver hver vigtig trend med <li>-tag.
-    Begynd udfyldningen med "<h3>Situationsanalyse</h3>" efterfulgt af "<h4>Branchegennemgang</h4>"
-    brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tag til fed skrift. Brug ikke * *, brug i stedet <em>-tag til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <li>-tag.
-  generer alt på dansk
-  Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
-    Dette er ${promptTopic.da}, du kom op med:`,
-    no: `Du er en profesjonell konsulent, og en klient henvender seg til deg for å skrive en detaljert ${promptTopic.no} for en forretningsplan.
-    Dette er forretningsdetaljene:
-    forretningsdetalj 1: Klientens firmanavn er ${businessName}.
-    forretningsdetalj 2: Forretningstypen er ${businessType}. 
-    forretningsdetalj 3: Dette er hvor forretningens kunder er: ${location}.
-    forretningsdetalj 4: Klientens distribusjonskanal er ${salesChannel}.
-    forretningsdetalj 5: Klientens forretningsdriftsstatus er ${businessOperationalStatus}.
-  
+    Kirjoita tämä kuin olisit yrityksen omistaja, käyttäen "me", älä käytä "minä".
+    Älä sisällytä muita aiheita, ellei niitä ole määritelty tässä.
+    Tuota vastaus html-muodossa ympäröimällä "Toimialan yleiskatsaus" ja "Tärkeät markkinatrendit" h4-tagilla.
+    "Tärkeät markkinatrendit" -aiheessa ympäröi jokainen avaintrendi <li>-tagilla. 
+    Aloita täydennys "<h3>Tilanneanalyysi</h3>" seurasi "<h4>Toimialan yleiskatsaus</h4>"
+Käytä vain HTML-tageja, älä käytä markdownia. Älä käytä ** **, vaan käytä <strong>-tagia lihavointiin. Älä käytä * *, vaan käytä <em>-tagia kursivointiin. Älä käytä * luettelomerkeille, vaan käytä <ul>- ja <li>-tageja.
+    Tuota kaikki suomeksi.
+    Tämä on tärkeää: Ole erittäin oivaltava vastauksessasi.
+    Tämä on pitkä, yksityiskohtainen ja oivaltava ${promptTopic.fi}, jonka keksit:
+  `,
+
+    // danish lang ------------------------------------------------------------------------
+    da: `
+  Du er en professionel konsulent, og en klient nærmer dig for at skrive en lang og detaljeret ${promptTopic.da} til en forretningsplan. Hvis ${promptTopic.da} ikke er lang og detaljeret, vil klienten være meget ked af det.
+    Dette er virksomhedens detaljer:
+    virksomhedsdetalje 1: Klientens virksomhedsnavn er ${businessName}.
+    virksomhedsdetalje 2: Virksomhedens type er ${businessType}. 
+    virksomhedsdetalje 3: Dette er hvor virksomhedens kunder er: ${location}.
+    virksomhedsdetalje 4: Klientens distributionskanal er ${salesChannel}.
+    virksomhedsdetalje 5: Klientens virksomheds operationelle status er ${businessOperationalStatus}.
+
     Dette er detaljer om klientens produkter eller tjenester:
     ${productInfoPrompt}
-  
+
+    Dette er yderligere instruktioner:
+    Hav et positivt syn når du genererer ${promptTopic.da}.
+    Vær meget beskrivende når du genererer indhold om ${promptTopic.da}.
+    Nævn ikke kundesegmenter.
+    Hvert emne skal indeholde omtrent samme mængde tekst.
+    vær meget beskrivende når du genererer ${promptTopic.da}.
+    
+    Inkluder statistik og dens kilde hvor det er relevant, men brug ikke data der indeholder årene 2021 og fremefter, fordi vi er i 2023.
+    CITER IKKE opdigtede statistikker eller citer en opdigtet forskningsvirksomhed som ABC Research eller XYZ Research.
+    NÆVN IKKE udefinerede statistikker som $XX.XX eller XX.X%.
+    Inkluder ikke gentagne statistikker.
+    
+    Skriv dette som om du er ejeren af virksomheden, brug "vi", brug ikke "jeg".
+    Inkluder ikke andre emner medmindre det er specificeret her.
+    Generer svar i html der omgiver "Branchegennemgang" og "Vigtige markedsudviklinger" med h4 tag.
+    I "Vigtige markedsudviklinger" emnet, omgiv hver nøgleudvikling med <li> tag. 
+    Begynd udfyldelsen med "<h3>Situationsanalyse</h3>" efterfulgt af "<h4>Branchegennemgang</h4>"
+Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
+    Generer alt på dansk.
+    Dette er vigtigt: Vær meget indsigtsfuld i dit svar.
+    Dette er den lange, detaljerede og indsigtsfulde ${promptTopic.da}, du kom op med:
+  `,
+
+    // norwegian lang ------------------------------------------------------------------------
+    no: `
+  Du er en profesjonell konsulent, og en klient nærmer seg deg for å skrive en lang og detaljert ${promptTopic.no} for en forretningsplan. Hvis ${promptTopic.no} ikke er lang og detaljert, vil klienten være veldig opprørt.
+    Dette er forretningsdetaljene:
+    forretningsdetalj 1: Klientens firmanavn er ${businessName}.
+    forretningsdetalj 2: Typen virksomhet er ${businessType}. 
+    forretningsdetalj 3: Dette er hvor bedriftens kunder er: ${location}.
+    forretningsdetalj 4: Klientens distribusjonskanal er ${salesChannel}.
+    forretningsdetalj 5: Klientens forretningsoperasjonelle status er ${businessOperationalStatus}.
+
+    Dette er detaljer om klientens produkter eller tjenester:
+    ${productInfoPrompt}
+
     Dette er ytterligere instruksjoner:
     Ha et positivt syn når du genererer ${promptTopic.no}.
     Vær veldig beskrivende når du genererer innhold om ${promptTopic.no}.
     Ikke nevn kundesegmenter.
     Hvert emne skal inneholde omtrent samme mengde tekst.
-    Vær veldig beskrivende når du genererer ${promptTopic.no}.
+    vær veldig beskrivende når du genererer ${promptTopic.no}.
     
-    Inkluder statistikk og dens kilde der det er relevant, men ikke bruk data som inneholder årene 2021 og fremover fordi vi for øyeblikket er i 2023.
-    IKKE siter oppdiktede statistikker eller siter et oppdiktet forskningsfirma som ABC Research eller XYZ Research.
-    IKKE nevn udefinerte statistikker som $XX.XX, $X.XX, XX.X% eller XX.XX%.
-    Ikke inkluder repeterende statistikker.
+    Inkluder statistikk og dens kilde hvor det er relevant, men bruk ikke data som inneholder årene 2021 og fremover, fordi vi er i 2023.
+    IKKE sitat oppdiktede statistikker eller sitat en oppdiktet forskningsfirma som ABC Research eller XYZ Research.
+    IKKE nevn udefinerte statistikker som $XX.XX eller XX.X%.
+    Inkluder ikke gjentatte statistikker.
     
-    Skriv dette som om du er eieren av virksomheten, bruk "vi" ikke "jeg".
-    Ikke inkluder andre emner med mindre de er spesifisert her.
-    Generer svar i HTML som omgir "Industrioversikt" og "Viktige markedsutviklinger" med h4-tagg.
-    I emnet "Viktige markedsutviklinger" omgir hver viktig trend med <li>-tagg. 
+    Skriv dette som om du er eieren av virksomheten, bruk "vi", bruk ikke "jeg".
+    Inkluder ikke andre emner med mindre det er spesifisert her.
+    Generer svar i html som omgir "Industrioversikt" og "Viktige markedsutviklinger" med h4 tag.
+    I "Viktige markedsutviklinger" emnet, omgir hver nøkkelutvikling med <li> tag. 
     Begynn utfyllingen med "<h3>Situasjonsanalyse</h3>" etterfulgt av "<h4>Industrioversikt</h4>"
-    bruk kun HTML-tagger, ikke bruk markdown. Ikke bruk ** **, bruk i stedet <strong>-tagg for fet skrift. Ikke bruk * *, bruk i stedet <em>-tagg for kursiv skrift. Ikke bruk * for punkttegn, bruk i stedet <li>-tagg.
-  generer alt på norsk
-  Dette er viktig: Vær veldig innsiktsfull i ditt svar.
-    Dette er ${promptTopic.no} du kom opp med:`,
+Brug kun HTML-tags, brug ikke markdown. Brug ikke ** **, brug i stedet <strong>-tagget til fed skrift. Brug ikke * *, brug i stedet <em>-tagget til kursiv skrift. Brug ikke * til punkttegn, brug i stedet <ul>- og <li>-taggene.
+    Generer alt på norsk.
+    Dette er viktig: Vær veldig innsiktsfull i ditt svar.
+    Dette er den lange, detaljerte og innsiktsfulle ${promptTopic.no} du kom opp med:
+  `,
   };
 
-  const model =
-    variantID === '2' ? AI_MODEL.GPT_4O_MINI : AI_MODEL.GPT_3_5_TURBO;
-  console.log('model:', model);
+  const model = variantID === '2' ? 'gpt-4o-mini' : 'gpt-3.5-turbo';
+  console.log("model:", model)
   const payload = {
-    model: modelName ? modelName : model,
+    model,
     messages: [{ role: 'user', content: promptTemplates[planLanguage] }],
     temperature: 0.5,
     top_p: 1,

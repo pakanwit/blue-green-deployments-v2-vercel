@@ -26,7 +26,6 @@ export default async function handler(request, response) {
       try {
         const plan = {
           originalVer: newPlan,
-          isFinanceIncomplete: true,
         };
         // add the new plan to the plans array and decrement planQuota
         user.plans.push(plan);
@@ -34,7 +33,7 @@ export default async function handler(request, response) {
 
         // save the updated user
         const updatedUser = await user.save();
-        res.status(200).json({ status: true, user: updatedUser, planId: user.plans.length -1 });
+        res.status(200).json({ status: true, user: updatedUser });
       } catch (err) {
         res.status(500).json({ err });
       }
